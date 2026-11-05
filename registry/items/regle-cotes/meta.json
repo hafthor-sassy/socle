@@ -1,0 +1,156 @@
+{
+  "id": "regle-cotes",
+  "nom": "Règle de cotes",
+  "categorie": "espacements",
+  "niveau": "premium",
+  "ordre": 4,
+  "description": "Comme dans Figma : survolez deux éléments et la distance s’affiche en pixels et en jeton (24 · space-6), avec traits, talons et taille des boîtes. Le mode « Tout coter » annote chaque marge et chaque écart d’un composant et signale ceux qui sortent de la grille.",
+  "tags": [
+    "Mesure",
+    "Jetons",
+    "Contrôle qualité",
+    "Survol"
+  ],
+  "date": "2026-11-05",
+  "palette": "framboise",
+  "logo_exemple": {
+    "nom": "Ferro",
+    "secteur": "Outil de déploiement pour développeurs",
+    "fichier": "logo.svg",
+    "palette": "framboise",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 720
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent du trait, teinte ambre des écarts hors grille, surfaces de la barre"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 7 ko, sans dépendance ; calque SVG redessiné à la demande (aucune boucle)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "declencheur",
+      "label": "Déclenchement",
+      "type": "select",
+      "default": "always",
+      "options": [
+        {
+          "value": "always",
+          "label": "Toujours"
+        },
+        {
+          "value": "alt",
+          "label": "Alt ⌥"
+        },
+        {
+          "value": "audit",
+          "label": "Tout coter"
+        }
+      ],
+      "hint": "Au toucher, « Alt » bascule sur « Toujours » : un appui fixe le départ, un second mesure.",
+      "code": {
+        "html": "data-trigger=\"{v}\"",
+        "react": "trigger=\"{v}\""
+      }
+    },
+    {
+      "name": "unite",
+      "label": "Étiquettes",
+      "type": "select",
+      "default": "both",
+      "options": [
+        {
+          "value": "both",
+          "label": "px + jeton"
+        },
+        {
+          "value": "px",
+          "label": "px"
+        },
+        {
+          "value": "token",
+          "label": "Jeton"
+        }
+      ],
+      "code": {
+        "html": "data-unit=\"{v}\"",
+        "react": "unit=\"{v}\""
+      }
+    },
+    {
+      "name": "base",
+      "label": "Pas de la grille",
+      "type": "number",
+      "default": 8,
+      "min": 4,
+      "max": 8,
+      "step": 4,
+      "unit": "px",
+      "hint": "Une valeur qui n’est ni un jeton ni un multiple du pas est signalée « hors grille ».",
+      "code": {
+        "html": "data-base=\"{v}\"",
+        "react": "base={{v}}"
+      }
+    },
+    {
+      "name": "tailles",
+      "label": "Taille des boîtes",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-sizes=\"{v}\"",
+        "react": "showSizes={{v}}"
+      }
+    },
+    {
+      "name": "erreur",
+      "label": "Erreur volontaire (14 px)",
+      "type": "boolean",
+      "default": true,
+      "hint": "Décale les boutons de la carte d’exemple pour voir le signalement."
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/Redline.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Outil de recette pour designers et développeurs : vérifier qu’une maquette intégrée respecte les jetons, sur une page de charte ou un environnement de préproduction.",
+    "Marquez ce qui se mesure avec data-measure=\"Nom\" (le nom s’affiche au survol) et les conteneurs à auditer avec data-measure-group ; ajoutez data-measure-pad pour coter aussi leurs marges internes.",
+    "Sans sélection, le survol cote l’élément par rapport à son parent mesurable (ses marges) ; un clic fixe un point de départ pour mesurer vers n’importe quel autre élément.",
+    "Les bordures entrent dans la boîte : dessinez-les avec outline et outline-offset négatif pour que les cotes tombent juste."
+  ],
+  "accessibilite": [
+    "Barre d’outils étiquetée, segments en radiogroup (flèches), bouton d’effacement désactivé tant que rien n’est sélectionné.",
+    "Hors mode Alt, les éléments mesurables reçoivent le focus : Tab pour mesurer, Entrée pour fixer le départ, Échap pour effacer ; chaque mesure est lue par une région aria-live.",
+    "Le calque de traits est masqué aux lecteurs d’écran et ne capte jamais le pointeur.",
+    "Écarts hors grille signalés par le texte « hors grille » et la teinte ambre, pas par la seule couleur ; animations coupées avec « réduire les animations »."
+  ]
+}

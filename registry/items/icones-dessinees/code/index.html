@@ -1,0 +1,327 @@
+<!-- Icônes qui se dessinent — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="di" data-draw-icons data-trigger="hover" data-states="true"
+  style="--draw-duration: 700ms; --draw-stagger: 90ms; --draw-ease: cubic-bezier(.65, 0, .35, 1); --draw-stroke: 1.5">
+  <header class="di__head">
+    <span class="di__brand">
+      <svg class="di__logo" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" class="di__logo-tile"/>
+        <path d="M11 8.5v15M21 8.5v15" class="di__logo-rail"/>
+        <path d="M11 16h3.4M17.6 16H21" class="di__logo-rail"/>
+        <circle cx="16" cy="16" r="2.6" class="di__logo-stop"/>
+      </svg>
+      <span class="di__word">Halte</span>
+    </span>
+    <p class="di__kicker">Pictogrammes de l’app</p>
+  </header>
+
+  <div class="di__intro">
+    <h2 class="di__title">Chaque icône se trace au geste.</h2>
+    <p class="di__lead">Survolez ou parcourez au clavier&nbsp;: le trait suit son propre chemin. Cliquez pour l’état&nbsp;: la cloche sonne, la coche valide, le cadenas s’ouvre.</p>
+  </div>
+
+  <ul class="di__grid" role="list">
+    <li><button type="button" class="di__tile" data-act="ring" aria-label="Alerte retard : faire sonner">
+      <svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g">
+        <path d="M12 3.2v1.6"/><path d="M6.2 16.5V11a5.8 5.8 0 0 1 11.6 0v5.5l1.6 2H4.6z"/><path class="di__clap" d="M10 20.6a2 2 0 0 0 4 0"/>
+      </g><circle class="di__badge" cx="18.4" cy="5.6" r="3"/></svg>
+      <span class="di__lbl">Alerte retard</span><span class="di__hint">Sonne</span>
+    </button></li>
+    <li><button type="button" class="di__tile" data-act="check" aria-pressed="false" aria-label="Billet validé">
+      <svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g">
+        <path class="di__disc" d="M12 3a9 9 0 1 1 0 18a9 9 0 1 1 0-18z"/><path class="di__tick" d="M8 12.4l2.7 2.7L16.2 9.6"/>
+      </g></svg>
+      <span class="di__lbl">Billet validé</span><span class="di__hint">Valide</span>
+    </button></li>
+    <li><button type="button" class="di__tile" data-act="heart" aria-pressed="false" aria-label="Trajet favori">
+      <svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g">
+        <path class="di__fillable" d="M12 20s-7.6-4.6-7.6-10.2A4.4 4.4 0 0 1 12 7.2a4.4 4.4 0 0 1 7.6 2.6C19.6 15.4 12 20 12 20z"/>
+      </g></svg>
+      <span class="di__lbl">Trajet favori</span><span class="di__hint">Ajoute</span>
+    </button></li>
+    <li><button type="button" class="di__tile" data-act="seek" aria-label="Rechercher un trajet">
+      <svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g">
+        <path d="M10.5 4a6.5 6.5 0 1 1 0 13a6.5 6.5 0 1 1 0-13z"/><path d="M15.4 15.4L20 20"/>
+      </g></svg>
+      <span class="di__lbl">Rechercher</span><span class="di__hint">Balaye</span>
+    </button></li>
+    <li><button type="button" class="di__tile" data-act="send" aria-label="Envoyer le billet">
+      <svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g">
+        <path d="M20.5 3.5L3.6 10.4l7 3.1 3 6.9z"/><path d="M20.5 3.5l-9.9 10"/>
+      </g></svg>
+      <span class="di__lbl">Envoyer le billet</span><span class="di__hint">S’envole</span>
+    </button></li>
+    <li><button type="button" class="di__tile" data-act="drop" aria-label="Télécharger le billet">
+      <svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g">
+        <g class="di__arrow"><path d="M12 3.8v11"/><path d="M7.6 10.6L12 15l4.4-4.4"/></g><path d="M4.5 15.5V18a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-2.5"/>
+      </g></svg>
+      <span class="di__lbl">Télécharger</span><span class="di__hint">Dépose</span>
+    </button></li>
+    <li><button type="button" class="di__tile" data-act="lock" aria-pressed="true" aria-label="Place réservée">
+      <svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g">
+        <path class="di__shackle" d="M8.5 10.5V7.6a3.5 3.5 0 0 1 7 0v2.9"/><path d="M6.5 10.5h11a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19v-7a1.5 1.5 0 0 1 1.5-1.5z"/><path d="M12 14.4v2.2"/>
+      </g></svg>
+      <span class="di__lbl">Place réservée</span><span class="di__hint">Verrouillée</span>
+    </button></li>
+    <li><button type="button" class="di__tile" data-act="pin" aria-label="Gare de départ">
+      <svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><ellipse class="di__shadow" cx="12" cy="21.4" rx="3.4" ry=".9"/><g class="di__g">
+        <g class="di__pin"><path d="M12 19.6s-6.2-5.3-6.2-10.4a6.2 6.2 0 0 1 12.4 0c0 5.1-6.2 10.4-6.2 10.4z"/><path d="M12 6.8a2.4 2.4 0 1 1 0 4.8a2.4 2.4 0 1 1 0-4.8z"/></g>
+      </g></svg>
+      <span class="di__lbl">Gare de départ</span><span class="di__hint">Se pose</span>
+    </button></li>
+  </ul>
+
+  <div class="di__situ">
+    <p class="di__kicker">En situation · barre d’onglets</p>
+    <nav class="di__tabs" aria-label="Navigation de l’app">
+      <span class="di__pill" aria-hidden="true"></span>
+      <button type="button" class="di__tab" aria-current="page"><svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g"><path d="M6 15.6a2.2 2.2 0 1 1 0 4.4a2.2 2.2 0 1 1 0-4.4z"/><path d="M18 4a2.2 2.2 0 1 1 0 4.4A2.2 2.2 0 1 1 18 4z"/><path d="M8.6 17.8h7a3 3 0 0 0 0-6h-7a3 3 0 0 1 0-6h6.8"/></g></svg><span>Trajets</span></button>
+      <button type="button" class="di__tab"><svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6h13A1.5 1.5 0 0 1 20 7.5V10a2 2 0 0 0 0 4v2.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5V14a2 2 0 0 0 0-4z"/><path d="M14.5 6.5v11"/></g></svg><span>Billets</span></button>
+      <button type="button" class="di__tab"><svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g"><path d="M12 3.2v1.6"/><path d="M6.2 16.5V11a5.8 5.8 0 0 1 11.6 0v5.5l1.6 2H4.6z"/><path d="M10 20.6a2 2 0 0 0 4 0"/></g></svg><span>Alertes</span></button>
+      <button type="button" class="di__tab"><svg class="di__ico" viewBox="0 0 24 24" aria-hidden="true"><g class="di__g"><path d="M12 4a4 4 0 1 1 0 8a4 4 0 1 1 0-8z"/><path d="M4.6 20a7.4 7.4 0 0 1 14.8 0"/></g></svg><span>Profil</span></button>
+    </nav>
+  </div>
+  <p class="di__sr" aria-live="polite" data-live></p>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .di {
+    /* Réglages : durée d'un tracé, décalage entre deux traits, courbe, épaisseur */
+    --draw-duration: 700ms;
+    --draw-stagger: 90ms;
+    --draw-ease: cubic-bezier(.65, 0, .35, 1);
+    --draw-stroke: 1.5;
+    width: min(100%, 880px);
+    margin: 0 auto;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sheet);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-sans);
+  }
+  .di__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 24px; }
+  .di__brand { display: inline-flex; align-items: center; gap: 10px; }
+  .di__logo { width: 32px; height: 32px; flex: none; }
+  .di__logo-tile { fill: var(--accent); }
+  .di__logo-rail { fill: none; stroke: var(--accent-fg); stroke-width: 2.4; stroke-linecap: round; }
+  .di__logo-stop { fill: var(--accent-fg); }
+  .di__word { font-weight: 650; font-size: 20px; letter-spacing: -0.035em; color: var(--text-strong); }
+  .di__kicker { margin: 0; font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .di__intro { display: grid; gap: 8px; max-width: 560px; padding-bottom: 24px; }
+  .di__title { margin: 0; font-size: var(--t-page); line-height: var(--t-page-lh); letter-spacing: var(--track-tight); font-weight: 600; color: var(--text-strong); text-wrap: balance; }
+  .di__lead { margin: 0; font-size: var(--t-sm); line-height: var(--t-sm-lh); color: var(--text-muted); text-wrap: pretty; }
+
+  .di__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .di__tile {
+    position: relative; width: 100%; min-height: 136px; padding: 16px; display: grid; grid-template-rows: 1fr auto auto; justify-items: start; gap: 4px;
+    border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--raised); color: var(--text-strong);
+    font: inherit; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    transition: border-color var(--motion-base) var(--ease-out), background-color var(--motion-base) var(--ease-out), transform 260ms cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .di__tile:hover { border-color: var(--border-control); background: var(--surface); }
+  .di__tile:active { transform: scale(.97); transition-duration: 90ms; }
+  .di__tile:focus-visible, .di__tab:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .di__lbl { font-size: 14px; line-height: 20px; font-weight: 550; }
+  .di__hint { font: 500 11px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+
+  /* L'icône : un « fantôme » au trait discret, l'encre se trace par-dessus */
+  .di__ico { width: 36px; height: 36px; overflow: visible; fill: none; stroke: currentColor; stroke-width: var(--draw-stroke); stroke-linecap: round; stroke-linejoin: round; }
+  .di__ico .di__ghost { stroke: var(--border); }
+  .di__ico .di__ink { stroke-dasharray: 1 1; stroke-dashoffset: 0; }
+  .is-drawing .di__ink { animation: di-draw var(--draw-duration) var(--draw-ease) both; animation-delay: calc(var(--i, 0) * var(--draw-stagger)); }
+  @keyframes di-draw { 0% { stroke-dashoffset: 1; opacity: 0; } 6% { opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 1; } }
+  .di__badge { fill: var(--accent); stroke: var(--raised); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; transform: scale(0); }
+  .di__tile:hover .di__badge { stroke: var(--surface); }
+  .di__shadow { fill: var(--border); stroke: none; transform-box: fill-box; transform-origin: center; }
+  .di__g, .di__arrow, .di__pin, .di__shackle, .di__clap { transform-box: view-box; }
+  .di__g { transform-origin: 12px 3.5px; }
+  .di__fillable { transition: fill var(--motion-slow) var(--ease-out); }
+  .di__tile[aria-pressed=true] { color: var(--accent); }
+  .di__tile[aria-pressed=true] .di__lbl { color: var(--text-strong); }
+  .di__tile[data-act=heart][aria-pressed=true] .di__fillable { fill: var(--accent); }
+  .di__tile[data-act=check][aria-pressed=true] .di__disc { fill: var(--accent); }
+  .di__tile[data-act=check][aria-pressed=true] .di__tick { stroke: var(--accent-fg); }
+  .di__tile[data-act=lock] .di__shackle { transition: transform 420ms cubic-bezier(.34, 1.56, .64, 1); }
+  .di__tile[data-act=lock][aria-pressed=false] .di__shackle { transform: translate(0, -2.4px); }
+  .di__tile[data-act=lock][aria-pressed=false] { color: var(--text-strong); }
+
+  .di__situ { display: grid; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .di__tabs { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); padding: 4px; border-radius: var(--radius-pill); background: var(--raised); border: 1px solid var(--border); }
+  .di__pill { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 4); border-radius: var(--radius-pill); background: var(--surface); box-shadow: var(--shadow-overlay); border: 1px solid var(--border);
+    transform: translateX(calc(var(--tab, 0) * 100%)); transition: transform 520ms cubic-bezier(.3, 1.35, .5, 1); }
+  .di__tab { position: relative; z-index: 1; min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 8px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--text-muted); font: 500 14px/20px var(--font-sans); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: color var(--motion-base) var(--ease-out); }
+  .di__tab .di__ico { width: 22px; height: 22px; }
+  .di__tab[aria-current=page] { color: var(--text-strong); }
+  .di__tab[aria-current=page] .di__ink { stroke: var(--accent); }
+  .di__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 640px) {
+    .di { padding: 20px 16px; border-radius: var(--radius-card); }
+    .di__head { padding-bottom: 20px; }
+    .di__kicker { font-size: 11px; }
+    .di__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .di__tile { min-height: 120px; padding: 14px; }
+    .di__tab { flex-direction: column; gap: 2px; min-height: 64px; font-size: 14px; line-height: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .is-drawing .di__ink { animation: none; }
+    .di__pill, .di__tile, .di__shackle { transition: none !important; }
+  }
+</style>
+
+<script>
+/* DrawIcons — tracé des icônes (stroke-dashoffset + pathLength) et états animés (Web Animations). Sans dépendance. */
+(function () {
+  var reduce = function () { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; };
+
+  // Ressort amorti échantillonné en easing CSS linear() : vrai rebond, sans bibliothèque.
+  function spring(k, c) {
+    var x = 0, v = 0, dt = 1 / 120, pts = [], t = 0;
+    while (t < 2.5) { v += (-k * (x - 1) - c * v) * dt; x += v * dt; t += dt; pts.push(x); if (t > .3 && Math.abs(x - 1) < .001 && Math.abs(v) < .01) break; }
+    var step = Math.max(1, Math.round(pts.length / 48)), out = ['0'];
+    for (var i = step; i < pts.length; i += step) out.push(pts[i].toFixed(3));
+    out.push('1');
+    return { easing: 'linear(' + out.join(', ') + ')', duration: Math.round(t * 1000) };
+  }
+  var POP = spring(260, 12);
+
+  function prep(svg) {
+    if (svg._di) return; svg._di = true;
+    var i = 0;
+    svg.querySelectorAll('.di__g path').forEach(function (p) {
+      var g = p.cloneNode(); g.removeAttribute('class'); g.setAttribute('class', 'di__ghost');
+      p.parentNode.insertBefore(g, p);
+      p.classList.add('di__ink'); p.setAttribute('pathLength', '1'); p.style.setProperty('--i', i++);
+    });
+  }
+  function draw(svg) {
+    if (reduce()) return;
+    svg.classList.remove('is-drawing'); void svg.getBoundingClientRect();
+    svg.classList.add('is-drawing');
+  }
+  function anim(el, frames, opts) {
+    if (!el || reduce() || !el.animate) return;
+    return el.animate(frames, Object.assign({ duration: 600, easing: 'cubic-bezier(.2,0,0,1)' }, opts));
+  }
+
+  var ACTS = {
+    ring: function (b, live) {
+      anim(b.querySelector('.di__g'), [{ transform: 'rotate(0)' }, { transform: 'rotate(16deg)' }, { transform: 'rotate(-13deg)' }, { transform: 'rotate(9deg)' }, { transform: 'rotate(-5deg)' }, { transform: 'rotate(2deg)' }, { transform: 'rotate(0)' }], { duration: 760, easing: 'ease-out' });
+      anim(b.querySelector('.di__clap'), [{ transform: 'translateX(0)' }, { transform: 'translateX(-1.6px)' }, { transform: 'translateX(1.3px)' }, { transform: 'translateX(-.6px)' }, { transform: 'translateX(0)' }], { duration: 760, delay: 40 });
+      var badge = b.querySelector('.di__badge');
+      if (reduce()) badge.style.transform = 'scale(1)';
+      else anim(badge, [{ transform: 'scale(0)' }, { transform: 'scale(1)' }], { duration: POP.duration, easing: POP.easing, fill: 'forwards' });
+      live('Nouvelle alerte : le 08 h 12 part avec 5 minutes de retard.');
+    },
+    check: function (b, live) {
+      var on = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', String(on));
+      if (on) { draw(b.querySelector('svg')); anim(b.querySelector('.di__g'), [{ transform: 'scale(.82)' }, { transform: 'scale(1)' }], { duration: POP.duration, easing: POP.easing }); }
+      live(on ? 'Billet validé.' : 'Validation retirée.');
+    },
+    heart: function (b, live) {
+      var on = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', String(on));
+      b.querySelector('.di__g').style.transformOrigin = '12px 13px';
+      anim(b.querySelector('.di__g'), on ? [{ transform: 'scale(.7)' }, { transform: 'scale(1)' }] : [{ transform: 'scale(.92)' }, { transform: 'scale(1)' }], { duration: POP.duration, easing: POP.easing });
+      live(on ? 'Trajet ajouté aux favoris.' : 'Trajet retiré des favoris.');
+    },
+    seek: function (b, live) {
+      var g = b.querySelector('.di__g'); g.style.transformOrigin = '12px 12px';
+      anim(g, [{ transform: 'translate(0,0) rotate(0)' }, { transform: 'translate(-2.4px,-1px) rotate(-10deg)' }, { transform: 'translate(2.4px,1px) rotate(8deg)' }, { transform: 'translate(0,0) rotate(0)' }], { duration: 720, easing: 'cubic-bezier(.45,0,.2,1)' });
+      live('Recherche de trajets.');
+    },
+    send: function (b, live) {
+      var g = b.querySelector('.di__g');
+      anim(g, [{ transform: 'translate(0,0)', opacity: 1 }, { transform: 'translate(-1.5px,1.5px)', opacity: 1, offset: .15 }, { transform: 'translate(14px,-14px)', opacity: 0, offset: .5 }, { transform: 'translate(-12px,12px)', opacity: 0, offset: .51 }, { transform: 'translate(0,0)', opacity: 1 }], { duration: 900, easing: 'cubic-bezier(.5,0,.2,1)' });
+      live('Billet envoyé par e-mail.');
+    },
+    drop: function (b, live) {
+      anim(b.querySelector('.di__arrow'), [{ transform: 'translateY(-7px)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }], { duration: POP.duration, easing: POP.easing });
+      live('Billet téléchargé.');
+    },
+    lock: function (b, live) {
+      var on = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', String(on));
+      b.querySelector('.di__hint').textContent = on ? 'Verrouillée' : 'Libérée';
+      live(on ? 'Place verrouillée.' : 'Place libérée.');
+    },
+    pin: function (b, live) {
+      anim(b.querySelector('.di__pin'), [{ transform: 'translateY(-9px)' }, { transform: 'translateY(0)' }], { duration: POP.duration, easing: POP.easing });
+      anim(b.querySelector('.di__shadow'), [{ transform: 'scale(.3)', opacity: .2 }, { transform: 'scale(1)', opacity: 1 }], { duration: POP.duration, easing: POP.easing });
+      live('Gare de départ : Lyon Part-Dieu.');
+    }
+  };
+
+  function init(root) {
+    if (root._drawIcons) return root._drawIcons;
+    var live = root.querySelector('[data-live]');
+    var say = function (t) { if (live) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); } };
+    var svgs = Array.prototype.slice.call(root.querySelectorAll('.di__ico'));
+    svgs.forEach(prep);
+    var tiles = Array.prototype.slice.call(root.querySelectorAll('.di__tile'));
+    var loopTimer = 0, visible = true, io = null;
+
+    tiles.forEach(function (b) {
+      var svg = b.querySelector('svg');
+      var go = function () { if (root.dataset.trigger === 'hover') draw(svg); };
+      b.addEventListener('pointerenter', function (e) { if (e.pointerType !== 'touch') go(); });
+      b.addEventListener('focus', go);
+      b.addEventListener('click', function () {
+        if (root.dataset.states === 'false') { draw(svg); return; }
+        if (b.dataset.act !== 'check') draw(svg);
+        b.querySelector('.di__g').style.transformOrigin = '';
+        (ACTS[b.dataset.act] || function () {})(b, say);
+      });
+    });
+
+    // Barre d'onglets : la pastille glisse, l'icône active se trace.
+    var tabs = Array.prototype.slice.call(root.querySelectorAll('.di__tab'));
+    var nav = root.querySelector('.di__tabs');
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () {
+        tabs.forEach(function (o) { o.removeAttribute('aria-current'); });
+        t.setAttribute('aria-current', 'page');
+        nav.style.setProperty('--tab', i);
+        draw(t.querySelector('svg'));
+      });
+    });
+
+    function cascade() { tiles.forEach(function (b, i) { setTimeout(function () { draw(b.querySelector('svg')); }, i * 110); }); }
+    function stopLoop() { clearInterval(loopTimer); loopTimer = 0; }
+    function startLoop() {
+      stopLoop(); if (reduce() || !visible) return;
+      var i = 0; draw(tiles[0].querySelector('svg'));
+      loopTimer = setInterval(function () { i = (i + 1) % tiles.length; draw(tiles[i].querySelector('svg')); }, 650);
+    }
+    if ('IntersectionObserver' in window) {
+      io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          visible = e.isIntersecting;
+          if (root.dataset.trigger === 'loop') { visible ? startLoop() : stopLoop(); }
+          if (visible && root.dataset.trigger === 'enter' && !root._entered) { root._entered = true; cascade(); }
+        });
+      }, { threshold: .25 });
+      io.observe(root);
+    }
+    var api = {
+      update: function () {
+        stopLoop(); root._entered = false;
+        if (root.dataset.trigger === 'loop') startLoop();
+        if (root.dataset.trigger === 'enter' && visible) { root._entered = true; cascade(); }
+      },
+      replay: function () { cascade(); },
+      draw: function (i) { draw(tiles[i].querySelector('svg')); },
+      destroy: function () { stopLoop(); if (io) io.disconnect(); }
+    };
+    root._drawIcons = api;
+    return api;
+  }
+  window.DrawIcons = { init: init };
+  document.querySelectorAll('[data-draw-icons]').forEach(init);
+})();
+</script>

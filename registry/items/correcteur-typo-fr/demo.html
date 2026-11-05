@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Correcteur typographique français — démo</title>
+<script>document.documentElement.setAttribute('data-accent', new URLSearchParams(location.search).get('accent') || 'ambre');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-items: center; padding: 40px clamp(16px, 4vw, 48px); }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .ty__list { max-height: 360px; overflow: hidden; }
+  @media (max-width: 480px) { .stage { padding: 20px 16px; align-items: start; } }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ espace: 'fine', invisibles: false, espaces: true, signes: true, ortho: true });
+  var api = null;
+  function opts(p) { return { espace: p.espace, invisibles: !!p.invisibles, espaces: !!p.espaces, signes: !!p.signes, ortho: !!p.ortho }; }
+  function render(p) { if (api) api.update(opts(p)); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount'); mount.innerHTML = mk ? mk[1] : '';
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = mount.querySelector('[data-ty]')._ty; render(props);
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var vis = true, on = false;
+      new IntersectionObserver(function (en) { vis = en[0].isIntersecting; }).observe(mount);
+      setInterval(function () { if (!vis) return; on = !on; if (on) api.fixAll(); else api.reset(); }, 2600);
+    }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (!api) return; api.reset(); setTimeout(function () { api.fixAll(); }, 900); });
+</script>
+</body>
+</html>

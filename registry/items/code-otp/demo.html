@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code à 6 chiffres — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'indigo');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 40px 24px; }
+  @media (max-width: 520px) { .stage { padding: 16px; place-items: start center; } }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .fd__row, .is-thumb .fd__demo, .is-thumb .fd__p { display: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ longueur: 6, groupes: true, type: 'numeric', masque: false, code: '424242', vague: 70 });
+  var el = null, otp = null, seen = true;
+  function apply(p) {
+    if (!el) return;
+    var n = Math.max(4, Math.min(8, Math.round(p.longueur)));
+    el.dataset.length = n;
+    el.dataset.group = p.groupes ? (n % 3 === 0 ? 3 : n / 2) : 0;
+    el.dataset.type = p.type; el.dataset.mask = String(!!p.masque); el.dataset.wave = p.vague;
+    el.dataset.expected = String(p.code || '').toUpperCase();
+    var d = document.querySelector('.fd__demo kbd');
+    var g = +el.dataset.group || n;
+    if (d) d.textContent = ((p.code || '').toUpperCase().slice(0, n).match(new RegExp('.{1,' + g + '}', 'g')) || []).join(' ');
+    if (otp) { otp.reset(); otp.config(); }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    el = document.querySelector('[data-otp]');
+    apply(props);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    otp = el._otp;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(el);
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      // Vignette : le code se tape chiffre par chiffre, la vague passe, puis on recommence
+      var code = el.dataset.expected, i = 0;
+      setInterval(function () {
+        if (!seen) return;
+        if (i < code.length) otp.set(code.slice(0, ++i));
+        else if (i++ > code.length + 6) { otp.reset(); i = 0; }
+      }, 260);
+    }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () {
+    if (!otp) return; otp.reset();
+    var code = el.dataset.expected.slice(0, otp.len), i = 0;
+    var id = setInterval(function () { otp.set(code.slice(0, ++i)); if (i >= code.length) clearInterval(id); }, 140);
+  });
+</script>
+</body>
+</html>

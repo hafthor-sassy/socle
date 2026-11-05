@@ -1,0 +1,124 @@
+{
+  "id": "rayons-concentriques",
+  "nom": "Rayons concentriques",
+  "categorie": "espacements",
+  "niveau": "essentiel",
+  "ordre": 3,
+  "description": "Des cartes imbriquées dont le rayon intérieur se recalcule tout seul (rayon extérieur − marge) : la loupe du coin montre les arcs qui partagent le même centre, et ce qui se passe quand on garde le même rayon partout.",
+  "tags": [
+    "Rayons",
+    "Variables CSS",
+    "Imbrication",
+    "Pédagogique"
+  ],
+  "date": "2026-11-05",
+  "palette": "emeraude",
+  "logo_exemple": {
+    "nom": "Nacre",
+    "secteur": "Banque en ligne",
+    "fichier": "logo.svg",
+    "palette": "emeraude",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1024
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, accent, teintes vert et ambre du verdict"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 3 ko, facultatif : la règle elle-même est en CSS pur (--rc-r2, --rc-r3)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "rayon",
+      "label": "Rayon du panneau",
+      "type": "number",
+      "default": 24,
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "code": {
+        "html": "--rc-r: {v}px",
+        "react": "radius={{v}}"
+      }
+    },
+    {
+      "name": "marge",
+      "label": "Marge entre niveaux",
+      "type": "number",
+      "default": 8,
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "unit": "px",
+      "hint": "Au-delà de la moitié du rayon, le niveau le plus profond perd son arrondi.",
+      "code": {
+        "html": "--rc-p: {v}px",
+        "react": "padding={{v}}"
+      }
+    },
+    {
+      "name": "mode",
+      "label": "Calcul",
+      "type": "select",
+      "default": "concentric",
+      "options": [
+        {
+          "value": "concentric",
+          "label": "Concentrique"
+        },
+        {
+          "value": "same",
+          "label": "Identique"
+        }
+      ],
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "mode=\"{v}\""
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/ConcentricRadius.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Dès qu’une surface arrondie en contient une autre : carte dans un panneau, bouton dans une carte, vignette dans une feuille mobile.",
+    "La règle tient en une ligne : border-radius: max(calc(var(--rc-r) - var(--rc-p)), 0px). Gardez la marge sous la moitié du rayon pour trois niveaux.",
+    "Avec les rayons du système (16 / 12 / 8), une marge de 4 ou 8 px retombe sur des valeurs du jeu : 16 → 12 → 8, ou 24 → 16 → 8.",
+    "Le panneau d’explication (loupe, légende, verdict) est un outil de charte : pour un produit, ne copiez que les trois variables CSS."
+  ],
+  "accessibilite": [
+    "La loupe est une image décrite (role=img) ; la légende et le verdict donnent les mêmes valeurs en texte, le verdict est une région role=status.",
+    "Curseurs natifs étiquetés, segments en radiogroup avec flèches gauche / droite ; cibles de 44 px.",
+    "Verdict en teintes vert ou ambre du système, contraste AA en clair et en sombre, jamais porté par la seule couleur.",
+    "Avec « réduire les animations », rayons et loupe changent sans transition."
+  ]
+}

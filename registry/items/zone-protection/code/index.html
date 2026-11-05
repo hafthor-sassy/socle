@@ -1,0 +1,231 @@
+<!-- Zone de protection — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     L'unité x vaut la moitié de la hauteur de l'icône : la marge de sécurité s'exprime en multiples de x. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="zp" data-clear-zone data-version="horizontal" data-ground="light" data-cotes="true" style="--zp-m: 1">
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+    <defs>
+      <pattern id="zp-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" class="zp__hatch-bg"/><path d="M0 0v8" class="zp__hatch-line"/></pattern>
+      <symbol id="zp-mark" viewBox="0 0 32 32"><path d="M7 11h12.6a3.2 3.2 0 1 0-3.2-3.2" class="zp__stroke"/><path d="M7 15.6h17.4" class="zp__stroke"/><path d="M7 20.2h9.4a3.2 3.2 0 1 1-3.2 3.2" class="zp__stroke"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="zp__head">
+    <span class="zp__lock zp__lock--sm" aria-hidden="true"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span><b>brise</b></span>
+    <p class="zp__kicker">Charte · 03 Zone de protection</p>
+  </header>
+
+  <div class="zp__layout">
+    <div class="zp__stage" data-stage>
+      <div class="zp__zone" data-zone>
+        <svg class="zp__hatch" aria-hidden="true"><rect width="100%" height="100%" fill="url(#zp-hatch)"/></svg>
+        <span class="zp__lock" data-lock role="img" aria-label="Logo brise et sa zone de protection">
+          <span class="zp__tile" data-tile><svg><use href="#zp-mark"/></svg></span><b>brise</b>
+        </span>
+        <span class="zp__cote zp__cote--top" aria-hidden="true"><i>x</i></span>
+        <span class="zp__cote zp__cote--left" aria-hidden="true"><i>x</i></span>
+        <span class="zp__xref" aria-hidden="true"><i>x</i></span>
+      </div>
+      <button type="button" class="zp__intrus" data-intrus aria-describedby="zp-status" aria-label="Élément à déplacer : bouton « Ouvrir un compte ». Flèches pour le rapprocher du logo.">
+        <span>Ouvrir un compte</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <p class="zp__status" id="zp-status" data-status role="status">Glissez le bouton vers le logo : la zone le signale dès qu’il y entre.</p>
+    </div>
+
+    <aside class="zp__rules">
+      <div class="zp__rule">
+        <p class="zp__kicker">Règle</p>
+        <p class="zp__big">Marge = <b data-mult>1</b>&nbsp;x</p>
+        <p class="zp__txt">x = la moitié de la hauteur de l’icône. Aucun texte, bord ou image n’entre dans cette marge, quelle que soit la taille du logo.</p>
+      </div>
+      <div class="zp__rule">
+        <p class="zp__kicker">Tailles minimales</p>
+        <ul class="zp__mins" role="list">
+          <li><span class="zp__lock zp__lock--min" aria-hidden="true" style="--h: 20px"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span><b>brise</b></span><span>Écran · 20 px</span></li>
+          <li><span class="zp__lock zp__lock--min" aria-hidden="true" style="--h: 16px"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span></span><span>Icône seule · 16 px</span></li>
+          <li><span class="zp__lock zp__lock--min" aria-hidden="true" style="--h: 24px"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span><b>brise</b></span><span>Impression · 12 mm</span></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <div class="zp__dont">
+    <p class="zp__kicker">Usages interdits</p>
+    <ul class="zp__grid" role="list">
+      <li class="zp__case is-ok"><span class="zp__prev"><span class="zp__lock zp__lock--case"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span><b>brise</b></span></span><span class="zp__lbl"><span class="zp__tag zp__tag--ok">Correct</span>Proportions et couleurs d’origine</span></li>
+      <li class="zp__case"><span class="zp__prev"><span class="zp__lock zp__lock--case zp__x-stretch"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span><b>brise</b></span></span><span class="zp__lbl"><span class="zp__tag">Interdit</span>Étiré ou écrasé</span></li>
+      <li class="zp__case"><span class="zp__prev"><span class="zp__lock zp__lock--case zp__x-recolor"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span><b>brise</b></span></span><span class="zp__lbl"><span class="zp__tag">Interdit</span>Recoloré hors palette</span></li>
+      <li class="zp__case"><span class="zp__prev"><span class="zp__lock zp__lock--case zp__x-shadow"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span><b>brise</b></span></span><span class="zp__lbl"><span class="zp__tag">Interdit</span>Ombré ou en relief</span></li>
+      <li class="zp__case"><span class="zp__prev"><span class="zp__lock zp__lock--case zp__x-rotate"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span><b>brise</b></span></span><span class="zp__lbl"><span class="zp__tag">Interdit</span>Pivoté</span></li>
+      <li class="zp__case"><span class="zp__prev"><span class="zp__lock zp__lock--case zp__x-outline"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span><b>brise</b></span></span><span class="zp__lbl"><span class="zp__tag">Interdit</span>Détouré au trait</span></li>
+      <li class="zp__case"><span class="zp__prev zp__prev--busy"><span class="zp__lock zp__lock--case zp__x-busy"><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span><b>brise</b></span></span><span class="zp__lbl"><span class="zp__tag">Interdit</span>Sur un fond chargé</span></li>
+      <li class="zp__case"><span class="zp__prev"><span class="zp__lock zp__lock--case zp__x-swap"><b>brise</b><span class="zp__tile"><svg><use href="#zp-mark"/></svg></span></span></span><span class="zp__lbl"><span class="zp__tag">Interdit</span>Éléments réordonnés</span></li>
+    </ul>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .zp {
+    --zp-m: 1;          /* marge en multiples de x */
+    --zp-icon: 72px;    /* hauteur de l'icône sur la planche */
+    --zp-x: calc(var(--zp-icon) / 2);
+    width: min(100%, 1040px); margin: 0 auto; color: var(--text); font-family: var(--font-sans);
+  }
+  .zp__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+  .zp__kicker { margin: 0; font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+
+  /* Le logo : tuile + mot-symbole, tout en variables */
+  .zp__lock { --h: var(--zp-icon); --tile: var(--accent); --tile-fg: var(--accent-fg); --word: var(--text-strong);
+    display: inline-flex; align-items: center; gap: calc(var(--h) * .28); color: var(--word); line-height: 1; }
+  .zp__tile { width: var(--h); height: var(--h); flex: none; display: grid; place-items: center; border-radius: calc(var(--h) * .28); background: var(--tile); color: var(--tile-fg); }
+  .zp__tile svg { width: 100%; height: 100%; }
+  .zp__stroke { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+  .zp__lock b { font-size: calc(var(--h) * .82); font-weight: 650; letter-spacing: -0.055em; transform: translateY(-.04em); }
+  .zp__lock--sm { --h: 28px; }
+  .zp__lock--min { --h: 20px; }
+  .zp__lock--case { --h: 28px; }
+
+  .zp__layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 12px; }
+  .zp__stage { position: relative; min-height: 440px; display: grid; place-items: center; padding: 48px 24px 88px; border: 1px solid var(--border); border-radius: var(--radius-sheet); background: var(--surface); overflow: hidden; touch-action: none; }
+  .zp[data-ground=dark] .zp__stage { background: var(--text-strong); }
+  .zp[data-ground=dark] .zp__stage .zp__lock { --tile: var(--surface); --tile-fg: var(--text-strong); --word: var(--surface); }
+  .zp[data-ground=accent] .zp__stage { background: var(--accent); }
+  .zp[data-ground=accent] .zp__stage .zp__lock { --tile: var(--accent-fg); --tile-fg: var(--accent); --word: var(--accent-fg); }
+
+  .zp__zone { position: relative; padding: calc(var(--zp-m) * var(--zp-x)); border-radius: 2px; outline: 1px dashed var(--border-control); transition: padding 420ms cubic-bezier(.3, 1.25, .5, 1), outline-color var(--motion-base) var(--ease-out); }
+  .zp__hatch { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .9; transition: opacity var(--motion-base) var(--ease-out); }
+  .zp__hatch-bg { fill: var(--accent-subtle); }
+  .zp__hatch-line { stroke: var(--accent-subtle-border); stroke-width: 2; }
+  .zp[data-ground=dark] .zp__hatch, .zp[data-ground=accent] .zp__hatch { opacity: .16; }
+  .zp__zone.is-breached { outline: 2px solid var(--down); }
+  .zp__zone.is-breached .zp__hatch-bg { fill: var(--tint-red-bg); }
+  .zp__zone.is-breached .zp__hatch-line { stroke: var(--tint-red-border); }
+  .zp__zone .zp__lock { position: relative; }
+  .zp[data-version=stacked] .zp__zone .zp__lock { flex-direction: column; gap: calc(var(--h) * .24); }
+  .zp[data-version=icon] .zp__zone .zp__lock b { display: none; }
+
+  /* Cotes */
+  .zp__cote, .zp__xref { position: absolute; display: grid; place-items: center; color: var(--text-strong); font: 500 12px/1 var(--font-mono); pointer-events: none; transition: opacity var(--motion-base) var(--ease-out); }
+  .zp[data-ground=dark] .zp__cote, .zp[data-ground=dark] .zp__xref, .zp[data-ground=accent] .zp__cote, .zp[data-ground=accent] .zp__xref { display: none; }
+  .zp[data-cotes=false] .zp__cote, .zp[data-cotes=false] .zp__xref { opacity: 0; }
+  .zp__cote--top { left: calc(var(--zp-m) * var(--zp-x)); top: 0; width: var(--zp-x); height: calc(var(--zp-m) * var(--zp-x)); border-inline: 1px solid var(--text-strong); }
+  .zp__cote--left { left: 0; top: calc(var(--zp-m) * var(--zp-x)); width: calc(var(--zp-m) * var(--zp-x)); height: var(--zp-x); border-block: 1px solid var(--text-strong); }
+  .zp__cote--top::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; border-left: 1px solid var(--text-strong); }
+  .zp__cote--left::before { content: ""; position: absolute; top: 50%; left: 0; right: 0; border-top: 1px solid var(--text-strong); }
+  .zp__cote i, .zp__xref i { position: relative; font-style: normal; padding: 2px 4px; border-radius: 4px; background: var(--surface); }
+  .zp__xref { left: calc(var(--zp-m) * var(--zp-x)); top: calc(var(--zp-m) * var(--zp-x)); width: var(--zp-x); height: var(--zp-x); border: 1px solid var(--text-strong); border-radius: 2px; }
+  .zp__zone { transition: padding 420ms cubic-bezier(.3, 1.25, .5, 1), outline-color var(--motion-base) var(--ease-out); }
+  .zp__cote, .zp__xref { transition: left 420ms cubic-bezier(.3, 1.25, .5, 1), top 420ms cubic-bezier(.3, 1.25, .5, 1), width 420ms cubic-bezier(.3, 1.25, .5, 1), height 420ms cubic-bezier(.3, 1.25, .5, 1), opacity var(--motion-base); }
+
+  /* Élément intrus, à glisser */
+  .zp__intrus { position: absolute; right: 24px; bottom: 24px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px 0 18px; border: 0; border-radius: var(--radius-pill); background: var(--text-strong); color: var(--surface); font: 500 15px/1 var(--font-sans); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+    translate: var(--dx, 0px) var(--dy, 0px); box-shadow: var(--shadow-popover); transition: scale 200ms cubic-bezier(.34, 1.56, .64, 1); }
+  .zp[data-ground=dark] .zp__intrus { background: var(--surface); color: var(--text-strong); }
+  .zp__intrus svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .zp__intrus.is-drag { cursor: grabbing; scale: 1.04; }
+  .zp__intrus:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .zp__status { position: absolute; left: 24px; bottom: 30px; right: 240px; margin: 0; font-size: 14px; line-height: 20px; color: var(--text-muted); }
+  .zp[data-ground=dark] .zp__status { color: var(--surface); }
+  .zp[data-ground=accent] .zp__status { color: var(--accent-fg); }
+  .zp__status.is-bad { color: var(--down); font-weight: 550; }
+  .zp[data-ground=dark] .zp__status.is-bad, .zp[data-ground=accent] .zp__status.is-bad { color: var(--tint-red-bg); }
+
+  .zp__rules { display: grid; gap: 12px; align-content: start; }
+  .zp__rule { display: grid; gap: 8px; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius-sheet); background: var(--surface); }
+  .zp__big { margin: 0; font-size: var(--t-page); line-height: 1.1; letter-spacing: var(--track-tight); color: var(--text-strong); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .zp__big b { font-weight: 600; color: var(--accent); }
+  .zp__txt { margin: 0; font-size: 14px; line-height: 21px; color: var(--text-muted); }
+  .zp__mins { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 12px; }
+  .zp__mins li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; font-size: 14px; color: var(--text-muted); }
+
+  .zp__dont { margin-top: 24px; display: grid; gap: 12px; }
+  .zp__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .zp__case { display: grid; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); }
+  .zp__prev { position: relative; height: 112px; display: grid; place-items: center; border-radius: var(--radius-ctl); background: var(--raised); overflow: hidden; }
+  .zp__case:not(.is-ok) .zp__prev::after { content: ""; position: absolute; left: -10%; right: -10%; top: calc(50% - 1px); height: 2px; background: var(--down); opacity: .6; transform: rotate(-22deg); pointer-events: none; }
+  .zp__lbl { display: grid; gap: 6px; justify-items: start; font-size: 14px; line-height: 20px; color: var(--text-strong); }
+  .zp__tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: var(--radius-pill); border: 1px solid var(--tint-red-border); background: var(--tint-red-bg); color: var(--tint-red-fg); font: 500 11px/1 var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .zp__tag--ok { border-color: var(--tint-green-border); background: var(--tint-green-bg); color: var(--tint-green-fg); }
+  .zp__x-stretch { transform: scale(1.45, .78); }
+  .zp__x-recolor { --tile: var(--chart-5); --word: var(--chart-3); }
+  .zp__x-shadow { filter: drop-shadow(0 6px 5px var(--border-control)); }
+  .zp__x-rotate { transform: rotate(-14deg); }
+  .zp__x-outline { --tile: transparent; --tile-fg: var(--text-strong); --word: transparent; }
+  .zp__x-outline .zp__tile { box-shadow: inset 0 0 0 1.5px var(--text-strong); }
+  .zp__x-outline b { -webkit-text-stroke: 1px var(--text-strong); }
+  .zp__prev--busy { background: var(--accent-vivid); }
+  .zp__prev--busy::before { content: ""; position: absolute; left: 8%; top: 12%; width: 44px; height: 44px; border-radius: 50%; background: var(--accent-hover);
+    box-shadow: 90px 40px 0 14px var(--accent-subtle-border), 150px -20px 0 4px var(--accent), 30px 70px 0 -6px var(--accent-subtle); }
+  .zp__x-busy { --tile: var(--accent); --tile-fg: var(--accent-fg); --word: var(--accent); }
+  .zp__x-swap { flex-direction: row; }
+
+  @media (max-width: 860px) {
+    .zp { --zp-icon: 48px; }
+    .zp__layout { grid-template-columns: 1fr; }
+    .zp__stage { min-height: 380px; padding: 32px 16px 128px; border-radius: var(--radius-card); }
+    .zp__status { left: 16px; right: 16px; bottom: 80px; }
+    .zp__intrus { right: 16px; bottom: 20px; }
+    .zp__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .zp__prev { height: 96px; }
+    .zp__lock--case { --h: 22px; }
+    .zp__rule { padding: 16px; border-radius: var(--radius-card); }
+  }
+  @media (max-width: 420px) { .zp { --zp-icon: 40px; } .zp__xref { display: none; } .zp__cote i { font-size: 11px; padding: 1px 3px; } }
+  @media (prefers-reduced-motion: reduce) {
+    .zp__zone, .zp__cote, .zp__xref, .zp__intrus { transition: none !important; }
+  }
+</style>
+
+<script>
+/* ClearZone — détection de l'élément qui entre dans la zone de protection (glisser à la souris, au doigt ou aux flèches). */
+(function () {
+  function init(root) {
+    if (root._clearZone) return root._clearZone;
+    var stage = root.querySelector('[data-stage]'), zone = root.querySelector('[data-zone]'), intrus = root.querySelector('[data-intrus]'), status = root.querySelector('[data-status]');
+    var dx = 0, dy = 0, start = null, lastBad = null;
+    var IDLE = 'Glissez le bouton vers le logo : la zone le signale dès qu’il y entre.';
+    function place() { intrus.style.setProperty('--dx', dx + 'px'); intrus.style.setProperty('--dy', dy + 'px'); check(); }
+    function check() {
+      var z = zone.getBoundingClientRect(), b = intrus.getBoundingClientRect();
+      var ox = Math.min(z.right, b.right) - Math.max(z.left, b.left), oy = Math.min(z.bottom, b.bottom) - Math.max(z.top, b.top);
+      var bad = ox > 0 && oy > 0;
+      zone.classList.toggle('is-breached', bad);
+      status.classList.toggle('is-bad', bad);
+      if (bad !== lastBad || bad) status.textContent = bad ? 'Trop près : le bouton entre de ' + Math.round(Math.min(ox, oy)) + ' px dans la zone de protection.' : (dx || dy ? 'Distance respectée : rien n’entre dans la zone.' : IDLE);
+      lastBad = bad;
+    }
+    function clamp() {
+      var s = stage.getBoundingClientRect(), b = intrus.getBoundingClientRect();
+      var bx = b.left - dx, by = b.top - dy; // position de repos
+      dx = Math.max(s.left + 8 - bx, Math.min(s.right - 8 - b.width - bx, dx));
+      dy = Math.max(s.top + 8 - by, Math.min(s.bottom - 8 - b.height - by, dy));
+    }
+    intrus.addEventListener('pointerdown', function (e) { start = { x: e.clientX - dx, y: e.clientY - dy }; intrus.setPointerCapture(e.pointerId); intrus.classList.add('is-drag'); });
+    intrus.addEventListener('pointermove', function (e) { if (!start) return; dx = e.clientX - start.x; dy = e.clientY - start.y; clamp(); place(); });
+    function end() { start = null; intrus.classList.remove('is-drag'); }
+    intrus.addEventListener('pointerup', end); intrus.addEventListener('pointercancel', end);
+    intrus.addEventListener('keydown', function (e) {
+      var st = e.shiftKey ? 32 : 8, k = e.key;
+      if (k === 'ArrowLeft') dx -= st; else if (k === 'ArrowRight') dx += st; else if (k === 'ArrowUp') dy -= st; else if (k === 'ArrowDown') dy += st; else if (k === 'Escape' || k === 'Home') { dx = dy = 0; } else return;
+      e.preventDefault(); clamp(); place();
+    });
+    if (window.ResizeObserver) new ResizeObserver(function () { check(); }).observe(zone);
+    zone.addEventListener('transitionend', check);
+    var api = {
+      margin: function (m) { root.style.setProperty('--zp-m', m); var l = root.querySelector('[data-mult]'); if (l) l.textContent = String(m).replace('.', ','); setTimeout(check, 450); },
+      version: function (v) { root.dataset.version = v; setTimeout(check, 30); },
+      ground: function (g) { root.dataset.ground = g; },
+      cotes: function (on) { root.dataset.cotes = String(!!on); },
+      move: function (x, y) { dx = x; dy = y; place(); },
+      reset: function () { dx = dy = 0; place(); }
+    };
+    root._clearZone = api;
+    check();
+    return api;
+  }
+  window.ClearZone = { init: init };
+  document.querySelectorAll('[data-clear-zone]').forEach(init);
+})();
+</script>

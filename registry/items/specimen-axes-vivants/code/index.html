@@ -1,0 +1,434 @@
+<!-- Spécimen à axes vivants — HTML + CSS + JS, autonome. Nécessite tokens.css et les polices variables
+     fonts/archivo.woff2 (wght 100–900, wdth 62–125) et fonts/fraunces.woff2 (wght 100–900, SOFT 0–100, opsz auto).
+     Palette conseillée : <html data-accent="bordeaux">. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="ax" data-axes-specimen data-font="archivo" data-mode="survol"
+  data-weight="300" data-second="60" data-peak="900" data-peak-second="100" data-radius="160" data-stiffness="170" data-damping="18"
+  aria-labelledby="ax-title">
+  <header class="ax__bar">
+    <a class="ax__brand" href="#" aria-label="Ondée, revue culturelle">
+      <svg class="ax__logo" viewBox="0 0 24 24" aria-hidden="true">
+        <defs><clipPath id="ax-logo-clip"><circle cx="12" cy="12" r="8.25"/></clipPath></defs>
+        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <path clip-path="url(#ax-logo-clip)" fill="var(--accent)" d="M2 13.2c2.5-2 5-2 7.5 0s5 2 7.5 0 4-1.6 6-.6V24H2z"/>
+      </svg>
+      <span class="ax__word">Ondée</span>
+    </a>
+    <p class="ax__crumb" id="ax-title">Spécimen <span aria-hidden="true">·</span> <span data-ax-fontname>Archivo Variable</span></p>
+    <div class="ax__tools">
+      <div class="ax-seg" role="radiogroup" aria-label="Police" data-ax-seg="font">
+        <span class="ax-seg__pill" aria-hidden="true"></span>
+        <button type="button" role="radio" data-value="archivo">Archivo</button>
+        <button type="button" role="radio" data-value="fraunces">Fraunces</button>
+      </div>
+      <div class="ax-seg" role="radiogroup" aria-label="Animation du titre" data-ax-seg="mode">
+        <span class="ax-seg__pill" aria-hidden="true"></span>
+        <button type="button" role="radio" data-value="survol">Survol</button>
+        <button type="button" role="radio" data-value="vague">Vague</button>
+        <button type="button" role="radio" data-value="fixe">Fixe</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="ax__hero">
+    <p class="ax__eyebrow"><span>Numéro 14</span><span aria-hidden="true">—</span><span>Automne</span></p>
+    <div class="ax__guides" aria-hidden="true" data-ax-guides>
+      <span data-g="cap"><i>Capitale</i><b></b></span><span data-g="x"><i>Hauteur d’x</i><b></b></span><span data-g="base"><i>Ligne de base</i><b>0</b></span>
+    </div>
+    <h2 class="ax__title" data-ax-word aria-label="Ondée">Ondée</h2>
+    <p class="ax__readout" aria-hidden="true">
+      <span class="ax__dot"></span><span data-ax-near>Approchez le pointeur des lettres</span>
+    </p>
+  </div>
+
+  <div class="ax__panel">
+    <div class="ax-pad" data-ax-pad aria-hidden="true">
+      <span class="ax-pad__axis ax-pad__axis--x" data-ax-padx>wdth</span>
+      <span class="ax-pad__axis ax-pad__axis--y">wght</span>
+      <span class="ax-pad__cross ax-pad__cross--h"></span><span class="ax-pad__cross ax-pad__cross--v"></span>
+      <span class="ax-pad__ghost" data-ax-ghost>Ag</span>
+      <span class="ax-pad__knob" data-ax-knob></span>
+    </div>
+
+    <div class="ax__controls">
+      <label class="ax-range">
+        <span class="ax-range__head"><span>Graisse</span><output class="ax-range__val" data-ax-out="weight">300</output></span>
+        <span class="ax-range__track"><span class="ax-range__fill"></span><input type="range" min="100" max="900" step="1" value="300" data-ax-input="weight" aria-describedby="ax-hint-w"></span>
+        <span class="ax-range__ends" id="ax-hint-w"><span>100 Fin</span><span>900 Noir</span></span>
+      </label>
+      <label class="ax-range">
+        <span class="ax-range__head"><span data-ax-label2>Chasse</span><output class="ax-range__val" data-ax-out="second">100</output></span>
+        <span class="ax-range__track"><span class="ax-range__fill"></span><input type="range" min="0" max="100" step="0.5" value="60" data-ax-input="second" aria-describedby="ax-hint-2"></span>
+        <span class="ax-range__ends" id="ax-hint-2"><span data-ax-end2a>62 Étroit</span><span data-ax-end2b>125 Large</span></span>
+      </label>
+      <div class="ax__presets" role="group" aria-label="Instances nommées" data-ax-presets></div>
+    </div>
+  </div>
+
+  <div class="ax__spec" data-ax-spec>
+    <div class="ax__row"><span class="ax__size">64</span><p class="ax__line" style="--s:64px">Averse sur la ville</p></div>
+    <div class="ax__row"><span class="ax__size">40</span><p class="ax__line" style="--s:40px">Les toits boivent la lumière d’octobre</p></div>
+    <div class="ax__row"><span class="ax__size">24</span><p class="ax__line" style="--s:24px">Une revue lente sur l’architecture, la musique et ce qui pousse entre les pavés.</p></div>
+    <div class="ax__row"><span class="ax__size">16</span><p class="ax__line ax__line--text" style="--s:16px">Chaque trimestre, Ondée réunit douze voix autour d’un seul mot. Ce numéro s’ouvre sur la pluie : celle qu’on attend, celle qui surprend, et celle qui fait taire une salle de concert entière.</p></div>
+    <div class="ax__glyphs" aria-label="Jeu de caractères">
+      <span>Aa</span><span>Éé</span><span>Œœ</span><span>Çç</span><span>Rg</span><span>&amp;</span><span>«»</span><span>?!</span><span>01</span><span>23</span><span>4%</span><span>€</span>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  @font-face { font-family: "Archivo Var"; src: url("fonts/archivo.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; }
+  @font-face { font-family: "Fraunces Var"; src: url("fonts/fraunces.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+
+  .ax {
+    --ax-family: "Archivo Var", var(--font-sans);
+    --ax-fvs: "wght" 300, "wdth" 100;
+    --ax-spring: cubic-bezier(.34, 1.4, .64, 1);
+    container-type: inline-size;
+    position: relative; overflow: hidden;
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); border-radius: var(--radius-sheet);
+  }
+  .ax[data-font="fraunces"] { --ax-family: "Fraunces Var", Georgia, serif; }
+
+  /* Barre */
+  .ax__bar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 12px 16px 12px 24px; border-bottom: 1px solid var(--border); }
+  .ax__brand { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--text-strong); text-decoration: none; border-radius: var(--radius-ctl); }
+  .ax__logo { width: 24px; height: 24px; }
+  .ax__word { font: 650 18px/1 var(--font-sans); letter-spacing: -0.03em; }
+  .ax__crumb { margin: 0; flex: 1; min-width: 0; color: var(--text-muted); font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ax__tools { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .ax-seg { position: relative; display: inline-flex; padding: 4px; gap: 0; background: var(--raised); border: 1px solid var(--border); border-radius: var(--radius-pill); }
+  .ax-seg button { position: relative; z-index: 1; min-height: 36px; padding: 0 14px; border: 0; background: none; color: var(--text-muted); font: 500 14px/1 var(--font-sans); border-radius: var(--radius-pill); cursor: pointer; transition: color var(--motion-base) var(--ease-out); -webkit-tap-highlight-color: transparent; }
+  .ax-seg button[aria-checked="true"] { color: var(--text-strong); }
+  .ax-seg button:hover { color: var(--text-strong); }
+  .ax-seg__pill { position: absolute; top: 4px; bottom: 4px; left: 0; width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); box-shadow: var(--shadow-overlay); transform: translateX(var(--x, 4px)); width: var(--w, 0); transition: transform 420ms var(--ax-spring), width 420ms var(--ax-spring); }
+
+  /* Titre vivant */
+  .ax__hero { position: relative; padding: 40px 24px 32px; display: grid; justify-items: center; gap: 16px; text-align: center; }
+  .ax__hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 70% at 50% 55%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%); }
+  .ax__guides { position: absolute; inset: 0; pointer-events: none; }
+  .ax__guides span { position: absolute; left: 24px; right: 24px; top: var(--y, -99px); height: 0; border-top: 1px dashed color-mix(in srgb, var(--border-control) 55%, transparent); transition: top var(--motion-slow) var(--ease-out); }
+  .ax__guides span[data-g="base"] { border-top-style: solid; }
+  .ax__guides i, .ax__guides b { position: absolute; top: -20px; color: var(--text-muted); font: 500 11px/16px var(--font-mono); font-style: normal; letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .ax__guides i { left: 0; }
+  .ax__guides b { right: 0; font-weight: 500; }
+  .ax-mark { display: inline-block; width: 0; height: 0; vertical-align: baseline; }
+  .ax__eyebrow { margin: 0; display: inline-flex; gap: 8px; color: var(--text-muted); font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .ax__title {
+    position: relative; margin: 0; padding: 0 8px;
+    font-family: var(--ax-family); font-weight: 400; font-size: clamp(88px, 19cqi, 248px); line-height: 1; letter-spacing: -0.02em;
+    color: var(--text-strong); white-space: nowrap; user-select: none; -webkit-user-select: none;
+    touch-action: pan-y; cursor: default; font-kerning: normal;
+  }
+  .ax__title .ax-l { display: inline-block; font-variation-settings: var(--ax-fvs); will-change: font-variation-settings; }
+  .ax__readout { margin: 0; display: inline-flex; align-items: center; gap: 8px; min-height: 28px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--raised); border: 1px solid var(--border); color: var(--text-muted); font: 500 13px/18px var(--font-mono); font-variant-numeric: tabular-nums; }
+  .ax__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* Panneau d'axes */
+  .ax__panel { display: grid; grid-template-columns: 232px 1fr; gap: 32px; align-items: center; padding: 24px; border-top: 1px solid var(--border); }
+  .ax-pad { position: relative; width: 232px; aspect-ratio: 1; border-radius: var(--radius-card); background-color: var(--raised); border: 1px solid var(--border); overflow: hidden; touch-action: none; cursor: crosshair;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; }
+  .ax-pad__axis { position: absolute; color: var(--text-muted); font: 500 11px/1 var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .ax-pad__axis--x { right: 8px; bottom: 8px; }
+  .ax-pad__axis--y { left: 8px; top: 8px; }
+  .ax-pad__cross { position: absolute; background: var(--accent); opacity: .35; }
+  .ax-pad__cross--h { left: 0; right: 0; height: 1px; top: var(--py, 50%); }
+  .ax-pad__cross--v { top: 0; bottom: 0; width: 1px; left: var(--px, 50%); }
+  .ax-pad__ghost { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--ax-family); font-size: 96px; line-height: 1; font-variation-settings: var(--ax-fvs); color: var(--text-strong); opacity: .12; pointer-events: none; }
+  .ax-pad__knob { position: absolute; left: var(--px, 50%); top: var(--py, 50%); width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%; background: var(--accent); border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--accent), 0 4px 12px color-mix(in srgb, var(--accent) 35%, transparent); transition: scale 240ms var(--ax-spring); }
+  .ax-pad.is-drag .ax-pad__knob { scale: 1.25; }
+
+  .ax__controls { display: grid; gap: 24px; min-width: 0; }
+  .ax-range { display: grid; gap: 8px; }
+  .ax-range__head { display: flex; justify-content: space-between; align-items: baseline; color: var(--text-strong); font: 500 14px/20px var(--font-sans); }
+  .ax-range__val { font: 500 14px/20px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-strong); }
+  .ax-range__track { position: relative; display: block; height: 44px; --p: 50%; }
+  .ax-range__track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 4px; margin-top: -2px; border-radius: 999px; background: var(--scale-track); }
+  .ax-range__fill { position: absolute; left: 0; top: 50%; height: 4px; margin-top: -2px; width: var(--p); border-radius: 999px; background: var(--accent); }
+  .ax-range input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; background: none; appearance: none; -webkit-appearance: none; cursor: pointer; }
+  .ax-range input::-webkit-slider-runnable-track { height: 44px; background: none; }
+  .ax-range input::-moz-range-track { height: 44px; background: none; }
+  .ax-range input::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: 11px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); box-shadow: var(--shadow-overlay); transition: scale 200ms var(--ax-spring); }
+  .ax-range input::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); }
+  .ax-range input:active::-webkit-slider-thumb { scale: 1.2; }
+  .ax-range input:focus-visible { outline: none; }
+  .ax-range input:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--focus-ring); }
+  .ax-range input:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--focus-ring); }
+  .ax-range__ends { display: flex; justify-content: space-between; color: var(--text-muted); font: 500 12px/16px var(--font-mono); }
+
+  .ax__presets { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ax-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 12px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface); color: var(--text); font: 500 14px/1 var(--font-sans); cursor: pointer; transition: border-color var(--motion-base) var(--ease-out), background-color var(--motion-base) var(--ease-out), scale 220ms var(--ax-spring); }
+  .ax-chip:hover { border-color: var(--border-control); }
+  .ax-chip:active { scale: .96; }
+  .ax-chip[aria-pressed="true"] { background: var(--accent-subtle); border-color: var(--accent-subtle-border); color: var(--text-strong); }
+  .ax-chip__g { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--raised); color: var(--text-strong); font-family: var(--ax-family); font-size: 16px; line-height: 1; }
+  .ax-chip__v { color: var(--text-muted); font: 500 12px/1 var(--font-mono); }
+
+  /* Cascade */
+  .ax__spec { padding: 8px 24px 24px; border-top: 1px solid var(--border); }
+  .ax__row { display: grid; grid-template-columns: 48px 1fr; gap: 16px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .ax__size { color: var(--text-muted); font: 500 12px/16px var(--font-mono); }
+  .ax__line { margin: 0; font-family: var(--ax-family); font-size: var(--s); line-height: 1.12; letter-spacing: -0.01em; color: var(--text-strong); font-variation-settings: var(--ax-fvs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ax__line--text { white-space: normal; line-height: 1.5; letter-spacing: 0; color: var(--text); max-width: 68ch; }
+  .ax__glyphs { display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; padding-top: 24px; }
+  .ax__glyphs span { display: grid; place-items: center; aspect-ratio: 1; border-radius: var(--radius-card); background: var(--raised); color: var(--text-strong); font-family: var(--ax-family); font-size: clamp(20px, 3.2cqi, 36px); font-variation-settings: var(--ax-fvs); transition: background-color var(--motion-base) var(--ease-out); }
+  .ax__glyphs span:hover { background: var(--accent-subtle); }
+
+  /* Téléphone : tout s'empile, le plan d'axes passe en bandeau */
+  @container (max-width: 720px) {
+    .ax__bar { padding: 12px 16px; }
+    .ax__crumb { order: 3; flex-basis: 100%; }
+    .ax__tools { flex-basis: 100%; }
+    .ax__tools .ax-seg { flex: 1; }
+    .ax__tools .ax-seg button { flex: 1; padding: 0 8px; min-height: 36px; }
+    .ax__hero { padding: 32px 16px 24px; }
+    .ax__guides span { left: 16px; right: 16px; }
+    .ax__guides i { display: none; }
+    .ax__panel { grid-template-columns: 1fr; gap: 24px; padding: 24px 16px; }
+    .ax-pad { width: 100%; aspect-ratio: 16 / 9; }
+    .ax__spec { padding: 8px 16px 16px; }
+    .ax__row { grid-template-columns: 1fr; gap: 4px; }
+    .ax__line { white-space: normal; font-size: min(var(--s), 40px); }
+    .ax__row:first-child .ax__line { font-size: 48px; }
+    .ax__glyphs { grid-template-columns: repeat(4, 1fr); }
+    .ax__glyphs span { font-size: 28px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ax-seg__pill, .ax-pad__knob, .ax-chip, .ax-range input::-webkit-slider-thumb { transition: none; }
+  }
+</style>
+
+<script>
+/* Spécimen à axes vivants : ressorts par lettre, sans dépendance. API : AxesSpecimen.mount(el, options) → { set(options), destroy() } */
+(function () {
+  var FONTS = {
+    archivo: { name: 'Archivo Variable', cap: 0.686, xh: 0.526, axes: [{ tag: 'wght', min: 100, max: 900 }, { tag: 'wdth', min: 62, max: 125, label: 'Chasse', ends: ['Étroit', 'Large'] }],
+      presets: [['Étroit léger', 200, 0], ['Texte', 400, 60], ['Titre', 680, 40], ['Affiche', 900, 100]] },
+    fraunces: { name: 'Fraunces Variable', cap: 0.7, xh: 0.482, axes: [{ tag: 'wght', min: 100, max: 900 }, { tag: 'SOFT', min: 0, max: 100, label: 'Douceur', ends: ['Vif', 'Doux'] }],
+      presets: [['Fin vif', 200, 0], ['Texte', 400, 30], ['Titre', 640, 60], ['Gras doux', 900, 100]] }
+  };
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function ease(t) { return t * t * (3 - 2 * t); }
+
+  function mount(root, opts) {
+    var o = Object.assign({ text: 'Ondée', font: 'archivo', mode: 'survol', weight: 300, second: 60, peak: 900, peakSecond: 100, radius: 160, stiffness: 170, damping: 18 }, readData(root), opts || {});
+    var word = root.querySelector('[data-ax-word]');
+    var near = root.querySelector('[data-ax-near]');
+    var pad = root.querySelector('[data-ax-pad]');
+    var inputs = { weight: root.querySelector('[data-ax-input="weight"]'), second: root.querySelector('[data-ax-input="second"]') };
+    var outs = { weight: root.querySelector('[data-ax-out="weight"]'), second: root.querySelector('[data-ax-out="second"]') };
+    var presetsBox = root.querySelector('[data-ax-presets]');
+    var guides = root.querySelector('[data-ax-guides]'), mark = null, letters = [], st = [], raf = 0, last = 0, visible = true, pointer = null, touchTimer = 0, t0 = performance.now();
+    var base = { w: 0, s: 0, vw: 0, vs: 0, tw: 0, ts: 0 };
+
+    function font() { return FONTS[o.font] || FONTS.archivo; }
+    function norm(v, ax) { return (v - ax.min) / (ax.max - ax.min); }
+    function val(n, ax) { return ax.min + n * (ax.max - ax.min); }
+    function fvs(nw, ns) { var f = font(); return '"' + f.axes[0].tag + '" ' + Math.round(val(nw, f.axes[0])) + ', "' + f.axes[1].tag + '" ' + val(ns, f.axes[1]).toFixed(1); }
+
+    function buildWord() {
+      word.textContent = '';
+      word.setAttribute('aria-label', o.text);
+      letters = []; st = [];
+      Array.from(o.text || ' ').forEach(function (ch) {
+        var s = document.createElement('span');
+        s.className = 'ax-l'; s.setAttribute('aria-hidden', 'true');
+        s.textContent = ch === ' ' ? '\u00a0' : ch;
+        word.appendChild(s); letters.push(s);
+        st.push({ w: base.w, s: base.s, vw: 0, vs: 0, tw: base.w, ts: base.s });
+      });
+      var m = document.createElement('span'); m.className = 'ax-mark'; m.setAttribute('aria-hidden', 'true'); word.appendChild(m); mark = m;
+      placeGuides();
+    }
+    /* Lignes de métrique : capitale, hauteur d'x, ligne de base, mesurées sur le titre réel */
+    function placeGuides() {
+      if (!mark || !guides) return;
+      var hr = guides.getBoundingClientRect(), base0 = mark.getBoundingClientRect().top - hr.top, fs = parseFloat(getComputedStyle(word).fontSize), f = font();
+      var ys = { cap: base0 - f.cap * fs, x: base0 - f.xh * fs, base: base0 };
+      guides.querySelectorAll('span').forEach(function (g) {
+        var k = g.dataset.g; g.style.setProperty('--y', ys[k].toFixed(1) + 'px');
+        if (k !== 'base') g.querySelector('b').textContent = Math.round(f[k === 'cap' ? 'cap' : 'xh'] * 1000);
+      });
+    }
+    function buildPresets() {
+      var f = font();
+      presetsBox.innerHTML = '';
+      f.presets.forEach(function (p) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'ax-chip'; b.setAttribute('aria-pressed', 'false');
+        b.dataset.w = p[1]; b.dataset.s = p[2];
+        b.innerHTML = '<span class="ax-chip__g" aria-hidden="true" style="font-variation-settings:\'' + f.axes[0].tag + '\' ' + p[1] + ',\'' + f.axes[1].tag + '\' ' + val(p[2] / 100, f.axes[1]) + '">Ag</span>' + p[0] + ' <span class="ax-chip__v">' + p[1] + '</span>';
+        b.addEventListener('click', function () { setBase(p[1], p[2], true); });
+        presetsBox.appendChild(b);
+      });
+    }
+    function syncChips() {
+      presetsBox.querySelectorAll('.ax-chip').forEach(function (b) { b.setAttribute('aria-pressed', String(+b.dataset.w === Math.round(o.weight) && Math.abs(+b.dataset.s - o.second) < 0.6)); });
+    }
+    function syncLabels() {
+      var f = font(), a2 = f.axes[1];
+      root.dataset.font = o.font;
+      root.querySelector('[data-ax-fontname]').textContent = f.name;
+      root.querySelector('[data-ax-label2]').textContent = a2.label;
+      root.querySelector('[data-ax-padx]').textContent = a2.tag;
+      root.querySelector('[data-ax-end2a]').textContent = a2.min + ' ' + a2.ends[0];
+      root.querySelector('[data-ax-end2b]').textContent = a2.max + ' ' + a2.ends[1];
+      inputs.second.setAttribute('aria-valuetext', a2.label + ' ' + Math.round(val(o.second / 100, a2)));
+    }
+    function syncInputs() {
+      var f = font();
+      inputs.weight.value = o.weight; inputs.second.value = o.second;
+      inputs.weight.parentNode.style.setProperty('--p', (norm(o.weight, f.axes[0]) * 100) + '%');
+      inputs.second.parentNode.style.setProperty('--p', o.second + '%');
+      outs.weight.textContent = Math.round(o.weight);
+      outs.second.textContent = Math.round(val(o.second / 100, f.axes[1]));
+      inputs.second.setAttribute('aria-valuetext', f.axes[1].label + ' ' + outs.second.textContent);
+      syncChips();
+    }
+    function syncSeg() {
+      root.querySelectorAll('[data-ax-seg]').forEach(function (g) {
+        var cur = o[g.dataset.axSeg], pill = g.querySelector('.ax-seg__pill');
+        g.querySelectorAll('button').forEach(function (b) {
+          var on = b.dataset.value === cur;
+          b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1;
+          if (on && b.offsetWidth) { pill.style.setProperty('--x', b.offsetLeft + 'px'); pill.style.setProperty('--w', b.offsetWidth + 'px'); }
+        });
+      });
+    }
+    function setBase(w, s, fromUser) {
+      var f = font();
+      o.weight = clamp(+w, f.axes[0].min, f.axes[0].max); o.second = clamp(+s, 0, 100);
+      base.tw = norm(o.weight, f.axes[0]); base.ts = o.second / 100;
+      syncInputs(); wake();
+      if (fromUser) root.dispatchEvent(new CustomEvent('axeschange', { detail: { weight: o.weight, second: o.second } }));
+    }
+
+    /* Boucle : ressorts du socle (base) et de chaque lettre */
+    function frame(now) {
+      raf = 0;
+      if (!visible) return;
+      var dt = last ? Math.min(0.033, (now - last) / 1000) : 1 / 60; last = now;
+      var k = o.stiffness, c = o.damping, instant = reduce && reduce.matches, moving = false;
+      var f = font(), pw = norm(o.peak, f.axes[0]), ps = o.peakSecond / 100;
+      // socle
+      if (instant) { base.w = base.tw; base.s = base.ts; base.vw = base.vs = 0; }
+      else {
+        base.vw += (-120 * (base.w - base.tw) - 20 * base.vw) * dt; base.w += base.vw * dt;
+        base.vs += (-120 * (base.s - base.ts) - 20 * base.vs) * dt; base.s += base.vs * dt;
+        if (Math.abs(base.w - base.tw) + Math.abs(base.s - base.ts) + Math.abs(base.vw) + Math.abs(base.vs) > 0.0008) moving = true;
+        else { base.w = base.tw; base.s = base.ts; base.vw = base.vs = 0; }
+      }
+      root.style.setProperty('--ax-fvs', fvs(base.w, base.s));
+      pad.style.setProperty('--px', (base.s * 100) + '%');
+      pad.style.setProperty('--py', ((1 - base.w) * 100) + '%');
+      // lettres
+      var mode = instant && o.mode === 'vague' ? 'fixe' : o.mode, tsec = (now - t0) / 1000, best = null, bestD = 1e9;
+      var rects = mode === 'survol' && pointer ? letters.map(function (l) { return l.getBoundingClientRect(); }) : null;
+      for (var i = 0; i < letters.length; i++) {
+        var s = st[i], inf = 0;
+        if (mode === 'vague') { inf = ease(0.5 + 0.5 * Math.sin(tsec * 2.4 - i * 0.62)); moving = true; }
+        else if (rects) {
+          var r = rects[i], dx = pointer.x - (r.left + r.width / 2), dy = pointer.y - (r.top + r.height / 2), d = Math.sqrt(dx * dx + dy * dy * 1.6);
+          inf = ease(clamp(1 - d / o.radius, 0, 1));
+          if (d < bestD) { bestD = d; best = i; }
+        }
+        s.tw = base.w + (pw - base.w) * inf; s.ts = base.s + (ps - base.s) * inf;
+        if (instant) { s.w = s.tw; s.s = s.ts; s.vw = s.vs = 0; }
+        else {
+          s.vw += (-k * (s.w - s.tw) - c * s.vw) * dt; s.w += s.vw * dt;
+          s.vs += (-k * (s.s - s.ts) - c * s.vs) * dt; s.s += s.vs * dt;
+          if (Math.abs(s.w - s.tw) + Math.abs(s.s - s.ts) + Math.abs(s.vw) + Math.abs(s.vs) > 0.0008) moving = true;
+          else { s.w = s.tw; s.s = s.ts; s.vw = s.vs = 0; }
+        }
+        letters[i].style.fontVariationSettings = fvs(clamp(s.w, 0, 1), clamp(s.s, 0, 1));
+      }
+      if (best != null && bestD < o.radius * 1.4) {
+        var ch = letters[best].textContent, a = f.axes;
+        near.textContent = '« ' + ch + ' »  ' + a[0].tag + ' ' + Math.round(val(clamp(st[best].w, 0, 1), a[0])) + '  ·  ' + a[1].tag + ' ' + Math.round(val(clamp(st[best].s, 0, 1), a[1]));
+      } else if (mode === 'vague') near.textContent = 'Vague · ' + a0() + ' → ' + Math.round(o.peak);
+      else near.textContent = mode === 'fixe' ? a0() + '  ·  ' + f.axes[1].tag + ' ' + Math.round(val(base.s, f.axes[1])) : 'Approchez le pointeur des lettres';
+      if (moving) wake(); else last = 0;
+    }
+    function a0() { return font().axes[0].tag + ' ' + Math.round(o.weight); }
+    function wake() { if (!raf && visible) raf = requestAnimationFrame(frame); }
+
+    /* Pointeur sur le titre (souris et doigt) */
+    function onMove(e) { pointer = { x: e.clientX, y: e.clientY }; wake(); }
+    function onLeave(e) { if (e.pointerType === 'touch') return; pointer = null; wake(); }
+    function onDown(e) { onMove(e); if (e.pointerType === 'touch') { clearTimeout(touchTimer); } }
+    function onUp(e) { if (e.pointerType !== 'touch') return; clearTimeout(touchTimer); touchTimer = setTimeout(function () { pointer = null; wake(); }, 420); }
+    var hero = word.parentNode;
+    hero.addEventListener('pointermove', onMove, { passive: true });
+    hero.addEventListener('pointerdown', onDown, { passive: true });
+    hero.addEventListener('pointerleave', onLeave);
+    hero.addEventListener('pointerup', onUp);
+    hero.addEventListener('pointercancel', onUp);
+
+    /* Plan d'axes : glisser pour régler les deux axes à la fois */
+    function padAt(e) {
+      var r = pad.getBoundingClientRect(), f = font();
+      var nx = clamp((e.clientX - r.left) / r.width, 0, 1), ny = clamp((e.clientY - r.top) / r.height, 0, 1);
+      setBase(val(1 - ny, f.axes[0]), nx * 100, true);
+    }
+    pad.addEventListener('pointerdown', function (e) { pad.setPointerCapture(e.pointerId); pad.classList.add('is-drag'); padAt(e); });
+    pad.addEventListener('pointermove', function (e) { if (pad.classList.contains('is-drag')) padAt(e); });
+    pad.addEventListener('pointerup', function () { pad.classList.remove('is-drag'); });
+    pad.addEventListener('pointercancel', function () { pad.classList.remove('is-drag'); });
+
+    inputs.weight.addEventListener('input', function () { setBase(inputs.weight.value, o.second, true); });
+    inputs.second.addEventListener('input', function () { setBase(o.weight, inputs.second.value, true); });
+
+    /* Segments : clic et flèches (motif radiogroup) */
+    root.querySelectorAll('[data-ax-seg]').forEach(function (g) {
+      var key = g.dataset.axSeg, btns = Array.from(g.querySelectorAll('button'));
+      function choose(v, focus) { var u = {}; u[key] = v; set(u); if (focus) btns.forEach(function (b) { if (b.dataset.value === v) b.focus(); }); root.dispatchEvent(new CustomEvent('axeschange', { detail: u })); }
+      btns.forEach(function (b, i) {
+        b.addEventListener('click', function () { choose(b.dataset.value); });
+        b.addEventListener('keydown', function (e) {
+          var d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+          if (!d) return; e.preventDefault(); choose(btns[(i + d + btns.length) % btns.length].dataset.value, true);
+        });
+      });
+    });
+
+    /* Pause hors écran */
+    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible) wake(); }, { threshold: 0 }) : null;
+    if (io) io.observe(root);
+    var ro = 'ResizeObserver' in window ? new ResizeObserver(function () { syncSeg(); placeGuides(); }) : null;
+    if (ro) ro.observe(root);
+    if (document.fonts) document.fonts.ready.then(function () { syncSeg(); placeGuides(); });
+
+    function set(next) {
+      var prevText = o.text, prevFont = o.font;
+      Object.assign(o, next || {});
+      var f = font();
+      if (o.font !== prevFont) { syncLabels(); buildPresets(); requestAnimationFrame(placeGuides); if (document.fonts) document.fonts.ready.then(placeGuides); }
+      base.tw = norm(clamp(o.weight, f.axes[0].min, f.axes[0].max), f.axes[0]); base.ts = clamp(o.second, 0, 100) / 100;
+      if (o.text !== prevText) buildWord();
+      root.dataset.mode = o.mode;
+      syncSeg(); syncInputs(); wake();
+    }
+    // premier rendu : sans ressort
+    base.tw = base.w = norm(o.weight, font().axes[0]); base.ts = base.s = o.second / 100;
+    syncLabels(); buildPresets(); buildWord(); set({});
+    return { set: set, replay: function () { st.forEach(function (s) { s.vw = 2.4; s.vs = 1.4; }); t0 = performance.now(); wake(); },
+      destroy: function () { cancelAnimationFrame(raf); if (io) io.disconnect(); if (ro) ro.disconnect(); } };
+  }
+  function readData(el) {
+    var d = el.dataset, o = {};
+    ['weight', 'second', 'peak', 'peakSecond', 'radius', 'stiffness', 'damping'].forEach(function (k) { if (d[k] != null) o[k] = +d[k]; });
+    if (d.font) o.font = d.font; if (d.mode) o.mode = d.mode;
+    var w = el.querySelector('[data-ax-word]'); if (w) o.text = w.textContent.trim();
+    return o;
+  }
+  window.AxesSpecimen = { mount: mount, fonts: FONTS };
+  document.querySelectorAll('[data-axes-specimen]:not([data-ax-manual])').forEach(function (el) { el._axes = mount(el); });
+})();
+</script>

@@ -1,0 +1,134 @@
+{
+  "id": "correcteur-typo-fr",
+  "nom": "Correcteur typographique français",
+  "categorie": "typographie",
+  "niveau": "essentiel",
+  "description": "On colle un texte : espaces fines et insécables (; ! ? : « » %), guillemets, apostrophes, points de suspension, milliers, unités, ordinaux, majuscules accentuées et ligatures sont surlignés à mesure qu’on écrit, puis corrigés un à un ou d’un coup.",
+  "tags": [
+    "Français",
+    "Typographie",
+    "Éditeur",
+    "Accessibilité",
+    "Contenu"
+  ],
+  "date": "2026-11-05",
+  "ordre": 14,
+  "palette": "ambre",
+  "logo_exemple": {
+    "nom": "Cahier",
+    "secteur": "Éducation (rédaction de cours)",
+    "fichier": "logo.svg",
+    "palette": "ambre",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1100
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, teintes amber / blue / violet / green, accent"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 7 ko, sans dépendance : 13 règles en expressions régulières Unicode"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React ; analyse() et EXEMPLE exportés"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4 + @tailwindcss/container-queries",
+      "note": "Onglet React : variantes @container"
+    }
+  ],
+  "props": [
+    {
+      "name": "espace",
+      "label": "Espace avant ; ! ?",
+      "type": "select",
+      "default": "fine",
+      "options": [
+        {
+          "value": "fine",
+          "label": "Fine insécable (U+202F)"
+        },
+        {
+          "value": "normale",
+          "label": "Insécable normale (U+00A0)"
+        }
+      ],
+      "hint": "La fine est la règle de l’Imprimerie nationale ; la normale est plus sûre pour les polices qui n’ont pas le glyphe.",
+      "code": {
+        "html": "data-espace=\"{v}\"",
+        "react": "espace = '{v}'"
+      }
+    },
+    {
+      "name": "invisibles",
+      "label": "Afficher les insécables",
+      "type": "boolean",
+      "default": false,
+      "code": {
+        "react": "invisibles = {v}"
+      }
+    },
+    {
+      "name": "espaces",
+      "label": "Règles d’espaces",
+      "type": "boolean",
+      "default": true,
+      "hint": "Ponctuation haute, deux-points, milliers, unités, espaces doubles.",
+      "code": {
+        "react": "espaces = {v}"
+      }
+    },
+    {
+      "name": "signes",
+      "label": "Règles de signes",
+      "type": "boolean",
+      "default": true,
+      "hint": "Guillemets « », apostrophe ’, points de suspension, tiret d’incise.",
+      "code": {
+        "react": "signes = {v}"
+      }
+    },
+    {
+      "name": "ortho",
+      "label": "Orthotypographie",
+      "type": "boolean",
+      "default": true,
+      "hint": "Ordinaux (19e), majuscules accentuées (État, À), ligature œ.",
+      "code": {
+        "react": "ortho = {v}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/FrenchTypoChecker.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour tout texte publié en français : pages de site, fiches produit, courriels, supports de cours. Le moteur analyse() se réutilise seul, par exemple pour corriger un contenu avant enregistrement.",
+    "Chaque correction se lit en contexte (avant barré, après surligné), se corrige ou s’ignore ; « Tout corriger » applique le reste d’un coup et fait briller ce qui a changé.",
+    "Les règles évitent les faux positifs courants : heures (12:30), adresses web, années à quatre chiffres, ponctuations doublées (?!)."
+  ],
+  "accessibilite": [
+    "Le texte reste un vrai textarea (sélection, copier-coller, correcteur du système) ; les surlignages sont un miroir aria-hidden derrière lui.",
+    "Le nombre de corrections est annoncé (aria-live) ; chaque correction a ses boutons Corriger et Ignorer, et un lien qui sélectionne le passage dans le texte.",
+    "Couleur jamais seule : chaque correction est nommée et montrée en avant / après. « Réduire les animations » coupe les éclats et les entrées."
+  ]
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bouton à états enchaînés — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'emeraude');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 40px 24px; }
+  @media (max-width: 520px) { .stage { padding: 16px; place-items: start center; } }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .vg__more, .is-thumb .vg__meta, .is-thumb .vg__step { display: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var SPRINGS = {
+    doux: 'linear(0, 0.071, 0.233, 0.427, 0.618, 0.781, 0.908, 0.996, 1.049, 1.076, 1.082, 1.075, 1.061, 1.045, 1.03, 1.017, 1.007, 1, 0.996, 0.994, 0.993, 0.994, 0.995, 0.996, 0.998, 0.999, 0.999, 1, 1)',
+    sec: 'linear(0, 0.063, 0.191, 0.335, 0.47, 0.587, 0.683, 0.76, 0.82, 0.866, 0.901, 0.927, 0.947, 0.961, 0.972, 0.979, 0.985, 0.989, 0.992, 0.994, 0.996, 0.997, 0.998, 0.998, 0.999, 1)',
+    joueur: 'linear(0, 0.173, 0.533, 0.897, 1.149, 1.256, 1.242, 1.158, 1.059, 0.98, 0.939, 0.932, 0.95, 0.976, 0.999, 1.013, 1.018, 1.015, 1.009, 1.002, 0.998, 0.995, 0.996, 0.997, 1)'
+  };
+  var DUR = { doux: 700, sec: 550, joueur: 750 };
+  var props = Socle.props({ libelle: 'Envoyer 240,00 €', succes: 'Virement envoyé', issue: 'success', chargement: 1600, retour: 2600, forme: 'pill', variante: 'solid', ressort: 'doux', vibration: true });
+  var btn = null, seen = true, loopT = 0;
+  function apply(p) {
+    if (!btn) return;
+    btn.querySelector('[data-state=idle] span').textContent = p.libelle || 'Envoyer';
+    btn.querySelector('[data-state=success] span:last-child').textContent = p.succes || 'Envoyé';
+    btn.dataset.outcome = p.issue;
+    btn.dataset.duration = p.chargement;
+    btn.dataset.reset = p.retour;
+    btn.dataset.haptic = String(!!p.vibration);
+    if (p.forme === 'rounded') btn.dataset.shape = 'rounded'; else delete btn.dataset.shape;
+    if (p.variante === 'outline') btn.dataset.variant = 'outline'; else delete btn.dataset.variant;
+    document.querySelectorAll('.cb').forEach(function (b) {
+      b.style.setProperty('--cb-spring', SPRINGS[p.ressort] || SPRINGS.doux);
+      b.style.setProperty('--cb-dur', (DUR[p.ressort] || 700) + 'ms');
+    });
+    if (btn._chain) btn._chain.size();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    btn = document.querySelector('.vg__foot .cb');
+    apply(props);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(btn);
+    if (Socle.thumb && !Socle.reducedMotion()) loopT = setInterval(function () { if (seen && btn._chain.state === 'idle') btn._chain.run(); }, 1200);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (!btn || !btn._chain) return; clearTimeout(btn._chain.timer); btn._chain.set('idle'); setTimeout(function () { btn._chain.run(); }, 260); });
+</script>
+</body>
+</html>

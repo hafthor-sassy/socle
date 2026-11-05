@@ -1,0 +1,381 @@
+<!-- Épaisseur réglable — HTML + CSS + JS, autonome. Nécessite tokens.css. Palette conseillée : <html data-accent="lagon">.
+     Un seul réglage, --ic-stroke, pilote le trait de toutes les icônes ; la copie SVG ou JSX reprend la valeur choisie. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="ic" data-stroke-icons data-stroke="1.5" data-size="24" data-compensate="false" aria-labelledby="ic-title">
+  <header class="ic__bar">
+    <div class="ic__brand">
+      <svg class="ic__logo" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4.5 19.5C6 12 11 6.5 19.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="0.01 3.4"/>
+        <circle cx="4.5" cy="19.5" r="1.5" fill="currentColor"/>
+        <circle cx="19.5" cy="4.5" r="1.5" fill="currentColor"/>
+        <circle cx="9.4" cy="9.95" r="2.75" fill="var(--accent)"/>
+      </svg>
+      <div>
+        <h2 class="ic__title" id="ic-title">Escale</h2>
+        <p class="ic__sub"><span data-ic-count>24</span> icônes de voyage</p>
+      </div>
+    </div>
+    <label class="ic-stroke">
+      <span class="ic-stroke__head"><span>Épaisseur du trait</span><output data-ic-out>1,5 px</output></span>
+      <span class="ic-stroke__track">
+        <span class="ic-stroke__ticks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <input type="range" min="1" max="2" step="0.25" value="1.5" data-ic-stroke aria-valuetext="1,5 pixel">
+      </span>
+    </label>
+    <div class="ic-seg" role="radiogroup" aria-label="Taille d’affichage" data-ic-sizes>
+      <button type="button" role="radio" data-v="16">16</button><button type="button" role="radio" data-v="20">20</button><button type="button" role="radio" data-v="24">24</button><button type="button" role="radio" data-v="32">32</button>
+    </div>
+    <label class="ic-switch">
+      <input type="checkbox" role="switch" data-ic-comp>
+      <span class="ic-switch__ui" aria-hidden="true"></span>
+      <span>Trait constant</span>
+    </label>
+    <label class="ic-search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m15.75 15.75 4.5 4.5"/></svg>
+      <span class="ic-sr">Rechercher une icône</span>
+      <input type="search" placeholder="Rechercher" data-ic-q autocomplete="off">
+    </label>
+  </header>
+
+  <div class="ic__body">
+    <div class="ic__gridwrap">
+      <ul class="ic__grid" role="listbox" aria-label="Icônes" data-ic-grid></ul>
+      <div class="ic-dock" aria-hidden="true" data-ic-dock>
+        <span class="ic-dock__ico" data-ic-dockico></span><span class="ic-dock__name" data-ic-dockname>Vol</span><span class="ic-dock__v" data-ic-dockv>1,5</span>
+        <button type="button" class="ic-btn ic-btn--solid" tabindex="-1" data-ic-dockcopy>Copier</button>
+      </div>
+      <div class="ic__empty" data-ic-empty hidden>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m15.75 15.75 4.5 4.5M8.75 11h4.5"/></svg>
+        <p><strong>Aucune icône pour « <span data-ic-qv></span> »</strong>Essayez « avion », « plage » ou « hôtel ».</p>
+        <button type="button" class="ic-btn" data-ic-reset>Effacer la recherche</button>
+      </div>
+    </div>
+
+    <aside class="ic__insp" aria-label="Icône sélectionnée">
+      <div class="ic-prev">
+        <svg class="ic-prev__keys" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="1" fill="none"/>
+          <circle cx="12" cy="12" r="10" fill="none"/>
+          <path d="M0 12h24M12 0v24M0 0l24 24M24 0 0 24"/>
+        </svg>
+        <svg class="ic-prev__icon" data-ic-big viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"></svg>
+        <span class="ic-prev__meta" data-ic-meta>24 × 24 · trait 1,5</span>
+      </div>
+      <div class="ic-name"><strong data-ic-name>Vol</strong><code data-ic-id>vol</code></div>
+      <div class="ic-tabs" role="tablist" aria-label="Format">
+        <button type="button" role="tab" aria-selected="true" data-ic-fmt="svg" aria-controls="ic-code">SVG</button>
+        <button type="button" role="tab" aria-selected="false" data-ic-fmt="jsx" aria-controls="ic-code">JSX</button>
+      </div>
+      <pre class="ic-code" id="ic-code" role="tabpanel" tabindex="0"><code data-ic-code></code></pre>
+      <button type="button" class="ic-btn ic-btn--solid ic-copy" data-ic-copy>
+        <span class="ic-copy__a"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8.75" y="8.75" width="11.5" height="11.5" rx="2"/><path d="M15.25 8.75v-2a2 2 0 0 0-2-2h-6.5a2 2 0 0 0-2 2v6.5a2 2 0 0 0 2 2h2"/></svg><span data-ic-copylabel>Copier le SVG</span></span>
+        <span class="ic-copy__b" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path class="ic-copy__check" d="m5 12.5 4.5 4.5L19 7.5"/></svg>Copié</span>
+      </button>
+      <p class="ic-sr" aria-live="polite" data-ic-live></p>
+      <div class="ic-ctx" aria-label="En situation">
+        <p class="ic-ctx__k">En situation</p>
+        <div class="ic-ctx__row">
+          <span class="ic-ctx__ico" data-ic-use="vol"></span>
+          <span class="ic-ctx__txt"><b>Toulouse → Lisbonne</b><span>Ven. 14 mars · 7 h 25</span></span>
+          <span class="ic-ctx__ico ic-ctx__ico--ghost" data-ic-use="favori"></span>
+        </div>
+        <nav class="ic-ctx__tabs" aria-label="Exemple de barre d’onglets">
+          <span class="is-on"><i data-ic-use="recherche"></i>Explorer</span><span><i data-ic-use="billet"></i>Voyages</span><span><i data-ic-use="favori"></i>Favoris</span><span><i data-ic-use="passeport"></i>Profil</span>
+        </nav>
+      </div>
+    </aside>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .ic {
+    --ic-stroke: 1.5; --ic-size: 24px; --ic-eff: var(--ic-stroke);
+    --ic-spring: cubic-bezier(.34, 1.56, .64, 1);
+    container-type: inline-size;
+    background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-sheet); overflow: clip;
+  }
+  .ic svg[data-ic] , .ic [data-ic-use] svg, .ic-prev__icon { stroke-width: var(--ic-eff); transition: stroke-width 260ms var(--ease-out); }
+  .ic-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Barre de réglages */
+  .ic__bar { display: grid; grid-template-columns: auto minmax(200px, 1fr) auto auto minmax(160px, 220px); align-items: center; gap: 24px; padding: 16px 24px; border-bottom: 1px solid var(--border); }
+  .ic__brand { display: flex; align-items: center; gap: 12px; }
+  .ic__logo { width: 32px; height: 32px; color: var(--text-strong); }
+  .ic__title { margin: 0; color: var(--text-strong); font: 650 17px/24px var(--font-sans); letter-spacing: -0.02em; }
+  .ic__sub { margin: 0; color: var(--text-muted); font: 400 13px/16px var(--font-sans); }
+  .ic-stroke { display: grid; gap: 0; }
+  .ic-stroke__head { display: flex; justify-content: space-between; color: var(--text-strong); font: 500 14px/20px var(--font-sans); }
+  .ic-stroke output { font: 600 14px/20px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--accent); }
+  .ic-stroke__track { position: relative; display: block; height: 36px; }
+  .ic-stroke__ticks { position: absolute; left: 9px; right: 9px; top: 50%; display: flex; justify-content: space-between; transform: translateY(-50%); pointer-events: none; }
+  .ic-stroke__ticks i { width: 1px; height: 10px; background: var(--border-control); opacity: .6; }
+  .ic-stroke input { position: relative; width: 100%; height: 36px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+
+  .ic-seg { display: inline-flex; padding: 2px; border-radius: var(--radius-pill); background: var(--raised); border: 1px solid var(--border); }
+  .ic-seg button { min-width: 44px; min-height: 36px; padding: 0 8px; border: 0; border-radius: var(--radius-pill); background: none; color: var(--text-muted); font: 500 13px/1 var(--font-mono); cursor: pointer; }
+  .ic-seg button[aria-checked="true"] { background: var(--surface); color: var(--text-strong); box-shadow: var(--shadow-overlay); }
+
+  .ic-switch { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--text); font: 500 14px/20px var(--font-sans); cursor: pointer; white-space: nowrap; }
+  .ic-switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .ic-switch__ui { position: relative; width: 36px; height: 20px; border-radius: 999px; background: var(--scale-track); transition: background-color var(--motion-base) var(--ease-out); }
+  .ic-switch__ui::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--surface); box-shadow: var(--shadow-overlay); transition: transform 300ms var(--ic-spring); }
+  .ic-switch input:checked + .ic-switch__ui { background: var(--accent); }
+  .ic-switch input:checked + .ic-switch__ui::after { transform: translateX(16px); }
+  .ic-switch input:focus-visible + .ic-switch__ui { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+  .ic-search { position: relative; display: flex; align-items: center; }
+  .ic-search svg { position: absolute; left: 12px; color: var(--text-muted); pointer-events: none; }
+  .ic-search input { width: 100%; height: 40px; padding: 0 12px 0 38px; border: 1px solid var(--border-control); border-radius: var(--radius-ctl); background: var(--surface); color: var(--text-strong); font: 400 15px/1 var(--font-sans); }
+  .ic-search input::placeholder { color: var(--text-muted); }
+  .ic-search input:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 1px; }
+
+  /* Grille */
+  .ic__body { display: grid; grid-template-columns: minmax(0, 1fr) 340px; }
+  .ic__gridwrap { padding: 24px; min-width: 0; }
+  .ic__grid { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+  .ic-tile { position: relative; display: grid; justify-items: center; align-content: center; gap: 12px; height: 96px; padding: 12px 8px; border-radius: var(--radius-card); background: var(--surface); color: var(--text-strong); cursor: pointer; outline: none;
+    transition: background-color var(--motion-fast) var(--ease-out), transform 240ms var(--ic-spring); -webkit-tap-highlight-color: transparent; }
+  .ic-tile::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1px solid var(--border); pointer-events: none; transition: border-color var(--motion-fast) var(--ease-out); }
+  .ic-tile:hover { background: var(--raised); }
+  .ic-tile:active { transform: scale(.96); }
+  .ic-tile[aria-selected="true"] { background: var(--accent-subtle); }
+  .ic-tile[aria-selected="true"]::after { border-color: var(--accent); }
+  .ic-tile:focus-visible::after { border: var(--focus-width) solid var(--focus-ring); }
+  .ic-tile svg { width: var(--ic-size); height: var(--ic-size); transition: width 260ms var(--ic-spring), height 260ms var(--ic-spring), stroke-width 260ms var(--ease-out); }
+  .ic-tile span { color: var(--text-muted); font: 500 12px/16px var(--font-sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .ic-tile[aria-selected="true"] span { color: var(--text-strong); }
+  .ic-tile.is-in { animation: ic-in 420ms var(--ic-spring) both; animation-delay: calc(var(--i) * 14ms); }
+  @keyframes ic-in { from { opacity: 0; transform: translateY(6px) scale(.96); } }
+
+  .ic-dock { display: none; }
+  .ic__empty { display: grid; justify-items: center; gap: 12px; padding: 64px 16px; text-align: center; color: var(--text-muted); }
+  .ic__empty[hidden] { display: none; }
+  .ic__empty p { margin: 0; font: 400 14px/20px var(--font-sans); }
+  .ic__empty strong { display: block; color: var(--text-strong); font-weight: 600; margin-bottom: 4px; }
+
+  /* Inspecteur */
+  .ic__insp { display: grid; align-content: start; gap: 16px; padding: 24px; border-left: 1px solid var(--border); background: var(--raised); min-width: 0; }
+  .ic-prev { position: relative; display: grid; place-items: center; aspect-ratio: 16 / 10; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--border); overflow: hidden; }
+  .ic-prev__keys { position: absolute; width: 144px; height: 144px; stroke: color-mix(in srgb, var(--accent) 30%, transparent); stroke-width: .06; fill: none; }
+  .ic-prev__icon { position: relative; width: 144px; height: 144px; color: var(--text-strong); }
+  .ic-prev__meta { position: absolute; left: 12px; bottom: 8px; color: var(--text-muted); font: 500 12px/16px var(--font-mono); }
+  .ic-name { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .ic-name strong { color: var(--text-strong); font: 600 16px/24px var(--font-sans); }
+  .ic-name code { color: var(--text-muted); font: 500 13px/20px var(--font-mono); }
+  .ic-tabs { display: inline-flex; gap: 4px; }
+  .ic-tabs button { min-height: 36px; padding: 0 14px; border: 1px solid transparent; border-radius: var(--radius-pill); background: none; color: var(--text-muted); font: 500 13px/1 var(--font-mono); cursor: pointer; }
+  .ic-tabs button[aria-selected="true"] { background: var(--surface); color: var(--text-strong); border-color: var(--border); }
+  .ic-tabs button:focus-visible, .ic-seg button:focus-visible, .ic-btn:focus-visible, .ic-code:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .ic-code { margin: 0; max-height: 168px; overflow: auto; padding: 12px; border-radius: var(--radius-ctl); background: var(--surface); border: 1px solid var(--border); color: var(--text); font: 400 12px/18px var(--font-mono); white-space: pre-wrap; word-break: break-all; }
+  .ic-code mark { background: var(--accent-subtle); color: var(--text-strong); border-radius: 3px; padding: 0 2px; box-shadow: 0 0 0 1px var(--accent-subtle-border); }
+  .ic-code .t { color: var(--text-muted); }
+
+  .ic-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--border-control); border-radius: var(--radius-ctl); background: var(--surface); color: var(--text-strong); font: 500 15px/1 var(--font-sans); cursor: pointer; }
+  .ic-btn--solid { background: var(--accent); border-color: transparent; color: var(--accent-fg); }
+  .ic-copy { position: relative; overflow: hidden; transition: transform 200ms var(--ic-spring); }
+  .ic-copy:active { transform: scale(.97); }
+  .ic-copy__a, .ic-copy__b { display: inline-flex; align-items: center; gap: 8px; transition: transform 360ms var(--ic-spring), opacity 200ms var(--ease-out); }
+  .ic-copy__b { position: absolute; inset: 0; justify-content: center; transform: translateY(100%); opacity: 0; }
+  .ic-copy.is-done .ic-copy__a { transform: translateY(-100%); opacity: 0; }
+  .ic-copy.is-done .ic-copy__b { transform: none; opacity: 1; }
+  .ic-copy__check { stroke-dasharray: 22; stroke-dashoffset: 22; }
+  .ic-copy.is-done .ic-copy__check { transition: stroke-dashoffset 320ms var(--ease-out) 120ms; stroke-dashoffset: 0; }
+
+  .ic-ctx { display: grid; gap: 8px; }
+  .ic-ctx__k { margin: 0; color: var(--text-muted); font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .ic-ctx__row { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--border); }
+  .ic-ctx__ico { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: var(--radius-ctl); background: var(--accent-subtle); color: var(--text-strong); }
+  .ic-ctx__ico--ghost { margin-left: auto; background: none; color: var(--text-muted); }
+  .ic-ctx__ico svg { width: 20px; height: 20px; }
+  .ic-ctx__txt { display: grid; min-width: 0; }
+  .ic-ctx__txt b { color: var(--text-strong); font: 600 14px/20px var(--font-sans); }
+  .ic-ctx__txt span { color: var(--text-muted); font: 400 13px/18px var(--font-sans); }
+  .ic-ctx__tabs { display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px 4px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--border); }
+  .ic-ctx__tabs span { display: grid; justify-items: center; gap: 4px; color: var(--text-muted); font: 500 11px/14px var(--font-sans); }
+  .ic-ctx__tabs span.is-on { color: var(--accent); }
+  .ic-ctx__tabs i svg { width: 24px; height: 24px; display: block; }
+
+  @container (max-width: 1040px) {
+    .ic__bar { grid-template-columns: auto 1fr; gap: 16px; }
+    .ic-stroke { grid-column: 1 / -1; order: 3; }
+    .ic-seg { order: 4; } .ic-switch { order: 5; justify-self: end; }
+    .ic-search { order: 2; }
+  }
+  @container (max-width: 760px) {
+    .ic__bar { grid-template-columns: 1fr auto; padding: 16px; }
+    .ic-search { grid-column: 1 / -1; order: 6; }
+    .ic-search input { height: 44px; font-size: 16px; }
+    .ic__body { grid-template-columns: 1fr; }
+    .ic__gridwrap { padding: 16px; }
+    .ic__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .ic-tile { height: 88px; gap: 8px; padding: 8px 4px; }
+    .ic-tile span { font-size: 14px; line-height: 20px; }
+    .ic__sub { font-size: 14px; line-height: 20px; }
+    .ic-dock { position: sticky; bottom: 12px; z-index: 2; display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 8px 8px 8px 12px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-popover); }
+    .ic-dock__ico { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--radius-ctl); background: var(--accent-subtle); color: var(--text-strong); }
+    .ic-dock__ico svg { width: 24px; height: 24px; }
+    .ic-dock__name { flex: 1; min-width: 0; color: var(--text-strong); font: 600 15px/20px var(--font-sans); }
+    .ic-dock__v { color: var(--text-muted); font: 500 13px/20px var(--font-mono); }
+    .ic__insp { border-left: 0; border-top: 1px solid var(--border); padding: 16px; }
+    .ic-code { font-size: 13px; }
+    .ic-ctx__tabs span { font-size: 12px; }
+  }
+  @container (max-width: 360px) { .ic-switch span:last-child { font-size: 13px; } }
+  @media (prefers-reduced-motion: reduce) {
+    .ic svg, .ic-tile, .ic-copy__a, .ic-copy__b, .ic-switch__ui::after { transition: none !important; }
+    .ic-tile.is-in { animation: none; }
+  }
+</style>
+
+<script>
+/* Épaisseur réglable. API : StrokeIcons.mount(el, { stroke, size, compensate }) → { set(options), icons } */
+(function () {
+  var ICONS = [
+    ["vol", "Vol", "avion plane flight", "<path d=\"M12 3c.97 0 1.75.78 1.75 1.75V9.5l6.75 3.9v1.85l-6.75-1.9v3.4l2.5 1.9v1.6L12 19.4l-4.25.85v-1.6l2.5-1.9v-3.4L3.5 15.25V13.4l6.75-3.9V4.75C10.25 3.78 11.03 3 12 3z\"/>"],
+    ["valise", "Valise", "bagage suitcase luggage", "<rect x=\"4.75\" y=\"7.25\" width=\"14.5\" height=\"12.5\" rx=\"2\"/><path d=\"M9 7.25V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5v1.75M8.5 7.25v12.5M15.5 7.25v12.5\"/>"],
+    ["carte", "Carte", "plan map", "<path d=\"M3.75 6.25 9 4l6 2.5 5.25-2.25v13.5L15 20l-6-2.5-5.25 2.25z\"/><path d=\"M9 4v13.5M15 6.5V20\"/>"],
+    ["boussole", "Boussole", "explorer compass", "<circle cx=\"12\" cy=\"12\" r=\"8.75\"/><path d=\"m15 9-1.75 4.25L9 15l1.75-4.25z\"/>"],
+    ["billet", "Billet", "ticket", "<path d=\"M4.75 7h14.5a1.25 1.25 0 0 1 1.25 1.25v2a2 2 0 0 0 0 3.5v2A1.25 1.25 0 0 1 19.25 17H4.75a1.25 1.25 0 0 1-1.25-1.25v-2a2 2 0 0 0 0-3.5v-2A1.25 1.25 0 0 1 4.75 7z\"/><path d=\"M14.5 7v1.5M14.5 11.25v1.5M14.5 15.5V17\"/>"],
+    ["hotel", "Hôtel", "lit chambre bed hotel", "<path d=\"M3.5 18.5V6M3.5 14.5h17v4M20.5 14.5V12a2.5 2.5 0 0 0-2.5-2.5h-7v5\"/><circle cx=\"7.25\" cy=\"11.75\" r=\"1.75\"/>"],
+    ["train", "Train", "rail tgv", "<rect x=\"5.75\" y=\"3.75\" width=\"12.5\" height=\"13.5\" rx=\"3\"/><path d=\"M5.75 10.25h12.5M9 14h.01M15 14h.01M8.5 17.25l-2 3M15.5 17.25l2 3\"/>"],
+    ["photo", "Photo", "appareil camera", "<path d=\"M4.75 7.5h2.6l1.4-2.25h6.5l1.4 2.25h2.6a1.5 1.5 0 0 1 1.5 1.5v8.75a1.5 1.5 0 0 1-1.5 1.5H4.75a1.5 1.5 0 0 1-1.5-1.5V9a1.5 1.5 0 0 1 1.5-1.5z\"/><circle cx=\"12\" cy=\"13\" r=\"3.25\"/>"],
+    ["passeport", "Passeport", "identite passport", "<rect x=\"5.25\" y=\"3.25\" width=\"13.5\" height=\"17.5\" rx=\"2\"/><circle cx=\"12\" cy=\"10.25\" r=\"3\"/><path d=\"M9 10.25h6M12 7.25c.9.85 1.35 1.85 1.35 3s-.45 2.15-1.35 3c-.9-.85-1.35-1.85-1.35-3s.45-2.15 1.35-3zM9.5 16.25h5\"/>"],
+    ["monde", "Monde", "globe international world", "<circle cx=\"12\" cy=\"12\" r=\"8.75\"/><path d=\"M3.25 12h17.5M12 3.25c2.4 2.5 3.6 5.4 3.6 8.75S14.4 18.25 12 20.75C9.6 18.25 8.4 15.35 8.4 12S9.6 5.75 12 3.25z\"/>"],
+    ["montagne", "Montagne", "randonnee ski mountain", "<path d=\"M2.75 19.25 9.25 8l3.5 6 2.25-3.5 6.25 8.75z\"/><path d=\"m7.35 11.25 1.9 1.25 1.6-1.6\"/>"],
+    ["soleil", "Soleil", "ete meteo sun", "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2.75v2M12 19.25v2M2.75 12h2M19.25 12h2M5.45 5.45l1.4 1.4M17.15 17.15l1.4 1.4M5.45 18.55l1.4-1.4M17.15 6.85l1.4-1.4\"/>"],
+    ["palmier", "Palmier", "tropiques plage palm", "<path d=\"M12.75 20.5c0-4.25-.5-7.5-2-10M10.75 10.5c-2.25-2-5.25-2.25-7.25-.75M10.75 10.5C10.5 7.5 8.5 5.25 5.75 4.75M10.75 10.5c1.25-2.75 4-4.25 7-3.75M10.75 10.5c3 .25 5.75 2 6.75 4.75M7.5 20.5h10\"/>"],
+    ["ancre", "Port", "ancre bateau croisiere anchor", "<circle cx=\"12\" cy=\"5.25\" r=\"1.75\"/><path d=\"M12 7v13.25M8.5 11h7M4.75 13.5A7.25 7.25 0 0 0 12 20.25a7.25 7.25 0 0 0 7.25-6.75\"/>"],
+    ["lieu", "Lieu", "epingle position pin location", "<path d=\"M12 21s6.75-5.9 6.75-11.25a6.75 6.75 0 1 0-13.5 0C5.25 15.1 12 21 12 21z\"/><circle cx=\"12\" cy=\"9.75\" r=\"2.5\"/>"],
+    ["horaire", "Horaire", "horloge heure clock time", "<circle cx=\"12\" cy=\"12\" r=\"8.75\"/><path d=\"M12 7.5V12l3 2\"/>"],
+    ["agenda", "Dates", "calendrier agenda calendar", "<rect x=\"3.75\" y=\"5.25\" width=\"16.5\" height=\"15\" rx=\"2\"/><path d=\"M3.75 9.75h16.5M8 3.25v4M16 3.25v4M8 13.5h.01M12 13.5h.01M16 13.5h.01M8 17h.01M12 17h.01\"/>"],
+    ["recherche", "Recherche", "loupe chercher search", "<circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"m15.75 15.75 4.5 4.5\"/>"],
+    ["favori", "Favori", "coeur aimer heart like", "<path d=\"M12 20s-8-4.8-8-10.5A4.5 4.5 0 0 1 12 6.8a4.5 4.5 0 0 1 8 2.7C20 15.2 12 20 12 20z\"/>"],
+    ["partager", "Partager", "envoyer share", "<circle cx=\"17.75\" cy=\"5.75\" r=\"2.25\"/><circle cx=\"6.25\" cy=\"12\" r=\"2.25\"/><circle cx=\"17.75\" cy=\"18.25\" r=\"2.25\"/><path d=\"m8.25 10.9 7.5-4.05M8.25 13.1l7.5 4.05\"/>"],
+    ["wifi", "Wi-Fi", "connexion internet wifi", "<path d=\"M3 9.5a12.75 12.75 0 0 1 18 0M6 12.75a8.5 8.5 0 0 1 12 0M9 16a4.25 4.25 0 0 1 6 0M12 19.5h.01\"/>"],
+    ["cafe", "Café", "petit-dejeuner tasse coffee", "<path d=\"M4.75 9.25h11.5v5.5a5 5 0 0 1-5 5h-1.5a5 5 0 0 1-5-5z\"/><path d=\"M16.25 10.5h1.25a2.25 2.25 0 0 1 0 4.5h-1.25M8.5 3.75v2.5M12.5 3.75v2.5\"/>"],
+    ["voiture", "Location", "voiture auto car", "<path d=\"M5.25 16.75h-1.5v-3.5l1.75-5a2 2 0 0 1 1.9-1.5h9.2a2 2 0 0 1 1.9 1.5l1.75 5v3.5h-1.5M3.75 13h16.5M9.25 16.75h5.5\"/><circle cx=\"7.25\" cy=\"16.75\" r=\"2\"/><circle cx=\"16.75\" cy=\"16.75\" r=\"2\"/>"],
+    ["mer", "Mer", "vagues plage ocean sea", "<path d=\"M2.75 8c1.5 0 1.5-1.25 3.1-1.25S7.4 8 8.95 8s1.55-1.25 3.1-1.25S13.6 8 15.15 8s1.55-1.25 3.1-1.25S19.75 8 21.25 8M2.75 12.5c1.5 0 1.5-1.25 3.1-1.25s1.55 1.25 3.1 1.25 1.55-1.25 3.1-1.25 1.55 1.25 3.1 1.25 1.55-1.25 3.1-1.25 1.5 1.25 3 1.25M2.75 17c1.5 0 1.5-1.25 3.1-1.25S7.4 17 8.95 17s1.55-1.25 3.1-1.25S13.6 17 15.15 17s1.55-1.25 3.1-1.25S19.75 17 21.25 17\"/>"]
+  ];
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fr(n) { return String(+n.toFixed(2)).replace('.', ','); }
+  function norm(s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  function pascal(id) { return id.replace(/(^|-)(\w)/g, function (m, a, b) { return b.toUpperCase(); }); }
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function mount(root, opts) {
+    var d = root.dataset;
+    var o = Object.assign({ stroke: +d.stroke || 1.5, size: +d.size || 24, compensate: d.compensate === 'true', format: 'svg' }, opts || {});
+    var grid = root.querySelector('[data-ic-grid]'), empty = root.querySelector('[data-ic-empty]'), q = root.querySelector('[data-ic-q]');
+    var range = root.querySelector('[data-ic-stroke]'), out = root.querySelector('[data-ic-out]'), comp = root.querySelector('[data-ic-comp]');
+    var big = root.querySelector('[data-ic-big]'), code = root.querySelector('[data-ic-code]'), copyBtn = root.querySelector('[data-ic-copy]'), live = root.querySelector('[data-ic-live]');
+    var sel = ICONS[0][0], timer = 0, list = ICONS;
+    var dock = root.querySelector('[data-ic-dock]');
+
+    function svgFor(ic, attrs) { return '<svg data-ic viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"' + (attrs || '') + '>' + ic[3] + '</svg>'; }
+    function find(id) { for (var i = 0; i < ICONS.length; i++) if (ICONS[i][0] === id) return ICONS[i]; return ICONS[0]; }
+    /* Valeur réellement écrite dans le fichier : compensée si le trait doit rester constant à l'écran */
+    function written() { return o.compensate ? +(o.stroke * 24 / o.size).toFixed(3) : o.stroke; }
+
+    function renderGrid(animate) {
+      var term = norm(q.value.trim());
+      list = ICONS.filter(function (ic) { return !term || norm(ic[0] + ' ' + ic[1] + ' ' + ic[2]).indexOf(term) > -1; });
+      grid.innerHTML = list.map(function (ic, i) {
+        return '<li class="ic-tile' + (animate && !reduce ? ' is-in' : '') + '" role="option" tabindex="' + (ic[0] === sel ? 0 : -1) + '" aria-selected="' + (ic[0] === sel) + '" data-id="' + ic[0] + '" style="--i:' + i + '">' + svgFor(ic) + '<span>' + ic[1] + '</span></li>';
+      }).join('');
+      if (!list.some(function (ic) { return ic[0] === sel; }) && grid.firstChild) grid.firstChild.tabIndex = 0;
+      empty.hidden = list.length > 0; grid.hidden = !list.length;
+      root.querySelector('[data-ic-qv]').textContent = q.value.trim();
+      root.querySelector('[data-ic-count]').textContent = ICONS.length;
+    }
+    function snippet() {
+      var ic = find(sel), w = written(), s = o.size;
+      var inner = ic[3].replace(/></g, '>\n  <');
+      if (o.format === 'jsx') {
+        var jsx = inner.replace(/stroke-width/g, 'strokeWidth');
+        return { raw: 'export function Icon' + pascal(ic[0]) + '({ size = ' + s + ', strokeWidth = ' + w + ', ...props }) {\n  return (\n    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>\n      ' + jsx.replace(/\n  /g, '\n      ') + '\n    </svg>\n  );\n}',
+          mark: 'strokeWidth = ' + w };
+      }
+      return { raw: '<svg xmlns="http://www.w3.org/2000/svg" width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + w + '" stroke-linecap="round" stroke-linejoin="round">\n  ' + inner + '\n</svg>', mark: 'stroke-width="' + w + '"' };
+    }
+    function renderInspector() {
+      var ic = find(sel), sn = snippet();
+      big.innerHTML = ic[3];
+      root.querySelector('[data-ic-name]').textContent = ic[1];
+      root.querySelector('[data-ic-id]').textContent = 'Icon' + pascal(ic[0]);
+      root.querySelector('[data-ic-meta]').textContent = o.size + ' × ' + o.size + ' · trait ' + fr(o.stroke) + (o.compensate && o.size !== 24 ? ' (écrit ' + fr(written()) + ')' : '');
+      var h = esc(sn.raw), m = esc(sn.mark);
+      code.innerHTML = h.replace(m, '<mark>' + m + '</mark>');
+      root.querySelectorAll('[data-ic-fmt]').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.icFmt === o.format)); b.tabIndex = b.dataset.icFmt === o.format ? 0 : -1; });
+      root.querySelector('[data-ic-dockico]').innerHTML = svgFor(ic);
+      root.querySelector('[data-ic-dockname]').textContent = ic[1];
+      root.querySelector('[data-ic-dockv]').textContent = 'trait ' + fr(written());
+      root.querySelector('[data-ic-copylabel]').textContent = o.format === 'jsx' ? 'Copier le composant JSX' : 'Copier le SVG';
+    }
+    function renderVars() {
+      root.style.setProperty('--ic-stroke', o.stroke);
+      root.style.setProperty('--ic-size', o.size + 'px');
+      // à l'écran : trait compensé = même épaisseur visuelle quelle que soit la taille
+      root.style.setProperty('--ic-eff', o.compensate ? (o.stroke * 24 / o.size) : o.stroke);
+      range.value = o.stroke; out.textContent = fr(o.stroke) + '\u00a0px';
+      range.setAttribute('aria-valuetext', fr(o.stroke) + ' pixel');
+      comp.checked = !!o.compensate;
+      root.querySelectorAll('[data-ic-sizes] button').forEach(function (b) { var on = +b.dataset.v === o.size; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+      root.querySelector('.ic-prev__icon').style.strokeWidth = o.stroke;   // la loupe montre le trait à 24 px
+      root.querySelectorAll('[data-ic-use]').forEach(function (u) {
+        if (!u.firstChild) u.innerHTML = svgFor(find(u.dataset.icUse));
+        var px = u.firstChild.getBoundingClientRect().width || 24; u.firstChild.style.strokeWidth = o.compensate ? o.stroke * 24 / px : o.stroke;
+      });
+    }
+    function select(id, focus) {
+      sel = id;
+      grid.querySelectorAll('.ic-tile').forEach(function (t) { var on = t.dataset.id === id; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; if (on && focus) t.focus(); });
+      renderInspector();
+    }
+    function copy() {
+      var txt = snippet().raw, done = function (ok) {
+        copyBtn.classList.add('is-done'); live.textContent = ok ? 'Copié, trait ' + fr(written()) : 'Copie impossible : sélectionnez le code';
+        clearTimeout(timer); timer = setTimeout(function () { copyBtn.classList.remove('is-done'); }, 1600);
+        if (!ok) { var r = document.createRange(); r.selectNodeContents(code); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+      };
+      var fallback = function () { var ta = document.createElement('textarea'); ta.value = txt; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (e) {} ta.remove(); done(ok); };
+      try { if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(txt).then(function () { done(true); }, fallback); else fallback(); } catch (e) { fallback(); }
+      root.dispatchEvent(new CustomEvent('iconcopy', { detail: { id: sel, format: o.format, strokeWidth: written() } }));
+    }
+
+    grid.addEventListener('click', function (e) { var t = e.target.closest('.ic-tile'); if (t) select(t.dataset.id); });
+    grid.addEventListener('keydown', function (e) {
+      var tiles = Array.from(grid.children), i = tiles.indexOf(document.activeElement); if (i < 0) return;
+      var cols = Math.max(1, Math.round(grid.clientWidth / tiles[0].offsetWidth)), n = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: cols, ArrowUp: -cols, Home: -i, End: tiles.length - 1 - i }[e.key];
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(tiles[i].dataset.id, true); copy(); return; }
+      if (n == null) return; e.preventDefault();
+      var j = Math.max(0, Math.min(tiles.length - 1, i + n)); select(tiles[j].dataset.id, true);
+    });
+    range.addEventListener('input', function () { set({ stroke: +range.value }, true); });
+    comp.addEventListener('change', function () { set({ compensate: comp.checked }, true); });
+    root.querySelectorAll('[data-ic-sizes] button').forEach(function (b, i, all) {
+      b.addEventListener('click', function () { set({ size: +b.dataset.v }, true); });
+      b.addEventListener('keydown', function (e) { var k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!k) return; e.preventDefault(); var nb = all[(i + k + all.length) % all.length]; set({ size: +nb.dataset.v }, true); nb.focus(); });
+    });
+    root.querySelectorAll('[data-ic-fmt]').forEach(function (b, i, all) {
+      b.addEventListener('click', function () { set({ format: b.dataset.icFmt }); });
+      b.addEventListener('keydown', function (e) { var k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!k) return; e.preventDefault(); var nb = all[(i + k + all.length) % all.length]; set({ format: nb.dataset.icFmt }); nb.focus(); });
+    });
+    q.addEventListener('input', function () { renderGrid(true); });
+    root.querySelector('[data-ic-reset]').addEventListener('click', function () { q.value = ''; renderGrid(true); q.focus(); });
+    copyBtn.addEventListener('click', copy);
+    root.querySelector('[data-ic-dockcopy]').addEventListener('click', function () { copy(); var b = this; b.textContent = 'Copié'; setTimeout(function () { b.textContent = 'Copier'; }, 1400); });
+
+    function set(next, fromUser) {
+      Object.assign(o, next || {}); renderVars(); renderInspector();
+      if (fromUser) root.dispatchEvent(new CustomEvent('iconschange', { detail: { stroke: o.stroke, size: o.size, compensate: o.compensate } }));
+    }
+    renderGrid(true); set({});
+    return { set: set, select: select, search: function (t) { q.value = t; renderGrid(true); }, replay: function () { renderGrid(true); }, icons: ICONS };
+  }
+  window.StrokeIcons = { mount: mount };
+  document.querySelectorAll('[data-stroke-icons]:not([data-ic-manual])').forEach(function (el) { el._ic = mount(el); });
+})();
+</script>

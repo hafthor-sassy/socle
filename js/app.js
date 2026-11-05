@@ -4,7 +4,7 @@ import { bindCmdk } from './lib/cmdk.js';
 import { setTheme, hasStoredTheme } from './lib/store.js';
 import { getCategory } from '../registry/categories.js';
 import { renderHome } from './pages/home.js';
-import { renderCategory } from './pages/category.js';
+import { renderCategory, renderPageDesigns } from './pages/category.js';
 import { renderItem } from './pages/item.js';
 import { renderBrands, renderBrand, renderLogoSheet } from './pages/brands.js';
 import { renderFoundation } from './pages/foundations.js';
@@ -58,14 +58,25 @@ async function route() {
       cleanup = await withShell(parts[1], (view) => {
         if (!cat) return notFound(view, 'Cette catégorie');
         document.title = `${cat.nom} — Socle`;
-        return cat.page ? renderFoundation(view, cat) : renderCategory(view, cat);
+        if (!cat.page) return renderCategory(view, cat);
+        view.innerHTML = '<div data-fnd></div><div data-pdesigns></div>';
+        const r = renderFoundation(view.querySelector('[data-fnd]'), cat);
+        renderPageDesigns(view.querySelector('[data-pdesigns]'), cat.id);
+        return r;
       });
     } else if (parts[0] === 'i' && parts[1]) {
       setBarActive('home');
       cleanup = await withShell('', (view) => renderItem(view, parts[1], (catId) => setSideActive(catId)));
     } else if (parts[0] === 'marques') {
       setBarActive('marques');
-      cleanup = await withShell('logos', (view) => (parts[2] ? renderLogoSheet(view, parts[1], parts[2]) : parts[1] ? renderBrand(view, parts[1]) : renderBrands(view)));
+      cleanup = await withShell('logos', (view) => {
+        if (parts[2]) return renderLogoSheet(view, parts[1], parts[2]);
+        if (parts[1]) return renderBrand(view, parts[1]);
+        view.innerHTML = '<div data-fnd></div><div data-pdesigns></div>';
+        const r = renderBrands(view.querySelector('[data-fnd]'));
+        renderPageDesigns(view.querySelector('[data-pdesigns]'), 'logos', 'Logos & marques');
+        return r;
+      });
     } else {
       setBarActive('');
       cleanup = await withShell('', (view) => notFound(view));

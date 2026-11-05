@@ -138,3 +138,19 @@ export async function renderCategory(view, cat) {
   });
   apply();
 }
+
+/* Designs du registre rattachés à une catégorie « page » (Couleurs, Typographie, Espacements, Icônes, Logos). */
+export async function renderPageDesigns(box, catId, nom) {
+  const { items: all } = await loadIndex();
+  const items = all.filter((i) => i.categorie === catId)
+    .sort((a, b) => (b.date || '').localeCompare(a.date || '') || (a.ordre ?? 50) - (b.ordre ?? 50));
+  if (!items.length) { box.innerHTML = ''; return; }
+  box.innerHTML = `<section class="page-designs" style="margin-top:48px" aria-labelledby="pd-${esc(catId)}">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:16px">
+      <h2 class="t-section" id="pd-${esc(catId)}">${esc(nom ? `Designs · ${nom}` : 'Designs')}</h2>
+      <span class="count">${plural(items.length, 'design', 'designs')}</span>
+    </div>
+    <div class="grid">${items.map(cardHTML).join('')}</div>
+  </section>`;
+  mountThumbs(box);
+}

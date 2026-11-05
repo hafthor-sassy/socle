@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bouton gluant — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'orchidee');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 40px 24px; }
+  @media (max-width: 640px) { .stage { padding: 12px; place-items: start center; } }
+  .is-thumb .stage { padding: 0; }
+  .is-thumb .gl { border-radius: 0; border: 0; height: 100vh; width: 100%; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ actions: 4, disposition: 'auto', ecart: 76, viscosite: 10, raideur: 200, amortissement: 16, decalage: 60, etiquettes: true, etirement: true });
+  var root = null, api = null, seen = true, loopT = 0;
+  function apply(p) {
+    if (!root) return;
+    var d = root.dataset;
+    d.count = p.actions; d.layout = p.disposition; d.gap = p.ecart; d.blur = p.viscosite;
+    d.stiffness = p.raideur; d.damping = p.amortissement; d.stagger = p.decalage;
+    d.labels = String(!!p.etiquettes); d.stretch = String(!!p.etirement);
+    if (api) api.config();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-goo]');
+    apply(props);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = root._goo;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(root);
+    if (Socle.thumb && !Socle.reducedMotion()) loopT = setInterval(function () { if (seen) api.toggle(); }, 1700);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (!api) return; api.close(); setTimeout(function () { api.open(); }, 420); });
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Révélation de marque — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'framboise');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  body { overflow-x: hidden; }
+  #mount .br { min-height: 100vh; }
+  .is-thumb #mount .br { min-height: 100vh; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ mode: 'intro', sortie: 'curtain', duree: 2400, decalage: 90, raideur: 240, amortissement: 15, pourcentage: true });
+  var root = null, api = null, wait = 0;
+  function set(p) {
+    root.dataset.mode = Socle.thumb ? 'loop' : p.mode; root.dataset.exit = p.sortie; root.dataset.duration = p.duree; root.dataset.stagger = p.decalage;
+    root.dataset.stiffness = p.raideur; root.dataset.damping = p.amortissement; root.dataset.percent = String(!!p.pourcentage);
+  }
+  function apply(p) { if (!root) return; set(p); clearTimeout(wait); wait = setTimeout(function () { api && api.play(); }, 250); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-brand-reveal]');
+    set(props);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = root._brandReveal;
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (api) api.play(); });
+</script>
+</body>
+</html>

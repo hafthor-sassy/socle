@@ -1,0 +1,269 @@
+<!-- Carte chemise — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css.
+     Marque fictive : Liasse (cabinet d'expertise comptable en ligne). Clients et pièces fictifs. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="chem" data-chemise data-mode="clic" data-unique="false"
+  style="--chem-angle: 58; --chem-fan: 5; --chem-stiffness: 260; --chem-damping: 19; --chem-stagger: 55" aria-labelledby="chem-title">
+  <header class="chem__head">
+    <p class="chem__brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M8 22a10 10 0 0 1 10-10h20l10 10h34a10 10 0 0 1 10 10v46a10 10 0 0 1-10 10H18A10 10 0 0 1 8 78z" class="chem__logo-a"/><path d="M8 40a8 8 0 0 1 8-8h68a8 8 0 0 1 8 8v38a10 10 0 0 1-10 10H18A10 10 0 0 1 8 78z" class="chem__logo-b"/><path d="M26 60h48M26 72h28" class="chem__logo-c"/></svg>
+      Liasse
+    </p>
+    <h2 id="chem-title" class="chem__title">Dossiers à traiter cette semaine</h2>
+    <p class="chem__lead">Ouvrez une chemise pour voir les pièces reçues&#8239;; tout le reste attend dans la bannette.</p>
+  </header>
+
+  <ul class="chem__grid" role="list">
+    <li>
+      <article class="fold" data-fold aria-labelledby="f1-name">
+        <div class="fold__body">
+          <div class="fold__back" aria-hidden="true"><span class="fold__tab">Clôture 2025</span></div>
+          <div class="fold__docs" id="f1-docs" inert>
+            <a class="doc" href="#bilan"><span class="doc__type" data-t="pdf">PDF</span><span class="doc__name">Bilan 2025.pdf</span><span class="doc__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="doc__meta">Reçu le 3 nov. · 412 Ko</span></a>
+            <a class="doc" href="#grand-livre"><span class="doc__type" data-t="xls">XLSX</span><span class="doc__name">Grand livre.xlsx</span><span class="doc__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="doc__meta">Reçu le 2 nov. · 1,8 Mo</span></a>
+            <a class="doc" href="#releves"><span class="doc__type" data-t="pdf">PDF</span><span class="doc__name">Relevés bancaires T4.pdf</span><span class="doc__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="doc__meta">Reçu hier · 236 Ko</span></a>
+          </div>
+          <span class="fold__shade" aria-hidden="true"></span>
+          <div class="fold__front">
+            <div class="fold__row">
+              <h3 class="fold__name" id="f1-name">Maison Lefèvre</h3>
+              <span class="fold__status" data-s="warn"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4.5l2.5 1.5"/></svg>À valider</span>
+            </div>
+            <p class="fold__sub">SARL · boulangerie · Lyon 4e</p>
+            <div class="fold__foot">
+              <div class="fold__prog"><span class="fold__bar" style="--v: .73"><i></i></span><span class="fold__count">8 / 11 pièces</span></div>
+              <span class="fold__due">Échéance 15 déc.</span>
+            </div>
+            <button class="fold__toggle" type="button" aria-expanded="false" aria-controls="f1-docs"><span class="fold__sr">Ouvrir le dossier Maison Lefèvre, 3 pièces récentes</span></button>
+          </div>
+        </div>
+      </article>
+    </li>
+    <li>
+      <article class="fold" data-fold aria-labelledby="f2-name">
+        <div class="fold__body">
+          <div class="fold__back" aria-hidden="true"><span class="fold__tab">TVA · T3</span></div>
+          <div class="fold__docs" id="f2-docs" inert>
+            <a class="doc" href="#ca3"><span class="doc__type" data-t="pdf">PDF</span><span class="doc__name">Déclaration CA3.pdf</span><span class="doc__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="doc__meta">Généré ce matin · 88 Ko</span></a>
+            <a class="doc" href="#achats"><span class="doc__type" data-t="zip">ZIP</span><span class="doc__name">Factures fournisseurs.zip</span><span class="doc__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="doc__meta">42 factures · 9,4 Mo</span></a>
+            <a class="doc" href="#frais"><span class="doc__type" data-t="pdf">PDF</span><span class="doc__name">Notes de frais.pdf</span><span class="doc__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="doc__meta">Reçu le 30 oct. · 640 Ko</span></a>
+          </div>
+          <span class="fold__shade" aria-hidden="true"></span>
+          <div class="fold__front">
+            <div class="fold__row">
+              <h3 class="fold__name" id="f2-name">Atelier Sorel</h3>
+              <span class="fold__status" data-s="ok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4 4 9-9"/></svg>Prêt à déposer</span>
+            </div>
+            <p class="fold__sub">SAS · menuiserie · Villeurbanne</p>
+            <div class="fold__foot">
+              <div class="fold__prog"><span class="fold__bar" style="--v: 1"><i></i></span><span class="fold__count">14 / 14 pièces</span></div>
+              <span class="fold__due">Échéance 24 nov.</span>
+            </div>
+            <button class="fold__toggle" type="button" aria-expanded="false" aria-controls="f2-docs"><span class="fold__sr">Ouvrir le dossier Atelier Sorel, 3 pièces récentes</span></button>
+          </div>
+        </div>
+      </article>
+    </li>
+    <li>
+      <article class="fold" data-fold aria-labelledby="f3-name">
+        <div class="fold__body">
+          <div class="fold__back" aria-hidden="true"><span class="fold__tab">Paie · octobre</span></div>
+          <div class="fold__docs" id="f3-docs" inert>
+            <a class="doc" href="#bulletins"><span class="doc__type" data-t="pdf">PDF</span><span class="doc__name">Bulletins d’octobre.pdf</span><span class="doc__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="doc__meta">2 salariés · 310 Ko</span></a>
+            <a class="doc" href="#dsn"><span class="doc__type" data-t="xml">XML</span><span class="doc__name">DSN octobre.xml</span><span class="doc__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="doc__meta">Brouillon · 24 Ko</span></a>
+            <a class="doc" href="#variables"><span class="doc__type" data-t="xls">XLSX</span><span class="doc__name">Variables de paie.xlsx</span><span class="doc__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="doc__meta">Manque&nbsp;: heures sup.</span></a>
+          </div>
+          <span class="fold__shade" aria-hidden="true"></span>
+          <div class="fold__front">
+            <div class="fold__row">
+              <h3 class="fold__name" id="f3-name">Studio Nadal</h3>
+              <span class="fold__status" data-s="err"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v5M12 16v.01"/></svg>Incomplet</span>
+            </div>
+            <p class="fold__sub">EI · photographe · Lyon 7e</p>
+            <div class="fold__foot">
+              <div class="fold__prog"><span class="fold__bar" style="--v: .5"><i></i></span><span class="fold__count">3 / 6 pièces</span></div>
+              <span class="fold__due">Échéance 5 nov.</span>
+            </div>
+            <button class="fold__toggle" type="button" aria-expanded="false" aria-controls="f3-docs"><span class="fold__sr">Ouvrir le dossier Studio Nadal, 3 pièces récentes</span></button>
+          </div>
+        </div>
+      </article>
+    </li>
+  </ul>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .chem { width: min(100%, 1120px); margin-inline: auto; display: grid; gap: 40px; color: var(--text); font-family: var(--font-sans); }
+  .chem__head { display: grid; gap: 10px; max-width: 620px; }
+  .chem__brand { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 6px; font: 600 16px/24px var(--font-sans); letter-spacing: var(--track-snug); color: var(--text-strong); }
+  .chem__brand svg { width: 26px; height: 26px; }
+  .chem__logo-a { fill: var(--accent); opacity: .55; }
+  .chem__logo-b { fill: var(--accent); }
+  .chem__logo-c { fill: none; stroke: var(--accent-fg); stroke-width: 7; stroke-linecap: round; }
+  .chem__title { margin: 0; font: 600 var(--t-page)/var(--t-page-lh) var(--font-sans); letter-spacing: var(--track-tight); color: var(--text-strong); }
+  .chem__lead { margin: 0; font-size: var(--t-base); line-height: var(--t-base-lh); color: var(--text-muted); }
+  .chem__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 32px 24px; margin: 0; padding: 0; list-style: none; }
+
+  /* ——— Chemise ———
+     --p : ouverture du rabat (0 fermé, ~0,3 entrouvert, 1 ouvert), pilotée par un ressort.
+     --d0..--d2 : sortie de chaque pièce, chacune sur son propre ressort, décalée dans le temps. */
+  .fold { --p: 0; --d0: 0; --d1: 0; --d2: 0; position: relative; padding-top: 88px; }
+  .fold__body { position: relative; height: 232px; perspective: 1100px; perspective-origin: 50% 0%; }
+  .fold__back { position: absolute; inset: 22px 0 0; border-radius: 4px 16px 16px 16px; background: var(--accent-subtle); border: 1px solid var(--accent-subtle-border); }
+  .fold__tab { position: absolute; left: -1px; bottom: calc(100% - 1px); height: 30px; padding: 0 16px; display: inline-flex; align-items: center; border-radius: 12px 12px 0 0; background: var(--accent-subtle); border: 1px solid var(--accent-subtle-border); border-bottom: 0; font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-strong); white-space: nowrap; }
+  .fold__tab::after { content: ""; position: absolute; right: -14px; bottom: 0; width: 14px; height: 14px; background: radial-gradient(circle at 100% 0, transparent 13px, var(--accent-subtle) 13.5px); }
+
+  .fold__docs { position: absolute; left: 20px; right: 20px; top: 40px; height: 176px; }
+  .doc {
+    --i: 0; --d: var(--d0); --off: calc(var(--i) - 1);
+    position: absolute; inset: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto 1fr auto; column-gap: 10px; row-gap: 10px; align-content: start;
+    padding: 14px 14px 12px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); color: var(--text); text-decoration: none; outline: none;
+    transform-origin: 50% 100%;
+    transform: translate(calc(var(--off) * var(--d) * var(--spread, 16px) + var(--i) * 4px - 4px), calc(var(--i) * 10px - var(--d) * (96px - var(--i) * 26px))) rotate(calc(var(--off) * var(--d) * var(--chem-fan) * var(--fan-k, 1) * 1deg));
+    box-shadow: 0 calc(var(--d) * 10px) calc(var(--d) * 24px) color-mix(in srgb, var(--text-strong) calc(var(--d) * 10%), transparent);
+  }
+  .doc:nth-child(1) { --i: 0; --d: var(--d0); }
+  .doc:nth-child(2) { --i: 1; --d: var(--d1); }
+  .doc:nth-child(3) { --i: 2; --d: var(--d2); }
+  .doc:hover { border-color: var(--border-control); }
+  .doc:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); z-index: 3; }
+  .doc__type { grid-row: span 1; height: 22px; padding: 0 6px; display: inline-flex; align-items: center; border-radius: 4px; font: 600 10px/1 var(--font-mono); letter-spacing: .04em; background: var(--tint-red-bg); color: var(--tint-red-fg); }
+  .doc__type[data-t="xls"] { background: var(--tint-green-bg); color: var(--tint-green-fg); }
+  .doc__type[data-t="zip"] { background: var(--tint-neutral-bg); color: var(--tint-neutral-fg); }
+  .doc__type[data-t="xml"] { background: var(--tint-blue-bg); color: var(--tint-blue-fg); }
+  .doc__name { align-self: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 var(--t-sm)/20px var(--font-sans); color: var(--text-strong); }
+  .doc__lines { grid-column: 1 / -1; display: grid; gap: 7px; align-content: start; }
+  .doc__lines i { display: block; height: 6px; border-radius: 999px; background: var(--raised); }
+  .doc__lines i:nth-child(2) { width: 82%; } .doc__lines i:nth-child(3) { width: 58%; }
+  .doc__meta { grid-column: 1 / -1; font: 400 12px/16px var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+  /* Ombre portée du rabat sur les pièces : elle s'efface à mesure qu'il s'ouvre. */
+  .fold__shade { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; border-radius: 0 0 16px 16px; pointer-events: none; background: linear-gradient(to top, color-mix(in srgb, var(--text-strong) calc((1 - var(--p)) * 14%), transparent), transparent); }
+
+  .fold__front {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 168px; padding: 20px; display: grid; grid-template-rows: auto auto 1fr; gap: 4px;
+    border-radius: 12px 12px 16px 16px; background: color-mix(in srgb, var(--accent-subtle) 62%, var(--surface)); border: 1px solid var(--accent-subtle-border);
+    transform-origin: 50% 100%; transform: rotateX(calc(var(--p) * var(--chem-angle) * -1deg)); backface-visibility: hidden; will-change: transform;
+  }
+  /* La lumière glisse sur le rabat quand il s'incline vers vous. */
+  .fold__front::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(to bottom, color-mix(in srgb, var(--surface) calc(var(--p) * 55%), transparent), transparent 70%); }
+  .fold__front::after { content: ""; position: absolute; left: 8%; right: 8%; top: 100%; height: 22px; border-radius: 50%; pointer-events: none; background: radial-gradient(closest-side, color-mix(in srgb, var(--text-strong) calc(8% + var(--p) * 10%), transparent), transparent); transform: scaleY(calc(.6 + var(--p) * .8)); transform-origin: top; }
+  .fold__row, .fold__sub, .fold__foot { opacity: calc(1 - var(--p) * .25); }
+  .fold__row { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .fold__name { margin: 0; font: 600 var(--t-section)/1.3 var(--font-sans); letter-spacing: var(--track-snug); color: var(--text-strong); }
+  .fold__status { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px 0 8px; border-radius: 999px; font: 500 13px/1 var(--font-sans); white-space: nowrap; }
+  .fold__status svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .fold__status[data-s="ok"] { background: var(--tint-green-bg); color: var(--tint-green-fg); }
+  .fold__status[data-s="warn"] { background: var(--tint-amber-bg); color: var(--tint-amber-fg); }
+  .fold__status[data-s="err"] { background: var(--tint-red-bg); color: var(--tint-red-fg); }
+  .fold__sub { position: relative; margin: 0; font-size: var(--t-sm); line-height: var(--t-sm-lh); color: var(--text-muted); }
+  .fold__foot { position: relative; align-self: end; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 12px; border-top: 1px solid var(--accent-subtle-border); }
+  .fold__prog { display: grid; gap: 6px; min-width: 0; flex: 1; max-width: 160px; }
+  .fold__bar { display: block; height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--accent-subtle-border) 70%, var(--surface)); overflow: hidden; }
+  .fold__bar i { display: block; height: 100%; width: calc(var(--v) * 100%); border-radius: inherit; background: var(--accent); }
+  .fold__count, .fold__due { font: 500 12px/16px var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .fold__due { color: var(--text); }
+  .fold__toggle { position: absolute; inset: 0; width: 100%; border: 0; border-radius: inherit; background: none; cursor: pointer; }
+  .fold__toggle:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .fold__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 600px) {
+    .chem { gap: 24px; }
+    .chem__grid { gap: 24px; }
+    .fold { padding-top: 80px; }
+    .fold__front { padding: 16px; }
+    .fold__docs { left: 16px; right: 16px; }
+    .doc { --spread: 6px; --fan-k: .55; }
+    .fold__due { display: none; }
+    .fold__prog { max-width: none; grid-template-columns: 1fr auto; align-items: center; column-gap: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fold__front { will-change: auto; } }
+</style>
+
+<script>
+(function () {
+  /* Ressort amorti (Euler semi-implicite, 4 sous-pas par image) ; s'arrête quand tout est au repos. */
+  function Chemise(root) {
+    var folds = Array.prototype.slice.call(root.querySelectorAll('[data-fold]'));
+    var reduced = function () { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; };
+    var num = function (k, d) { var v = parseFloat(getComputedStyle(root).getPropertyValue(k)); return isNaN(v) ? d : v; };
+    var hoverable = window.matchMedia && matchMedia('(hover: hover)').matches;
+    var raf = 0, last = 0, visible = true;
+    var PEEK = 0.3;
+
+    var state = folds.map(function (el) {
+      return { el: el, btn: el.querySelector('.fold__toggle'), docs: el.querySelector('.fold__docs'), open: false, hover: false,
+        p: { x: 0, v: 0, t: 0 }, d: [0, 1, 2].map(function () { return { x: 0, v: 0, t: 0, at: 0 }; }) };
+    });
+    function target(s, now) {
+      var t = s.open ? 1 : s.hover ? PEEK : 0, stag = num('--chem-stagger', 55);
+      s.p.t = t;
+      /* À l'ouverture, la pièce de devant sort en dernier ; à la fermeture, l'ordre s'inverse. */
+      s.d.forEach(function (d, i) { var order = s.open ? i : 2 - i; d.next = s.open ? 1 : s.hover ? 0.18 + i * 0.04 : 0; d.at = now + order * stag; });
+    }
+    function paint(s) {
+      s.el.style.setProperty('--p', s.p.x.toFixed(4));
+      s.d.forEach(function (d, i) { s.el.style.setProperty('--d' + i, Math.max(-0.05, d.x).toFixed(4)); });
+    }
+    function step(now) {
+      raf = 0;
+      var dt = Math.min(0.05, (now - (last || now)) / 1000) || 0.016; last = now;
+      var k = num('--chem-stiffness', 260), c = num('--chem-damping', 19), h = dt / 4, busy = false;
+      state.forEach(function (s) {
+        s.d.forEach(function (d) { if (d.next != null && now >= d.at) { d.t = d.next; d.next = null; } if (d.next != null) busy = true; });
+        for (var i = 0; i < 4; i++) {
+          s.p.v += (k * (s.p.t - s.p.x) - c * s.p.v) * h; s.p.x += s.p.v * h;
+          s.d.forEach(function (d) { d.v += (k * 0.8 * (d.t - d.x) - c * 0.9 * d.v) * h; d.x += d.v * h; });
+        }
+        paint(s);
+        if (Math.abs(s.p.t - s.p.x) + Math.abs(s.p.v) > 0.0008) busy = true;
+        s.d.forEach(function (d) { if (Math.abs(d.t - d.x) + Math.abs(d.v) > 0.0008) busy = true; });
+      });
+      if (busy && visible) raf = requestAnimationFrame(step); else last = 0;
+    }
+    function kick() {
+      var now = performance.now();
+      if (reduced()) {
+        state.forEach(function (s) { s.p.x = s.p.t; s.p.v = 0; s.d.forEach(function (d) { if (d.next != null) { d.t = d.next; d.next = null; } d.x = d.t; d.v = 0; }); paint(s); });
+        return;
+      }
+      if (!raf) { last = 0; raf = requestAnimationFrame(step); }
+    }
+    function set(s, open, focusDoc) {
+      if (open && root.dataset.unique === 'true') state.forEach(function (o) { if (o !== s && o.open) set(o, false); });
+      s.open = open; s.el.dataset.open = String(open);
+      s.btn.setAttribute('aria-expanded', String(open));
+      s.btn.querySelector('.fold__sr').textContent = (open ? 'Fermer' : 'Ouvrir') + ' le dossier ' + s.el.querySelector('.fold__name').textContent + ', 3 pièces récentes';
+      if (open) s.docs.removeAttribute('inert'); else s.docs.setAttribute('inert', '');
+      target(s, performance.now()); kick();
+      if (open && focusDoc) setTimeout(function () { var a = s.docs.querySelector('.doc:last-child'); if (a) a.focus({ preventScroll: true }); }, 240);
+    }
+    state.forEach(function (s) {
+      s.btn.addEventListener('click', function () { set(s, !s.open); });
+      s.btn.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && !s.open) { e.preventDefault(); set(s, true, true); } });
+      s.el.addEventListener('keydown', function (e) { if (e.key === 'Escape' && s.open) { e.preventDefault(); set(s, false); s.btn.focus(); } });
+      if (hoverable) {
+        s.el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && root.dataset.mode !== 'clic-seul') { s.hover = true; target(s, performance.now()); kick(); } });
+        s.el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') { s.hover = false; target(s, performance.now()); kick(); } });
+      }
+      /* Survol au clavier : le focus entrouvre la chemise, comme la souris. */
+      s.btn.addEventListener('focus', function () { if (s.btn.matches(':focus-visible')) { s.hover = true; target(s, performance.now()); kick(); } });
+      s.btn.addEventListener('blur', function () { s.hover = false; target(s, performance.now()); kick(); });
+      if (root.dataset.mode === 'survol' && hoverable) {
+        s.el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') set(s, true); });
+        s.el.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') set(s, false); });
+      }
+    });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) kick(); }).observe(root);
+    root._chemise = {
+      open: function (i, v) { var s = state[i]; if (s) set(s, v == null ? !s.open : !!v); },
+      peek: function (i, v) { var s = state[i]; if (s) { s.hover = !!v; target(s, performance.now()); kick(); } },
+      closeAll: function () { state.forEach(function (s) { s.hover = false; if (s.open) set(s, false); else { target(s, performance.now()); } }); kick(); },
+      jump: function () { state.forEach(function (s) { s.p.x = s.p.t; s.d.forEach(function (d) { if (d.next != null) { d.t = d.next; d.next = null; } d.x = d.t; }); paint(s); }); }
+    };
+  }
+  document.querySelectorAll('[data-chemise]').forEach(function (el) { if (!el._chemise) Chemise(el); });
+})();
+</script>

@@ -1,0 +1,235 @@
+{
+  "id": "specimen-axes-vivants",
+  "nom": "Spécimen à axes vivants",
+  "categorie": "typographie",
+  "niveau": "premium",
+  "ordre": 1,
+  "description": "Un spécimen de police variable qui se manipule : plan d’axes à glisser, curseurs de graisse et de chasse, instances nommées, et un titre dont chaque lettre s’épaissit sur un ressort à l’approche du pointeur.",
+  "tags": [
+    "Police variable",
+    "Ressort",
+    "Pointeur",
+    "Spécimen"
+  ],
+  "date": "2026-11-05",
+  "palette": "bordeaux",
+  "logo_exemple": {
+    "nom": "Ondée",
+    "secteur": "Revue culturelle (média)",
+    "fichier": "logo.svg",
+    "palette": "bordeaux",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1024
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, texte, accent, rayons, Geist Mono"
+    },
+    {
+      "nom": "fonts/archivo.woff2",
+      "note": "Archivo Variable, OFL, 92 ko : axes wght 100–900 et wdth 62–125"
+    },
+    {
+      "nom": "fonts/fraunces.woff2",
+      "note": "Fraunces Variable, OFL, 125 ko : axes wght 100–900 et SOFT 0–100 (facultatif)"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 6 ko, sans dépendance ; boucle rAF arrêtée au repos et hors écran"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "texte",
+      "label": "Titre",
+      "type": "text",
+      "default": "Ondée",
+      "code": {
+        "html": "data-ax-word aria-label=\"{v}\">{v}</h2>",
+        "react": "text=\"{v}\""
+      }
+    },
+    {
+      "name": "police",
+      "label": "Police",
+      "type": "select",
+      "default": "archivo",
+      "options": [
+        {
+          "value": "archivo",
+          "label": "Archivo"
+        },
+        {
+          "value": "fraunces",
+          "label": "Fraunces"
+        }
+      ],
+      "code": {
+        "html": "data-font=\"{v}\"",
+        "react": "font=\"{v}\""
+      }
+    },
+    {
+      "name": "mode",
+      "label": "Animation du titre",
+      "type": "select",
+      "default": "survol",
+      "options": [
+        {
+          "value": "survol",
+          "label": "Survol"
+        },
+        {
+          "value": "vague",
+          "label": "Vague"
+        },
+        {
+          "value": "fixe",
+          "label": "Fixe"
+        }
+      ],
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "mode=\"{v}\""
+      }
+    },
+    {
+      "name": "graisse",
+      "label": "Graisse de repos",
+      "type": "number",
+      "default": 300,
+      "min": 100,
+      "max": 900,
+      "step": 10,
+      "code": {
+        "html": "data-weight=\"{v}\"",
+        "react": "weight={{v}}"
+      }
+    },
+    {
+      "name": "second",
+      "label": "Second axe au repos",
+      "type": "number",
+      "default": 60,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "hint": "Position sur l’axe de chasse (Archivo) ou de douceur (Fraunces). 60 % ≈ chasse normale.",
+      "code": {
+        "html": "data-second=\"{v}\"",
+        "react": "second={{v}}"
+      }
+    },
+    {
+      "name": "pic",
+      "label": "Graisse au contact",
+      "type": "number",
+      "default": 900,
+      "min": 100,
+      "max": 900,
+      "step": 10,
+      "hint": "Valeur atteinte par la lettre la plus proche du pointeur.",
+      "code": {
+        "html": "data-peak=\"{v}\"",
+        "react": "peak={{v}}"
+      }
+    },
+    {
+      "name": "picSecond",
+      "label": "Second axe au contact",
+      "type": "number",
+      "default": 100,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "code": {
+        "html": "data-peak-second=\"{v}\"",
+        "react": "peakSecond={{v}}"
+      }
+    },
+    {
+      "name": "rayon",
+      "label": "Rayon d’influence",
+      "type": "number",
+      "default": 160,
+      "min": 48,
+      "max": 400,
+      "step": 8,
+      "unit": "px",
+      "code": {
+        "html": "data-radius=\"{v}\"",
+        "react": "radius={{v}}"
+      }
+    },
+    {
+      "name": "raideur",
+      "label": "Raideur du ressort",
+      "type": "number",
+      "default": 170,
+      "min": 40,
+      "max": 500,
+      "step": 10,
+      "code": {
+        "html": "data-stiffness=\"{v}\"",
+        "react": "stiffness={{v}}"
+      }
+    },
+    {
+      "name": "amortissement",
+      "label": "Amortissement",
+      "type": "number",
+      "default": 18,
+      "min": 6,
+      "max": 40,
+      "step": 1,
+      "hint": "Bas : les lettres rebondissent. Haut : retour sec.",
+      "code": {
+        "html": "data-damping=\"{v}\"",
+        "react": "damping={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/AxesSpecimen.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour présenter une police de marque ou une police d’affichage : page de charte, studio, revue, lancement d’identité.",
+    "Le mode Survol convient à un titre court (4 à 10 lettres) : au-delà, le rayon d’influence couvre trop de lettres et l’effet s’aplatit.",
+    "Les instances nommées sont des raccourcis : remplacez-les par les graisses réellement utilisées dans votre charte.",
+    "Toute police variable fonctionne : ajoutez-la dans FONTS (balise d’axe, minimum, maximum, libellé) et dans @font-face."
+  ],
+  "accessibilite": [
+    "Le titre garde son texte entier dans aria-label ; les lettres découpées sont masquées aux lecteurs d’écran.",
+    "Curseurs natifs (flèches, Page précédente / suivante) avec valeur lue en clair ; les segments suivent le motif radiogroup (flèches gauche / droite).",
+    "Le plan d’axes est un raccourci au pointeur, doublé par les deux curseurs : rien n’est accessible au seul glisser.",
+    "Avec « réduire les animations », plus de ressort ni de vague : les valeurs changent sans mouvement. Boucle arrêtée hors écran et au repos.",
+    "Cibles de 44 px ; texte de contenu ≥ 16 px sur téléphone ; contraste AA du texte et de l’accent en clair et en sombre."
+  ]
+}

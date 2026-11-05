@@ -1,0 +1,222 @@
+{
+  "id": "bouton-etats-enchaines",
+  "nom": "Bouton à états enchaînés",
+  "categorie": "boutons",
+  "niveau": "essentiel",
+  "ordre": 20,
+  "description": "Envoyer → rotation → coche : le bouton se contracte en cercle pendant l’attente, puis s’élargit vers le libellé du résultat sur un vrai ressort CSS ; l’erreur tremble brièvement et propose de réessayer. Démontré sur la confirmation d’un virement.",
+  "tags": [
+    "États",
+    "Ressort",
+    "Chargement",
+    "Formulaire",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "palette": "emeraude",
+  "logo_exemple": {
+    "nom": "Virgule",
+    "secteur": "Banque en ligne",
+    "fichier": "logo.svg",
+    "palette": "emeraude",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 640
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent, teintes succès / erreur, rayons, focus"
+    },
+    {
+      "nom": "Script ChainButton",
+      "note": "≈ 2,5 ko, inclus dans l’onglet HTML, sans dépendance ; ressort en CSS linear()"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "framer-motion ≥ 11",
+      "note": "Onglet React seulement : layout sur ressort, AnimatePresence"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "libelle",
+      "label": "Libellé",
+      "type": "text",
+      "default": "Envoyer 240,00 €",
+      "code": {
+        "html": "<span>{v}</span>",
+        "react": ">{v}</ChainButton>"
+      }
+    },
+    {
+      "name": "succes",
+      "label": "Libellé de succès",
+      "type": "text",
+      "default": "Virement envoyé",
+      "code": {
+        "html": "<span>{v}</span>",
+        "react": "successLabel=\"{v}\""
+      }
+    },
+    {
+      "name": "issue",
+      "label": "Issue simulée",
+      "type": "select",
+      "default": "success",
+      "options": [
+        {
+          "value": "success",
+          "label": "Succès"
+        },
+        {
+          "value": "error",
+          "label": "Erreur"
+        },
+        {
+          "value": "alternate",
+          "label": "Alterner"
+        }
+      ],
+      "hint": "Dans votre code, l’issue vient de la promesse renvoyée par l’action.",
+      "code": {
+        "html": "data-outcome=\"{v}\" data-duration=\"1600\""
+      }
+    },
+    {
+      "name": "chargement",
+      "label": "Durée du chargement",
+      "type": "number",
+      "default": 1600,
+      "min": 400,
+      "max": 4000,
+      "step": 100,
+      "unit": "ms",
+      "code": {
+        "html": "data-duration=\"{v}\""
+      }
+    },
+    {
+      "name": "retour",
+      "label": "Retour au repos",
+      "type": "number",
+      "default": 2600,
+      "min": 0,
+      "max": 6000,
+      "step": 200,
+      "unit": "ms",
+      "hint": "0 : le bouton reste sur le résultat.",
+      "code": {
+        "html": "data-reset=\"{v}\"",
+        "react": "resetAfter = {v},"
+      }
+    },
+    {
+      "name": "forme",
+      "label": "Forme",
+      "type": "select",
+      "default": "pill",
+      "options": [
+        {
+          "value": "pill",
+          "label": "Pilule"
+        },
+        {
+          "value": "rounded",
+          "label": "Arrondie (12 px)"
+        }
+      ],
+      "code": {
+        "html": "data-chain data-shape=\"{v}\"",
+        "react": "shape = '{v}',"
+      }
+    },
+    {
+      "name": "variante",
+      "label": "Variante",
+      "type": "select",
+      "default": "solid",
+      "options": [
+        {
+          "value": "solid",
+          "label": "Plein"
+        },
+        {
+          "value": "outline",
+          "label": "Contour"
+        }
+      ],
+      "code": {
+        "html": "data-variant=\"{v}\" data-outcome",
+        "react": "variant = '{v}',"
+      }
+    },
+    {
+      "name": "ressort",
+      "label": "Ressort",
+      "type": "select",
+      "default": "doux",
+      "options": [
+        {
+          "value": "doux",
+          "label": "Doux (8 % de dépassement)"
+        },
+        {
+          "value": "sec",
+          "label": "Sec (sans rebond)"
+        },
+        {
+          "value": "joueur",
+          "label": "Joueur (rebond marqué)"
+        }
+      ]
+    },
+    {
+      "name": "vibration",
+      "label": "Vibration sur erreur",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-haptic=\"{v}\"",
+        "react": "haptic = {v},"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/ChainButton.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour toute action asynchrone courte dont le résultat doit se lire sur place : envoyer, enregistrer, publier, payer, s’inscrire.",
+    "Branchez votre appel : ChainButton.attach(bouton, () => fetch(…)) ; une promesse rejetée déclenche l’état d’erreur, une promesse résolue la coche.",
+    "Une durée minimale de 600 ms évite le clignotement quand le serveur répond trop vite ; au-delà de 8 s, préférez une barre de progression.",
+    "Sur mobile, le bouton passe en pleine largeur (--cb-fill: 1) et ne se contracte qu’en cercle pendant l’attente."
+  ],
+  "accessibilite": [
+    "Bouton natif jamais désactivé : il garde le focus pendant l’attente (aria-busy, aria-disabled), un second clic est ignoré.",
+    "Chaque état est annoncé par une région role=\"status\" ; l’erreur ajoute « Vous pouvez réessayer ».",
+    "Succès et erreur portent icône + libellé, jamais la couleur seule ; teintes vert et rouge AA en clair et en sombre.",
+    "Avec « réduire les animations » : changements d’état instantanés, pas de tremblement, rotation ralentie."
+  ]
+}

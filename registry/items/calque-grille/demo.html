@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calque de grille — démo</title>
+<script>(function (q) { if (!q.get('accent')) document.documentElement.setAttribute('data-accent', 'cobalt'); })(new URLSearchParams(location.search));</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  /* Page d'exemple : tout est posé sur la même grille et sur une base de 8 px */
+  body { background: var(--bg); }
+  .pg { --pg-cols: 12; --pg-gutter: 24px; --pg-margin: 48px; --pg-max: 1280px; }
+  .wrap { max-width: var(--pg-max); margin: 0 auto; padding: 0 var(--pg-margin); }
+  .grid { display: grid; grid-template-columns: repeat(var(--pg-cols), minmax(0, 1fr)); column-gap: var(--pg-gutter); }
+  .top { height: 80px; display: flex; align-items: center; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .top .grid { align-items: center; width: 100%; }
+  .brand { grid-column: 1 / span 3; display: inline-flex; align-items: center; gap: 8px; color: var(--text-strong); text-decoration: none; font: 600 18px/24px var(--font-sans); letter-spacing: -0.02em; min-height: 44px; }
+  .brand svg { width: 28px; height: 28px; }
+  .nav { grid-column: 5 / span 5; display: flex; gap: 32px; }
+  .nav a { color: var(--text-muted); text-decoration: none; font: 500 15px/24px var(--font-sans); min-height: 44px; display: inline-flex; align-items: center; }
+  .nav a[aria-current] { color: var(--text-strong); }
+  .cta { grid-column: 10 / span 3; justify-self: end; display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: var(--radius-pill); background: var(--accent); color: var(--accent-fg); font: 500 15px/24px var(--font-sans); text-decoration: none; }
+  .hero { padding: 80px 0 64px; }
+  .eyebrow { grid-column: 1 / -1; margin: 0 0 24px; color: var(--text-muted); font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .h1 { grid-column: 1 / span 7; margin: 0; color: var(--text-strong); font: 600 64px/72px var(--font-sans); letter-spacing: -0.035em; }
+  .lead { grid-column: 1 / span 5; margin: 24px 0 0; color: var(--text-muted); font: 400 20px/32px var(--font-sans); }
+  .actions { grid-column: 1 / span 6; display: flex; gap: 16px; margin-top: 40px; }
+  .btn { display: inline-flex; align-items: center; height: 48px; padding: 0 24px; border-radius: var(--radius-pill); font: 500 16px/24px var(--font-sans); text-decoration: none; }
+  .btn--solid { background: var(--accent); color: var(--accent-fg); }
+  .btn--ghost { border: 1px solid var(--border-control); color: var(--text-strong); }
+  .hero__art { grid-column: 8 / span 5; grid-row: 2 / span 4; align-self: start; margin: 0; }
+  .art { display: block; width: 100%; height: auto; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--border); }
+  .art .ln { stroke: var(--text-muted); stroke-width: 1; fill: none; vector-effect: non-scaling-stroke; }
+  .art .ln--strong { stroke: var(--text-strong); stroke-width: 1.5; }
+  .art .gl-fill { fill: var(--raised); }
+  .art .sun { fill: var(--accent); }
+  .cap { margin: 8px 0 0; color: var(--text-muted); font: 500 12px/16px var(--font-mono); }
+  .stats { padding: 32px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .stat { grid-column: span 3; }
+  .stat b { display: block; color: var(--text-strong); font: 600 40px/48px var(--font-sans); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--text-muted); font: 400 15px/24px var(--font-sans); }
+  .projects { padding: 64px 0 80px; }
+  .sec-h { grid-column: 1 / span 6; margin: 0 0 32px; color: var(--text-strong); font: 600 32px/40px var(--font-sans); letter-spacing: -0.02em; }
+  .sec-link { grid-column: 9 / span 4; justify-self: end; align-self: center; margin-bottom: 32px; color: var(--text-strong); font: 500 15px/24px var(--font-sans); }
+  .card { grid-column: span 4; margin: 0; }
+  .card h3 { margin: 16px 0 0; color: var(--text-strong); font: 600 18px/24px var(--font-sans); letter-spacing: -0.01em; }
+  .card p { margin: 0; color: var(--text-muted); font: 400 15px/24px var(--font-sans); }
+  .foot { padding: 32px 0 120px; border-top: 1px solid var(--border); color: var(--text-muted); font: 400 14px/24px var(--font-sans); }
+  .foot .l { grid-column: 1 / span 6; } .foot .r { grid-column: 7 / span 6; text-align: right; }
+  .hint { position: fixed; top: 96px; right: 16px; z-index: 5; margin: 0; padding: 8px 12px; border-radius: var(--radius-ctl); background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); font: 500 12px/16px var(--font-mono); }
+  .hint kbd { font: inherit; color: var(--text-strong); }
+
+  @media (max-width: 1199px) {
+    .nav { grid-column: 3 / span 4; gap: 24px; } .cta { grid-column: 7 / span 2; }
+    .h1 { grid-column: 1 / span 8; font-size: 56px; line-height: 64px; } .lead { grid-column: 1 / span 6; }
+    .hero__art { grid-column: 1 / -1; grid-row: auto; margin-top: 48px; }
+    .stat { grid-column: span 4; margin-bottom: 16px; } .card { grid-column: span 4; margin-bottom: 32px; }
+    .sec-link { grid-column: 5 / span 4; }
+    .foot .l, .foot .r { grid-column: span 4; }
+  }
+  @media (max-width: 767px) {
+    .top { height: 64px; } .nav { display: none; } .brand { grid-column: 1 / span 2; } .cta { grid-column: 3 / span 2; height: 44px; }
+    .hero { padding: 48px 0 40px; }
+    .h1 { grid-column: 1 / -1; font-size: 40px; line-height: 48px; } .lead { grid-column: 1 / -1; font-size: 17px; line-height: 24px; margin-top: 16px; }
+    .actions { grid-column: 1 / -1; flex-direction: column; gap: 8px; margin-top: 32px; } .btn { justify-content: center; }
+    .hero__art { margin-top: 40px; }
+    .stat { grid-column: span 2; } .stat b { font-size: 32px; line-height: 40px; }
+    .projects { padding: 48px 0; }
+    .sec-h { grid-column: 1 / -1; font-size: 28px; line-height: 32px; margin-bottom: 24px; } .sec-link { display: none; }
+    .card { grid-column: 1 / -1; }
+    .foot .l, .foot .r { grid-column: 1 / -1; text-align: left; }
+    .hint { display: none; }
+  }
+  .is-thumb .hint, .is-thumb .gl-hud, .is-thumb .gl-toggle { display: none; }
+</style>
+</head>
+<body>
+<div class="pg" id="page">
+  <header class="top">
+    <div class="wrap grid">
+      <a class="brand" href="#" aria-label="Atelier Corniche, accueil">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5.5 20V11a6.5 6.5 0 0 1 13 0v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M3.5 20h17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="10.25" y="2.75" width="3.5" height="3.75" rx="1" fill="var(--accent)"/>
+        </svg>
+        Corniche
+      </a>
+      <nav class="nav" aria-label="Principale"><a href="#" aria-current="page">Projets</a><a href="#">Atelier</a><a href="#">Journal</a><a href="#">Contact</a></nav>
+      <a class="cta" href="#">Rendez-vous</a>
+    </div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="wrap grid">
+        <p class="eyebrow">Atelier d’architecture · Marseille</p>
+        <h1 class="h1">Construire avec la lumière du Sud.</h1>
+        <p class="lead">Logements, écoles et réhabilitations qui gardent la fraîcheur l’été, en pierre de Cassis et en bois local.</p>
+        <div class="actions"><a class="btn btn--solid" href="#">Voir les projets</a><a class="btn btn--ghost" href="#">Notre méthode</a></div>
+        <figure class="hero__art"><svg class="art" data-art="hero" viewBox="0 0 480 360" role="img" aria-label="Élévation de la façade sud de l’école Saint-Loup"></svg><figcaption class="cap">École Saint-Loup · façade sud · 1:200</figcaption></figure>
+      </div>
+    </section>
+    <section class="stats" aria-label="L’atelier en chiffres">
+      <div class="wrap grid">
+        <p class="stat"><b>38</b><span>bâtiments livrés depuis 2013</span></p>
+        <p class="stat"><b>62 %</b><span>de matériaux biosourcés</span></p>
+        <p class="stat"><b>4</b><span>prix d’architecture régionaux</span></p>
+        <p class="stat"><b>11</b><span>architectes et ingénieurs</span></p>
+      </div>
+    </section>
+    <section class="projects">
+      <div class="wrap grid">
+        <h2 class="sec-h">Projets récents</h2>
+        <a class="sec-link" href="#">Tous les projets</a>
+        <figure class="card"><svg class="art" data-art="a" viewBox="0 0 400 280" role="img" aria-label="Élévation des Logements Joliette"></svg><h3>Logements Joliette</h3><p>24 logements · 2025</p></figure>
+        <figure class="card"><svg class="art" data-art="b" viewBox="0 0 400 280" role="img" aria-label="Élévation de la Halle du Roucas"></svg><h3>Halle du Roucas</h3><p>Marché couvert · 2024</p></figure>
+        <figure class="card"><svg class="art" data-art="c" viewBox="0 0 400 280" role="img" aria-label="Élévation de la Maison des Goudes"></svg><h3>Maison des Goudes</h3><p>Réhabilitation · 2023</p></figure>
+      </div>
+    </section>
+  </main>
+  <footer class="foot"><div class="wrap grid"><span class="l">Atelier Corniche · 14 rue Sainte, Marseille</span><span class="r">Inscrit à l’Ordre des architectes</span></div></footer>
+</div>
+<p class="hint">Cliquez ici puis <kbd>G</kbd> · <kbd>Maj G</kbd> change de calque</p>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ visible: true, mode: 'both', colonnes: 12, gouttiere: 24, marge: 48, base: 8, ton: 'accent', opacite: 12 });
+  var inst = null;
+
+  /* Élévations dessinées : façades simples en traits fins */
+  function facade(w, h, o) {
+    var g = h - 32, s = '';
+    s += '<rect class="gl-fill" x="0" y="' + g + '" width="' + w + '" height="32"/>';
+    s += '<path class="ln ln--strong" d="M0 ' + g + 'H' + w + '"/>';
+    for (var x = 8; x < w; x += 16) s += '<path class="ln" d="M' + x + ' ' + (g + 4) + 'l-8 8"/>';
+    var bx = o.x, bw = o.w, top = o.top;
+    s += '<path class="ln ln--strong" d="M' + bx + ' ' + g + 'V' + top + (o.roof ? 'L' + (bx + bw / 2) + ' ' + (top - o.roof) + 'L' + (bx + bw) + ' ' + top : 'H' + (bx + bw)) + 'V' + g + '"/>';
+    if (o.cornice) s += '<path class="ln" d="M' + (bx - 8) + ' ' + top + 'H' + (bx + bw + 8) + 'M' + (bx - 4) + ' ' + (top + 8) + 'H' + (bx + bw + 4) + '"/>';
+    var cw = (bw - 32) / o.cols;
+    for (var r = 0; r < o.rows; r++) for (var c = 0; c < o.cols; c++) {
+      var wx = bx + 16 + c * cw + cw * 0.22, wy = top + 24 + r * o.rh, ww = cw * 0.56, wh = o.rh * 0.56;
+      if (o.arch && r === o.rows - 1) s += '<path class="ln" d="M' + wx + ' ' + (wy + wh) + 'V' + (wy + ww / 2) + 'a' + ww / 2 + ' ' + ww / 2 + ' 0 0 1 ' + ww + ' 0V' + (wy + wh) + '"/>';
+      else s += '<rect class="ln" x="' + wx + '" y="' + wy + '" width="' + ww + '" height="' + wh + '"/><path class="ln" d="M' + (wx + ww / 2) + ' ' + wy + 'v' + wh + '"/>';
+    }
+    if (o.door) { var dx = bx + bw / 2 - 20; s += '<path class="ln ln--strong" d="M' + dx + ' ' + g + 'V' + (g - 48) + 'a20 20 0 0 1 40 0V' + g + '"/>'; }
+    if (o.sun) s += '<circle class="sun" cx="' + o.sun[0] + '" cy="' + o.sun[1] + '" r="12"/>';
+    if (o.tree) { var tx = o.tree; s += '<path class="ln" d="M' + tx + ' ' + g + 'v-40"/><circle class="ln" cx="' + tx + '" cy="' + (g - 56) + '" r="24"/>'; }
+    return s;
+  }
+  var ARTS = {
+    hero: [480, 360, { x: 72, w: 312, top: 96, rows: 3, cols: 6, rh: 64, cornice: true, arch: true, door: false, sun: [420, 56], tree: 424 }],
+    a: [400, 280, { x: 64, w: 240, top: 48, rows: 4, cols: 5, rh: 44, cornice: true, tree: 352 }],
+    b: [400, 280, { x: 40, w: 320, top: 104, rows: 1, cols: 5, rh: 88, roof: 56, arch: true }],
+    c: [400, 280, { x: 104, w: 176, top: 112, rows: 2, cols: 2, rh: 56, roof: 40, door: false, sun: [336, 64] }]
+  };
+  document.querySelectorAll('[data-art]').forEach(function (svg) { var a = ARTS[svg.dataset.art]; svg.innerHTML = facade(a[0], a[1], a[2]); });
+
+  function syncPage() {
+    if (!inst) return;
+    var b = inst.get().breakpoint, pg = document.getElementById('page');
+    pg.style.setProperty('--pg-cols', b.columns);
+    pg.style.setProperty('--pg-gutter', b.gutter + 'px');
+    pg.style.setProperty('--pg-margin', b.margin + 'px');
+  }
+  function opts(p) { return { visible: !!p.visible, mode: p.mode, columns: p.colonnes, gutter: p.gouttiere, margin: p.marge, baseline: p.base, tone: p.ton, opacity: p.opacite }; }
+  function render(p) { if (inst) { inst.set(opts(p)); syncPage(); } }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), sec = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = sec ? sec[1].replace('data-grid-overlay', 'data-grid-overlay data-gl-manual') : '';
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    var el = mount.querySelector('[data-grid-overlay]');
+    inst = GridOverlay.mount(el, Object.assign(opts(props), { visible: false }));
+    syncPage();
+    window.addEventListener('resize', syncPage);
+    // première apparition animée
+    requestAnimationFrame(function () { requestAnimationFrame(function () { inst.set({ visible: !!props.visible }); }); });
+  }).catch(function () {});
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (!inst) return; inst.hide(); setTimeout(function () { inst.set({ visible: true }); }, 260); });
+</script>
+</body>
+</html>

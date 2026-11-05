@@ -1,0 +1,223 @@
+<!-- Badge de statut vivant — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css.
+     Marque fictive : Fanal (hébergement cloud). Services et chiffres fictifs. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="stp" data-statuts data-variant="teinte" data-size="md" data-pulse="true" style="--stb-speed: 1" aria-labelledby="stp-title">
+  <header class="stp__head">
+    <span class="stp__brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="stp__logo-bg"/><circle cx="34" cy="50" r="10" class="stp__logo-fill"/><path d="M54 30a28 28 0 0 1 0 40M66 20a42 42 0 0 1 0 60" class="stp__logo-ln"/></svg>
+      Fanal
+    </span>
+    <a class="stp__sub" href="#alertes">S’abonner aux alertes</a>
+  </header>
+
+  <div class="stp__hero">
+    <h2 id="stp-title" class="stp__title">État des services</h2>
+    <div class="stp__live" aria-live="polite" aria-atomic="true">
+      <span class="stb" data-stb data-live data-state="ok" data-label="Tous les systèmes fonctionnent"></span>
+    </div>
+    <p class="stp__time">Mis à jour il y a <span class="stp__ago">1&nbsp;min</span> · <span class="stp__days">données sur 90 jours</span></p>
+  </div>
+
+  <ul class="stp__list" role="list">
+    <li class="stp__row" data-uptime="99.99" data-seed="3"><div class="stp__top"><span class="stp__name">API publique <span class="stp__zone">eu-west-3 · Paris</span></span><span class="stb" data-stb data-state="ok"></span></div><span class="stp__bars" aria-hidden="true"></span><span class="stp__pct">99,99&nbsp;%</span></li>
+    <li class="stp__row" data-uptime="99.95" data-seed="7"><div class="stp__top"><span class="stp__name">Déploiements <span class="stp__zone">Builds et préversions</span></span><span class="stb" data-stb data-state="en-cours" data-label="Mise à jour en cours"></span></div><span class="stp__bars" aria-hidden="true"></span><span class="stp__pct">99,95&nbsp;%</span></li>
+    <li class="stp__row" data-uptime="99.71" data-seed="11"><div class="stp__top"><span class="stp__name">Bases de données <span class="stp__zone">Postgres managé</span></span><span class="stb" data-stb data-state="degrade"></span></div><span class="stp__bars" aria-hidden="true"></span><span class="stp__pct">99,71&nbsp;%</span></li>
+    <li class="stp__row" data-uptime="100" data-seed="5"><div class="stp__top"><span class="stp__name">CDN <span class="stp__zone">42 points de présence</span></span><span class="stb" data-stb data-state="ok"></span></div><span class="stp__bars" aria-hidden="true"></span><span class="stp__pct">100&nbsp;%</span></li>
+    <li class="stp__row" data-uptime="99.90" data-seed="2"><div class="stp__top"><span class="stp__name">Webhooks <span class="stp__zone">Livraison des évènements</span></span><span class="stb" data-stb data-state="maintenance" data-label="Maintenance 22 h – 23 h"></span></div><span class="stp__bars" aria-hidden="true"></span><span class="stp__pct">99,90&nbsp;%</span></li>
+  </ul>
+
+  <div class="stp__legend">
+    <p class="stp__legend-title">Tous les états</p>
+    <div class="stp__swatch">
+      <span class="stb" data-stb data-state="ok"></span>
+      <span class="stb" data-stb data-state="en-cours"></span>
+      <span class="stb" data-stb data-state="degrade"></span>
+      <span class="stb" data-stb data-state="incident"></span>
+      <span class="stb" data-stb data-state="maintenance"></span>
+      <span class="stb" data-stb data-state="hors-ligne"></span>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  /* ——— Badge ——— */
+  .stb {
+    --c: var(--tint-green-fg); --bg: var(--tint-green-bg); --bd: var(--tint-green-border);
+    --h: 28px; --fs: 13px; --gap: 6px; --px: 10px; --ind: 14px;
+    position: relative; display: inline-flex; align-items: center; gap: var(--gap); height: var(--h); padding: 0 var(--px) 0 calc(var(--px) - 2px);
+    border-radius: 999px; background: var(--bg); color: var(--c); box-shadow: inset 0 0 0 1px transparent; vertical-align: middle; white-space: nowrap;
+    font: 500 var(--fs)/1 var(--font-sans); letter-spacing: 0;
+    transition: background-color 320ms var(--ease-out), color 320ms var(--ease-out), box-shadow 320ms var(--ease-out), width 420ms cubic-bezier(.2, .9, .25, 1);
+  }
+  .stb[data-state="en-cours"] { --c: var(--tint-blue-fg); --bg: var(--tint-blue-bg); --bd: var(--tint-blue-border); }
+  .stb[data-state="degrade"] { --c: var(--tint-amber-fg); --bg: var(--tint-amber-bg); --bd: var(--tint-amber-border); }
+  .stb[data-state="incident"] { --c: var(--tint-red-fg); --bg: var(--tint-red-bg); --bd: var(--tint-red-border); }
+  .stb[data-state="maintenance"] { --c: var(--tint-violet-fg); --bg: var(--tint-violet-bg); --bd: var(--tint-violet-border); }
+  .stb[data-state="hors-ligne"] { --c: var(--tint-neutral-fg); --bg: var(--tint-neutral-bg); --bd: var(--tint-neutral-border); }
+  [data-variant="contour"] .stb, .stb[data-variant="contour"] { background: var(--surface); box-shadow: inset 0 0 0 1px var(--bd); }
+  [data-variant="contour"] .stb .stb__label, .stb[data-variant="contour"] .stb__label { color: var(--text-strong); }
+  [data-variant="discret"] .stb, .stb[data-variant="discret"] { background: transparent; padding-left: 0; padding-right: 0; }
+  [data-variant="discret"] .stb .stb__label, .stb[data-variant="discret"] .stb__label { color: var(--text); }
+  [data-size="sm"] .stb, .stb[data-size="sm"] { --h: 24px; --fs: 12px; --px: 8px; --ind: 12px; --gap: 5px; }
+  [data-size="lg"] .stb, .stb[data-size="lg"] { --h: 36px; --fs: 15px; --px: 14px; --ind: 16px; --gap: 8px; }
+  .stp__live .stb { --h: 40px; --fs: 15px; --px: 16px; --ind: 16px; --gap: 10px; }
+  [data-size="sm"] .stp__live .stb { --h: 32px; --fs: 14px; --px: 12px; --ind: 14px; }
+  [data-size="lg"] .stp__live .stb { --h: 48px; --fs: 17px; --px: 20px; --ind: 18px; --gap: 12px; }
+
+  .stb__ind { position: relative; flex: none; width: var(--ind); height: var(--ind); display: grid; place-items: center; }
+  .stb__ind svg { position: relative; z-index: 1; width: 100%; height: 100%; overflow: visible; }
+  .stb__ind svg * { fill: currentColor; stroke: none; }
+  .stb__ind .is-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+  .stb__ind.is-new svg { animation: stb-pop 520ms cubic-bezier(.34, 1.56, .64, 1); }
+  @keyframes stb-pop { from { transform: scale(.4); opacity: 0; } }
+  /* Onde : un anneau qui s'élargit et s'efface derrière le point. Plus le statut est grave, plus elle est rapide. */
+  .stb__ind::before, .stb__ind::after { content: ""; position: absolute; inset: 22%; border-radius: 999px; background: currentColor; opacity: 0; pointer-events: none; }
+  [data-pulse="true"] .stb[data-state="ok"] .stb__ind::before { animation: stb-wave calc(2.4s / var(--stb-speed, 1)) cubic-bezier(.2, .6, .35, 1) infinite; }
+  [data-pulse="true"] .stb[data-state="degrade"] .stb__ind::before { animation: stb-wave calc(1.6s / var(--stb-speed, 1)) cubic-bezier(.2, .6, .35, 1) infinite; }
+  [data-pulse="true"] .stb[data-state="incident"] .stb__ind::before { animation: stb-wave calc(1.1s / var(--stb-speed, 1)) cubic-bezier(.2, .6, .35, 1) infinite; }
+  [data-pulse="true"] .stb[data-state="incident"] .stb__ind::after { animation: stb-wave calc(1.1s / var(--stb-speed, 1)) cubic-bezier(.2, .6, .35, 1) calc(.36s / var(--stb-speed, 1)) infinite; }
+  @keyframes stb-wave { 0% { transform: scale(.9); opacity: .55; } 80%, 100% { transform: scale(2.7); opacity: 0; } }
+  [data-pulse="true"] .stb[data-state="en-cours"] .stb__arc { transform-origin: 8px 8px; animation: stb-spin calc(1s / var(--stb-speed, 1)) linear infinite; }
+  @keyframes stb-spin { to { transform: rotate(1turn); } }
+  [data-pulse="true"] .stb[data-state="maintenance"] .stb__ind svg { animation: stb-breathe calc(2.8s / var(--stb-speed, 1)) ease-in-out infinite; }
+  @keyframes stb-breathe { 50% { opacity: .45; } }
+  .is-paused .stb__ind::before, .is-paused .stb__ind::after, .is-paused .stb__arc, .is-paused .stb__ind svg { animation-play-state: paused !important; }
+
+  .stb__labels { position: relative; display: inline-grid; overflow: hidden; padding-block: 6px; margin-block: -6px; }
+  .stb__label { grid-area: 1 / 1; display: block; line-height: 1.2; }
+  .stb__label.is-out { animation: stb-out 460ms cubic-bezier(.65, 0, .35, 1) forwards; }
+  .stb__label.is-in { animation: stb-in 460ms cubic-bezier(.65, 0, .35, 1) both; }
+  /* Les deux libellés défilent d'un seul bloc, comme un tambour : ils ne se chevauchent jamais. */
+  @keyframes stb-out { to { transform: translateY(calc(-100% - 6px)); opacity: .2; } }
+  @keyframes stb-in { from { transform: translateY(calc(100% + 6px)); opacity: .2; } }
+
+  /* ——— Page d'état (contexte de démonstration) ——— */
+  .stp { width: min(100%, 880px); margin-inline: auto; display: grid; gap: 32px; padding: 32px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; color: var(--text); font-family: var(--font-sans); }
+  .stp__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .stp__brand { display: inline-flex; align-items: center; gap: 8px; font: 600 16px/24px var(--font-sans); letter-spacing: var(--track-snug); color: var(--text-strong); }
+  .stp__brand svg { width: 28px; height: 28px; }
+  .stp__logo-bg { fill: var(--accent); }
+  .stp__logo-fill { fill: var(--accent-fg); }
+  .stp__logo-ln { fill: none; stroke: var(--accent-fg); stroke-width: 7; stroke-linecap: round; }
+  .stp__sub { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; font: 500 var(--t-sm)/20px var(--font-sans); color: var(--accent); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent); text-underline-offset: 4px; }
+  .stp__sub:hover { text-decoration-color: currentColor; }
+  .stp__hero { display: grid; gap: 12px; justify-items: start; }
+  .stp__title { margin: 0; font: 600 var(--t-page)/var(--t-page-lh) var(--font-sans); letter-spacing: var(--track-tight); color: var(--text-strong); }
+  .stp__time { margin: 0; font-size: var(--t-sm); line-height: var(--t-sm-lh); color: var(--text-muted); }
+  .stp__list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border); }
+  .stp__row { display: grid; grid-template-columns: minmax(0, 1fr) 64px; grid-template-areas: "top top" "bars pct"; gap: 12px 16px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
+  .stp__top { grid-area: top; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-width: 0; }
+  .stp__name { min-width: 0; font: 500 var(--t-base)/22px var(--font-sans); color: var(--text-strong); }
+  .stp__zone { display: block; font: 400 var(--t-sm)/20px var(--font-sans); color: var(--text-muted); }
+  .stp__bars { grid-area: bars; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 3px; height: 24px; }
+  .stp__bars i { display: block; border-radius: 2px; background: color-mix(in srgb, var(--up) 62%, var(--surface)); transform-origin: bottom; transition: transform var(--motion-fast) var(--ease-out); }
+  .stp__bars i[data-v="warn"] { background: var(--warn); }
+  .stp__bars i[data-v="down"] { background: var(--down); }
+  .stp__bars i:hover { transform: scaleY(1.15); }
+  .stp__pct { grid-area: pct; justify-self: end; font: 500 13px/16px var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .stp__legend { display: grid; gap: 12px; }
+  .stp__legend-title { margin: 0; font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .stp__swatch { display: flex; flex-wrap: wrap; gap: 8px 12px; }
+
+  @media (max-width: 600px) {
+    .stp { padding: 20px; gap: 24px; border-radius: 16px; }
+    .stp__row { padding: 16px 0; grid-template-columns: minmax(0, 1fr) 56px; column-gap: 12px; }
+    .stp__top { align-items: flex-start; }
+    .stp__top .stb { margin-top: 2px; }
+    .stp__bars { gap: 2px; }
+    .stp__name { font-size: 15px; }
+    .stb { --fs: 14px; --h: 32px; }
+    [data-size="sm"] .stb { --fs: 13px; --h: 28px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stb { transition: background-color 120ms linear, color 120ms linear; }
+    .stb__ind::before, .stb__ind::after, .stb__arc, .stb__ind svg, .stb__label.is-in, .stb__label.is-out { animation: none !important; }
+    .stb__label.is-out { display: none; }
+  }
+</style>
+
+<script>
+(function () {
+  /* Six états, six formes : point plein, arc qui tourne, demi-disque, losange, pause, cercle vide. */
+  var STATES = {
+    'ok': { label: 'Opérationnel', svg: '<circle cx="8" cy="8" r="4.5"/>' },
+    'en-cours': { label: 'En cours', svg: '<circle cx="8" cy="8" r="2.5"/><path class="stb__arc is-line" d="M8 2.5a5.5 5.5 0 1 1-5.5 5.5"/>' },
+    'degrade': { label: 'Performances dégradées', svg: '<path class="is-line" d="M8 2.75a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5z" style="stroke-width:1.6"/><path d="M8 2.75v10.5a5.25 5.25 0 0 1 0-10.5z"/>' },
+    'incident': { label: 'Incident en cours', svg: '<path d="M8 2.2l5.8 5.8L8 13.8 2.2 8z"/>' },
+    'maintenance': { label: 'Maintenance', svg: '<rect x="3.75" y="3" width="3" height="10" rx="1.2"/><rect x="9.25" y="3" width="3" height="10" rx="1.2"/>' },
+    'hors-ligne': { label: 'Hors ligne', svg: '<circle class="is-line" cx="8" cy="8" r="4.25"/>' }
+  };
+  var reduced = function () { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; };
+
+  function build(el) {
+    var st = STATES[el.dataset.state] ? el.dataset.state : 'ok';
+    el.innerHTML = '<span class="stb__ind" aria-hidden="true"><svg viewBox="0 0 16 16">' + STATES[st].svg + '</svg></span><span class="stb__labels"><span class="stb__label"></span></span>';
+    el.querySelector('.stb__label').textContent = el.dataset.label || STATES[st].label;
+  }
+  /* Changement d'état : la largeur s'ajuste, l'ancien libellé sort par le haut, le nouveau entre par le bas. */
+  function set(el, state, label) {
+    if (!STATES[state]) return;
+    var text = label || STATES[state].label, cur = el.querySelector('.stb__label:not(.is-out)');
+    if (el.dataset.state === state && cur && cur.textContent === text) return;
+    var w0 = el.getBoundingClientRect().width, changedShape = el.dataset.state !== state;
+    el.dataset.state = state;
+    if (changedShape) {
+      var ind = el.querySelector('.stb__ind');
+      ind.innerHTML = '<svg viewBox="0 0 16 16">' + STATES[state].svg + '</svg>';
+      ind.classList.remove('is-new'); void ind.offsetWidth; ind.classList.add('is-new');
+    }
+    var box = el.querySelector('.stb__labels'), next = document.createElement('span');
+    next.className = 'stb__label'; next.textContent = text;
+    box.querySelectorAll('.is-out').forEach(function (n) { n.remove(); });
+    if (cur && !reduced()) { cur.classList.remove('is-in'); cur.classList.add('is-out'); cur.setAttribute('aria-hidden', 'true'); cur.addEventListener('animationend', function () { cur.remove(); }, { once: true }); next.classList.add('is-in'); }
+    else if (cur) cur.remove();
+    box.appendChild(next);
+    if (reduced()) return;
+    /* Largeur : de l'ancienne à la nouvelle mesure, puis retour à auto. */
+    el.style.width = 'auto';
+    var w1 = el.getBoundingClientRect().width;
+    el.style.width = w0 + 'px'; void el.offsetWidth; el.style.width = w1 + 'px';
+    clearTimeout(el._t); el._t = setTimeout(function () { el.style.width = ''; }, 460);
+  }
+
+  function Board(root) {
+    root.querySelectorAll('[data-stb]').forEach(build);
+    /* Barres de disponibilité sur 90 jours (60 sur mobile), tirées d'une graine pour rester stables. */
+    function bars() {
+      var n = root.clientWidth < 520 ? 30 : root.clientWidth < 760 ? 60 : 90, days = root.querySelector('.stp__days');
+      if (days) days.textContent = 'données sur ' + n + ' jours';
+      root.querySelectorAll('.stp__row').forEach(function (row) {
+        var seed = +row.dataset.seed || 1, up = parseFloat(row.dataset.uptime), rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+        var html = '';
+        for (var i = 0; i < 90; i++) {
+          var r = rnd(), v = up >= 100 ? 'up' : r > 0.985 - (100 - up) * 0.5 ? (r > 0.996 ? 'down' : 'warn') : 'up';
+          if (i >= 90 - n) html += '<i data-v="' + v + '" title="' + (v === 'up' ? 'Aucun incident' : v === 'warn' ? 'Ralentissements' : 'Interruption') + '"></i>';
+        }
+        row.querySelector('.stp__bars').innerHTML = html;
+      });
+    }
+    bars();
+    var lastW = root.clientWidth;
+    if ('ResizeObserver' in window) new ResizeObserver(function () { if (Math.abs(root.clientWidth - lastW) > 40) { lastW = root.clientWidth; bars(); } }).observe(root);
+    /* Hors écran : les ondes s'arrêtent. */
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { root.classList.toggle('is-paused', !e[0].isIntersecting); }).observe(root);
+    var live = root.querySelector('[data-live]'), timers = [];
+    root._statuts = {
+      set: function (state, label) { set(live, state, label); },
+      setRow: function (i, state, label) { var b = root.querySelectorAll('.stp__row [data-stb]')[i]; if (b) set(b, state, label); },
+      /* Scénario : un incident survient, est pris en charge, puis résolu. */
+      scenario: function (done) {
+        timers.forEach(clearTimeout); timers = [];
+        var steps = [[0, 'degrade', 'Latence élevée sur l’API'], [1500, 'incident', 'Incident en cours'], [3200, 'en-cours', 'Correctif en cours de déploiement'], [5000, 'ok', 'Tous les systèmes fonctionnent']];
+        steps.forEach(function (s) { timers.push(setTimeout(function () { set(live, s[1], s[2]); root._statuts.setRow(0, s[1] === 'ok' ? 'ok' : s[1], s[1] === 'ok' ? '' : STATES[s[1]].label); }, s[0])); });
+        if (done) timers.push(setTimeout(done, 6200));
+      }
+    };
+  }
+  window.StatutVivant = { set: set, build: build, STATES: STATES };
+  document.querySelectorAll('[data-statuts]').forEach(function (el) { if (!el._statuts) Board(el); });
+})();
+</script>

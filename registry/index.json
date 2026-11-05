@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "total": 19,
+  "total": 44,
   "items": [
     {
       "id": "bouton-magnetique",
@@ -172,6 +172,32 @@
       }
     },
     {
+      "id": "specimen-axes-vivants",
+      "nom": "Spécimen à axes vivants",
+      "categorie": "typographie",
+      "niveau": "premium",
+      "palette": "bordeaux",
+      "description": "Un spécimen de police variable qui se manipule : plan d’axes à glisser, curseurs de graisse et de chasse, instances nommées, et un titre dont chaque lettre s’épaissit sur un ressort à l’approche du pointeur.",
+      "tags": [
+        "Police variable",
+        "Ressort",
+        "Pointeur",
+        "Spécimen"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1024
+      },
+      "ordre": 1,
+      "logo_exemple": {
+        "nom": "Ondée",
+        "secteur": "Revue culturelle (média)",
+        "fichier": "registry/items/specimen-axes-vivants/logo.svg",
+        "palette": "bordeaux",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "bento-cases-vivantes",
       "nom": "Bento à cases vivantes",
       "categorie": "bento",
@@ -214,6 +240,32 @@
       "ordre": 2
     },
     {
+      "id": "calque-grille",
+      "nom": "Calque de grille",
+      "categorie": "espacements",
+      "niveau": "essentiel",
+      "palette": "cobalt",
+      "description": "La touche G pose sur n’importe quelle page ses colonnes, gouttières et une ligne de base de 8 px, qui s’adaptent au point de rupture. Maj + G change de calque, Échap le retire ; un bouton fait de même au toucher.",
+      "tags": [
+        "Grille",
+        "Raccourci clavier",
+        "Contrôle qualité",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 2,
+      "logo_exemple": {
+        "nom": "Corniche",
+        "secteur": "Studio d’architecture",
+        "fichier": "registry/items/calque-grille/logo.svg",
+        "palette": "cobalt",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "bouton-maintenir",
       "nom": "Maintenir pour confirmer",
       "categorie": "boutons",
@@ -229,6 +281,32 @@
         "width": 640
       },
       "ordre": 3
+    },
+    {
+      "id": "rayons-concentriques",
+      "nom": "Rayons concentriques",
+      "categorie": "espacements",
+      "niveau": "essentiel",
+      "palette": "emeraude",
+      "description": "Des cartes imbriquées dont le rayon intérieur se recalcule tout seul (rayon extérieur − marge) : la loupe du coin montre les arcs qui partagent le même centre, et ce qui se passe quand on garde le même rayon partout.",
+      "tags": [
+        "Rayons",
+        "Variables CSS",
+        "Imbrication",
+        "Pédagogique"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1024
+      },
+      "ordre": 3,
+      "logo_exemple": {
+        "nom": "Nacre",
+        "secteur": "Banque en ligne",
+        "fichier": "registry/items/rayons-concentriques/logo.svg",
+        "palette": "emeraude",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "bouton-bordure-tracee",
@@ -248,6 +326,58 @@
       "ordre": 4
     },
     {
+      "id": "regle-cotes",
+      "nom": "Règle de cotes",
+      "categorie": "espacements",
+      "niveau": "premium",
+      "palette": "framboise",
+      "description": "Comme dans Figma : survolez deux éléments et la distance s’affiche en pixels et en jeton (24 · space-6), avec traits, talons et taille des boîtes. Le mode « Tout coter » annote chaque marge et chaque écart d’un composant et signale ceux qui sortent de la grille.",
+      "tags": [
+        "Mesure",
+        "Jetons",
+        "Contrôle qualité",
+        "Survol"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 720
+      },
+      "ordre": 4,
+      "logo_exemple": {
+        "nom": "Ferro",
+        "secteur": "Outil de déploiement pour développeurs",
+        "fichier": "registry/items/regle-cotes/logo.svg",
+        "palette": "framboise",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "icones-epaisseur",
+      "nom": "Épaisseur réglable",
+      "categorie": "icones",
+      "niveau": "essentiel",
+      "palette": "lagon",
+      "description": "Un curseur de 1 à 2 px change le trait des 24 icônes d’un jeu de voyage, à la taille choisie (16 à 32). L’option « Trait constant » garde la même épaisseur à l’écran quelle que soit la taille, et la copie SVG ou JSX écrit la valeur réglée.",
+      "tags": [
+        "Icônes",
+        "SVG",
+        "Copie",
+        "Variables CSS"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 5,
+      "logo_exemple": {
+        "nom": "Escale",
+        "secteur": "Voyage (application de réservation)",
+        "fichier": "registry/items/icones-epaisseur/logo.svg",
+        "palette": "lagon",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "bouton-remplissage-directionnel",
       "nom": "Remplissage directionnel",
       "categorie": "boutons",
@@ -263,6 +393,549 @@
         "width": 640
       },
       "ordre": 5
+    },
+    {
+      "id": "icones-dessinees",
+      "nom": "Icônes qui se dessinent",
+      "categorie": "icones",
+      "niveau": "premium",
+      "palette": "lagon",
+      "description": "Chaque icône se trace au survol, au focus ou à l’entrée dans l’écran, sur un fantôme discret ; un clic joue son état : la cloche sonne, la coche valide, le cadenas s’ouvre, l’épingle se pose sur un vrai ressort.",
+      "tags": [
+        "SVG",
+        "Tracé",
+        "Ressort",
+        "États",
+        "Barre d’onglets"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 900
+      },
+      "ordre": 10,
+      "logo_exemple": {
+        "nom": "Halte",
+        "secteur": "Voyage ferroviaire (réservation de billets)",
+        "fichier": "registry/items/icones-dessinees/logo.svg",
+        "palette": "lagon",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "palette-en-situation",
+      "nom": "Palette en situation",
+      "categorie": "couleurs",
+      "niveau": "essentiel",
+      "palette": "lagon",
+      "description": "Une maquette d’application (barre, carte, graphique, formulaire) se recolore à l’instant avec l’une des 42 palettes, par une révélation circulaire partie de la pastille ; contrastes mesurés en direct et variables CSS à copier.",
+      "tags": [
+        "Palette",
+        "Thème",
+        "Contraste",
+        "View Transitions",
+        "Export"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 10,
+      "logo_exemple": {
+        "nom": "Orée",
+        "secteur": "Voyage en train de nuit",
+        "fichier": "registry/items/palette-en-situation/logo.svg",
+        "palette": "lagon",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "icones-morphing",
+      "nom": "Icônes qui se transforment",
+      "categorie": "icones",
+      "niveau": "premium",
+      "palette": "violet",
+      "description": "Menu ↔ fermer, lecture ↔ pause, plus ↔ coche, son ↔ muet, envoyer ↔ envoyé : les tracés s’interpolent point à point sur un vrai ressort, les traits pivotent au lieu de se tordre. Démontré dans un lecteur de podcast complet.",
+      "tags": [
+        "SVG",
+        "Morphing",
+        "Ressort",
+        "Lecteur",
+        "Toggle"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 900
+      },
+      "ordre": 11,
+      "logo_exemple": {
+        "nom": "Onde",
+        "secteur": "Média audio (plateforme de podcasts)",
+        "fichier": "registry/items/icones-morphing/logo.svg",
+        "palette": "violet",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "simulateur-daltonisme",
+      "nom": "Simulateur de daltonisme",
+      "categorie": "couleurs",
+      "niveau": "essentiel",
+      "palette": "corail",
+      "description": "Un volet à ressort compare votre interface en vision normale et en protanopie, deutéranopie, tritanopie ou achromatopsie, à sévérité réglable ; les paires de couleurs qui se confondent sont mesurées (ΔE OKLab) et signalées.",
+      "tags": [
+        "Accessibilité",
+        "Daltonisme",
+        "feColorMatrix",
+        "Comparaison",
+        "Graphiques"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 11,
+      "logo_exemple": {
+        "nom": "Pulsa",
+        "secteur": "Sport connecté (suivi d’entraînement)",
+        "fichier": "registry/items/simulateur-daltonisme/logo.svg",
+        "palette": "corail",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "rampe-oklch",
+      "nom": "Rampe OKLCH",
+      "categorie": "couleurs",
+      "niveau": "premium",
+      "palette": "minuit",
+      "description": "On choisit une teinte et une couleur de base sur le plan clarté × chroma : 12 paliers réguliers à l’œil sont générés en OKLCH, ramenés dans la gamme sRGB, puis vérifiés en direct en WCAG 2 et en APCA, avec aperçu en situation et export CSS ou Tailwind.",
+      "tags": [
+        "OKLCH",
+        "Contraste",
+        "APCA",
+        "Générateur",
+        "Ressort",
+        "Export"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 12,
+      "logo_exemple": {
+        "nom": "Nacre",
+        "secteur": "Banque en ligne",
+        "fichier": "registry/items/rampe-oklch/logo.svg",
+        "palette": "minuit",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "echelle-fluide",
+      "nom": "Banc de l’échelle fluide",
+      "categorie": "typographie",
+      "niveau": "essentiel",
+      "palette": "bordeaux",
+      "description": "On étire un cadre à la poignée, à la règle ou par largeurs types : chaque niveau de l’échelle en clamp() se recalcule, la taille réellement rendue s’affiche en px, la courbe montre où l’on se trouve, et les variables s’exportent.",
+      "tags": [
+        "clamp()",
+        "Container queries",
+        "Échelle modulaire",
+        "Responsive",
+        "Export"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 13,
+      "logo_exemple": {
+        "nom": "Brève",
+        "secteur": "Média d’information",
+        "fichier": "registry/items/echelle-fluide/logo.svg",
+        "palette": "bordeaux",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "correcteur-typo-fr",
+      "nom": "Correcteur typographique français",
+      "categorie": "typographie",
+      "niveau": "essentiel",
+      "palette": "ambre",
+      "description": "On colle un texte : espaces fines et insécables (; ! ? : « » %), guillemets, apostrophes, points de suspension, milliers, unités, ordinaux, majuscules accentuées et ligatures sont surlignés à mesure qu’on écrit, puis corrigés un à un ou d’un coup.",
+      "tags": [
+        "Français",
+        "Typographie",
+        "Éditeur",
+        "Accessibilité",
+        "Contenu"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 14,
+      "logo_exemple": {
+        "nom": "Cahier",
+        "secteur": "Éducation (rédaction de cours)",
+        "fichier": "registry/items/correcteur-typo-fr/logo.svg",
+        "palette": "ambre",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "adresse-carte",
+      "nom": "Adresse avec carte",
+      "categorie": "champs",
+      "niveau": "premium",
+      "palette": "foret",
+      "description": "Saisie d’adresse semi-automatique (combobox accessible, insensible aux accents) couplée à un plan dessiné en SVG : la caméra glisse sur un ressort vers la suggestion active, l’épingle tombe avec un rebond, le trajet se trace et la zone de livraison répond aussitôt « livrable », « hors zone » ou « précisez le numéro ». Sans API ni bibliothèque de carte.",
+      "tags": [
+        "Formulaire",
+        "Combobox",
+        "Carte SVG",
+        "Ressort",
+        "Livraison",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 20,
+      "logo_exemple": {
+        "nom": "Brindille",
+        "secteur": "Fleuriste livré à vélo",
+        "fichier": "registry/items/adresse-carte/logo.svg",
+        "palette": "foret",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "bouton-etats-enchaines",
+      "nom": "Bouton à états enchaînés",
+      "categorie": "boutons",
+      "niveau": "essentiel",
+      "palette": "emeraude",
+      "description": "Envoyer → rotation → coche : le bouton se contracte en cercle pendant l’attente, puis s’élargit vers le libellé du résultat sur un vrai ressort CSS ; l’erreur tremble brièvement et propose de réessayer. Démontré sur la confirmation d’un virement.",
+      "tags": [
+        "États",
+        "Ressort",
+        "Chargement",
+        "Formulaire",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 640
+      },
+      "ordre": 20,
+      "logo_exemple": {
+        "nom": "Virgule",
+        "secteur": "Banque en ligne",
+        "fichier": "registry/items/bouton-etats-enchaines/logo.svg",
+        "palette": "emeraude",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "code-otp",
+      "nom": "Code à 6 chiffres",
+      "categorie": "champs",
+      "niveau": "essentiel",
+      "palette": "indigo",
+      "description": "Saisie d’un code de vérification : un seul vrai champ sous des cases dessinées, donc collage, remplissage automatique du SMS et lecteurs d’écran natifs. Les chiffres glissent dans leur case, la réussite passe en vague, l’erreur tremble puis vide le champ ; renvoi avec compte à rebours.",
+      "tags": [
+        "OTP",
+        "Authentification",
+        "Formulaire",
+        "Mobile",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 640
+      },
+      "ordre": 20,
+      "logo_exemple": {
+        "nom": "Fonderie",
+        "secteur": "Outil développeur (plateforme de déploiement)",
+        "fichier": "registry/items/code-otp/logo.svg",
+        "palette": "indigo",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "logo-en-situation",
+      "nom": "Logo en situation",
+      "categorie": "logos",
+      "niveau": "essentiel",
+      "palette": "sable",
+      "description": "Le logo posé dans ses vrais usages : onglet de navigateur et favicon en 16, 32 et 48 px, icône d’app et notification, avatar de réseau social, carte de visite recto verso qui se retourne. Une seule icône (un <symbol>) alimente toutes les maquettes.",
+      "tags": [
+        "Maquettes",
+        "Favicon",
+        "Icône d’app",
+        "Carte de visite",
+        "SVG"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 20,
+      "logo_exemple": {
+        "nom": "Strata",
+        "secteur": "Studio d’architecture",
+        "fichier": "registry/items/logo-en-situation/logo.svg",
+        "palette": "sable",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "bouton-gluant",
+      "nom": "Bouton gluant",
+      "categorie": "boutons",
+      "niveau": "premium",
+      "palette": "orchidee",
+      "description": "Le bouton principal se dédouble en actions qui s’en détachent comme des gouttes, puis les réabsorbe : filtre SVG « goo » sur un calque de formes, positions sur de vrais ressorts avec étirement selon la vitesse, icônes et étiquettes restées nettes. Au survol, les gouttes pointent déjà sous la surface.",
+      "tags": [
+        "SVG",
+        "Goo",
+        "Ressort",
+        "Speed dial",
+        "Mobile"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 960
+      },
+      "ordre": 21,
+      "logo_exemple": {
+        "nom": "Glane",
+        "secteur": "Prise de notes et veille",
+        "fichier": "registry/items/bouton-gluant/logo.svg",
+        "palette": "orchidee",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "carte-lumiere-partagee",
+      "nom": "Carte à lumière partagée",
+      "categorie": "cartes",
+      "niveau": "essentiel",
+      "palette": "azur",
+      "description": "Une seule source de lumière pour toute la grille : le halo suit le pointeur avec une légère inertie et s’accroche aux bords de chaque carte voisine, l’icône la plus proche prend la teinte. Au toucher, la lumière suit le défilement ; au clavier, elle se pose sur la carte qui a le focus.",
+      "tags": [
+        "Survol",
+        "Halo",
+        "Grille",
+        "Fonctionnalités",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1040
+      },
+      "ordre": 21,
+      "logo_exemple": {
+        "nom": "Équipage",
+        "secteur": "Logiciel RH",
+        "fichier": "registry/items/carte-lumiere-partagee/logo.svg",
+        "palette": "azur",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "depot-fichiers-aimante",
+      "nom": "Dépôt de fichiers aimanté",
+      "categorie": "champs",
+      "niveau": "premium",
+      "palette": "jade",
+      "description": "Dès qu’un fichier approche, la zone se réveille, se penche vers lui et happe son aperçu vers son centre sur un ressort ; au dépôt, chaque fichier s’envole vers la liste avec miniature, progression, refus clairs (format, taille) et reprise après une coupure réseau. Au doigt, la zone devient un grand bouton.",
+      "tags": [
+        "Drag & drop",
+        "Upload",
+        "Ressort",
+        "Formulaire",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 21,
+      "logo_exemple": {
+        "nom": "Liasse",
+        "secteur": "Comptabilité en ligne",
+        "fichier": "registry/items/depot-fichiers-aimante/logo.svg",
+        "palette": "jade",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "zone-protection",
+      "nom": "Zone de protection",
+      "categorie": "logos",
+      "niveau": "essentiel",
+      "palette": "cobalt",
+      "description": "Planche de charte interactive : la marge de sécurité du logo cotée en multiples de x, un bouton à glisser qui fait rougir la zone dès qu’il y entre, les tailles minimales et la grille des usages interdits (étiré, recoloré, ombré, pivoté, détouré, fond chargé, réordonné).",
+      "tags": [
+        "Charte",
+        "Marge de sécurité",
+        "Glisser",
+        "Usages interdits",
+        "SVG"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 21,
+      "logo_exemple": {
+        "nom": "brise",
+        "secteur": "Banque en ligne",
+        "fichier": "registry/items/zone-protection/logo.svg",
+        "palette": "cobalt",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "bouton-lentille",
+      "nom": "Bouton lentille",
+      "categorie": "boutons",
+      "niveau": "premium",
+      "palette": "neon-violet",
+      "description": "Un bouton en verre qui réfracte vraiment le fond : les bords bombent et tirent l’image, le centre grossit légèrement, les couleurs se séparent sur la tranche et un reflet suit le pointeur. Au repos la lentille reste discrète, au survol elle s’affirme sur un ressort ; un voile garde le libellé lisible. Shader WebGL 1 maison, repli en verre dépoli CSS.",
+      "tags": [
+        "WebGL",
+        "Shader",
+        "Verre",
+        "Réfraction",
+        "Hero"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 22,
+      "logo_exemple": {
+        "nom": "Lueurs",
+        "secteur": "Festival d’arts numériques",
+        "fichier": "registry/items/bouton-lentille/logo.svg",
+        "palette": "neon-violet",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "carte-chemise",
+      "nom": "Carte chemise",
+      "categorie": "cartes",
+      "niveau": "premium",
+      "palette": "ocre",
+      "description": "Une carte qui s’ouvre comme une chemise cartonnée : au survol le rabat s’entrouvre, au clic il bascule en 3D sur un ressort et les pièces sortent une à une en éventail, avec ombre portée qui se retire et lumière qui glisse sur le carton. Les pièces deviennent alors des liens au clavier.",
+      "tags": [
+        "3D",
+        "Ressort",
+        "Perspective",
+        "Dossiers",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1040
+      },
+      "ordre": 22,
+      "logo_exemple": {
+        "nom": "Liasse",
+        "secteur": "Expertise comptable en ligne",
+        "fichier": "registry/items/carte-chemise/logo.svg",
+        "palette": "ocre",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "revelation-marque",
+      "nom": "Révélation de marque",
+      "categorie": "logos",
+      "niveau": "premium",
+      "palette": "framboise",
+      "description": "Le logo se construit à partir de ses formes : quatre pétales éclosent du centre sur un vrai ressort, la perle se pose, le mot-symbole monte de son masque lettre par lettre, puis l’écran se lève en rideau courbe (ou zoome dans l’icône) sur la page. Réutilisable comme préchargeur en boucle.",
+      "tags": [
+        "Intro",
+        "Préchargeur",
+        "Ressort",
+        "Masque",
+        "Web Animations"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1024
+      },
+      "ordre": 22,
+      "logo_exemple": {
+        "nom": "nacre",
+        "secteur": "E-commerce mode (maille et prêt-à-porter)",
+        "fichier": "registry/items/revelation-marque/logo.svg",
+        "palette": "framboise",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "badge-statut-vivant",
+      "nom": "Badge de statut vivant",
+      "categorie": "badges",
+      "niveau": "essentiel",
+      "palette": "petrole",
+      "description": "Six états de service (opérationnel, en cours, dégradé, incident, maintenance, hors ligne), chacun avec sa forme, son onde et son libellé : jamais la couleur seule. L’onde accélère avec la gravité, l’arc tourne pendant un déploiement, et le changement d’état fait défiler le libellé comme un tambour pendant que la largeur s’ajuste.",
+      "tags": [
+        "Statut",
+        "Pulsation",
+        "Page d’état",
+        "Daltonisme",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 960
+      },
+      "ordre": 23,
+      "logo_exemple": {
+        "nom": "Fanal",
+        "secteur": "Hébergement cloud",
+        "fichier": "registry/items/badge-statut-vivant/logo.svg",
+        "palette": "petrole",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "compteur-roulant",
+      "nom": "Compteur qui roule",
+      "categorie": "badges",
+      "niveau": "premium",
+      "palette": "framboise",
+      "description": "Un nombre qui roule chiffre par chiffre comme un compteur mécanique : chaque colonne suit son propre ressort, les unités partent en premier, le sens suit la variation (9 → 10 avance toujours), les grands sauts font quelques tours de plus et les colonnes apparaissent ou se replient. Formats français : entier, compact, euros, pastille « 99+ ».",
+      "tags": [
+        "Chiffres",
+        "Ressort",
+        "Pastille",
+        "E-commerce",
+        "Intl",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 24,
+      "logo_exemple": {
+        "nom": "Ourlet",
+        "secteur": "Prêt-à-porter en ligne",
+        "fichier": "registry/items/compteur-roulant/logo.svg",
+        "palette": "framboise",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "flux-integrations",

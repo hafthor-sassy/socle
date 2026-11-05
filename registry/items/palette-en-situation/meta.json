@@ -1,0 +1,308 @@
+{
+  "id": "palette-en-situation",
+  "nom": "Palette en situation",
+  "categorie": "couleurs",
+  "niveau": "essentiel",
+  "description": "Une maquette d’application (barre, carte, graphique, formulaire) se recolore à l’instant avec l’une des 42 palettes, par une révélation circulaire partie de la pastille ; contrastes mesurés en direct et variables CSS à copier.",
+  "tags": [
+    "Palette",
+    "Thème",
+    "Contraste",
+    "View Transitions",
+    "Export"
+  ],
+  "date": "2026-11-05",
+  "ordre": 10,
+  "palette": "lagon",
+  "logo_exemple": {
+    "nom": "Orée",
+    "secteur": "Voyage en train de nuit",
+    "fichier": "logo.svg",
+    "palette": "lagon",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1100
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Neutres et 42 palettes [data-accent], clair et sombre"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 4 ko, sans dépendance (onglet HTML)"
+    },
+    {
+      "nom": "react ≥ 18, react-dom",
+      "note": "Onglet React (flushSync pour la transition)"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4 + @tailwindcss/container-queries",
+      "note": "Onglet React : variantes @container"
+    }
+  ],
+  "props": [
+    {
+      "name": "palette",
+      "label": "Palette de la maquette",
+      "type": "select",
+      "default": "lagon",
+      "options": [
+        {
+          "value": "graphite",
+          "label": "Graphite"
+        },
+        {
+          "value": "encre",
+          "label": "Encre"
+        },
+        {
+          "value": "indigo",
+          "label": "Indigo"
+        },
+        {
+          "value": "cobalt",
+          "label": "Cobalt"
+        },
+        {
+          "value": "azur",
+          "label": "Azur"
+        },
+        {
+          "value": "lagon",
+          "label": "Lagon"
+        },
+        {
+          "value": "sarcelle",
+          "label": "Sarcelle"
+        },
+        {
+          "value": "jade",
+          "label": "Jade"
+        },
+        {
+          "value": "foret",
+          "label": "Forêt"
+        },
+        {
+          "value": "olive",
+          "label": "Olive"
+        },
+        {
+          "value": "ambre",
+          "label": "Ambre"
+        },
+        {
+          "value": "miel",
+          "label": "Miel"
+        },
+        {
+          "value": "braise",
+          "label": "Braise"
+        },
+        {
+          "value": "terracotta",
+          "label": "Terracotta"
+        },
+        {
+          "value": "corail",
+          "label": "Corail"
+        },
+        {
+          "value": "rubis",
+          "label": "Rubis"
+        },
+        {
+          "value": "framboise",
+          "label": "Framboise"
+        },
+        {
+          "value": "orchidee",
+          "label": "Orchidée"
+        },
+        {
+          "value": "violet",
+          "label": "Violet"
+        },
+        {
+          "value": "moka",
+          "label": "Moka"
+        },
+        {
+          "value": "argile",
+          "label": "Argile"
+        },
+        {
+          "value": "ocre",
+          "label": "Ocre"
+        },
+        {
+          "value": "lavande",
+          "label": "Lavande"
+        },
+        {
+          "value": "menthe",
+          "label": "Menthe"
+        },
+        {
+          "value": "peche",
+          "label": "Pêche"
+        },
+        {
+          "value": "neon-rose",
+          "label": "Néon rose"
+        },
+        {
+          "value": "neon-lime",
+          "label": "Néon lime"
+        },
+        {
+          "value": "neon-violet",
+          "label": "Néon violet"
+        },
+        {
+          "value": "ardoise",
+          "label": "Ardoise"
+        },
+        {
+          "value": "fumee",
+          "label": "Fumée"
+        },
+        {
+          "value": "sable",
+          "label": "Sable"
+        },
+        {
+          "value": "mousse",
+          "label": "Mousse"
+        },
+        {
+          "value": "sauge",
+          "label": "Sauge"
+        },
+        {
+          "value": "lichen",
+          "label": "Lichen"
+        },
+        {
+          "value": "minuit",
+          "label": "Minuit"
+        },
+        {
+          "value": "aubergine",
+          "label": "Aubergine"
+        },
+        {
+          "value": "bordeaux",
+          "label": "Bordeaux"
+        },
+        {
+          "value": "or",
+          "label": "Or"
+        },
+        {
+          "value": "emeraude",
+          "label": "Émeraude"
+        },
+        {
+          "value": "moutarde",
+          "label": "Moutarde"
+        },
+        {
+          "value": "brique",
+          "label": "Brique"
+        },
+        {
+          "value": "petrole",
+          "label": "Pétrole"
+        }
+      ],
+      "code": {
+        "html": "data-palette=\"{v}\"",
+        "react": "palette = '{v}'"
+      },
+      "hint": "Point de départ ; les pastilles changent ensuite la maquette seule."
+    },
+    {
+      "name": "rayon",
+      "label": "Rayon des cartes",
+      "type": "select",
+      "default": "12",
+      "options": [
+        {
+          "value": "8",
+          "label": "8 px"
+        },
+        {
+          "value": "12",
+          "label": "12 px"
+        },
+        {
+          "value": "16",
+          "label": "16 px"
+        }
+      ],
+      "hint": "Les contrôles suivent : 8 px pour 8 et 12, 12 px pour 16.",
+      "code": {
+        "html": "data-rayon=\"{v}\"",
+        "react": "rayon = {v}"
+      }
+    },
+    {
+      "name": "revelation",
+      "label": "Révélation circulaire",
+      "type": "boolean",
+      "default": true,
+      "hint": "View Transitions API ; fondu des couleurs sinon.",
+      "code": {
+        "react": "revelation = {v}"
+      }
+    },
+    {
+      "name": "export",
+      "label": "Export des variables",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "react": "showExport = {v}"
+      }
+    },
+    {
+      "name": "filtres",
+      "label": "Filtres par famille",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "react": "filtres = {v}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/PaletteSituation.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour choisir l’accent d’une marque en le voyant sur de vrais éléments (bouton plein, badge teinté, onglet, champ au focus, graphique) plutôt que sur un nuancier.",
+    "Remplacez la maquette par vos propres composants : tout ce qui est dans la scène lit var(--accent…) et suit la palette, sans autre code.",
+    "Le bloc copié donne les valeurs du thème affiché ; basculez la page en sombre pour obtenir le bloc .dark. Avec tokens.css, un simple data-accent suffit."
+  ],
+  "accessibilite": [
+    "Pastilles en radiogroup : flèches, Début et Fin pour parcourir, une seule tabulation pour entrer dans le groupe ; nom de la palette annoncé (aria-live).",
+    "Quatre contrastes recalculés à chaque changement sur les couleurs réellement rendues : texte sur accent, accent sur surface, accent sur teinte douce (4,5:1) et vif sur fond pour les graphiques (3:1).",
+    "Avec « réduire les animations », ni révélation ni fondu : la palette change d’un coup. Cibles de 44 px partout."
+  ]
+}

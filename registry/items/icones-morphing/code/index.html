@@ -1,0 +1,311 @@
+<!-- Icônes qui se transforment — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="mo" data-morph-root style="--mo-stroke: 1.5" data-stiffness="320" data-damping="22" data-spin="true">
+  <header class="mo__bar">
+    <span class="mo__brand">
+      <svg class="mo__logo" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="16" class="mo__logo-disc"/>
+        <path d="M7 16h2.6M11.2 11.5v9M15.4 8v16M19.6 11.5v9M23.4 14v4" class="mo__logo-bars"/>
+      </svg>
+      <span class="mo__word">onde</span>
+    </span>
+    <button type="button" class="mo__btn mo__btn--ghost" data-morph="menu" aria-expanded="false" aria-controls="mo-nav" aria-label="Ouvrir le menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true"></svg>
+    </button>
+    <nav class="mo__nav" id="mo-nav" aria-label="Menu principal" hidden>
+      <a href="#" class="mo__navlink" aria-current="page">Découvrir</a>
+      <a href="#" class="mo__navlink">Bibliothèque</a>
+      <a href="#" class="mo__navlink">Abonnements <span class="mo__count">3</span></a>
+      <a href="#" class="mo__navlink">Réglages</a>
+    </nav>
+  </header>
+
+  <article class="mo__player" aria-label="Lecteur d’épisode">
+    <div class="mo__art" aria-hidden="true">
+      <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice">
+        <rect width="200" height="200" class="mo__art-bg"/>
+        <g class="mo__rings"><circle cx="150" cy="150" r="40"/><circle cx="150" cy="150" r="70"/><circle cx="150" cy="150" r="100"/><circle cx="150" cy="150" r="130"/><circle cx="150" cy="150" r="160"/></g>
+      </svg>
+      <span class="mo__art-num">42</span>
+    </div>
+    <div class="mo__meta">
+      <p class="mo__kicker">Saison 3 · Épisode 42</p>
+      <h2 class="mo__title">Les villes qui écoutent</h2>
+      <p class="mo__host">Avec Inès Morel, urbaniste sonore</p>
+      <div class="mo__progress">
+        <div class="mo__track" role="slider" tabindex="0" aria-label="Position dans l’épisode" aria-valuemin="0" aria-valuemax="2300" aria-valuenow="724" aria-valuetext="12 min 04 sur 38 min 20"><span class="mo__fill"></span></div>
+        <div class="mo__times"><span data-time>12:04</span><span>38:20</span></div>
+      </div>
+      <div class="mo__controls">
+        <button type="button" class="mo__btn mo__btn--ghost" data-morph="volume" aria-pressed="false" aria-label="Couper le son"><svg viewBox="0 0 24 24" aria-hidden="true"></svg></button>
+        <button type="button" class="mo__btn mo__btn--play" data-morph="play" aria-label="Lire l’épisode"><svg viewBox="0 0 24 24" aria-hidden="true"></svg></button>
+        <button type="button" class="mo__btn mo__btn--ghost" data-morph="share" aria-label="Copier le lien de l’épisode"><svg viewBox="0 0 24 24" aria-hidden="true"></svg></button>
+        <button type="button" class="mo__sub" data-morph="follow" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"></svg><span data-label>S’abonner</span></button>
+      </div>
+    </div>
+  </article>
+
+  <div class="mo__pairs">
+    <p class="mo__kicker">Paires de tracés · cliquez pour basculer</p>
+    <ul class="mo__list" role="list">
+      <li><button type="button" class="mo__pair" data-pair="menu" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"></svg><span>Menu<i>↔ Fermer</i></span></button></li>
+      <li><button type="button" class="mo__pair" data-pair="play" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"></svg><span>Lecture<i>↔ Pause</i></span></button></li>
+      <li><button type="button" class="mo__pair" data-pair="follow" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"></svg><span>Plus<i>↔ Coche</i></span></button></li>
+      <li><button type="button" class="mo__pair" data-pair="volume" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"></svg><span>Son<i>↔ Muet</i></span></button></li>
+      <li><button type="button" class="mo__pair" data-pair="share" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"></svg><span>Envoyer<i>↔ Envoyé</i></span></button></li>
+    </ul>
+  </div>
+  <p class="mo__sr" aria-live="polite" data-live></p>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .mo {
+    --mo-stroke: 1.5;
+    position: relative;
+    width: min(100%, 880px);
+    margin: 0 auto;
+    padding: 16px 24px 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sheet);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-sans);
+  }
+  .mo svg { overflow: visible; }
+  .mo__bar { position: relative; display: flex; align-items: center; justify-content: space-between; min-height: 56px; margin-bottom: 16px; }
+  .mo__brand { display: inline-flex; align-items: center; gap: 10px; }
+  .mo__logo { width: 32px; height: 32px; }
+  .mo__logo-disc { fill: var(--accent); }
+  .mo__logo-bars { fill: none; stroke: var(--accent-fg); stroke-width: 2.2; stroke-linecap: round; }
+  .mo__word { font-size: 21px; font-weight: 650; letter-spacing: -0.045em; color: var(--text-strong); }
+
+  .mo__btn { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface); color: var(--text-strong); cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    transition: background-color var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out), transform 240ms cubic-bezier(.34, 1.56, .64, 1); }
+  .mo__btn:hover { background: var(--raised); border-color: var(--border-control); }
+  .mo__btn:active, .mo__sub:active, .mo__pair:active { transform: scale(.94); transition-duration: 90ms; }
+  .mo__btn svg { width: 22px; height: 22px; }
+  .mo__btn--play { width: 64px; height: 64px; border: 0; background: var(--accent); color: var(--accent-fg); }
+  .mo__btn--play:hover { background: var(--accent-hover); }
+  .mo__btn--play svg { width: 28px; height: 28px; }
+  .mo :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+  /* Tracés : tous dessinés au trait, les formes pleines (lecture) ont aussi un remplissage */
+  .mo svg path { fill: none; stroke: currentColor; stroke-width: var(--mo-stroke); stroke-linecap: round; stroke-linejoin: round; }
+  .mo svg path.is-solid { fill: currentColor; stroke-width: 2; }
+
+  .mo__nav { position: absolute; z-index: 2; top: calc(100% + 4px); right: 0; width: 240px; padding: 6px; display: grid; gap: 2px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-popover);
+    transform-origin: top right; animation: mo-pop 320ms cubic-bezier(.3, 1.3, .5, 1) both; }
+  .mo__nav[hidden] { display: none; }
+  @keyframes mo-pop { from { opacity: 0; transform: scale(.92) translateY(-6px); } to { opacity: 1; transform: none; } }
+  .mo__navlink { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 0 12px; border-radius: var(--radius-ctl); color: var(--text); text-decoration: none; font-size: 15px; }
+  .mo__navlink:hover { background: var(--raised); color: var(--text-strong); }
+  .mo__navlink[aria-current] { color: var(--text-strong); font-weight: 550; }
+  .mo__count { min-width: 22px; height: 22px; padding: 0 6px; display: inline-grid; place-items: center; border-radius: var(--radius-pill); background: var(--accent-subtle); color: var(--text-strong); font: 500 12px/1 var(--font-mono); }
+
+  .mo__player { display: grid; grid-template-columns: 216px 1fr; gap: 24px; align-items: center; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--raised); }
+  .mo__art { position: relative; aspect-ratio: 1; border-radius: var(--radius-ctl); overflow: hidden; }
+  .mo__art svg { display: block; width: 100%; height: 100%; }
+  .mo__art-bg { fill: var(--accent); }
+  .mo__rings circle { fill: none; stroke: var(--accent-fg); stroke-opacity: .28; stroke-width: 1.5; transform-origin: 150px 150px; }
+  .is-playing .mo__rings circle { animation: mo-ring 2.4s cubic-bezier(.2, 0, 0, 1) infinite; }
+  .is-playing .mo__rings circle:nth-child(2) { animation-delay: -.48s; } .is-playing .mo__rings circle:nth-child(3) { animation-delay: -.96s; }
+  .is-playing .mo__rings circle:nth-child(4) { animation-delay: -1.44s; } .is-playing .mo__rings circle:nth-child(5) { animation-delay: -1.92s; }
+  .is-paused-offscreen .mo__rings circle { animation-play-state: paused; }
+  @keyframes mo-ring { 0% { transform: scale(.94); stroke-opacity: .12; } 50% { stroke-opacity: .4; } 100% { transform: scale(1.06); stroke-opacity: .12; } }
+  .mo__art-num { position: absolute; left: 16px; top: 14px; color: var(--accent-fg); font: 650 48px/1 var(--font-sans); letter-spacing: -0.05em; }
+  .mo__meta { min-width: 0; display: grid; gap: 4px; }
+  .mo__kicker { margin: 0; font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .mo__title { margin: 4px 0 0; font-size: var(--t-page); line-height: var(--t-page-lh); letter-spacing: var(--track-tight); font-weight: 600; color: var(--text-strong); }
+  .mo__host { margin: 0; font-size: var(--t-sm); line-height: var(--t-sm-lh); color: var(--text-muted); }
+  .mo__progress { margin-top: 16px; display: grid; gap: 6px; }
+  .mo__track { position: relative; height: 20px; cursor: pointer; border-radius: var(--radius-pill); }
+  .mo__track::before { content: ""; position: absolute; inset: 8px 0; border-radius: var(--radius-pill); background: var(--border); }
+  .mo__fill { position: absolute; left: 0; top: 8px; height: 4px; width: calc(var(--p, .315) * 100%); border-radius: var(--radius-pill); background: var(--text-strong); }
+  .mo__fill::after { content: ""; position: absolute; right: -6px; top: -4px; width: 12px; height: 12px; border-radius: 50%; background: var(--text-strong); box-shadow: 0 0 0 3px var(--raised); }
+  .mo__times { display: flex; justify-content: space-between; font: 500 13px/16px var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .mo__controls { margin-top: 12px; display: flex; align-items: center; gap: 12px; }
+  .mo__sub { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px 0 14px; border: 1px solid var(--border-control); border-radius: var(--radius-pill); background: transparent; color: var(--text-strong); font: 500 15px/1 var(--font-sans); cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: background-color var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out), transform 240ms cubic-bezier(.34, 1.56, .64, 1); }
+  .mo__sub svg { width: 20px; height: 20px; }
+  .mo__sub[aria-pressed=true] { background: var(--accent-subtle); border-color: var(--accent-subtle-border); }
+  .mo__sub span { display: inline-block; min-width: 7.2ch; text-align: left; }
+
+  .mo__pairs { margin-top: 24px; display: grid; gap: 12px; }
+  .mo__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+  .mo__pair { width: 100%; min-height: 112px; display: grid; place-items: center; align-content: center; gap: 12px; padding: 16px 8px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); color: var(--text-strong); font: 500 14px/20px var(--font-sans); cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: border-color var(--motion-base) var(--ease-out), background-color var(--motion-base) var(--ease-out), transform 240ms cubic-bezier(.34, 1.56, .64, 1); }
+  .mo__pair:hover { border-color: var(--border-control); background: var(--raised); }
+  .mo__pair svg { width: 32px; height: 32px; }
+  .mo__pair span { display: grid; justify-items: center; gap: 2px; line-height: 18px; }
+  .mo__pair i { font-style: normal; color: var(--text-muted); }
+  .mo__pair[aria-pressed=true] { color: var(--accent); }
+  .mo__pair[aria-pressed=true] span { color: var(--text-strong); }
+  .mo__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 720px) {
+    .mo { padding: 12px 16px 20px; border-radius: var(--radius-card); }
+    .mo__player { grid-template-columns: 1fr; gap: 16px; padding: 12px; }
+    .mo__art { aspect-ratio: 16 / 9; }
+    .mo__controls { gap: 8px; }
+    .mo__sub { padding: 0 14px 0 12px; }
+    .mo__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .mo__list li:last-child { grid-column: 1 / -1; }
+    .mo__pair { min-height: 96px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .is-playing .mo__rings circle { animation: none; }
+    .mo__nav { animation: none; }
+  }
+</style>
+
+<script>
+/* MorphIcons — interpolation de tracés à points égaux, pilotée par un ressort (rAF). Sans dépendance.
+   Chaque icône = liste de segments de même nature dans ses deux états :
+   line  → interpolée en polaire (centre, longueur, angle) : les traits pivotent au lieu de se tordre ;
+   poly / q / solid → interpolés point à point. */
+(function () {
+  var reduce = function () { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; };
+  var SHAPES = {
+    menu: { spin: 180, a: [
+      { k: 'line', p: [[4, 7], [20, 7]] }, { k: 'line', p: [[4, 12], [20, 12]] }, { k: 'line', p: [[4, 17], [20, 17]] }
+    ], b: [
+      { k: 'line', p: [[6, 6], [18, 18]] }, { k: 'line', p: [[12, 12], [12, 12]], o: 0 }, { k: 'line', p: [[6, 18], [18, 6]] }
+    ] },
+    play: { spin: 0, a: [
+      { k: 'solid', p: [[7.5, 4.8], [13.4, 8.4], [13.4, 15.6], [7.5, 19.2]] }, { k: 'solid', p: [[13.4, 8.4], [19.2, 12], [19.2, 12], [13.4, 15.6]] }
+    ], b: [
+      { k: 'solid', p: [[6.8, 5], [10.2, 5], [10.2, 19], [6.8, 19]] }, { k: 'solid', p: [[13.8, 5], [17.2, 5], [17.2, 19], [13.8, 19]] }
+    ] },
+    follow: { spin: 0, a: [
+      { k: 'line', p: [[5, 12], [19, 12]] }, { k: 'line', p: [[12, 5], [12, 19]] }
+    ], b: [
+      { k: 'line', p: [[5.5, 12.6], [9.8, 16.9]] }, { k: 'line', p: [[9.8, 16.9], [18.6, 7.4]] }
+    ] },
+    volume: { spin: 0, fixed: 'M4.2 9.4h2.9l4.4-3.9v13l-4.4-3.9H4.2a.7.7 0 0 1-.7-.7V10.1a.7.7 0 0 1 .7-.7z', a: [
+      { k: 'q', p: [[14.6, 9.6], [16.2, 12], [14.6, 14.4]] }, { k: 'q', p: [[17.2, 6.8], [20.6, 12], [17.2, 17.2]] }
+    ], b: [
+      { k: 'q', p: [[15.2, 9.5], [17.7, 12], [20.2, 14.5]] }, { k: 'q', p: [[20.2, 9.5], [17.7, 12], [15.2, 14.5]] }
+    ] },
+    share: { spin: 0, a: [
+      { k: 'poly', p: [[4.5, 12], [19, 12]] }, { k: 'poly', p: [[13, 6], [19, 12], [13, 18]] }
+    ], b: [
+      { k: 'poly', p: [[9.8, 17.2], [9.8, 17.2]], o: 0 }, { k: 'poly', p: [[5, 12.6], [9.8, 17.2], [19, 7.2]] }
+    ] }
+  };
+
+  function polar(l) { var a = l[0], b = l[1], dx = b[0] - a[0], dy = b[1] - a[1]; return { cx: (a[0] + b[0]) / 2, cy: (a[1] + b[1]) / 2, len: Math.hypot(dx, dy), ang: Math.atan2(dy, dx) }; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function f(n) { return Math.round(n * 100) / 100; }
+  function segPath(s0, s1, t) {
+    if (s0.k === 'line') {
+      var A = polar(s0.p), B = polar(s1.p), d = B.ang - A.ang;
+      while (d > Math.PI / 2) d -= Math.PI; while (d < -Math.PI / 2) d += Math.PI; // un trait n'a pas de sens : on prend la plus courte rotation
+      var cx = lerp(A.cx, B.cx, t), cy = lerp(A.cy, B.cy, t), len = Math.max(0, lerp(A.len, B.len, t)), ang = A.ang + d * t;
+      var ex = Math.cos(ang) * len / 2, ey = Math.sin(ang) * len / 2;
+      return 'M' + f(cx - ex) + ' ' + f(cy - ey) + 'L' + f(cx + ex) + ' ' + f(cy + ey);
+    }
+    var pts = s0.p.map(function (p, i) { return [lerp(p[0], s1.p[i][0], t), lerp(p[1], s1.p[i][1], t)]; });
+    if (s0.k === 'q') return 'M' + f(pts[0][0]) + ' ' + f(pts[0][1]) + 'Q' + f(pts[1][0]) + ' ' + f(pts[1][1]) + ' ' + f(pts[2][0]) + ' ' + f(pts[2][1]);
+    var d2 = 'M' + pts.map(function (p) { return f(p[0]) + ' ' + f(p[1]); }).join('L');
+    return s0.k === 'solid' ? d2 + 'Z' : d2;
+  }
+
+  function MorphIcon(svg, name, opts) {
+    var shape = SHAPES[name]; if (!shape || !svg) return null;
+    opts = opts || {};
+    svg.innerHTML = '';
+    var NS = 'http://www.w3.org/2000/svg', g = document.createElementNS(NS, 'g');
+    g.setAttribute('style', 'transform-origin: 12px 12px; transform-box: view-box');
+    if (shape.fixed) { var fx = document.createElementNS(NS, 'path'); fx.setAttribute('d', shape.fixed); g.appendChild(fx); }
+    var paths = shape.a.map(function (s) { var p = document.createElementNS(NS, 'path'); if (s.k === 'solid') p.setAttribute('class', 'is-solid'); g.appendChild(p); return p; });
+    svg.appendChild(g);
+    var x = opts.on ? 1 : 0, v = 0, target = x, raf = 0, last = 0;
+    function paint() {
+      paths.forEach(function (p, i) {
+        var s0 = shape.a[i], s1 = shape.b[i];
+        p.setAttribute('d', segPath(s0, s1, x));
+        var o = lerp(s0.o == null ? 1 : s0.o, s1.o == null ? 1 : s1.o, Math.min(1, Math.max(0, x)));
+        p.style.opacity = o.toFixed(3);
+      });
+      var spin = opts.spin === false ? 0 : shape.spin;
+      g.style.transform = spin ? 'rotate(' + f(spin * x) + 'deg)' : '';
+    }
+    function frame(t) {
+      var dt = last ? Math.min(.032, (t - last) / 1000) : 1 / 60; last = t;
+      var k = opts.stiffness || 320, c = opts.damping || 22;
+      for (var i = 0; i < 4; i++) { var h = dt / 4; v += (-k * (x - target) - c * v) * h; x += v * h; }
+      if (Math.abs(x - target) < .0005 && Math.abs(v) < .005) { x = target; v = 0; paint(); raf = 0; last = 0; return; }
+      paint(); raf = requestAnimationFrame(frame);
+    }
+    paint();
+    return {
+      set: function (on) { target = on ? 1 : 0; if (reduce()) { x = target; v = 0; paint(); return; } if (!raf) raf = requestAnimationFrame(frame); },
+      get: function () { return target === 1; },
+      config: function (o) { Object.assign(opts, o); paint(); }
+    };
+  }
+
+  function init(root) {
+    if (root._morph) return root._morph;
+    var live = root.querySelector('[data-live]');
+    var say = function (t) { if (live) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); } };
+    var cfg = function () { return { stiffness: +root.dataset.stiffness || 320, damping: +root.dataset.damping || 22, spin: root.dataset.spin !== 'false' }; };
+    var icons = [];
+    function make(svg, name, on) { var m = MorphIcon(svg, name, Object.assign(cfg(), { on: on })); icons.push(m); return m; }
+
+    // Lecteur : chaque bouton porte sa paire de tracés.
+    var C = {};
+    root.querySelectorAll('[data-morph]').forEach(function (b) { C[b.dataset.morph] = { btn: b, icon: make(b.querySelector('svg'), b.dataset.morph, false) }; });
+    var nav = root.querySelector('.mo__nav'), timeEl = root.querySelector('[data-time]'), track = root.querySelector('.mo__track');
+    var pos = 724, total = 2300, playing = false, tick = 0, visible = true;
+    function fmt(s) { s = Math.round(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+    function paintPos() { track.style.setProperty('--p', (pos / total).toFixed(4)); timeEl.textContent = fmt(pos); track.setAttribute('aria-valuenow', Math.round(pos)); track.setAttribute('aria-valuetext', Math.floor(pos / 60) + ' min ' + String(Math.round(pos) % 60).padStart(2, '0') + ' sur 38 min 20'); }
+    function loop() { clearInterval(tick); tick = 0; if (playing && visible) tick = setInterval(function () { pos = Math.min(total, pos + 1); paintPos(); }, 1000); }
+    function setPlaying(on) {
+      playing = on; C.play.icon.set(on); root.classList.toggle('is-playing', on);
+      C.play.btn.setAttribute('aria-label', on ? 'Mettre en pause' : 'Lire l’épisode'); loop(); sync('play', on);
+    }
+    var pairs = {};
+    root.querySelectorAll('[data-pair]').forEach(function (b) { pairs[b.dataset.pair] = { btn: b, icon: make(b.querySelector('svg'), b.dataset.pair, false) }; });
+    function sync(name, on) { var p = pairs[name]; if (p) { p.icon.set(on); p.btn.setAttribute('aria-pressed', String(on)); } }
+
+    var ACT = {
+      menu: function (on) { C.menu.icon.set(on); C.menu.btn.setAttribute('aria-expanded', String(on)); C.menu.btn.setAttribute('aria-label', on ? 'Fermer le menu' : 'Ouvrir le menu'); nav.hidden = !on; sync('menu', on); },
+      play: function (on) { setPlaying(on); say(on ? 'Lecture.' : 'Pause.'); },
+      follow: function (on) { C.follow.icon.set(on); C.follow.btn.setAttribute('aria-pressed', String(on)); C.follow.btn.querySelector('[data-label]').textContent = on ? 'Abonné' : 'S’abonner'; sync('follow', on); say(on ? 'Abonné à Onde Urbaine.' : 'Abonnement retiré.'); },
+      volume: function (on) { C.volume.icon.set(on); C.volume.btn.setAttribute('aria-pressed', String(on)); C.volume.btn.setAttribute('aria-label', on ? 'Rétablir le son' : 'Couper le son'); sync('volume', on); say(on ? 'Son coupé.' : 'Son rétabli.'); },
+      share: function (on) {
+        C.share.icon.set(on); sync('share', on); if (on) say('Lien de l’épisode copié.');
+        clearTimeout(ACT._st); if (on) ACT._st = setTimeout(function () { ACT.share(false); }, 1800);
+      }
+    };
+    var state = { menu: false, play: false, follow: false, volume: false, share: false };
+    function toggle(name) { state[name] = !state[name]; ACT[name](state[name]); }
+    Object.keys(C).forEach(function (n) { C[n].btn.addEventListener('click', function () { toggle(n); }); });
+    Object.keys(pairs).forEach(function (n) { pairs[n].btn.addEventListener('click', function () { toggle(n); }); });
+    root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && state.menu) { toggle('menu'); C.menu.btn.focus(); } });
+    document.addEventListener('click', function (e) { if (state.menu && !nav.contains(e.target) && !C.menu.btn.contains(e.target) && !pairs.menu.btn.contains(e.target)) toggle('menu'); });
+    track.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 15 : e.key === 'ArrowLeft' ? -15 : 0; if (!d) return;
+      e.preventDefault(); pos = Math.max(0, Math.min(total, pos + d)); paintPos();
+    });
+    track.addEventListener('pointerdown', function (e) { var r = track.getBoundingClientRect(); pos = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * total; paintPos(); });
+    paintPos();
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { visible = es[0].isIntersecting; root.classList.toggle('is-paused-offscreen', !visible); loop(); }).observe(root);
+    }
+    var api = {
+      toggle: toggle, state: state,
+      config: function () { var c = cfg(); icons.forEach(function (m) { m && m.config(c); }); }
+    };
+    root._morph = api;
+    return api;
+  }
+  window.MorphIcons = { init: init, MorphIcon: MorphIcon, shapes: SHAPES };
+  document.querySelectorAll('[data-morph-root]').forEach(init);
+})();
+</script>

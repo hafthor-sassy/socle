@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palette en situation — démo</title>
+<script>document.documentElement.setAttribute('data-accent', new URLSearchParams(location.search).get('accent') || 'lagon');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-items: center; padding: 40px clamp(16px, 4vw, 48px); }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .pal { grid-template-columns: 1fr !important; }
+  .is-thumb .pal__rail { display: none; }
+  @media (max-width: 480px) { .stage { padding: 24px 16px; align-items: start; } }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ palette: 'lagon', rayon: '12', revelation: true, export: true, filtres: true });
+  var api = null;
+  function opts(p) { return { palette: p.palette, rayon: p.rayon, revelation: !!p.revelation, export: !!p.export, filtres: !!p.filtres }; }
+  function render(p) { if (api) api.update(opts(p)); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = mk ? mk[1] : '';
+    var el = mount.querySelector('[data-pal]');
+    el.dataset.palette = props.palette;
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = el._pal; render(props);
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var seq = ['lagon', 'framboise', 'olive', 'violet', 'braise', 'minuit'], i = 0;
+      var io = new IntersectionObserver(function (en) { vis = en[0].isIntersecting; }), vis = true; io.observe(el);
+      setInterval(function () { if (vis) api.choose(seq[++i % seq.length]); }, 2200);
+    }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function (p) { if (!api) return; var cur = p.palette, alt = cur === 'framboise' ? 'jade' : 'framboise'; api.choose(alt); setTimeout(function () { api.choose(cur); }, 900); });
+</script>
+</body>
+</html>

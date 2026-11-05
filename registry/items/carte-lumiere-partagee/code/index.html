@@ -1,0 +1,175 @@
+<!-- Carte à lumière partagée — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css. Marque fictive : Équipage (logiciel RH). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="lum" data-lumiere data-source="accent" data-interieur="true"
+  style="--lum-r: 320px; --lum-i: 0.9; --lum-b: 1px; --lum-inertie: 0.16" aria-labelledby="lum-title">
+  <header class="lum__head">
+    <p class="lum__eyebrow">
+      <svg class="lum__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="lum__logo-bg"/><circle cx="38" cy="38" r="10" class="lum__logo-ln"/><path d="M20 74c0-10 8-17 18-17s18 7 18 17" class="lum__logo-ln"/><circle cx="64" cy="42" r="8.5" class="lum__logo-fill"/><path d="M52 74c1.5-8.5 6.5-14 13-14 7.5 0 13 6 14 14z" class="lum__logo-fill"/></svg>
+      Équipage · logiciel RH
+    </p>
+    <h2 id="lum-title" class="lum__title">Tout le parcours du salarié, au même endroit.</h2>
+    <p class="lum__lead">De la signature du contrat à l’entretien annuel, chaque étape est reliée à la suivante. Vos équipes RH gagnent un jour par semaine.</p>
+  </header>
+
+  <ul class="lum__grid" role="list">
+    <li class="lum__card">
+      <span class="lum__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20z"/><path d="M14 3.5V8h4M10 13l1.75 1.75L15 11.5"/></svg></span>
+      <h3 class="lum__h"><a class="lum__link" href="#onboarding">Onboarding sans papier</a></h3>
+      <p class="lum__p">Contrat signé en ligne, ordinateur commandé, accès ouverts&nbsp;: le nouvel arrivant a tout dès son premier matin.</p>
+      <p class="lum__kpi"><span>J-7</span> tout est prêt</p>
+    </li>
+    <li class="lum__card">
+      <span class="lum__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M8.5 14.5h3"/></svg></span>
+      <h3 class="lum__h"><a class="lum__link" href="#conges">Congés et absences</a></h3>
+      <p class="lum__p">Une demande en deux gestes, validée depuis Slack ou Teams. Les soldes se recalculent seuls, jours fériés compris.</p>
+      <p class="lum__kpi"><span>−80 %</span> de relances</p>
+    </li>
+    <li class="lum__card">
+      <span class="lum__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19.5h16M6.5 16V11M11.5 16V7M16.5 16v-6"/></svg></span>
+      <h3 class="lum__h"><a class="lum__link" href="#indicateurs">Indicateurs sociaux</a></h3>
+      <p class="lum__p">Index égalité, turnover, absentéisme&nbsp;: calculés chaque mois et prêts pour le CSE, sans export Excel.</p>
+      <p class="lum__kpi"><span>12</span> indicateurs suivis</p>
+    </li>
+    <li class="lum__card">
+      <span class="lum__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20.5V9.5L12 4l7 5.5v11"/><path d="M9.5 20.5v-5h5v5"/></svg></span>
+      <h3 class="lum__h"><a class="lum__link" href="#paie">Paie connectée</a></h3>
+      <p class="lum__p">Variables de paie contrôlées puis envoyées à votre logiciel ou à votre cabinet le 25, chaque mois, sans ressaisie.</p>
+      <p class="lum__kpi"><span>0</span> ressaisie</p>
+    </li>
+    <li class="lum__card">
+      <span class="lum__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="6.5" r="2.5"/><circle cx="6" cy="17.5" r="2.5"/><circle cx="18" cy="17.5" r="2.5"/><path d="M12 9v3.5M6 15v-1.5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1V15"/></svg></span>
+      <h3 class="lum__h"><a class="lum__link" href="#organigramme">Organigramme vivant</a></h3>
+      <p class="lum__p">Qui fait quoi, qui remplace qui pendant les vacances&nbsp;: l’organigramme suit les arrivées et les départs.</p>
+      <p class="lum__kpi"><span>340</span> collaborateurs</p>
+    </li>
+    <li class="lum__card">
+      <span class="lum__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5l1.9 4.6 4.6 1.9-4.6 1.9L12 16.5l-1.9-4.6L5.5 10l4.6-1.9z"/><path d="M18 15.5l.8 1.7 1.7.8-1.7.8-.8 1.7-.8-1.7-1.7-.8 1.7-.8z"/></svg></span>
+      <h3 class="lum__h"><a class="lum__link" href="#entretiens">Entretiens préparés</a></h3>
+      <p class="lum__p">L’assistant rassemble objectifs, retours et formations suivies&nbsp;: le manager arrive avec une synthèse, pas une page blanche.</p>
+      <p class="lum__kpi"><span>12 min</span> de préparation</p>
+    </li>
+  </ul>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .lum { --lum-c: var(--accent-vivid); width: min(100%, 1120px); margin-inline: auto; display: grid; gap: 40px; color: var(--text); font-family: var(--font-sans); }
+  .lum[data-source="neutre"] { --lum-c: var(--text-strong); }
+  .lum__head { display: grid; gap: 12px; max-width: 640px; }
+  .lum__eyebrow { display: inline-flex; align-items: center; gap: 10px; margin: 0; font: 500 13px/20px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .lum__logo { width: 24px; height: 24px; flex: none; }
+  .lum__logo-bg { fill: var(--accent); }
+  .lum__logo-ln { fill: none; stroke: var(--accent-fg); stroke-width: 7; stroke-linecap: round; }
+  .lum__logo-fill { fill: var(--accent-fg); opacity: .7; }
+  .lum__title { margin: 0; font: 600 clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem)/1.12 var(--font-sans); letter-spacing: var(--track-tight); color: var(--text-strong); text-wrap: balance; }
+  .lum__lead { margin: 0; font-size: var(--t-base); line-height: var(--t-base-lh); color: var(--text-muted); text-wrap: pretty; }
+
+  .lum__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+  .lum__card {
+    --lx: -999px; --ly: -999px;
+    position: relative; isolation: isolate; display: grid; grid-template-rows: auto auto 1fr auto; gap: 8px; min-height: 248px; padding: 24px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    transition: transform var(--motion-slow) cubic-bezier(.2, .8, .2, 1);
+  }
+  /* Bordure éclairée : un même halo radial, découpé à la seule épaisseur du bord. */
+  .lum__card::before {
+    content: ""; position: absolute; inset: -1px; z-index: 1; border-radius: inherit; padding: var(--lum-b); pointer-events: none;
+    background: radial-gradient(var(--lum-r) circle at calc(var(--lx) + 1px) calc(var(--ly) + 1px), color-mix(in srgb, var(--lum-c) calc(var(--lum-i) * 100%), transparent), color-mix(in srgb, var(--lum-c) calc(var(--lum-i) * 60%), transparent) 30%, transparent 74%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    opacity: var(--lum-o, 0); transition: opacity 420ms var(--ease-out);
+  }
+  /* Lueur intérieure, très douce, pour que la lumière « traverse » la carte. */
+  .lum__card::after {
+    content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(calc(var(--lum-r) * 1.1) circle at var(--lx) var(--ly), color-mix(in srgb, var(--lum-c) calc(var(--lum-i) * 13%), transparent), transparent 70%);
+    opacity: var(--lum-o, 0); transition: opacity 420ms var(--ease-out);
+  }
+  .lum[data-interieur="false"] .lum__card::after { display: none; }
+  .lum__card:focus-within { transform: translateY(-2px); }
+
+  /* L'icône et le chiffre clé prennent la teinte de la source quand elle s'approche (--near, 0 à 1). */
+  .lum__ico { width: 40px; height: 40px; display: grid; place-items: center; margin-bottom: 16px; border-radius: 12px; background: color-mix(in srgb, var(--lum-c) calc(var(--near, 0) * var(--lum-o, 0) * 12%), var(--raised)); color: color-mix(in srgb, var(--lum-c) calc(var(--near, 0) * var(--lum-o, 0) * 100%), var(--text-strong)); }
+  .lum__ico svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .lum__h { margin: 0; font: 600 var(--t-section)/1.3 var(--font-sans); letter-spacing: var(--track-snug); color: var(--text-strong); }
+  .lum__link { color: inherit; text-decoration: none; outline: none; }
+  .lum__link::after { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: 16px; }
+  .lum__link:focus-visible::after { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .lum__p { margin: 0; font-size: var(--t-sm); line-height: var(--t-sm-lh); color: var(--text-muted); text-wrap: pretty; }
+  .lum__kpi { margin: 16px 0 0; padding-top: 16px; border-top: 1px solid var(--border); font-size: var(--t-sm); line-height: 20px; color: var(--text-muted); }
+  .lum__kpi span { margin-right: 6px; font: 600 var(--t-sm)/20px var(--font-mono); color: var(--text-strong); font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 600px) {
+    .lum { gap: 32px; }
+    /* Téléphone : l'icône passe à gauche du titre, la carte gagne un tiers de hauteur. */
+    .lum__card { min-height: 0; padding: 20px; grid-template-columns: 40px minmax(0, 1fr); grid-template-rows: none; column-gap: 16px; row-gap: 12px; align-items: center; }
+    .lum__ico { margin-bottom: 0; }
+    .lum__p, .lum__kpi { grid-column: 1 / -1; }
+    .lum__kpi { margin-top: 4px; padding-top: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lum__card, .lum__card::before, .lum__card::after { transition: none; }
+    .lum__card:focus-within { transform: none; }
+  }
+</style>
+
+<script>
+(function () {
+  /* Une seule source de lumière pour toute la grille : chaque carte reçoit la position du pointeur
+     dans son propre repère (--lx, --ly). Au toucher, la source suit le défilement. */
+  function Lumiere(root) {
+    var cards = Array.prototype.slice.call(root.querySelectorAll('.lum__card'));
+    var tgt = { x: -9999, y: -9999 }, cur = { x: -9999, y: -9999 }, on = 0, raf = 0, visible = true, first = true;
+    var coarse = window.matchMedia && matchMedia('(pointer: coarse)').matches;
+    var reduced = function () { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; };
+    var rad = function () { var v = parseFloat(getComputedStyle(root).getPropertyValue('--lum-r')); return isNaN(v) ? 280 : v; };
+    var inertia = function () { var v = parseFloat(getComputedStyle(root).getPropertyValue('--lum-inertie')); return isNaN(v) ? 0.16 : v; };
+    function paint() {
+      cards.forEach(function (c) {
+        var r = c.getBoundingClientRect();
+        c.style.setProperty('--lx', (cur.x - r.left).toFixed(1) + 'px');
+        c.style.setProperty('--ly', (cur.y - r.top).toFixed(1) + 'px');
+        var dx = Math.max(r.left - cur.x, 0, cur.x - r.right), dy = Math.max(r.top - cur.y, 0, cur.y - r.bottom);
+        c.style.setProperty('--near', Math.max(0, 1 - Math.hypot(dx, dy) / (rad() * 0.6)).toFixed(3));
+      });
+    }
+    function frame() {
+      raf = 0;
+      var k = reduced() ? 1 : 1 - Math.min(0.95, inertia());
+      if (first) { cur.x = tgt.x; cur.y = tgt.y; first = false; }
+      cur.x += (tgt.x - cur.x) * k; cur.y += (tgt.y - cur.y) * k;
+      paint();
+      if (visible && (Math.abs(tgt.x - cur.x) > 0.3 || Math.abs(tgt.y - cur.y) > 0.3)) raf = requestAnimationFrame(frame);
+    }
+    function go() { if (!raf) raf = requestAnimationFrame(frame); }
+    function light(v) { on = v; root.style.setProperty('--lum-o', v); }
+    function aim(x, y, jump) { tgt.x = x; tgt.y = y; if (jump) first = true; go(); }
+
+    root.addEventListener('pointermove', function (e) { if (e.pointerType === 'touch') return; if (!on) { light(1); first = true; } aim(e.clientX, e.clientY); });
+    root.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'touch') light(0); });
+    /* Toucher : la lumière se pose sous le doigt, puis reprend le fil du défilement. */
+    root.addEventListener('touchstart', function (e) { var t = e.touches[0]; light(1); aim(t.clientX, t.clientY); }, { passive: true });
+    root.addEventListener('touchmove', function (e) { var t = e.touches[0]; aim(t.clientX, t.clientY); }, { passive: true });
+    function sweep() {
+      if (!coarse || !visible) return;
+      var r = root.querySelector('.lum__grid').getBoundingClientRect(), y = Math.min(r.bottom - 24, Math.max(r.top + 24, innerHeight * 0.42));
+      aim(r.left + r.width * 0.72, y); light(1);
+    }
+    window.addEventListener('scroll', sweep, { passive: true });
+    /* Clavier : la source vient se placer sur la carte qui reçoit le focus. */
+    root.addEventListener('focusin', function (e) { var c = e.target.closest('.lum__card'); if (!c) return; var r = c.getBoundingClientRect(); light(1); aim(r.left + r.width * 0.5, r.top + r.height * 0.2); });
+    root.addEventListener('focusout', function (e) { if (!root.contains(e.relatedTarget) && !coarse) light(0); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) { sweep(); go(); } }).observe(root);
+    window.addEventListener('resize', function () { paint(); });
+    sweep();
+    root._lumiere = {
+      aim: function (fx, fy) { var r = root.querySelector('.lum__grid').getBoundingClientRect(); light(1); aim(r.left + r.width * fx, r.top + r.height * fy); },
+      off: function () { light(0); },
+      refresh: function () { paint(); }
+    };
+  }
+  document.querySelectorAll('[data-lumiere]').forEach(function (el) { if (!el._lumiere) Lumiere(el); });
+})();
+</script>

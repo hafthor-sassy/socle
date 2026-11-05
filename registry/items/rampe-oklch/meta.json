@@ -1,0 +1,158 @@
+{
+  "id": "rampe-oklch",
+  "nom": "Rampe OKLCH",
+  "categorie": "couleurs",
+  "niveau": "premium",
+  "description": "On choisit une teinte et une couleur de base sur le plan clarté × chroma : 12 paliers réguliers à l’œil sont générés en OKLCH, ramenés dans la gamme sRGB, puis vérifiés en direct en WCAG 2 et en APCA, avec aperçu en situation et export CSS ou Tailwind.",
+  "tags": [
+    "OKLCH",
+    "Contraste",
+    "APCA",
+    "Générateur",
+    "Ressort",
+    "Export"
+  ],
+  "date": "2026-11-05",
+  "ordre": 12,
+  "palette": "minuit",
+  "logo_exemple": {
+    "nom": "Nacre",
+    "secteur": "Banque en ligne",
+    "fichier": "logo.svg",
+    "palette": "minuit",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1200
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Interface (surfaces, texte, accent) ; les paliers sont calculés"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 9 ko, sans dépendance : conversions OKLCH, gamme sRGB, WCAG 2, APCA-W3 0.0.98G"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4 + @tailwindcss/container-queries",
+      "note": "Onglet React : variantes @container"
+    }
+  ],
+  "props": [
+    {
+      "name": "suivre",
+      "label": "Partir de l’accent",
+      "type": "boolean",
+      "default": true,
+      "hint": "Lit --accent de la palette active ; décochez pour régler teinte, clarté et chroma.",
+      "code": {
+        "html": "data-suivre=\"{v}\"",
+        "react": "suivre = {v}"
+      }
+    },
+    {
+      "name": "teinte",
+      "label": "Teinte",
+      "type": "number",
+      "default": 265,
+      "min": 0,
+      "max": 360,
+      "step": 1,
+      "unit": "°",
+      "code": {
+        "html": "data-teinte=\"{v}\"",
+        "react": "teinte = {v}"
+      }
+    },
+    {
+      "name": "clarte",
+      "label": "Clarté du palier 9",
+      "type": "number",
+      "default": 52,
+      "min": 30,
+      "max": 85,
+      "step": 1,
+      "unit": "%",
+      "code": {
+        "react": "clarte = {v}"
+      }
+    },
+    {
+      "name": "chroma",
+      "label": "Chroma du palier 9",
+      "type": "number",
+      "default": 0.13,
+      "min": 0,
+      "max": 0.37,
+      "step": 0.005,
+      "hint": "Réduit automatiquement s’il sort de la gamme sRGB.",
+      "code": {
+        "react": "chroma = {v}"
+      }
+    },
+    {
+      "name": "mode",
+      "label": "Rampe",
+      "type": "select",
+      "default": "clair",
+      "options": [
+        {
+          "value": "clair",
+          "label": "Claire"
+        },
+        {
+          "value": "sombre",
+          "label": "Sombre"
+        }
+      ],
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "mode: mode0 = '{v}'"
+      }
+    },
+    {
+      "name": "selection",
+      "label": "Palier détaillé",
+      "type": "number",
+      "default": 9,
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "code": {
+        "react": "selection = {v}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/OklchRamp.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour dériver d’un seul accent toute une échelle de marque (fonds, bordures, pleins, textes) aux écarts réguliers, à la manière des échelles en 12 paliers : 1-2 fonds, 3-5 éléments, 6-8 bordures, 9-10 pleins, 11-12 textes.",
+    "Le palier 9 est la couleur de base ; glissez la poignée (ou les flèches) pour régler sa clarté et son chroma, la frontière de la gamme sRGB est tracée sur le plan.",
+    "Exportez la rampe claire puis la rampe sombre : le bloc :root et le bloc .dark se combinent tels quels. makeRamp() est exportée côté React pour générer des échelles sans interface."
+  ],
+  "accessibilite": [
+    "Sept vérifications recalculées à chaque réglage : textes fort et doux sur fond (7:1 et 4,5:1), libellé sur plein, composants et bordure forte à 3:1, plus Lc APCA 90 et 60.",
+    "Poignée en role=\"slider\" : haut et bas pour la clarté, gauche et droite pour le chroma (Maj pour aller plus vite) ; teinte au curseur natif ; paliers parcourus aux flèches.",
+    "Avec « réduire les animations », ni ressort ni vague : les valeurs changent sans mouvement. Aucun calcul en boucle hors interaction."
+  ]
+}

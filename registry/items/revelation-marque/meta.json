@@ -1,0 +1,187 @@
+{
+  "id": "revelation-marque",
+  "nom": "Révélation de marque",
+  "categorie": "logos",
+  "niveau": "premium",
+  "ordre": 22,
+  "description": "Le logo se construit à partir de ses formes : quatre pétales éclosent du centre sur un vrai ressort, la perle se pose, le mot-symbole monte de son masque lettre par lettre, puis l’écran se lève en rideau courbe (ou zoome dans l’icône) sur la page. Réutilisable comme préchargeur en boucle.",
+  "tags": [
+    "Intro",
+    "Préchargeur",
+    "Ressort",
+    "Masque",
+    "Web Animations"
+  ],
+  "date": "2026-11-05",
+  "palette": "framboise",
+  "logo_exemple": {
+    "nom": "nacre",
+    "secteur": "E-commerce mode (maille et prêt-à-porter)",
+    "fichier": "logo.svg",
+    "palette": "framboise",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1024
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Couleurs, polices, focus"
+    },
+    {
+      "nom": "Script BrandReveal",
+      "note": "≈ 4 ko, inclus dans l’onglet HTML ; Web Animations API et easing linear() (Chrome 113, Safari 17.2, Firefox 112)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "mode",
+      "label": "Mode",
+      "type": "select",
+      "default": "intro",
+      "options": [
+        {
+          "value": "intro",
+          "label": "Intro"
+        },
+        {
+          "value": "loop",
+          "label": "Préchargeur"
+        }
+      ],
+      "hint": "Intro : une fois puis la page. Préchargeur : se construit et se défait en boucle.",
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "mode=\"{v}\""
+      }
+    },
+    {
+      "name": "sortie",
+      "label": "Sortie",
+      "type": "select",
+      "default": "curtain",
+      "options": [
+        {
+          "value": "curtain",
+          "label": "Rideau"
+        },
+        {
+          "value": "zoom",
+          "label": "Zoom"
+        },
+        {
+          "value": "fade",
+          "label": "Fondu"
+        }
+      ],
+      "code": {
+        "html": "data-exit=\"{v}\"",
+        "react": "exit=\"{v}\""
+      }
+    },
+    {
+      "name": "duree",
+      "label": "Durée du chargement",
+      "type": "number",
+      "default": 2400,
+      "min": 1200,
+      "max": 6000,
+      "step": 100,
+      "unit": "ms",
+      "code": {
+        "html": "data-duration=\"{v}\"",
+        "react": "duration={{v}}"
+      }
+    },
+    {
+      "name": "decalage",
+      "label": "Décalage des pétales",
+      "type": "number",
+      "default": 90,
+      "min": 30,
+      "max": 220,
+      "step": 10,
+      "unit": "ms",
+      "code": {
+        "html": "data-stagger=\"{v}\"",
+        "react": "stagger={{v}}"
+      }
+    },
+    {
+      "name": "raideur",
+      "label": "Raideur du ressort",
+      "type": "number",
+      "default": 240,
+      "min": 80,
+      "max": 600,
+      "step": 10,
+      "code": {
+        "html": "data-stiffness=\"{v}\"",
+        "react": "stiffness={{v}}"
+      }
+    },
+    {
+      "name": "amortissement",
+      "label": "Amortissement",
+      "type": "number",
+      "default": 15,
+      "min": 6,
+      "max": 40,
+      "step": 1,
+      "hint": "Bas : les pétales dépassent et rebondissent.",
+      "code": {
+        "html": "data-damping=\"{v}\"",
+        "react": "damping={{v}}"
+      }
+    },
+    {
+      "name": "pourcentage",
+      "label": "Compteur",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-percent=\"{v}\"",
+        "react": "showPercent={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/BrandReveal.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour l’arrivée sur un site de marque (mode, studio, lancement) : une fois par session, jamais à chaque page. Mémorisez-la (sessionStorage) après la première visite.",
+    "Gardez l’ensemble sous 3 secondes ; en préchargeur, branchez la fin sur le vrai chargement (fetch, images) plutôt que sur une durée fixe.",
+    "Le rideau convient à une page claire et éditoriale ; le zoom, à une marque dont l’icône est forte ; le fondu, quand le contenu doit apparaître vite.",
+    "Remplacez les quatre pétales par les formes de votre logo : chaque forme garde sa propre animation d’éclosion (data-petal)."
+  ],
+  "accessibilite": [
+    "Le voile est une région role=status : « Chargement… » puis « nacre est prêt. » ; le mot-symbole animé est masqué aux lecteurs d’écran.",
+    "« Réduire les animations » : le logo s’affiche posé, puis un fondu de 200 ms découvre la page ; aucune rotation ni zoom.",
+    "Le contenu de la page reste dans le DOM et focalisable dès la fin de la sortie ; « Rejouer l’intro » est un vrai bouton.",
+    "En préchargeur, l’animation se met en pause hors de l’écran (IntersectionObserver)."
+  ]
+}

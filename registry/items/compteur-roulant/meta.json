@@ -1,0 +1,199 @@
+{
+  "id": "compteur-roulant",
+  "nom": "Compteur qui roule",
+  "categorie": "badges",
+  "niveau": "premium",
+  "description": "Un nombre qui roule chiffre par chiffre comme un compteur mécanique : chaque colonne suit son propre ressort, les unités partent en premier, le sens suit la variation (9 → 10 avance toujours), les grands sauts font quelques tours de plus et les colonnes apparaissent ou se replient. Formats français : entier, compact, euros, pastille « 99+ ».",
+  "tags": [
+    "Chiffres",
+    "Ressort",
+    "Pastille",
+    "E-commerce",
+    "Intl",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 24,
+  "palette": "framboise",
+  "logo_exemple": {
+    "nom": "Ourlet",
+    "secteur": "Prêt-à-porter en ligne",
+    "fichier": "logo.svg",
+    "palette": "framboise",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1100
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent, surfaces ; chiffres tabulaires de Geist"
+    },
+    {
+      "nom": "Intl.NumberFormat",
+      "note": "Natif : espace fine insécable des milliers, virgule décimale, « € » après le nombre"
+    },
+    {
+      "nom": "≈ 3 ko de JS",
+      "note": "HTML : RollNumber(el).set(valeur), un seul rAF partagé, arrêté au repos"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, sans bibliothèque d’animation"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "spectateurs",
+      "label": "Visiteurs en direct",
+      "type": "number",
+      "default": 1284,
+      "min": 0,
+      "max": 250000,
+      "step": 1,
+      "hint": "Changez la valeur pour voir le roulement ; les grands écarts font tourner les petites colonnes.",
+      "code": {
+        "html": "data-value=\"{v}\" data-live",
+        "react": "viewers={{v}}"
+      }
+    },
+    {
+      "name": "format",
+      "label": "Format des visiteurs",
+      "type": "select",
+      "default": "entier",
+      "options": [
+        {
+          "value": "entier",
+          "label": "Entier (1 284)"
+        },
+        {
+          "value": "compact",
+          "label": "Compact (1,3 k)"
+        }
+      ],
+      "code": {
+        "html": "data-live data-format=\"{v}\"",
+        "react": "viewersFormat=\"{v}\""
+      }
+    },
+    {
+      "name": "raideur",
+      "label": "Raideur",
+      "type": "number",
+      "default": 210,
+      "min": 60,
+      "max": 600,
+      "step": 10,
+      "code": {
+        "html": "--rn-stiffness: {v};",
+        "react": "stiffness={{v}}"
+      }
+    },
+    {
+      "name": "amortissement",
+      "label": "Amortissement",
+      "type": "number",
+      "default": 22,
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "hint": "Bas : le chiffre dépasse et revient, comme un vrai tambour.",
+      "code": {
+        "html": "--rn-damping: {v};",
+        "react": "damping={{v}}"
+      }
+    },
+    {
+      "name": "decalage",
+      "label": "Décalage entre colonnes",
+      "type": "number",
+      "default": 45,
+      "min": 0,
+      "max": 140,
+      "step": 5,
+      "unit": "ms",
+      "code": {
+        "html": "--rn-stagger: {v}",
+        "react": "stagger={{v}}"
+      }
+    },
+    {
+      "name": "flou",
+      "label": "Flou de vitesse",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-flou=\"{v}\"",
+        "react": "blur={{v}}"
+      }
+    },
+    {
+      "name": "plafond",
+      "label": "Plafond des pastilles",
+      "type": "select",
+      "default": "99",
+      "options": [
+        {
+          "value": "9",
+          "label": "9+"
+        },
+        {
+          "value": "99",
+          "label": "99+"
+        },
+        {
+          "value": "999",
+          "label": "999+"
+        }
+      ],
+      "code": {
+        "html": "data-plafond=\"{v}\"",
+        "react": "cap={{v}}"
+      }
+    },
+    {
+      "name": "direct",
+      "label": "Visiteurs qui bougent seuls",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-direct=\"{v}\"",
+        "react": "live={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/CompteurRoulant.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pastilles de panier, de notifications ou de messages, totaux qui changent avec une quantité, compteurs en direct (visiteurs, places restantes, montant collecté).",
+    "Le roulement attire l’œil : gardez-le pour des nombres qui changent à la suite d’une action ou d’un évènement réel, pas pour un tableau de 40 chiffres.",
+    "Les formats passent par Intl.NumberFormat('fr-FR') : 1 284 (espace fine), 258,00 €, 1,3 k. Pour une autre langue, changez la locale ; l’alignement par la droite garde les colonnes stables."
+  ],
+  "accessibilite": [
+    "Les colonnes sont masquées aux lecteurs d’écran ; le nombre formaté est présent en texte (classe visuellement masquée), et les boutons d’icône portent « Panier, 4 articles ».",
+    "Après un ajout au panier, une région aria-live polie annonce une seule phrase (quantité et total), pas chaque chiffre qui roule.",
+    "Avec « réduire les animations », la valeur change instantanément, sans flou ni rebond ; le compteur en direct s’arrête hors écran (IntersectionObserver).",
+    "Chiffres tabulaires : la largeur ne saute pas pendant le roulement ; boutons de quantité de 44 px, contraste AA de la pastille sur l’accent."
+  ]
+}

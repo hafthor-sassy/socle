@@ -1,0 +1,59 @@
+{
+  "id": "adresse-carte",
+  "nom": "Adresse avec carte",
+  "categorie": "champs",
+  "niveau": "premium",
+  "description": "Saisie d’adresse semi-automatique (combobox accessible, insensible aux accents) couplée à un plan dessiné en SVG : la caméra glisse sur un ressort vers la suggestion active, l’épingle tombe avec un rebond, le trajet se trace et la zone de livraison répond aussitôt « livrable », « hors zone » ou « précisez le numéro ». Sans API ni bibliothèque de carte.",
+  "tags": ["Formulaire", "Combobox", "Carte SVG", "Ressort", "Livraison", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 20,
+  "palette": "foret",
+  "logo_exemple": { "nom": "Brindille", "secteur": "Fleuriste livré à vélo", "fichier": "logo.svg", "palette": "foret", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1100 },
+  "stage": { "width": "desktop", "desktopMin": 1100 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, teintes vert / ambre / rouge / bleu, accent" },
+    { "nom": "Aucune API", "note": "Rues et positions en données locales ; remplacez search() par votre service (BAN, Google Places…)" },
+    { "nom": "≈ 9 ko de JS", "note": "HTML : script intégré, sans dépendance" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "zoom", "label": "Zoom sur l’adresse", "type": "number", "default": 3.2, "min": 1.5, "max": 5, "step": 0.1, "unit": "×",
+      "hint": "Zoom maximal une fois l’adresse choisie ; la caméra recule si l’atelier doit rester visible.",
+      "code": { "html": "--adr-zoom: {v};", "react": "zoom={{v}}" } },
+    { "name": "zone", "label": "Rayon de livraison", "type": "number", "default": 1.6, "min": 0.6, "max": 3, "step": 0.1, "unit": "km",
+      "code": { "html": "--adr-zone-km: {v};", "react": "zoneKm={{v}}" } },
+    { "name": "raideur", "label": "Raideur de la caméra", "type": "number", "default": 170, "min": 60, "max": 400, "step": 10,
+      "code": { "html": "--adr-stiffness: {v};", "react": "stiffness={{v}}" } },
+    { "name": "amortissement", "label": "Amortissement", "type": "number", "default": 22, "min": 8, "max": 40, "step": 1,
+      "hint": "Bas : la carte dépasse et revient. Haut : arrivée feutrée.",
+      "code": { "html": "--adr-damping: {v};", "react": "damping={{v}}" } },
+    { "name": "latence", "label": "Latence simulée", "type": "number", "default": 220, "min": 0, "max": 900, "step": 20, "unit": "ms",
+      "hint": "Au-delà de 120 ms, la liste montre un squelette et le champ un indicateur de chargement.",
+      "code": { "html": "--adr-latence: {v}", "react": "latency={{v}}" } },
+    { "name": "style", "label": "Style de plan", "type": "select", "default": "plan",
+      "options": [{ "value": "plan", "label": "Plan détaillé" }, { "value": "epure", "label": "Épuré" }],
+      "code": { "html": "data-style=\"{v}\"", "react": "mapStyle=\"{v}\"" } },
+    { "name": "afficherZone", "label": "Zone de livraison", "type": "boolean", "default": true,
+      "code": { "html": "data-zone=\"{v}\"", "react": "showZone={{v}}" } },
+    { "name": "trajet", "label": "Tracer le trajet", "type": "boolean", "default": true,
+      "code": { "html": "data-trajet=\"{v}\"", "react": "showRoute={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/AdresseCarte.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour un tunnel de commande, une prise de rendez-vous ou une inscription où l’adresse conditionne la suite (zone, délai, tarif) : la réponse arrive avant même le clic sur « Continuer ».",
+    "Branchez votre géocodeur dans search() (HTML) ou à la place de search() (React) : il doit rendre { rue, numéro, code postal, position } ; le plan, la caméra et les états restent identiques.",
+    "Le plan est un dessin, pas une carte routière : pour la navigation réelle, passez à MapLibre. Ici, il sert à rassurer en un coup d’œil (« c’est bien chez moi, et c’est dans la zone »).",
+    "L’évènement adresse:change (HTML) ou onChange (React) livre { rue, numero, cp, km, zone }."
+  ],
+  "accessibilite": [
+    "Motif combobox ARIA 1.2 : role=\"combobox\", aria-expanded, aria-controls, aria-activedescendant ; ↑ ↓ pour parcourir, Entrée pour choisir, Échap ferme la liste puis efface.",
+    "Le verdict (livrable, hors zone, numéro manquant) est annoncé par une région aria-live polie, avec icône et texte : jamais la couleur seule. Le plan a un libellé qui décrit l’adresse et la zone.",
+    "Champs de 48 px et 16 px sur mobile (pas de zoom iOS), boutons de carte de 44 px ; le plan passe au-dessus du formulaire sur téléphone pour rester visible clavier ouvert.",
+    "Avec « réduire les animations », la caméra saute directement au cadrage final, sans rebond ni tracé animé ; teintes AA en clair et en sombre."
+  ]
+}

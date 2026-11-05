@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icônes qui se dessinent — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'lagon');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 40px 24px; }
+  @media (max-width: 640px) { .stage { padding: 16px 12px; place-items: start center; } }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .di__intro, .is-thumb .di__situ { display: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ duree: 700, decalage: 90, courbe: 'cubic-bezier(.65, 0, .35, 1)', declencheur: 'hover', epaisseur: 1.5, etats: true });
+  var root = null, api = null;
+  function apply(p) {
+    if (!root) return;
+    root.style.setProperty('--draw-duration', p.duree + 'ms');
+    root.style.setProperty('--draw-stagger', p.decalage + 'ms');
+    root.style.setProperty('--draw-ease', p.courbe);
+    root.style.setProperty('--draw-stroke', p.epaisseur);
+    root.dataset.trigger = Socle.thumb ? 'loop' : p.declencheur;
+    root.dataset.states = String(!!p.etats);
+    if (api) api.update();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-draw-icons]');
+    apply(props);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = root._drawIcons;
+    apply(props);
+    if (!Socle.thumb && props.declencheur === 'hover') setTimeout(function () { api && api.replay(); }, 250);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (api) api.replay(); });
+</script>
+</body>
+</html>

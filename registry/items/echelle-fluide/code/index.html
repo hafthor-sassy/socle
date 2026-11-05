@@ -1,0 +1,334 @@
+<!-- Banc de l'échelle fluide — nécessite tokens.css. On étire un cadre : chaque niveau en clamp() se recalcule
+     (unités cqi dans le cadre, vw dans l'export), valeurs en px affichées en direct. Aucune dépendance. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="fl" data-fl data-largeur="834" data-vmin="360" data-vmax="1440" aria-label="Banc de l’échelle fluide">
+  <header class="fl__bar">
+    <div class="fl__now"><span class="fl__eyebrow">Largeur du cadre</span><b><span data-fl-w>834</span> px</b><small data-fl-zoom hidden></small></div>
+    <div class="fl__presets" role="group" aria-label="Largeurs types" data-fl-presets>
+      <button type="button" data-w="375">Téléphone<small>375</small></button>
+      <button type="button" data-w="834">Tablette<small>834</small></button>
+      <button type="button" data-w="1280">Portable<small>1280</small></button>
+      <button type="button" data-w="1536">Bureau<small>1536</small></button>
+    </div>
+  </header>
+
+  <div class="fl__ruler" data-fl-ruler>
+    <svg class="fl__ticks" data-fl-ticks aria-hidden="true"></svg>
+    <span class="fl__range" data-fl-range aria-hidden="true"></span>
+    <span class="fl__thumb" data-fl-thumb role="slider" tabindex="0" aria-label="Largeur du cadre" aria-valuemin="320" aria-valuemax="1600" aria-valuenow="834" aria-valuetext="834 pixels"></span>
+  </div>
+
+  <div class="fl__bench" data-fl-bench>
+    <div class="fl__frame" data-fl-frame>
+      <!-- Exemple : article de la marque fictive Brève. Chaque niveau est une classe .fl-s<n>. -->
+      <article class="bv">
+        <header class="bv__mast">
+          <span class="bv__logo" aria-label="Brève"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="24"/><path d="M26 33h48M26 50h48M26 67h26"/><circle cx="70" cy="67" r="6.5"/></svg><b>Brève</b></span>
+          <span class="bv__nav fl-s-1">Société · Climat · Économie · Culture</span>
+        </header>
+        <p class="bv__kicker fl-s-1" data-level="-1">Mobilités · Enquête</p>
+        <h1 class="bv__title fl-s5" data-level="5">Les villes moyennes réinventent le vélo</h1>
+        <p class="bv__lead fl-s1" data-level="1">À Niort, Annecy ou Valence, les pistes cyclables ont doublé en cinq ans. Récit d’une révolution discrète, loin des métropoles.</p>
+        <p class="bv__byline fl-s-1" data-level="-1">Par Lina Moreau · 5 novembre 2026 · lecture 6 min</p>
+        <div class="bv__cols">
+          <div>
+            <h2 class="bv__h2 fl-s3" data-level="3">Des budgets multipliés par trois</h2>
+            <p class="bv__p fl-s0" data-level="0">En 2021, la communauté d’agglomération consacrait 4 € par habitant aux aménagements cyclables. Elle en dépense aujourd’hui 13, soit plus que Bordeaux ou Lille. Les élus parlent d’un « rattrapage » ; les usagers, d’un changement de vie.</p>
+          </div>
+          <div>
+            <h3 class="bv__h3 fl-s2" data-level="2">Ce que disent les compteurs</h3>
+            <p class="bv__p fl-s0" data-level="0">Sur le pont de la Sèvre, les capteurs enregistrent 2 400 passages par jour, contre 900 avant les travaux. Le pic du matin dépasse désormais celui des voitures.</p>
+            <p class="bv__cap fl-s-1" data-level="-1">Source : observatoire régional des mobilités, octobre 2026.</p>
+          </div>
+        </div>
+        <p class="bv__quote fl-s4" data-level="4">« On a cessé de dessiner la ville pour la voiture. »</p>
+      </article>
+    </div>
+    <span class="fl__grip" data-fl-grip aria-hidden="true"><i></i></span>
+  </div>
+
+  <div class="fl__panel">
+    <div class="fl__table">
+      <div class="fl__thead" aria-hidden="true"><span>Niveau</span><span>Taille</span><span>min → max</span></div>
+      <ol data-fl-rows></ol>
+    </div>
+    <figure class="fl__graph">
+      <figcaption class="fl__eyebrow">Taille selon la largeur</figcaption>
+      <svg data-fl-graph role="img" aria-label="Courbes des tailles de chaque niveau en fonction de la largeur d’écran"></svg>
+    </figure>
+    <div class="fl__export">
+      <div class="fl__exhead"><span class="fl__eyebrow">Variables CSS</span>
+        <button type="button" class="fl__copy" data-fl-copy><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg><span data-fl-copy-lbl>Copier</span></button>
+      </div>
+      <pre class="fl__code" data-fl-code></pre>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .fl { container-type: inline-size; width: 100%; max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; font-family: var(--font-sans); color: var(--text); }
+  .fl *, .fl *::before, .fl *::after { box-sizing: border-box; }
+  .fl p, .fl h1, .fl h2, .fl h3, .fl ol, .fl figure { margin: 0; }
+  :where(.fl) button { font-family: inherit; color: inherit; }
+  .fl__eyebrow { font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+
+  .fl__bar { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
+  .fl__bar > * { min-width: 0; }
+  .fl__now { display: grid; gap: 2px; }
+  .fl__now b { font: 600 32px/40px var(--font-sans); letter-spacing: var(--track-tight); color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .fl__now small { font: 500 12px/16px var(--font-mono); color: var(--text-muted); }
+  .fl__presets { display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--raised); border: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+  .fl__presets button { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; font-size: 14px; color: var(--text-muted); cursor: pointer; white-space: nowrap; transition: background-color var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out); }
+  .fl__presets small { font: 500 11px/1 var(--font-mono); opacity: .8; }
+  .fl__presets button:hover { color: var(--text-strong); }
+  .fl__presets button[aria-pressed="true"] { background: var(--surface); color: var(--text-strong); box-shadow: var(--shadow-overlay); }
+
+  /* Règle */
+  .fl__ruler { position: relative; height: 44px; touch-action: none; cursor: pointer; }
+  .fl__ticks { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .fl__ticks line { stroke: var(--border-strong); } .fl__ticks line.is-maj { stroke: var(--text-muted); }
+  .fl__ticks text { fill: var(--text-muted); font: 500 10px/1 var(--font-mono); }
+  .fl__range { position: absolute; top: 30px; height: 4px; border-radius: 999px; background: var(--accent-subtle-border); }
+  .fl__thumb { position: absolute; top: 22px; left: 0; width: 20px; height: 20px; margin-left: -10px; border-radius: 999px; background: var(--accent); border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--accent), var(--shadow-overlay); outline: none; cursor: grab; transition: scale 260ms cubic-bezier(.34, 1.56, .64, 1); }
+  .fl__thumb::after { content: ""; position: absolute; inset: -12px; }
+  .fl__thumb:focus-visible { box-shadow: 0 0 0 1px var(--accent), 0 0 0 4px var(--focus-ring); }
+  .fl__ruler.is-drag .fl__thumb { scale: 1.2; cursor: grabbing; }
+
+  /* Banc */
+  .fl__bench { position: relative; border-radius: 16px; border: 1px solid var(--border); background: var(--raised); padding: 12px; overflow: hidden; }
+  .fl__frame { container-type: inline-size; width: 834px; transform-origin: 0 0; border-radius: 12px; background: var(--surface); box-shadow: 0 0 0 1px var(--border); overflow: hidden; }
+  .fl__frame.is-anim { transition: width 420ms cubic-bezier(.2, 0, 0, 1), transform 420ms cubic-bezier(.2, 0, 0, 1); }
+  .fl__grip { position: absolute; top: 12px; bottom: 12px; left: 0; width: 24px; margin-left: -4px; display: grid; place-items: center; cursor: ew-resize; touch-action: none; }
+  .fl__grip i { width: 6px; height: 48px; border-radius: 999px; background: var(--border-strong); transition: background-color var(--motion-base) var(--ease-out), height 260ms cubic-bezier(.34, 1.56, .64, 1); }
+  .fl__grip:hover i, .fl__grip.is-drag i { background: var(--accent); height: 64px; }
+  .fl__hl { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+
+  /* Article Brève : les tailles viennent des variables --fl-s<n> calculées en cqi */
+  .bv { padding: clamp(16px, 4cqi, 48px); display: grid; gap: 0; color: var(--text); }
+  .fl-s-1 { font-size: var(--fl-s-1); } .fl-s0 { font-size: var(--fl-s0); } .fl-s1 { font-size: var(--fl-s1); } .fl-s2 { font-size: var(--fl-s2); }
+  .fl-s3 { font-size: var(--fl-s3); } .fl-s4 { font-size: var(--fl-s4); } .fl-s5 { font-size: var(--fl-s5); }
+  .bv__mast { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 16px; margin-bottom: clamp(16px, 4cqi, 40px); border-bottom: 1px solid var(--border); }
+  .bv__logo { display: inline-flex; align-items: center; gap: 8px; color: var(--text-strong); }
+  .bv__logo svg { width: 28px; height: 28px; } .bv__logo rect { fill: var(--accent); } .bv__logo path { fill: none; stroke: var(--accent-fg); stroke-width: 9; stroke-linecap: round; } .bv__logo circle { fill: var(--accent-fg); }
+  .bv__logo b { font-size: 20px; font-weight: 650; letter-spacing: -0.03em; }
+  .bv__nav { color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .bv__kicker { font-weight: 600; letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--accent); margin-bottom: 0.75em; }
+  .bv__title { font-weight: 650; line-height: 1.04; letter-spacing: -0.035em; color: var(--text-strong); max-width: 16ch; text-wrap: balance; }
+  .bv__lead { margin-top: 0.9em; line-height: 1.45; color: var(--text); max-width: 40ch; text-wrap: pretty; }
+  .bv__byline { margin-top: 1.2em; color: var(--text-muted); }
+  .bv__cols { display: grid; gap: clamp(16px, 4cqi, 48px); margin-top: clamp(24px, 5cqi, 56px); padding-top: clamp(16px, 3cqi, 32px); border-top: 1px solid var(--border); }
+  .bv__h2 { font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; color: var(--text-strong); }
+  .bv__h3 { font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; color: var(--text-strong); }
+  .bv__p { margin-top: 0.6em; line-height: 1.6; max-width: 62ch; }
+  .bv__cap { margin-top: 1em; color: var(--text-muted); }
+  .bv__quote { margin-top: clamp(24px, 5cqi, 56px); font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; color: var(--text-strong); padding-left: 0.7em; border-left: 3px solid var(--accent); text-wrap: balance; }
+  @container (min-width: 720px) { .bv__cols { grid-template-columns: 1.2fr 1fr; } }
+  @container (max-width: 520px) { .bv__nav { display: none; } }
+
+  /* Tableau, graphe, export */
+  .fl__panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .fl__table, .fl__graph, .fl__export { border-radius: 16px; border: 1px solid var(--border); background: var(--surface); padding: 12px 16px; min-width: 0; }
+  .fl__thead { display: grid; grid-template-columns: 1fr auto 112px; gap: 12px; padding: 4px 8px 8px; font: 500 11px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .fl__thead span:nth-child(n+2) { text-align: right; }
+  .fl__table ol { list-style: none; padding: 0; display: grid; }
+  .fl__row { display: grid; grid-template-columns: 1fr auto 112px; gap: 4px 12px; align-items: center; min-height: 52px; padding: 6px 8px; border-top: 1px solid var(--border); cursor: default; transition: background-color var(--motion-base) var(--ease-out); }
+  .fl__row:first-child { border-top: 0; }
+  .fl__row:hover, .fl__row:focus-visible, .fl__row.is-on { background: var(--raised); }
+  .fl__row:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: -2px; }
+  .fl__name { display: grid; gap: 2px; min-width: 0; }
+  .fl__name b { font-size: 14px; font-weight: 500; color: var(--text-strong); }
+  .fl__name code { font: 400 11px/16px var(--font-mono); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fl__px { font: 600 18px/1 var(--font-mono); color: var(--text-strong); font-variant-numeric: tabular-nums; text-align: right; min-width: 7ch; }
+  .fl__px small { font-size: 11px; font-weight: 500; color: var(--text-muted); margin-left: 2px; }
+  .fl__mm { display: grid; gap: 6px; font: 500 11px/1 var(--font-mono); color: var(--text-muted); text-align: right; font-variant-numeric: tabular-nums; }
+  .fl__meter { position: relative; height: 4px; border-radius: 999px; background: var(--scale-track); }
+  .fl__meter i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--t, 0%); border-radius: inherit; background: var(--accent); }
+  .fl__graph { display: grid; gap: 8px; }
+  .fl__graph svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .fl__graph .ax { stroke: var(--chart-grid); } .fl__graph .lb { fill: var(--text-muted); font: 500 10px/1 var(--font-mono); }
+  .fl__graph .ln { fill: none; stroke: var(--chart-muted); stroke-width: 1.5; transition: stroke var(--motion-base) var(--ease-out), stroke-width var(--motion-base) var(--ease-out); }
+  .fl__graph .ln.is-on { stroke: var(--accent); stroke-width: 2.5; }
+  .fl__graph .zone { fill: var(--accent-subtle); }
+  .fl__graph .cur { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+  .fl__graph .dot { fill: var(--surface); stroke: var(--accent); stroke-width: 2; }
+  .fl__export { display: grid; gap: 8px; }
+  .fl__exhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .fl__copy { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--border-control); background: var(--surface); font-size: 14px; font-weight: 500; color: var(--text-strong); cursor: pointer; }
+  .fl__copy svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .fl__copy.is-done { color: var(--up); }
+  .fl__code { margin: 0; max-height: 240px; overflow: auto; padding: 12px 14px; border-radius: 8px; background: var(--raised); font: 400 12px/20px var(--font-mono); color: var(--text-muted); white-space: pre; }
+
+  @container (min-width: 960px) {
+    .fl__panel { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+    .fl__export { grid-column: 1 / -1; }
+  }
+  @container (max-width: 520px) {
+    .fl__thead { grid-template-columns: 1fr auto; } .fl__thead span:last-child { display: none; }
+    .fl__row { grid-template-columns: 1fr auto; } .fl__mm { grid-column: 1 / -1; grid-template-columns: auto 1fr; align-items: center; gap: 10px; text-align: left; }
+    .fl__now b { font-size: 26px; line-height: 32px; }
+    .fl__bar { display: grid; }
+    .fl__presets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-radius: 16px; }
+    .fl__presets button { justify-content: center; padding: 0 6px; border-radius: 12px; min-height: 44px; }
+    .fl__presets small { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fl__frame.is-anim, .fl__grip i, .fl__thumb { transition: none; }
+  }
+</style>
+
+<script>
+/* EchelleFluide — vanilla, sans dépendance.
+   EchelleFluide.mount(el, { largeur, vmin, vmax, baseMin, baseMax, ratioMin, ratioMax, niveaux }) */
+(function () {
+  var NOMS = { '-2': 'Mention', '-1': 'Légende', '0': 'Texte', '1': 'Chapô', '2': 'Titre 3', '3': 'Titre 2', '4': 'Titre 1', '5': 'Affiche', '6': 'Géant' };
+  var RMIN = 320, RMAX = 1600;
+  function r4(n) { return Math.round(n * 10000) / 10000; }
+  function fr(n, d) { return n.toFixed(d).replace('.', ','); }
+
+  /* Niveau k : min = baseMin × ratioMin^k à vmin, max = baseMax × ratioMax^k à vmax (formule d'Utopia). */
+  function scale(o) {
+    var out = [];
+    for (var k = o.from; k <= o.to; k++) {
+      var min = o.baseMin * Math.pow(o.ratioMin, k), max = o.baseMax * Math.pow(o.ratioMax, k);
+      var slope = (max - min) / (o.vmax - o.vmin), icpt = min - slope * o.vmin;
+      out.push({ k: k, nom: NOMS[k] || 'Niveau ' + k, min: min, max: max, slope: slope, icpt: icpt,
+        css: function (unit) { return 'clamp(' + r4(this.min / 16) + 'rem, ' + r4(this.icpt / 16) + 'rem + ' + r4(this.slope * 100) + unit + ', ' + r4(this.max / 16) + 'rem)'; },
+        at: function (w) { return Math.min(this.max, Math.max(this.min, this.icpt + this.slope * w)); } });
+    }
+    return out;
+  }
+
+  function mount(root, opts) {
+    var $ = function (s) { return root.querySelector(s); };
+    var o = { largeur: +root.dataset.largeur || 834, vmin: +root.dataset.vmin || 360, vmax: +root.dataset.vmax || 1440, baseMin: 16, baseMax: 19, ratioMin: 1.2, ratioMax: 1.333, from: -1, to: 5 };
+    Object.assign(o, opts || {});
+    var bench = $('[data-fl-bench]'), frame = $('[data-fl-frame]'), grip = $('[data-fl-grip]'), ruler = $('[data-fl-ruler]'), thumb = $('[data-fl-thumb]');
+    var rowsEl = $('[data-fl-rows]'), graph = $('[data-fl-graph]'), levels = [], W = o.largeur, s = 1, active = null;
+
+    function avail() { return bench.clientWidth - 36; }
+    function layout(animate) {
+      var a = avail(); s = Math.min(1, a / W);
+      frame.classList.toggle('is-anim', !!animate && !matchMedia('(prefers-reduced-motion: reduce)').matches);
+      frame.style.width = W + 'px';
+      frame.style.transform = s < 1 ? 'scale(' + s + ')' : '';
+      bench.style.height = (frame.offsetHeight * s + 24) + 'px';
+      grip.style.left = (12 + W * s) + 'px';
+      $('[data-fl-w]').textContent = Math.round(W);
+      var z = $('[data-fl-zoom]'); z.hidden = s >= 1; z.textContent = 'Aperçu réduit à ' + Math.round(s * 100) + ' %';
+      var p = (W - RMIN) / (RMAX - RMIN) * 100;
+      thumb.style.left = p + '%';
+      thumb.setAttribute('aria-valuenow', Math.round(W)); thumb.setAttribute('aria-valuetext', Math.round(W) + ' pixels');
+      $('[data-fl-presets]').querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', Math.abs(+b.dataset.w - W) < 1); });
+      readout();
+    }
+    /* Les tailles réelles sont lues sur le rendu (getComputedStyle), pas recalculées. */
+    function readout() {
+      levels.forEach(function (l) {
+        var el = frame.querySelector('.fl-s' + l.k), px = el ? parseFloat(getComputedStyle(el).fontSize) : l.at(W);
+        var row = rowsEl.querySelector('[data-k="' + l.k + '"]'); if (!row) return;
+        row.querySelector('[data-px]').innerHTML = fr(px, 1) + '<small>px</small>';
+        row.querySelector('.fl__meter i').style.setProperty('--t', Math.round((px - l.min) / Math.max(0.01, l.max - l.min) * 100) + '%');
+      });
+      drawGraph();
+    }
+    function setW(w, animate) { W = Math.max(RMIN, Math.min(RMAX, Math.round(w))); layout(animate); if (animate) setTimeout(function () { layout(false); }, 440); }
+
+    /* Poignée du cadre : le déplacement est divisé par l'échelle d'aperçu. */
+    var drag = null;
+    grip.addEventListener('pointerdown', function (e) { grip.setPointerCapture(e.pointerId); drag = { x: e.clientX, w: W, s: s }; grip.classList.add('is-drag'); });
+    grip.addEventListener('pointermove', function (e) { if (drag) setW(drag.w + (e.clientX - drag.x) / drag.s); });
+    ['pointerup', 'pointercancel'].forEach(function (t) { grip.addEventListener(t, function () { drag = null; grip.classList.remove('is-drag'); }); });
+
+    /* Règle 320 → 1600 px */
+    var rdrag = false;
+    function fromRuler(e) { var r = ruler.getBoundingClientRect(); setW(RMIN + (e.clientX - r.left) / r.width * (RMAX - RMIN)); }
+    ruler.addEventListener('pointerdown', function (e) { ruler.setPointerCapture(e.pointerId); rdrag = true; ruler.classList.add('is-drag'); fromRuler(e); thumb.focus({ preventScroll: true }); });
+    ruler.addEventListener('pointermove', function (e) { if (rdrag) fromRuler(e); });
+    ['pointerup', 'pointercancel'].forEach(function (t) { ruler.addEventListener(t, function () { rdrag = false; ruler.classList.remove('is-drag'); }); });
+    thumb.addEventListener('keydown', function (e) {
+      var st = e.shiftKey ? 100 : 10, k = e.key;
+      if (k === 'ArrowLeft' || k === 'ArrowDown') setW(W - st); else if (k === 'ArrowRight' || k === 'ArrowUp') setW(W + st);
+      else if (k === 'Home') setW(RMIN, true); else if (k === 'End') setW(RMAX, true); else return;
+      e.preventDefault();
+    });
+    $('[data-fl-presets]').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setW(+b.dataset.w, true); });
+
+    function drawTicks() {
+      var t = $('[data-fl-ticks]'), r = ruler.getBoundingClientRect(), w = r.width, html = '';
+      for (var v = RMIN; v <= RMAX; v += 40) {
+        var x = (v - RMIN) / (RMAX - RMIN) * w, maj = v % 320 === 0;
+        html += '<line x1="' + x.toFixed(1) + '" x2="' + x.toFixed(1) + '" y1="' + (maj ? 10 : 15) + '" y2="20"' + (maj ? ' class="is-maj"' : '') + '/>';
+        if (maj) html += '<text x="' + x.toFixed(1) + '" y="7" text-anchor="' + (v === RMIN ? 'start' : v === RMAX ? 'end' : 'middle') + '">' + v + '</text>';
+      }
+      t.innerHTML = html;
+      var rg = $('[data-fl-range]');
+      rg.style.left = ((o.vmin - RMIN) / (RMAX - RMIN) * 100) + '%';
+      rg.style.width = ((o.vmax - o.vmin) / (RMAX - RMIN) * 100) + '%';
+    }
+
+    function drawGraph() {
+      var w = graph.clientWidth || 480, h = Math.round(Math.min(260, Math.max(180, w * 0.5))), pl = 36, pb = 22, pt = 8, pr = 8;
+      var ymax = Math.ceil(levels[levels.length - 1].max / 8) * 8;
+      var X = function (v) { return pl + (v - RMIN) / (RMAX - RMIN) * (w - pl - pr); }, Yy = function (v) { return pt + (1 - v / ymax) * (h - pt - pb); };
+      var g = '<rect class="zone" x="' + X(o.vmin) + '" y="' + pt + '" width="' + (X(o.vmax) - X(o.vmin)) + '" height="' + (h - pt - pb) + '" rx="4" opacity=".6"/>';
+      for (var y = 0; y <= ymax; y += ymax > 64 ? 16 : 8) g += '<line class="ax" x1="' + pl + '" x2="' + (w - pr) + '" y1="' + Yy(y) + '" y2="' + Yy(y) + '"/><text class="lb" x="' + (pl - 6) + '" y="' + (Yy(y) + 3) + '" text-anchor="end">' + y + '</text>';
+      [320, 640, 960, 1280, 1600].forEach(function (v) { g += '<text class="lb" x="' + X(v) + '" y="' + (h - 6) + '" text-anchor="' + (v === 320 ? 'start' : v === 1600 ? 'end' : 'middle') + '">' + v + '</text>'; });
+      levels.forEach(function (l) {
+        var d = 'M' + X(RMIN) + ' ' + Yy(l.min) + 'L' + X(o.vmin) + ' ' + Yy(l.min) + 'L' + X(o.vmax) + ' ' + Yy(l.max) + 'L' + X(RMAX) + ' ' + Yy(l.max);
+        g += '<path class="ln' + (active === l.k ? ' is-on' : '') + '" d="' + d + '"/>';
+      });
+      g += '<line class="cur" x1="' + X(W) + '" x2="' + X(W) + '" y1="' + pt + '" y2="' + (h - pb) + '"/>';
+      levels.forEach(function (l) { g += '<circle class="dot" cx="' + X(W) + '" cy="' + Yy(l.at(W)) + '" r="' + (active === l.k ? 4.5 : 3) + '"/>'; });
+      graph.setAttribute('viewBox', '0 0 ' + w + ' ' + h); graph.setAttribute('height', h);
+      graph.innerHTML = g;
+    }
+
+    function setActive(k) {
+      active = k;
+      frame.querySelectorAll('.fl__hl').forEach(function (e) { e.classList.remove('fl__hl'); });
+      if (k != null) frame.querySelectorAll('[data-level="' + k + '"]').forEach(function (e) { e.classList.add('fl__hl'); });
+      rowsEl.querySelectorAll('.fl__row').forEach(function (r) { r.classList.toggle('is-on', +r.dataset.k === k); });
+      drawGraph();
+    }
+    rowsEl.addEventListener('pointerover', function (e) { var r = e.target.closest('.fl__row'); if (r) setActive(+r.dataset.k); });
+    rowsEl.addEventListener('pointerleave', function () { setActive(null); });
+    rowsEl.addEventListener('focusin', function (e) { var r = e.target.closest('.fl__row'); if (r) setActive(+r.dataset.k); });
+    rowsEl.addEventListener('focusout', function () { setActive(null); });
+
+    function build() {
+      levels = scale(o);
+      levels.forEach(function (l) { frame.style.setProperty('--fl-s' + l.k, l.css('cqi')); });
+      rowsEl.innerHTML = levels.slice().reverse().map(function (l) {
+        return '<li class="fl__row" data-k="' + l.k + '" tabindex="0" aria-label="' + l.nom + '"><span class="fl__name"><b>' + l.nom + ' <span class="fl__eyebrow">' + (l.k < 0 ? '−' + -l.k : l.k) + '</span></b><code>' + l.css('vw') + '</code></span>' +
+          '<span class="fl__px" data-px aria-live="off"></span><span class="fl__mm"><span>' + fr(l.min, 1) + ' → ' + fr(l.max, 1) + '</span><span class="fl__meter"><i></i></span></span></li>';
+      }).join('');
+      $('[data-fl-code]').textContent = '/* Échelle fluide · ' + o.vmin + ' → ' + o.vmax + ' px · ' + fr(o.ratioMin, 3) + ' → ' + fr(o.ratioMax, 3) + ' */\n:root {\n' +
+        levels.map(function (l) { return '  --step-' + (l.k < 0 ? '-' : '') + Math.abs(l.k) + ': ' + l.css('vw') + ';'; }).join('\n') + '\n}';
+      drawTicks(); layout();
+    }
+
+    var copy = $('[data-fl-copy]');
+    copy.addEventListener('click', function () {
+      var lbl = $('[data-fl-copy-lbl]');
+      (navigator.clipboard ? navigator.clipboard.writeText($('[data-fl-code]').textContent) : Promise.reject()).then(function () {
+        copy.classList.add('is-done'); lbl.textContent = 'Copié'; setTimeout(function () { copy.classList.remove('is-done'); lbl.textContent = 'Copier'; }, 1500);
+      }, function () { lbl.textContent = 'Sélectionnez le code'; });
+    });
+
+    new ResizeObserver(function () { drawTicks(); layout(); }).observe(bench);
+    new ResizeObserver(function () { bench.style.height = (frame.offsetHeight * s + 24) + 'px'; }).observe(frame);
+    /* Au premier affichage, un cadre plus large que la place disponible est ramené à celle-ci (lisible sur téléphone). */
+    if (o.ajuster !== false && W > avail() && avail() >= RMIN) W = Math.floor(avail());
+    build();
+    return {
+      update: function (n) { var wChanged = n && n.largeur != null && +n.largeur !== o.largeur; Object.assign(o, n || {}); if (wChanged) W = +o.largeur; build(); },
+      setWidth: setW
+    };
+  }
+  window.EchelleFluide = { mount: mount, scale: scale };
+  document.querySelectorAll('[data-fl]').forEach(function (el) { if (!el._fl) el._fl = mount(el); });
+})();
+</script>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spécimen à axes vivants — démo</title>
+<script>(function (q) { if (!q.get('accent')) document.documentElement.setAttribute('data-accent', 'bordeaux'); })(new URLSearchParams(location.search));</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .page { padding: 32px 24px 48px; max-width: 1180px; margin: 0 auto; }
+  @media (max-width: 600px) { .page { padding: 12px 12px 32px; } }
+  .is-thumb .page { padding: 0; max-width: none; }
+  .is-thumb .ax { border: 0; border-radius: 0; min-height: 100vh; display: grid; align-content: center; }
+  .is-thumb .ax__bar, .is-thumb .ax__panel, .is-thumb .ax__spec, .is-thumb .ax__readout { display: none; }
+  .is-thumb .ax__title { font-size: 200px; }
+  .is-thumb .ax__eyebrow { font-size: 18px; }
+</style>
+</head>
+<body>
+<main class="page" id="mount"></main>
+<script>
+  var props = Socle.props({ texte: 'Ondée', police: 'archivo', mode: 'survol', graisse: 300, second: 60, pic: 900, picSecond: 100, rayon: 160, raideur: 170, amortissement: 18 });
+  var inst = null;
+  function opts(p) {
+    return { text: p.texte || 'Ondée', font: p.police, mode: Socle.thumb ? 'vague' : p.mode, weight: p.graisse, second: p.second, peak: p.pic, peakSecond: p.picSecond, radius: p.rayon, stiffness: p.raideur, damping: p.amortissement };
+  }
+  function render(p) { if (inst) inst.set(opts(p)); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), sec = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = sec ? sec[1].replace('data-axes-specimen', 'data-axes-specimen data-ax-manual') : '';
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    inst = AxesSpecimen.mount(mount.querySelector('[data-axes-specimen]'), opts(props));
+  }).catch(function () {});
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (inst) inst.replay(); });
+</script>
+</body>
+</html>

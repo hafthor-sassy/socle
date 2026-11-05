@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carte à lumière partagée — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 64px 32px; }
+  @media (max-width: 600px) { .stage { padding: 32px 16px 48px; } }
+  .is-thumb .stage { padding: 40px; }
+  .is-thumb .lum__lead { display: none; }
+</style>
+</head>
+<body>
+<main class="stage"><div id="mount" style="display:contents"></div></main>
+<script>
+  var props = Socle.props({ rayon: 320, intensite: 0.9, bordure: 1, interieur: true, inertie: 0.16, source: 'accent' });
+  var root = null;
+  function render(p) {
+    if (!root) return;
+    root.dataset.source = p.source;
+    root.dataset.interieur = String(!!p.interieur);
+    root.style.setProperty('--lum-r', p.rayon + 'px');
+    root.style.setProperty('--lum-i', p.intensite);
+    root.style.setProperty('--lum-b', p.bordure + 'px');
+    root.style.setProperty('--lum-inertie', p.inertie);
+  }
+  /* Balayage scénarisé : la source parcourt la grille en huit, comme un pointeur. */
+  var tour = 0;
+  function sweep(loop) {
+    if (!root || !root._lumiere) return;
+    var id = ++tour, t0 = performance.now(), dur = loop ? 5200 : 2600;
+    (function f(now) {
+      if (id !== tour) return;
+      var t = Math.min(1, (now - t0) / dur), a = t * Math.PI * 2;
+      root._lumiere.aim(0.5 + 0.42 * Math.sin(a), 0.5 + 0.38 * Math.sin(2 * a));
+      if (t < 1) requestAnimationFrame(f); else if (loop) { t0 = now; requestAnimationFrame(f); } else root._lumiere.off();
+    })(t0);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-lumiere]');
+    render(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (Socle.thumb && !Socle.reducedMotion()) sweep(true);
+    else if (Socle.thumb && root._lumiere) root._lumiere.aim(0.3, 0.3);
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { sweep(false); });
+</script>
+</body>
+</html>

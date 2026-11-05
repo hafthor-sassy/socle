@@ -1,0 +1,326 @@
+<!-- Bouton à états enchaînés — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Envoyer → rotation → coche (ou tremblement en cas d'erreur) ; la largeur suit chaque libellé sur un ressort CSS (linear()). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="vg">
+  <article class="vg__card" aria-labelledby="vg-title">
+    <header class="vg__head">
+      <span class="vg__brand">
+        <svg class="vg__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="vg__logo-bg"/><path class="vg__logo-mark" d="M37 41a14 14 0 1 1 27.6 3.4C62 58 53 69 40.5 76.5l-4-6.2C44 65 48.6 59.5 50.4 54.8A14 14 0 0 1 37 41Z"/></svg>
+        <span class="vg__word">virgule</span>
+      </span>
+      <span class="vg__step">Étape 3 sur 3</span>
+    </header>
+
+    <h2 class="vg__title" id="vg-title">Confirmer le virement</h2>
+
+    <div class="vg__sum">
+      <div class="vg__payee">
+        <span class="vg__avatar" aria-hidden="true">LM</span>
+        <span class="vg__who"><span class="vg__name">Léa Moreau</span><span class="vg__iban">FR76 •••• •••• 4021</span></span>
+      </div>
+      <p class="vg__amount"><span class="vg__eur">240</span><span class="vg__cts">,00 €</span></p>
+    </div>
+
+    <dl class="vg__meta">
+      <div><dt>Motif</dt><dd>Loyer de novembre</dd></div>
+      <div><dt>Arrivée</dt><dd>Instantanée, sous 10 s</dd></div>
+      <div><dt>Frais</dt><dd>0,00 €</dd></div>
+    </dl>
+
+    <footer class="vg__foot">
+      <button class="vg__ghost" type="button">Modifier</button>
+      <button class="cb" type="button" data-chain data-shape="pill" data-variant="solid" data-outcome="success" data-duration="1600" data-reset="2600" data-haptic="true">
+        <span class="cb__state" data-state="idle">
+          <span>Envoyer 240,00 €</span>
+          <svg class="cb__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+        </span>
+        <span class="cb__state" data-state="loading">
+          <svg class="cb__spin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
+          <span class="cb__sr">Envoi en cours</span>
+        </span>
+        <span class="cb__state" data-state="success">
+          <svg class="cb__ico cb__check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          <span>Virement envoyé</span>
+        </span>
+        <span class="cb__state" data-state="error">
+          <svg class="cb__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7.5v5.5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg>
+          <span>Échec, réessayer</span>
+        </span>
+      </button>
+    </footer>
+    <p class="cb__live" data-chain-live aria-live="polite" role="status"></p>
+  </article>
+
+  <section class="vg__more" aria-label="Le même bouton ailleurs">
+    <p class="vg__kicker">Le même bouton ailleurs</p>
+    <div class="vg__row">
+      <button class="cb cb--sm" type="button" data-chain data-shape="rounded" data-outcome="success" data-duration="900" data-reset="2000">
+        <span class="cb__state" data-state="idle"><span>Enregistrer</span></span>
+        <span class="cb__state" data-state="loading"><svg class="cb__spin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg><span class="cb__sr">Enregistrement</span></span>
+        <span class="cb__state" data-state="success"><svg class="cb__ico cb__check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Enregistré</span></span>
+        <span class="cb__state" data-state="error"><span>Réessayer</span></span>
+      </button>
+      <button class="cb cb--sm" type="button" data-chain data-variant="outline" data-outcome="error" data-duration="1200" data-reset="2400">
+        <span class="cb__state" data-state="idle"><span>Publier l’article</span></span>
+        <span class="cb__state" data-state="loading"><svg class="cb__spin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg><span class="cb__sr">Publication</span></span>
+        <span class="cb__state" data-state="success"><svg class="cb__ico cb__check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>En ligne</span></span>
+        <span class="cb__state" data-state="error"><svg class="cb__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7.5v5.5M12 16.5v.01"/><circle cx="12" cy="12" r="9"/></svg><span>Hors connexion</span></span>
+      </button>
+      <button class="cb cb--sm" type="button" data-chain data-outcome="alternate" data-duration="1000" data-reset="2200">
+        <span class="cb__state" data-state="idle"><span>Rejoindre</span></span>
+        <span class="cb__state" data-state="loading"><svg class="cb__spin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg><span class="cb__sr">Inscription</span></span>
+        <span class="cb__state" data-state="success"><svg class="cb__ico cb__check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Vous êtes inscrit</span></span>
+        <span class="cb__state" data-state="error"><span>Liste complète</span></span>
+      </button>
+    </div>
+  </section>
+</div>
+<!-- /SECTION -->
+
+<script>
+/* ChainButton — idle → loading → success | error, sans dépendance.
+   ChainButton.attach(button, action?) : action() renvoie une promesse ; sans action, simulation
+   pilotée par data-outcome (success | error | alternate) et data-duration (ms).
+   data-reset : retour au repos après n ms (0 = reste sur le résultat) · data-min : durée minimale du chargement. */
+(function () {
+  var reduce = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var MESSAGES = { loading: 'En cours…', success: 'Terminé.', error: 'Échec. Vous pouvez réessayer.' };
+
+  function ChainButton(el, action) {
+    this.el = el;
+    this.action = action || null;
+    this.states = {};
+    this.flip = 0;
+    var self = this;
+    el.querySelectorAll('[data-state]').forEach(function (s) { self.states[s.dataset.state] = s; });
+    var n = el.parentNode, live = null;
+    while (n && n.querySelector && !(live = n.querySelector('[data-chain-live]'))) n = n.parentNode;
+    if (!live) { live = document.createElement('p'); live.className = 'cb__live'; live.setAttribute('role', 'status'); live.setAttribute('aria-live', 'polite'); el.after(live); }
+    this.live = live;
+    this.set('idle', true);
+    el.addEventListener('click', function () { self.run(); });
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(function () { self.size(true); }).observe(el.parentNode);
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { self.size(true); });
+    el._chain = this;
+  }
+
+  ChainButton.prototype.width = function (name) {
+    var el = this.el;
+    if (name === 'loading') return el.offsetHeight;
+    // --cb-fill: 1 → le bouton occupe toute la largeur de son parent (mobile), sauf pendant le chargement
+    if (getComputedStyle(el).getPropertyValue('--cb-fill').trim() === '1') {
+      var p = el.parentNode, cs = getComputedStyle(p);
+      return p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    }
+    return Math.ceil(this.states[name].offsetWidth);
+  };
+
+  ChainButton.prototype.size = function (instant) {
+    var el = this.el;
+    if (instant) el.classList.add('cb--instant');
+    el.style.width = this.width(this.state) + 'px';
+    if (instant) { el.offsetWidth; el.classList.remove('cb--instant'); }
+  };
+
+  ChainButton.prototype.set = function (name, instant) {
+    var el = this.el, prev = this.state;
+    this.state = name;
+    el.dataset.status = name;
+    Object.keys(this.states).forEach(function (k) {
+      var s = this.states[k];
+      s.classList.toggle('is-on', k === name);
+      s.classList.toggle('is-off', k === prev && k !== name);
+      s.setAttribute('aria-hidden', String(k !== name));
+    }, this);
+    el.setAttribute('aria-busy', String(name === 'loading'));
+    el.setAttribute('aria-disabled', String(name === 'loading' || name === 'success'));
+    this.size(instant);
+    if (name === 'error' && !reduce.matches) {
+      el.classList.remove('cb--shake'); el.offsetWidth; el.classList.add('cb--shake');
+      if (el.dataset.haptic !== 'false' && navigator.vibrate) navigator.vibrate([12, 40, 12]);
+    }
+    if (this.live && !instant) {
+      var label = this.states[name] ? this.states[name].textContent.trim() : '';
+      this.live.textContent = name === 'idle' ? '' : (label || MESSAGES[name]) + (name === 'error' ? '. ' + MESSAGES.error : '');
+    }
+  };
+
+  ChainButton.prototype.simulate = function () {
+    var el = this.el, mode = el.dataset.outcome || 'success', ok = mode !== 'error';
+    if (mode === 'alternate') { ok = !this.flip; this.flip = this.flip ? 0 : 1; }
+    var ms = +el.dataset.duration || 1400;
+    return new Promise(function (res, rej) { setTimeout(ok ? res : rej, ms); });
+  };
+
+  ChainButton.prototype.run = function () {
+    if (this.state === 'loading' || this.state === 'success') return;
+    var self = this, el = this.el, min = +el.dataset.min || 600, t0 = Date.now();
+    clearTimeout(this.timer);
+    this.set('loading');
+    var job = this.action ? Promise.resolve().then(this.action) : this.simulate();
+    function settle(name) {
+      setTimeout(function () {
+        self.set(name);
+        var back = +(el.dataset.reset || 0);
+        if (back > 0) self.timer = setTimeout(function () { self.set('idle'); }, back);
+      }, Math.max(0, min - (Date.now() - t0)));
+    }
+    job.then(function () { settle('success'); }, function () { settle('error'); });
+  };
+
+  window.ChainButton = {
+    attach: function (el, action) { return el._chain || new ChainButton(el, action); },
+    init: function (root) { (root || document).querySelectorAll('[data-chain]').forEach(function (b) { window.ChainButton.attach(b); }); },
+  };
+  window.ChainButton.init();
+})();
+</script>
+
+<style>
+  /* ——— Bouton à états ——— */
+  .cb {
+    --cb-h: 52px;
+    --cb-pad: 24px;
+    /* Ressort (raideur 260, amortissement 20) échantillonné : léger dépassement de 8 % */
+    --cb-spring: linear(0, 0.071, 0.233, 0.427, 0.618, 0.781, 0.908, 0.996, 1.049, 1.076, 1.082, 1.075, 1.061, 1.045, 1.03, 1.017, 1.007, 1, 0.996, 0.994, 0.993, 0.994, 0.995, 0.996, 0.998, 0.999, 0.999, 1, 1);
+    --cb-dur: 700ms;
+    --cb-fill: 0; /* 1 : pleine largeur du parent */
+    position: relative;
+    display: inline-block;
+    flex: none;
+    height: var(--cb-h);
+    min-width: var(--cb-h);
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: var(--accent-fg);
+    font: 550 16px/1 var(--font-sans);
+    letter-spacing: -0.006em;
+    white-space: nowrap;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      width var(--cb-dur) var(--cb-spring),
+      border-radius var(--cb-dur) var(--cb-spring),
+      background-color 240ms var(--ease-out),
+      color 240ms var(--ease-out),
+      border-color 240ms var(--ease-out),
+      scale 160ms var(--ease-out);
+  }
+  @supports not (transition-timing-function: linear(0, 1)) {
+    .cb { --cb-spring: cubic-bezier(.34, 1.36, .64, 1); --cb-dur: 560ms; }
+  }
+  .cb--instant, .cb--instant .cb__state { transition: none !important; }
+  .cb[data-shape=rounded] { border-radius: var(--radius-card); }
+  .cb[data-shape=rounded][data-status=loading] { border-radius: calc(var(--cb-h) / 2); }
+  .cb[data-variant=outline] { background: var(--surface); color: var(--text-strong); border-color: var(--border-control); }
+  .cb:hover:not([aria-disabled=true]) { background: var(--accent-hover); }
+  .cb[data-variant=outline]:hover:not([aria-disabled=true]) { background: var(--raised); }
+  .cb:active:not([aria-disabled=true]) { scale: .97; }
+  .cb:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 3px; }
+  .cb[aria-disabled=true] { cursor: default; }
+  .cb[data-status=success] { background: var(--tint-green-bg); color: var(--tint-green-fg); border-color: var(--tint-green-border); }
+  .cb[data-status=error] { background: var(--tint-red-bg); color: var(--tint-red-fg); border-color: var(--tint-red-border); }
+  .cb--sm { --cb-h: 44px; --cb-pad: 20px; font-size: 15px; }
+
+  .cb__state {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: max-content;
+    height: 100%;
+    padding: 0 var(--cb-pad);
+    opacity: 0;
+    translate: -50% calc(-50% + 10px);
+    scale: .92;
+    filter: blur(3px);
+    pointer-events: none;
+    transition: opacity 180ms var(--ease-in), translate 260ms var(--ease-in), scale 260ms var(--ease-in), filter 180ms var(--ease-in);
+  }
+  .cb__state.is-off { translate: -50% calc(-50% - 10px); }
+  .cb__state.is-on {
+    opacity: 1; translate: -50% -50%; scale: 1; filter: none;
+    transition: opacity 260ms var(--ease-out) 90ms, translate 520ms var(--cb-spring) 60ms, scale 520ms var(--cb-spring) 60ms, filter 260ms var(--ease-out) 90ms;
+  }
+  .cb__state[data-state=loading] { padding: 0; width: var(--cb-h); }
+
+  .cb__ico { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .cb__state[data-state=idle] .cb__ico { transition: translate 260ms var(--cb-spring); }
+  .cb:hover .cb__state[data-state=idle] .cb__ico { translate: 3px 0; }
+  .cb__check path { stroke-dasharray: 22; stroke-dashoffset: 22; }
+  .cb__state.is-off .cb__check path { stroke-dashoffset: 0; }
+  .cb__state.is-on .cb__check path { stroke-dashoffset: 0; transition: stroke-dashoffset 380ms cubic-bezier(.65, 0, .35, 1) 220ms; }
+
+  .cb__spin { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+  .cb__spin circle { stroke-dasharray: 57; stroke-dashoffset: 40; transform-origin: center; animation: cb-dash 1.4s ease-in-out infinite; }
+  .cb__state.is-on .cb__spin { animation: cb-rot .8s linear infinite; }
+  @keyframes cb-rot { to { rotate: 360deg; } }
+  @keyframes cb-dash { 0% { stroke-dashoffset: 52; } 50% { stroke-dashoffset: 16; } 100% { stroke-dashoffset: 52; } }
+
+  .cb--shake { animation: cb-shake 460ms cubic-bezier(.36, .07, .19, .97); }
+  @keyframes cb-shake { 0%, 100% { translate: 0; } 15% { translate: -7px; } 30% { translate: 6px; } 45% { translate: -4px; } 60% { translate: 3px; } 75% { translate: -1.5px; } 90% { translate: .5px; } }
+
+  .cb__sr, .cb__live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cb, .cb__state, .cb__state.is-on, .cb__check path { transition-duration: 1ms !important; transition-delay: 0s !important; }
+    .cb__state { filter: none; translate: -50% -50%; scale: 1; }
+    .cb__state.is-on .cb__spin { animation-duration: 2.4s; }
+    .cb--shake { animation: none; }
+  }
+
+  /* ——— Mise en scène : virement Virgule ——— */
+  .vg { width: min(100%, 480px); display: grid; gap: 24px; font-family: var(--font-sans); color: var(--text); }
+  .vg__card { position: relative; display: grid; gap: 24px; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-sheet); background: var(--surface); }
+  .vg__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .vg__brand { display: inline-flex; align-items: center; gap: 8px; color: var(--text-strong); }
+  .vg__logo { width: 28px; height: 28px; }
+  .vg__logo-bg { fill: var(--accent); }
+  .vg__logo-mark { fill: var(--accent-fg); }
+  .vg__word { font: 600 18px/1 var(--font-sans); letter-spacing: -0.025em; }
+  .vg__step { font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .vg__title { margin: 0; font: 600 var(--t-section) / var(--t-section-lh) var(--font-sans); letter-spacing: var(--track-snug); color: var(--text-strong); }
+  .vg__sum { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border-radius: var(--radius-card); background: var(--raised); }
+  .vg__payee { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .vg__avatar { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--accent-subtle); color: var(--text-strong); font: 600 14px/1 var(--font-sans); border: 1px solid var(--accent-subtle-border); }
+  .vg__who { display: grid; gap: 4px; min-width: 0; }
+  .vg__name { font: 600 16px/20px var(--font-sans); color: var(--text-strong); }
+  .vg__iban { font: 400 14px/18px var(--font-mono); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .vg__amount { margin: 0; color: var(--text-strong); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .vg__eur { font: 600 32px/1 var(--font-sans); letter-spacing: var(--track-tight); }
+  .vg__cts { font: 500 18px/1 var(--font-sans); color: var(--text-muted); }
+  .vg__meta { display: grid; gap: 0; margin: 0; }
+  .vg__meta div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--border); font-size: 15px; line-height: 20px; }
+  .vg__meta div:first-child { border-top: 0; padding-top: 0; }
+  .vg__meta dt { color: var(--text-muted); }
+  .vg__meta dd { margin: 0; color: var(--text-strong); text-align: right; }
+  .vg__foot { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+  .vg__foot .cb { flex: none; }
+  .vg__ghost { height: 52px; padding: 0 20px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--text-strong); font: 500 16px/1 var(--font-sans); cursor: pointer; transition: background-color var(--motion-fast) var(--ease-out); }
+  .vg__ghost:hover { background: var(--state-hover); }
+  .vg__ghost:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 2px; }
+  .vg__more { display: grid; gap: 12px; }
+  .vg__kicker { margin: 0; font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .vg__row { display: flex; flex-wrap: wrap; gap: 8px; min-height: 44px; }
+
+  @media (max-width: 520px) {
+    .vg__card { padding: 20px 16px; gap: 20px; }
+    .vg__sum { flex-direction: column; align-items: stretch; gap: 16px; }
+    .vg__amount { order: -1; }
+    .vg__eur { font-size: 40px; }
+    .vg__foot { flex-direction: column-reverse; align-items: center; }
+    .vg__foot .cb { --cb-fill: 1; }
+    .vg__ghost { width: 100%; }
+  }
+</style>

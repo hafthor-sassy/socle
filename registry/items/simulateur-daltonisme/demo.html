@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulateur de daltonisme — démo</title>
+<script>document.documentElement.setAttribute('data-accent', new URLSearchParams(location.search).get('accent') || 'corail');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-items: center; padding: 40px clamp(16px, 4vw, 48px); }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .cvd__bar, .is-thumb .cvd__risk { display: none !important; }
+  .is-thumb .cvd__body { grid-template-columns: 1fr !important; }
+  @media (max-width: 480px) { .stage { padding: 20px 16px; align-items: start; } }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ vision: 'deuteranopie', severite: 100, mode: 'comparer', position: 50, seuil: 7, risques: true });
+  var api = null;
+  function render(p) { if (api) api.update({ vision: p.vision, severite: p.severite, mode: p.mode, position: p.position, seuil: p.seuil, risques: !!p.risques }); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount'); mount.innerHTML = mk ? mk[1] : '';
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = mount.querySelector('[data-cvd]')._cvd; render(props);
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var vis = true, k = 0, pts = [28, 72];
+      new IntersectionObserver(function (en) { vis = en[0].isIntersecting; }).observe(mount);
+      setInterval(function () { if (vis) api.go(pts[k++ % 2]); }, 1600);
+    }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function (p) { if (!api) return; api.go(8); setTimeout(function () { api.go(92); }, 650); setTimeout(function () { api.go(p.position); }, 1300); });
+</script>
+</body>
+</html>

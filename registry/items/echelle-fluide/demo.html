@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banc de l’échelle fluide — démo</title>
+<script>document.documentElement.setAttribute('data-accent', new URLSearchParams(location.search).get('accent') || 'bordeaux');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-items: center; padding: 40px clamp(16px, 4vw, 48px); }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .fl__panel, .is-thumb .fl__presets { display: none !important; }
+  @media (max-width: 480px) { .stage { padding: 20px 16px; align-items: start; } }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ largeur: 834, vmin: 360, vmax: 1440, baseMin: 16, baseMax: 19, ratioMin: '1.2', ratioMax: '1.333' });
+  var api = null;
+  function opts(p) { return { largeur: p.largeur, vmin: p.vmin, vmax: Math.max(p.vmax, p.vmin + 160), baseMin: p.baseMin, baseMax: p.baseMax, ratioMin: +p.ratioMin, ratioMax: +p.ratioMax }; }
+  function render(p) { if (api) api.update(opts(p)); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount'); mount.innerHTML = mk ? mk[1] : '';
+    var el = mount.querySelector('[data-fl]'); el.dataset.largeur = props.largeur;
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = el._fl; api.update(Object.assign(opts(props), { largeur: undefined }));
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var vis = true, seq = [420, 1100, 760], i = 0;
+      new IntersectionObserver(function (en) { vis = en[0].isIntersecting; }).observe(mount);
+      setInterval(function () { if (vis) api.setWidth(seq[i++ % seq.length], true); }, 1700);
+    }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function (p) { if (!api) return; api.setWidth(375, true); setTimeout(function () { api.setWidth(1440, true); }, 700); setTimeout(function () { api.setWidth(p.largeur, true); }, 1400); });
+</script>
+</body>
+</html>

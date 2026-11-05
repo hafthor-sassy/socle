@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zone de protection — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'cobalt');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 40px 24px; }
+  @media (max-width: 860px) { .stage { padding: 20px 12px; place-items: start center; } }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .zp__head, .is-thumb .zp__dont, .is-thumb .zp__status, .is-thumb .zp__intrus { display: none; }
+  .is-thumb .zp__stage { min-height: 360px; padding: 32px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ marge: 1, version: 'horizontal', fond: 'light', cotes: true });
+  var api = null;
+  function apply(p) { if (!api) return; api.margin(p.marge); api.version(p.version); api.ground(p.fond); api.cotes(p.cotes); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = document.querySelector('[data-clear-zone]')._clearZone;
+    apply(props);
+  });
+  Socle.onChange(apply);
+  // Rejouer : le bouton s'approche du logo, entre dans la zone, puis revient.
+  Socle.onReplay(function () {
+    if (!api) return;
+    var z = document.querySelector('[data-zone]').getBoundingClientRect(), b = document.querySelector('[data-intrus]').getBoundingClientRect();
+    api.move(Math.round(z.right - b.left - 24), Math.round(z.bottom - b.top - 16));
+    setTimeout(function () { api.reset(); }, 1600);
+  });
+</script>
+</body>
+</html>

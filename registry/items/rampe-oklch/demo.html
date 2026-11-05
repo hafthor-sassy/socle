@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rampe OKLCH — démo</title>
+<script>document.documentElement.setAttribute('data-accent', new URLSearchParams(location.search).get('accent') || 'minuit');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-items: center; padding: 40px clamp(16px, 4vw, 48px); }
+  .is-thumb .stage { padding: 32px; }
+  .is-thumb .rk__grid, .is-thumb .rk__export, .is-thumb .rk__follow, .is-thumb .rk__toolbar, .is-thumb .rk__hue { display: none !important; }
+  @media (max-width: 480px) { .stage { padding: 20px 16px; align-items: start; } }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ suivre: true, teinte: 265, clarte: 52, chroma: 0.13, mode: 'clair', selection: 9 });
+  var api = null;
+  function render(p) { if (api) api.update({ suivre: !!p.suivre, teinte: p.teinte, clarte: p.clarte, chroma: p.chroma, mode: p.mode, selection: p.selection }); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount'); mount.innerHTML = mk ? mk[1] : '';
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = mount.querySelector('[data-rk]')._rk; render(props);
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var vis = true, h = api.state.H;
+      new IntersectionObserver(function (en) { vis = en[0].isIntersecting; }).observe(mount);
+      setInterval(function () { if (vis) { h = (h + 47) % 360; api.set({ H: h, suivre: false }); } }, 1800);
+    }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (!api) return; var h0 = api.state.H; [60, 150, 20, h0].forEach(function (d, i) { setTimeout(function () { api.set({ H: i < 3 ? (h0 + d) % 360 : h0 }); }, i * 520); }); });
+</script>
+</body>
+</html>

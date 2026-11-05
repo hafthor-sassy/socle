@@ -1,0 +1,57 @@
+{
+  "id": "bouton-lentille",
+  "nom": "Bouton lentille",
+  "categorie": "boutons",
+  "niveau": "premium",
+  "ordre": 22,
+  "description": "Un bouton en verre qui réfracte vraiment le fond : les bords bombent et tirent l’image, le centre grossit légèrement, les couleurs se séparent sur la tranche et un reflet suit le pointeur. Au repos la lentille reste discrète, au survol elle s’affirme sur un ressort ; un voile garde le libellé lisible. Shader WebGL 1 maison, repli en verre dépoli CSS.",
+  "tags": ["WebGL", "Shader", "Verre", "Réfraction", "Hero"],
+  "date": "2026-11-05",
+  "palette": "neon-violet",
+  "logo_exemple": { "nom": "Lueurs", "secteur": "Festival d’arts numériques", "fichier": "logo.svg", "palette": "neon-violet", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces (voile, reflet), texte, focus ; le fond d’exemple relit accent et bordures" },
+    { "nom": "Script LensButton", "note": "≈ 7 ko, inclus dans l’onglet HTML : WebGL 1, aucune bibliothèque, un contexte par bouton" },
+    { "nom": "Source réfractée", "note": "canvas, image ou vidéo de même origine placé derrière le bouton (data-lens-source)" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "refraction", "label": "Réfraction", "type": "number", "default": 1, "min": 0, "max": 1.5, "step": 0.05,
+      "hint": "Force des bords qui bombent et du grossissement au survol.",
+      "code": { "html": "data-refraction=\"{v}\"", "react": "refraction = {v}," } },
+    { "name": "aberration", "label": "Aberration chromatique", "type": "number", "default": 0.35, "min": 0, "max": 1, "step": 0.05,
+      "code": { "html": "data-aberration=\"{v}\"", "react": "aberration = {v}," } },
+    { "name": "givre", "label": "Givre", "type": "number", "default": 1.5, "min": 0, "max": 6, "step": 0.5, "unit": "px",
+      "hint": "Flou du verre : 0 pour un verre parfaitement clair.",
+      "code": { "html": "data-frost=\"{v}\"", "react": "frost = {v}," } },
+    { "name": "voile", "label": "Voile", "type": "number", "default": 0.42, "min": 0, "max": 0.7, "step": 0.02,
+      "hint": "Opacité de la surface mêlée au verre ; sous 0,35, vérifiez le contraste sur votre fond.",
+      "code": { "html": "data-veil=\"{v}\"", "react": "veil = {v}," } },
+    { "name": "repos", "label": "Réfraction au repos", "type": "number", "default": 0.3, "min": 0, "max": 1, "step": 0.05,
+      "code": { "html": "data-rest=\"{v}\"", "react": "rest = {v}," } },
+    { "name": "forme", "label": "Forme", "type": "select", "default": "pill",
+      "options": [{ "value": "pill", "label": "Pilule" }, { "value": "16", "label": "Rayon 16" }, { "value": "12", "label": "Rayon 12" }] },
+    { "name": "anime", "label": "Fond animé", "type": "boolean", "default": true,
+      "hint": "Rendu à chaque image tant que le bouton est à l’écran ; sinon, seulement quand il change.",
+      "code": { "react": "animated = {v}," } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/LensButton.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Appel à l’action d’un hero visuel (événement, produit, campagne) posé sur une image, une vidéo ou un fond génératif : c’est le fond qui fait l’effet.",
+    "La source doit être un canvas, une image ou une vidéo de même origine (ou servie avec CORS) placé derrière le bouton ; sur un fond uni, préférez un bouton classique.",
+    "Deux ou trois lentilles par écran au plus : chacune est un petit contexte WebGL. Le rendu s’arrête dès que rien ne bouge ou que la section sort de l’écran.",
+    "Si la source change sans être animée, appelez LensButton.redraw()."
+  ],
+  "accessibilite": [
+    "Bouton natif, Entrée et Espace ; le focus clavier déclenche la même lentille que le survol, plus un anneau de 2 px.",
+    "Voile de surface sous le libellé : contraste du libellé mesuré au pixel le plus défavorable du fond d’exemple, 9,5:1 en clair et 7,8:1 en sombre (survol compris).",
+    "Avec « réduire les animations » : fond figé, plus de ressort ni de rendu en continu ; la lentille reste statique.",
+    "Sans WebGL (ou source illisible) : repli en verre dépoli CSS (backdrop-filter), même contraste."
+  ]
+}

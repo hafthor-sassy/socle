@@ -1,0 +1,154 @@
+{
+  "id": "logo-en-situation",
+  "nom": "Logo en situation",
+  "categorie": "logos",
+  "niveau": "essentiel",
+  "ordre": 20,
+  "description": "Le logo posé dans ses vrais usages : onglet de navigateur et favicon en 16, 32 et 48 px, icône d’app et notification, avatar de réseau social, carte de visite recto verso qui se retourne. Une seule icône (un <symbol>) alimente toutes les maquettes.",
+  "tags": [
+    "Maquettes",
+    "Favicon",
+    "Icône d’app",
+    "Carte de visite",
+    "SVG"
+  ],
+  "date": "2026-11-05",
+  "palette": "sable",
+  "logo_exemple": {
+    "nom": "Strata",
+    "secteur": "Studio d’architecture",
+    "fichier": "logo.svg",
+    "palette": "sable",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1100
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Couleurs, rayons, ombres, polices"
+    },
+    {
+      "nom": "Script LogoSitu",
+      "note": "< 1 ko, inclus dans l’onglet HTML : nom de marque et retournement de la carte"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "nom",
+      "label": "Nom de marque",
+      "type": "text",
+      "default": "Strata",
+      "hint": "Met à jour l’onglet, l’adresse, le profil et la carte.",
+      "code": {
+        "react": "name=\"{v}\""
+      }
+    },
+    {
+      "name": "tuile",
+      "label": "Fond de l’icône",
+      "type": "select",
+      "default": "accent",
+      "options": [
+        {
+          "value": "accent",
+          "label": "Accent"
+        },
+        {
+          "value": "ink",
+          "label": "Encre"
+        },
+        {
+          "value": "light",
+          "label": "Clair"
+        }
+      ],
+      "code": {
+        "html": "data-tile=\"{v}\"",
+        "react": "tile=\"{v}\""
+      }
+    },
+    {
+      "name": "avatar",
+      "label": "Forme de l’avatar",
+      "type": "select",
+      "default": "circle",
+      "options": [
+        {
+          "value": "circle",
+          "label": "Cercle"
+        },
+        {
+          "value": "square",
+          "label": "Carré"
+        }
+      ],
+      "code": {
+        "html": "data-avatar=\"{v}\"",
+        "react": "avatar=\"{v}\""
+      }
+    },
+    {
+      "name": "rayon",
+      "label": "Rayon de l’icône d’app",
+      "type": "number",
+      "default": 22.5,
+      "min": 0,
+      "max": 50,
+      "step": 2.5,
+      "unit": "%",
+      "hint": "22,5 % approche la forme iOS ; 50 % donne une icône ronde (Android).",
+      "code": {
+        "html": "--ls-app-radius: {v}%",
+        "react": "appRadius={{v}}"
+      }
+    },
+    {
+      "name": "retourner",
+      "label": "Verso de la carte",
+      "type": "boolean",
+      "default": false,
+      "code": {
+        "react": "flipped={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/LogoInSitu.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour valider un logo avant de le figer : à 16 px, l’icône doit rester lisible ; sur la tuile d’app, elle doit respirer (environ 60 % de la tuile).",
+    "Remplacez le <symbol id=\"ls-mark\"> par votre icône (viewBox 32 × 32, fill=\"currentColor\") : les quatre maquettes suivent sans autre retouche.",
+    "Essayez les trois fonds (accent, encre, clair) : une icône qui ne tient que sur l’accent manque de contraste interne.",
+    "Présentez la page au client avec la vraie palette de la marque : l’application la surcharge par les variables de tokens.css."
+  ],
+  "accessibilite": [
+    "Les maquettes sont décoratives (aria-hidden) ; chaque usage a une légende lisible (figcaption).",
+    "La carte de visite est un bouton : Entrée ou Espace la retourne, aria-pressed indique le verso.",
+    "« Réduire les animations » : la carte change de face sans rotation.",
+    "Textes de contenu à 14 px minimum ; mentions de la carte imprimée à 12 px, comme sur le papier."
+  ]
+}

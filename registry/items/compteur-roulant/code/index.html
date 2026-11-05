@@ -1,0 +1,300 @@
+<!-- Compteur qui roule — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css.
+     Marque fictive : Ourlet (prêt-à-porter en ligne). Produit et chiffres fictifs. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="our" data-compteurs data-flou="true" data-plafond="99" data-direct="true" style="--rn-stiffness: 210; --rn-damping: 22; --rn-stagger: 45">
+  <header class="our__bar">
+    <a class="our__brand" href="#accueil" aria-label="Ourlet, accueil">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" class="our__logo-bg"/><path d="M24 40c8 6 17 9 26 9s18-3 26-9" class="our__logo-ln"/><path d="M22 62c9 7 18.5 10 28 10s19-3 28-10" class="our__logo-ln our__logo-dash"/></svg>
+      <span>Ourlet</span>
+    </a>
+    <nav class="our__nav" aria-label="Rayons"><a href="#nouveautes" aria-current="page">Nouveautés</a><a href="#femme">Femme</a><a href="#homme">Homme</a><a href="#atelier">L’atelier</a></nav>
+    <div class="our__icons">
+      <button class="our__icon" type="button" data-fav aria-label="Favoris, 12 articles">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.1A4.4 4.4 0 0 1 12 7.2a4.4 4.4 0 0 1 7.5 2.7C19.5 15.4 12 20 12 20z"/></svg>
+        <span class="our__badge our__badge--soft" data-roll data-format="badge" data-value="12" aria-hidden="true"></span>
+      </button>
+      <button class="our__icon" type="button" data-bag aria-label="Panier, 2 articles">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 8.5h13l-1 11.5h-11zM9 8.5V7a3 3 0 0 1 6 0v1.5"/></svg>
+        <span class="our__badge" data-roll data-format="badge" data-value="2" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="our__main">
+    <figure class="our__shot" aria-hidden="true">
+      <svg viewBox="0 0 320 360" class="our__garment"><path d="M112 40L58 64Q46 70 42 84L20 262l40 8 28-150v216h144V120l28 150 40-8-22-178q-4-14-16-20l-54-24c-6 18-26 30-48 30s-42-12-48-30z" class="our__g1"/><path d="M112 40l26 74M208 40l-26 74" class="our__g2"/><path d="M160 70v266" class="our__g2"/><path d="M112 40c6 18 26 30 48 30s42-12 48-30" class="our__g2"/><circle cx="160" cy="130" r="4" class="our__g3"/><circle cx="160" cy="180" r="4" class="our__g3"/><circle cx="160" cy="230" r="4" class="our__g3"/><path d="M104 236h36M180 236h36M30 238l36 6M290 238l-36 6" class="our__g2"/></svg>
+      <span class="our__live"><span class="our__dot"></span><span data-roll data-value="1284" data-live data-format="entier"></span>&nbsp;personnes regardent</span>
+    </figure>
+
+    <div class="our__info">
+      <p class="our__eyebrow">Nouvelle collection · lin lavé</p>
+      <h2 class="our__title">Veste Garance</h2>
+      <p class="our__price"><span data-roll data-format="monnaie" data-value="129" data-unit-price="129"></span><span class="our__vat">TTC</span></p>
+      <p class="our__lead">Lin français lavé à la pierre, coupe droite, boutons en corozo. Fabriquée à Roubaix.</p>
+
+      <fieldset class="our__sizes">
+        <legend>Taille</legend>
+        <label><input type="radio" name="our-size" value="XS"><span>XS</span></label>
+        <label><input type="radio" name="our-size" value="S"><span>S</span></label>
+        <label><input type="radio" name="our-size" value="M" checked><span>M</span></label>
+        <label><input type="radio" name="our-size" value="L"><span>L</span></label>
+        <label><input type="radio" name="our-size" value="XL" disabled><span>XL</span></label>
+      </fieldset>
+
+      <div class="our__buy">
+        <div class="our__qty" role="group" aria-label="Quantité">
+          <button type="button" data-step="-1" aria-label="Retirer une veste"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+          <span class="our__qty-n" data-roll data-format="entier" data-value="1" data-qty aria-hidden="true"></span>
+          <button type="button" data-step="1" aria-label="Ajouter une veste"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
+        </div>
+        <button class="our__cta" type="button" data-add>Ajouter au panier</button>
+      </div>
+      <p class="our__sr" aria-live="polite" data-announce></p>
+      <ul class="our__perks" role="list">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5h11v9H3zM14 10.5h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.75"/><circle cx="17.5" cy="17.5" r="1.75"/></svg>Livraison offerte dès 150&nbsp;€</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4.5v4h4"/></svg>Retours gratuits sous 30 jours</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- /SECTION -->
+
+<style>
+  /* ——— Compteur qui roule ——— */
+  .rn { display: inline-flex; align-items: baseline; font-variant-numeric: tabular-nums; white-space: nowrap; line-height: var(--rn-lh, 1.2); }
+  .rn__col { position: relative; display: inline-block; width: 1ch; height: calc(var(--rn-lh, 1.2) * 1em); overflow: hidden; vertical-align: bottom;
+    -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent); mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+    transition: width 360ms cubic-bezier(.2, .9, .25, 1), opacity 260ms var(--ease-out); }
+  .rn__col.is-enter, .rn__col.is-leave { width: 0; opacity: 0; }
+  .rn__strip { display: block; will-change: transform; }
+  .rn__strip > span { display: block; height: calc(var(--rn-lh, 1.2) * 1em); line-height: calc(var(--rn-lh, 1.2) * 1em); text-align: center; }
+  .rn__ch { display: inline-block; line-height: calc(var(--rn-lh, 1.2) * 1em); transition: opacity 260ms var(--ease-out); }
+  .rn__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ——— Contexte : fiche produit ——— */
+  .our { width: min(100%, 1080px); margin-inline: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; color: var(--text); font-family: var(--font-sans); }
+  .our__bar { display: flex; align-items: center; gap: 24px; height: 64px; padding: 0 16px 0 24px; border-bottom: 1px solid var(--border); }
+  .our__brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text-strong); text-decoration: none; font: 600 18px/24px var(--font-sans); letter-spacing: var(--track-snug); }
+  .our__brand svg { width: 28px; height: 28px; }
+  .our__logo-bg { fill: var(--accent); }
+  .our__logo-ln { fill: none; stroke: var(--accent-fg); stroke-width: 7; stroke-linecap: round; }
+  .our__logo-dash { stroke-width: 5; stroke-dasharray: 1 9; }
+  .our__nav { display: flex; gap: 4px; margin-right: auto; }
+  .our__nav a { display: inline-flex; align-items: center; height: 36px; padding: 0 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font: 500 var(--t-sm)/20px var(--font-sans); }
+  .our__nav a:hover { color: var(--text-strong); background: var(--state-hover); }
+  .our__nav a[aria-current] { color: var(--text-strong); }
+  .our__icons { display: flex; gap: 4px; margin-left: auto; }
+  .our__icon { position: relative; width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: 999px; background: none; color: var(--text-strong); cursor: pointer; }
+  .our__icon:hover { background: var(--state-hover); }
+  .our__icon > svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+  .our__icon[data-on="true"] > svg { fill: var(--accent); stroke: var(--accent); }
+  .our__badge { --rn-lh: 1.25; position: absolute; top: 3px; left: 24px; min-width: 20px; height: 20px; padding: 0 6px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: var(--accent); color: var(--accent-fg); box-shadow: 0 0 0 2px var(--surface); font: 600 12px/1 var(--font-sans); transition: padding 300ms var(--ease-out); }
+  .our__badge--soft { background: var(--text-strong); color: var(--surface); }
+  .our__badge.is-bump { animation: our-bump 520ms cubic-bezier(.34, 1.8, .5, 1); }
+  @keyframes our-bump { 30% { transform: scale(1.22); } }
+
+  .our__main { display: grid; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 840px) { .our__main { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); } }
+  .our__shot { position: relative; margin: 0; min-height: 300px; display: grid; place-items: center; background: var(--accent-subtle); }
+  @media (min-width: 840px) { .our__shot { min-height: 560px; } }
+  .our__garment { width: min(62%, 300px); height: auto; }
+  .our__g1 { fill: color-mix(in srgb, var(--accent) 78%, var(--surface)); }
+  .our__g2 { fill: none; stroke: color-mix(in srgb, var(--accent) 55%, var(--text-strong)); stroke-width: 2; stroke-linecap: round; opacity: .45; }
+  .our__g3 { fill: color-mix(in srgb, var(--accent) 40%, var(--text-strong)); opacity: .6; }
+  .our__live { position: absolute; left: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 0; height: 32px; padding: 0 12px 0 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); font: 500 13px/1 var(--font-sans); color: var(--text); }
+  .our__live [data-roll] { font-weight: 600; color: var(--text-strong); }
+  .our__dot { position: relative; width: 8px; height: 8px; margin-right: 8px; border-radius: 999px; background: var(--up); }
+  .our__dot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--up); animation: our-ping 2s cubic-bezier(.2, .6, .35, 1) infinite; }
+  .is-paused .our__dot::after { animation-play-state: paused; }
+  @keyframes our-ping { 80%, 100% { transform: scale(2.6); opacity: 0; } }
+
+  .our__info { display: grid; align-content: start; gap: 16px; padding: 32px; }
+  @media (min-width: 840px) { .our__info { padding: 48px 48px 40px; } }
+  .our__eyebrow { margin: 0; font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .our__title { margin: 0; font: 600 clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem)/1.1 var(--font-sans); letter-spacing: var(--track-tight); color: var(--text-strong); }
+  .our__price { display: flex; align-items: baseline; gap: 8px; margin: 0; font: 600 var(--t-kpi)/1.2 var(--font-sans); letter-spacing: var(--track-snug); color: var(--text-strong); }
+  .our__vat { font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); color: var(--text-muted); }
+  .our__lead { margin: 0; font-size: var(--t-base); line-height: var(--t-base-lh); color: var(--text-muted); max-width: 44ch; }
+  .our__sizes { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; padding: 0; border: 0; }
+  .our__sizes legend { width: 100%; margin-bottom: 8px; padding: 0; font: 500 var(--t-label)/var(--t-label-lh) var(--font-sans); color: var(--text-strong); }
+  .our__sizes label { position: relative; }
+  .our__sizes input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .our__sizes span { display: grid; place-items: center; min-width: 52px; height: 44px; padding: 0 12px; border: 1px solid var(--border-control); border-radius: 8px; font: 500 var(--t-sm)/1 var(--font-sans); color: var(--text-strong); transition: background var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out); }
+  .our__sizes input:checked + span { background: var(--text-strong); border-color: var(--text-strong); color: var(--surface); }
+  .our__sizes input:focus-visible + span { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .our__sizes input:disabled + span { color: var(--text-disabled); border-style: dashed; text-decoration: line-through; }
+  .our__buy { display: flex; gap: 12px; margin-top: 8px; }
+  .our__qty { display: inline-flex; align-items: center; height: 48px; border: 1px solid var(--border-control); border-radius: 8px; }
+  .our__qty button { width: 44px; height: 46px; display: grid; place-items: center; border: 0; background: none; color: var(--text-strong); cursor: pointer; border-radius: 8px; }
+  .our__qty button:hover:not(:disabled) { background: var(--state-hover); }
+  .our__qty button:disabled { color: var(--text-disabled); cursor: not-allowed; }
+  .our__qty svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; }
+  .our__qty-n { min-width: 28px; justify-content: center; font: 600 var(--t-base)/1 var(--font-sans); color: var(--text-strong); }
+  .our__cta { flex: 1; height: 48px; border: 0; border-radius: 8px; background: var(--accent); color: var(--accent-fg); font: 600 var(--t-base)/1 var(--font-sans); cursor: pointer; transition: background var(--motion-base) var(--ease-out), transform var(--motion-fast) var(--ease-out); }
+  .our__cta:hover { background: var(--accent-hover); }
+  .our__cta:active { transform: scale(.985); }
+  .our__perks { display: grid; gap: 8px; margin: 8px 0 0; padding: 16px 0 0; list-style: none; border-top: 1px solid var(--border); }
+  .our__perks li { display: flex; align-items: center; gap: 10px; font-size: var(--t-sm); line-height: var(--t-sm-lh); color: var(--text-muted); }
+  .our__perks svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .our__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 839px) {
+    .our__nav { display: none; }
+    .our__bar { padding: 0 8px 0 16px; height: 56px; }
+    .our__info { padding: 24px 20px 28px; gap: 12px; }
+    .our__garment { width: min(48%, 200px); }
+    .our__live { font-size: 14px; height: 36px; }
+  }
+  @media (max-width: 420px) {
+    .our__sizes span { min-width: 48px; }
+    .our__buy { position: sticky; bottom: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rn__col { transition: none; -webkit-mask-image: none; mask-image: none; }
+    .our__badge.is-bump, .our__dot::after { animation: none; }
+  }
+</style>
+
+<script>
+(function () {
+  /* Roulement chiffre par chiffre : chaque colonne est une bande 0-9 répétée trois fois, sa position est continue
+     (8 → 9 → 10 avance toujours dans le même sens) et elle suit un ressort. Les unités partent en premier. */
+  var NF = {
+    entier: new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }),
+    compact: new Intl.NumberFormat('fr-FR', { notation: 'compact', maximumFractionDigits: 1 }),
+    monnaie: new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' })
+  };
+  var reduced = function () { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; };
+  function fmt(v, f, cap) {
+    if (f === 'badge') return v > cap ? NF.entier.format(cap) + '+' : NF.entier.format(v);
+    return (NF[f] || NF.entier).format(v);
+  }
+  var all = [], raf = 0, last = 0, visible = true, opts = { k: 210, c: 22, stagger: 45, blur: true, cap: 99 };
+
+  function Roll(el) {
+    var self = { el: el, cols: [], value: null, format: el.dataset.format || 'entier' };
+    el.classList.add('rn');
+    el.innerHTML = '<span class="rn__sr"></span><span class="rn__vis" aria-hidden="true" style="display:inline-flex;align-items:baseline"></span>';
+    var vis = el.lastChild, sr = el.firstChild;
+    function strip() { var s = ''; for (var i = 0; i < 30; i++) s += '<span>' + (i % 10) + '</span>'; return '<span class="rn__strip">' + s + '</span>'; }
+    self.set = function (v, instant) {
+      var prev = self.value; self.value = v;
+      var str = fmt(v, self.format, opts.cap), chars = Array.from(str), dir = prev == null ? 0 : Math.sign(v - prev), delta = prev == null ? 0 : Math.abs(v - prev);
+      sr.textContent = str;
+      /* Alignement par la droite : la colonne des unités garde son identité quand le nombre s'allonge. */
+      var old = self.cols, next = [], now = performance.now(), digitRank = 0;
+      for (var r = 0; r < chars.length; r++) {
+        var ch = chars[chars.length - 1 - r], isD = /\d/.test(ch), o = old[r];
+        if (isD) {
+          var d = +ch, c = o && o.digit ? o : null;
+          if (!c) {
+            var node = document.createElement('span'); node.className = 'rn__col' + (prev != null && !instant ? ' is-enter' : ''); node.innerHTML = strip();
+            c = { node: node, digit: true, p: d, v: 0, t: d, at: 0, strip: node.firstChild };
+            if (o && o.node.parentNode) o.node.remove();
+          } else {
+            var cur = ((c.t % 10) + 10) % 10, steps;
+            /* Grands sauts : les petites colonnes font des tours supplémentaires, comme un compteur mécanique. */
+            var extra = Math.min(2, Math.floor(delta / Math.pow(10, digitRank + 1))) * 10;
+            if (dir > 0) steps = ((d - cur) + 10) % 10 + extra; else if (dir < 0) steps = -(((cur - d) + 10) % 10 + extra); else steps = d - cur;
+            c.t = c.t + steps; c.at = now + digitRank * opts.stagger;
+          }
+          digitRank++;
+          next.push(c);
+        } else {
+          var sc = o && !o.digit && o.ch === ch ? o : null;
+          if (!sc) { var sn = document.createElement('span'); sn.className = 'rn__ch'; sn.textContent = ch; sc = { node: sn, digit: false, ch: ch }; if (o && o.node.parentNode && !(o.digit)) o.node.remove(); }
+          next.push(sc);
+        }
+      }
+      /* Colonnes en trop : elles se replient puis disparaissent. */
+      for (var j = chars.length; j < old.length; j++) (function (c) {
+        if (instant || reduced()) { c.node.remove(); return; }
+        c.node.classList.add('is-leave'); if (c.digit) { c.t = 0; c.at = now; }
+        setTimeout(function () { c.node.remove(); }, 380);
+      })(old[j]);
+      old.forEach(function (c, i) { if (i < chars.length && next.indexOf(c) < 0 && c.node.parentNode) c.node.remove(); });
+      /* Remise en ordre du DOM (de gauche à droite), sans recréer les colonnes conservées. */
+      var leaving = Array.prototype.filter.call(vis.children, function (n) { return n.classList.contains('is-leave'); });
+      for (var k = next.length - 1; k >= 0; k--) vis.appendChild(next[k].node);
+      leaving.forEach(function (n) { vis.insertBefore(n, vis.firstChild); });
+      self.cols = next;
+      next.forEach(function (c) { if (c.node.classList.contains('is-enter')) requestAnimationFrame(function () { requestAnimationFrame(function () { c.node.classList.remove('is-enter'); }); }); });
+      if (instant || reduced() || prev == null) next.forEach(function (c) { if (c.digit) { c.p = c.t; c.v = 0; c.at = 0; } });
+      paint(self); kick();
+    };
+    self.setFormat = function (f) { self.format = f; self.cols.forEach(function (c) { c.node.remove(); }); self.cols = []; var v = self.value; self.value = null; self.set(v, true); };
+    all.push(self);
+    return self;
+  }
+  function paint(s) {
+    s.cols.forEach(function (c) {
+      if (!c.digit) return;
+      var y = (((c.p % 10) + 10) % 10) + 10;
+      c.strip.style.transform = 'translateY(' + (-y * 100 / 30).toFixed(4) + '%)';
+      c.strip.style.filter = opts.blur && Math.abs(c.v) > 2 ? 'blur(' + Math.min(1, Math.abs(c.v) * 0.025).toFixed(2) + 'px)' : '';
+    });
+  }
+  function step(now) {
+    raf = 0;
+    var dt = Math.min(0.05, (now - (last || now)) / 1000) || 0.016; last = now;
+    var h = dt / 4, busy = false;
+    all.forEach(function (s) {
+      s.cols.forEach(function (c) {
+        if (!c.digit) return;
+        if (now < c.at) { busy = true; return; }
+        for (var i = 0; i < 4; i++) { c.v += (opts.k * (c.t - c.p) - opts.c * c.v) * h; c.p += c.v * h; }
+        if (Math.abs(c.t - c.p) + Math.abs(c.v) > 0.002) busy = true; else { c.p = c.t; c.v = 0; }
+      });
+      paint(s);
+    });
+    if (busy && visible) raf = requestAnimationFrame(step); else last = 0;
+  }
+  function kick() { if (!raf) { last = 0; raf = requestAnimationFrame(step); } }
+
+  function Shop(root) {
+    var num = function (k, d) { var v = parseFloat(getComputedStyle(root).getPropertyValue(k)); return isNaN(v) ? d : v; };
+    function cfg() { opts.k = num('--rn-stiffness', 210); opts.c = num('--rn-damping', 22); opts.stagger = num('--rn-stagger', 45); opts.blur = root.dataset.flou !== 'false'; opts.cap = parseInt(root.dataset.plafond || '99', 10); }
+    cfg();
+    var rolls = {};
+    root.querySelectorAll('[data-roll]').forEach(function (el) { var r = Roll(el); r.set(parseFloat(el.dataset.value) || 0, true); el._roll = r; });
+    var bag = root.querySelector('[data-bag] [data-roll]')._roll, fav = root.querySelector('[data-fav] [data-roll]')._roll;
+    var qty = root.querySelector('[data-qty]')._roll, price = root.querySelector('[data-unit-price]')._roll, live = root.querySelector('[data-live]')._roll;
+    var unit = 129, announce = root.querySelector('[data-announce]');
+    function bump(el) { el.classList.remove('is-bump'); void el.offsetWidth; el.classList.add('is-bump'); }
+    function setQty(n) {
+      n = Math.max(1, Math.min(9, n)); qty.set(n); price.set(unit * n);
+      root.querySelector('[data-step="-1"]').disabled = n <= 1; root.querySelector('[data-step="1"]').disabled = n >= 9;
+    }
+    root.querySelectorAll('[data-step]').forEach(function (b) { b.addEventListener('click', function () { setQty(qty.value + +b.dataset.step); }); });
+    root.querySelector('[data-add]').addEventListener('click', function () {
+      var n = bag.value + qty.value; bag.set(n); bump(bag.el);
+      root.querySelector('[data-bag]').setAttribute('aria-label', 'Panier, ' + n + ' article' + (n > 1 ? 's' : ''));
+      announce.textContent = qty.value + ' veste' + (qty.value > 1 ? 's' : '') + ' Garance ajoutée' + (qty.value > 1 ? 's' : '') + ' : ' + n + ' articles dans le panier.';
+    });
+    var favBtn = root.querySelector('[data-fav]');
+    favBtn.addEventListener('click', function () {
+      var on = favBtn.dataset.on !== 'true'; favBtn.dataset.on = String(on); fav.set(fav.value + (on ? 1 : -1)); bump(fav.el);
+      favBtn.setAttribute('aria-label', 'Favoris, ' + fav.value + ' articles'); favBtn.setAttribute('aria-pressed', String(on));
+    });
+    setQty(1);
+    /* Spectateurs en direct : marche aléatoire, en pause hors écran. */
+    var base = live.value, liveT = 0;
+    function tickLive() { clearTimeout(liveT); if (!visible || root.dataset.direct === 'false') return; liveT = setTimeout(function () { var d = Math.round((Math.random() - 0.42) * 14); live.set(Math.max(1, live.value + d)); tickLive(); }, 2600 + Math.random() * 1600); }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; root.classList.toggle('is-paused', !visible); if (visible) { kick(); tickLive(); } else clearTimeout(liveT); }).observe(root);
+    tickLive();
+    root._compteurs = {
+      refresh: function () { cfg(); [bag, fav].forEach(function (r) { var v = r.value; r.value = null; r.cols.forEach(function (c) { c.node.remove(); }); r.cols = []; r.set(v, true); }); },
+      viewers: function (v) { live.set(v); },
+      viewersFormat: function (f) { live.setFormat(f); },
+      add: function () { root.querySelector('[data-add]').click(); },
+      qty: setQty,
+      bag: function (v) { bag.set(v); bump(bag.el); },
+      jump: function (v) { live.set(v); }
+    };
+  }
+  window.RollNumber = Roll;
+  document.querySelectorAll('[data-compteurs]').forEach(function (el) { if (!el._compteurs) Shop(el); });
+})();
+</script>

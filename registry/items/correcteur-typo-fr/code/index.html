@@ -1,0 +1,343 @@
+<!-- Correcteur typographique français — nécessite tokens.css. On colle un texte : espaces insécables, guillemets,
+     apostrophes, points de suspension, nombres et unités sont signalés, puis corrigés un à un ou d'un coup. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="ty" data-ty data-espace="fine" aria-label="Correcteur typographique français">
+ <div class="ty__in">
+  <div class="ty__main">
+    <header class="ty__head">
+      <span class="ty__logo" aria-label="Cahier"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28"/><path d="M50 32c-8-5-18-7-28-6v44c10-1 20 1 28 6 8-5 18-7 28-6V26c-10-1-20 1-28 6zM50 32v44"/></svg><b>Cahier</b></span>
+      <span class="ty__doc">Histoire · 4<sup>e</sup> B · <span data-ty-words>0 mot</span></span>
+    </header>
+    <div class="ty__editor" data-ty-editor>
+      <div class="ty__mirror" data-ty-mirror aria-hidden="true"></div>
+      <textarea class="ty__input" data-ty-input spellcheck="false" aria-label="Texte à vérifier" placeholder="Collez ou tapez votre texte ici…"></textarea>
+      <div class="ty__empty" data-ty-empty hidden>
+        <p>Collez un texte : chaque règle typographique française est vérifiée à mesure que vous écrivez.</p>
+        <button type="button" class="ty__btn ty__btn--ghost" data-ty-sample>Coller un exemple</button>
+      </div>
+    </div>
+    <footer class="ty__bar">
+      <label class="ty__switch"><input type="checkbox" data-ty-inv><span aria-hidden="true"><i></i></span>Afficher les espaces insécables</label>
+      <button type="button" class="ty__btn" data-ty-all>Tout corriger <span class="ty__n" data-ty-all-n>0</span></button>
+    </footer>
+  </div>
+
+  <aside class="ty__side">
+    <header class="ty__sum">
+      <div class="ty__count" aria-live="polite"><b data-ty-count>0</b><span data-ty-count-lbl>correction proposée</span></div>
+      <div class="ty__cats" data-ty-cats></div>
+    </header>
+    <ol class="ty__list" data-ty-list></ol>
+    <div class="ty__done" data-ty-done hidden>
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20"/><path d="M15 24.5l6 6 12-13"/></svg>
+      <p><b>Texte conforme</b>Espaces, signes et nombres suivent les règles de l’Imprimerie nationale.</p>
+    </div>
+  </aside>
+ </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .ty { container-type: inline-size; width: 100%; max-width: 1160px; margin: 0 auto; font-family: var(--font-sans); color: var(--text); }
+  .ty, .ty *, .ty *::before, .ty *::after { box-sizing: border-box; }
+  .ty__in { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .ty p, .ty ol { margin: 0; }
+  :where(.ty) button { font-family: inherit; color: inherit; }
+
+  .ty__main { min-width: 0; display: grid; grid-template-rows: auto 1fr auto; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+  .ty__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .ty__logo { display: inline-flex; align-items: center; gap: 8px; color: var(--text-strong); }
+  .ty__logo svg { width: 28px; height: 28px; } .ty__logo rect { fill: var(--accent); } .ty__logo path { fill: none; stroke: var(--accent-fg); stroke-width: 6.5; stroke-linejoin: round; stroke-linecap: round; }
+  .ty__logo b { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+  .ty__doc { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+  .ty__doc sup { font-size: .7em; }
+
+  /* Éditeur : le miroir dessine les marques sous un textarea transparent, au pixel près. */
+  .ty__editor { position: relative; display: grid; min-height: 280px; }
+  .ty__mirror, .ty__input { grid-area: 1 / 1; margin: 0; padding: 20px 20px 28px; border: 0; font: 400 17px/1.75 var(--font-sans); letter-spacing: 0; white-space: pre-wrap; overflow-wrap: break-word; word-break: normal; tab-size: 4; }
+  .ty__mirror { color: transparent; pointer-events: none; }
+  .ty__input { width: 100%; height: 100%; resize: none; overflow: hidden; background: transparent; color: var(--text-strong); caret-color: var(--accent); outline: none; }
+  .ty__input::placeholder { color: var(--text-disabled); }
+  .ty__editor:focus-within { box-shadow: inset 0 0 0 2px var(--focus-ring); border-radius: 2px; }
+  .ty__mirror mark { --mk: var(--warn); --mk-bg: var(--tint-amber-bg); color: transparent; border-radius: 3px; background: var(--mk-bg); box-shadow: inset 0 -2px 0 var(--mk); transition: background-color var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out); }
+  .ty__mirror mark.c-signes { --mk: var(--info); --mk-bg: var(--tint-blue-bg); }
+  .ty__mirror mark.c-ortho { --mk: var(--tint-violet-fg); --mk-bg: var(--tint-violet-bg); }
+  /* Insertion (espace manquante) : un trait vertical marque l'endroit, après le caractère précédent. */
+  .ty__mirror mark.ins { background: transparent; border-radius: 0; box-shadow: inset -3px 0 0 var(--mk), inset 0 -2px 0 var(--mk); }
+  .ty__mirror mark.is-hot { --mk: var(--accent); --mk-bg: var(--accent-subtle); box-shadow: inset 0 0 0 2px var(--accent); }
+  .ty__mirror mark.ins.is-hot { box-shadow: inset -3px 0 0 var(--accent), inset 0 -2px 0 var(--accent); background: var(--accent-subtle); }
+  .ty__mirror .fx { border-radius: 3px; animation: ty-fixed 1100ms cubic-bezier(.2, 0, 0, 1) both; }
+  @keyframes ty-fixed { 0% { background: var(--tint-green-bg); box-shadow: inset 0 -2px 0 var(--up); } 100% { background: transparent; box-shadow: inset 0 -2px 0 transparent; } }
+  .ty__mirror .nb { position: relative; }
+  .ty.is-inv .ty__mirror .nb::after { content: ""; position: absolute; left: 50%; top: 52%; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 999px; background: var(--accent); }
+  .ty.is-inv .ty__mirror .nb.n1::after { width: 7px; height: 3px; margin: -1.5px 0 0 -3.5px; border-radius: 2px; }
+  .ty__empty { position: absolute; left: 20px; right: 20px; top: 76px; display: grid; gap: 16px; justify-items: start; color: var(--text-muted); font-size: 15px; line-height: 24px; pointer-events: none; }
+  .ty__empty[hidden] { display: none; }
+  .ty__empty button { pointer-events: auto; }
+
+  .ty__bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 16px; border-top: 1px solid var(--border); background: var(--surface); border-radius: 0 0 16px 16px; }
+  .ty__switch { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; color: var(--text); cursor: pointer; }
+  .ty__switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .ty__switch > span { width: 36px; height: 22px; padding: 2px; border-radius: 999px; background: var(--border-control); display: flex; transition: background-color var(--motion-base) var(--ease-out); }
+  .ty__switch i { width: 18px; height: 18px; border-radius: 999px; background: var(--surface); transition: transform 300ms cubic-bezier(.34, 1.56, .64, 1); }
+  .ty__switch input:checked + span { background: var(--accent); }
+  .ty__switch input:checked + span i { transform: translateX(14px); background: var(--accent-fg); }
+  .ty__switch input:focus-visible + span { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 2px; }
+  .ty__btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 8px; border: 1px solid transparent; background: var(--accent); color: var(--accent-fg); font-size: 14px; font-weight: 500; cursor: pointer; transition: background-color var(--motion-base) var(--ease-out), transform 160ms var(--ease-out), opacity var(--motion-base) var(--ease-out); }
+  .ty__btn:hover { background: var(--accent-hover); }
+  .ty__btn:active { transform: scale(.97); }
+  .ty__btn:disabled { opacity: .45; cursor: default; transform: none; }
+  .ty__btn--ghost { background: var(--surface); border-color: var(--border-control); color: var(--text-strong); }
+  .ty__btn--ghost:hover { background: var(--raised); }
+  .ty__n { min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--accent-fg); color: var(--accent); font: 600 12px/22px var(--font-mono); font-variant-numeric: tabular-nums; }
+
+  /* Panneau des corrections */
+  .ty__side { min-width: 0; display: grid; gap: 12px; align-content: start; }
+  .ty__sum { display: grid; gap: 12px; padding: 16px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+  .ty__count { display: flex; align-items: baseline; gap: 10px; }
+  .ty__count b { font: 600 36px/40px var(--font-sans); letter-spacing: var(--track-tight); color: var(--text-strong); font-variant-numeric: tabular-nums; display: inline-block; }
+  .ty__count b.is-tick { animation: ty-tick 380ms cubic-bezier(.34, 1.56, .64, 1); }
+  @keyframes ty-tick { 0% { transform: translateY(-6px); opacity: .3; } }
+  .ty__count span { font-size: 14px; color: var(--text-muted); }
+  .ty__cats { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ty__cat { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 0 10px; border-radius: 999px; font-size: 13px; font-weight: 500; }
+  .ty__cat i { width: 8px; height: 8px; border-radius: 999px; background: currentColor; }
+  .ty__cat.c-espaces { background: var(--tint-amber-bg); color: var(--tint-amber-fg); }
+  .ty__cat.c-signes { background: var(--tint-blue-bg); color: var(--tint-blue-fg); }
+  .ty__cat.c-ortho { background: var(--tint-violet-bg); color: var(--tint-violet-fg); }
+  .ty__list { list-style: none; padding: 0; display: grid; gap: 6px; max-height: 520px; overflow: auto; scrollbar-width: thin; }
+  .ty__it { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; align-items: center; padding: 12px 12px 12px 14px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); transition: border-color var(--motion-base) var(--ease-out), opacity 260ms var(--ease-out), transform 360ms cubic-bezier(.2, 0, 0, 1); animation: ty-in 360ms cubic-bezier(.2, 0, 0, 1) both; animation-delay: calc(min(var(--i), 10) * 24ms); }
+  .ty__it:hover, .ty__it.is-hot { border-color: var(--border-strong); }
+  .ty__it.is-out { opacity: 0; transform: translateX(16px) scale(.98); }
+  @keyframes ty-in { from { opacity: 0; transform: translateY(6px); } }
+  .ty__rule { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 13px; line-height: 18px; color: var(--text-muted); }
+  .ty__rule i { width: 8px; height: 8px; border-radius: 999px; flex: none; }
+  .c-espaces .ty__rule i { background: var(--warn); } .c-signes .ty__rule i { background: var(--info); } .c-ortho .ty__rule i { background: var(--tint-violet-fg); }
+  .ty__diff { grid-column: 1 / -1; min-width: 0; font: 400 15px/24px var(--font-sans); color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; border: 0; background: none; padding: 0; text-align: left; }
+  .ty__diff del { text-decoration: line-through; text-decoration-color: var(--down); color: var(--text-muted); background: var(--tint-red-bg); border-radius: 3px; padding: 0 2px; }
+  .ty__diff ins { text-decoration: none; color: var(--text-strong); background: var(--tint-green-bg); border-radius: 3px; padding: 0 2px; font-weight: 500; }
+  .ty__diff del u { background: transparent; box-shadow: inset 0 -2px 0 var(--down); }
+  .ty__diff u { text-decoration: none; display: inline-block; min-width: 10px; background: var(--tint-green-bg); box-shadow: inset 0 -2px 0 var(--up); border-radius: 2px; }
+  .ty__acts { display: flex; gap: 4px; }
+  .ty__acts button { min-height: 36px; min-width: 44px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); font-size: 13px; font-weight: 500; color: var(--text-strong); cursor: pointer; }
+  .ty__acts button:hover { background: var(--raised); }
+  .ty__acts .is-fix { background: var(--text-strong); border-color: var(--text-strong); color: var(--bg); }
+  .ty__acts .is-fix:hover { background: var(--text); }
+  .ty__done { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: center; padding: 16px; border-radius: 16px; background: var(--tint-green-bg); color: var(--tint-green-fg); }
+  .ty__done[hidden] { display: none; }
+  .ty__done svg { width: 44px; height: 44px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .ty__done circle { stroke-dasharray: 126; stroke-dashoffset: 126; animation: ty-draw 620ms cubic-bezier(.2, 0, 0, 1) forwards; }
+  .ty__done path { stroke-dasharray: 30; stroke-dashoffset: 30; animation: ty-draw 420ms 380ms cubic-bezier(.2, 0, 0, 1) forwards; }
+  @keyframes ty-draw { to { stroke-dashoffset: 0; } }
+  .ty__done p { font-size: 14px; line-height: 20px; }
+  .ty__done b { display: block; font-size: 15px; }
+
+  @container (min-width: 900px) {
+    .ty__in { grid-template-columns: minmax(0, 1fr) 360px; align-items: start; gap: 24px; }
+    .ty__side { position: sticky; top: 16px; }
+  }
+  @container (max-width: 899px) {
+    .ty__bar { position: sticky; bottom: 0; z-index: 2; }
+    .ty__list { max-height: none; }
+  }
+  @container (max-width: 520px) {
+    .ty__mirror, .ty__input { padding: 16px 16px 24px; font-size: 16px; }
+    .ty__empty { left: 16px; right: 16px; }
+    .ty__bar .ty__btn { flex: 1; }
+    .ty__doc { display: none; }
+    .ty__acts button { min-height: 44px; padding: 0 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ty *, .ty *::before { animation: none !important; transition: none !important; }
+    .ty__done circle, .ty__done path { stroke-dashoffset: 0; }
+  }
+</style>
+
+<script>
+/* CorrecteurTypo — vanilla, sans dépendance. CorrecteurTypo.mount(el, { espace: 'fine'|'normale', invisibles, espaces, signes, ortho, texte })
+   Règles : Lexique de l'Imprimerie nationale (espaces fines et insécables, guillemets, nombres). */
+(function () {
+  var NB = '\u00A0', NN = '\u202F';
+  var EXEMPLE = "Leçon 4 : la Révolution industrielle\n\nPourquoi l'Angleterre ouvre-t-elle la voie? Au 19ème siècle, la machine à vapeur bouleverse l'industrie textile : en 1850, Manchester compte déjà 300000 habitants.\n\nComme l'écrit un historien, \"la ville devient une immense usine\"... Les ouvriers - souvent des enfants - travaillent 14 h par jour ; leurs salaires baissent de 20%.\n\nA retenir : l'Etat n'intervient que tardivement , avec la loi de 1833. Quel coeur fallait-il pour accepter cela!";
+
+  /* Chaque règle renvoie des corrections { s, e, r } sur le texte. */
+  function rules(o) {
+    var sp = o.espace === 'normale' ? NB : NN;
+    var R = [];
+    if (o.espaces !== false) R.push(
+      { id: 'pv', cat: 'espaces', label: function (m) { return 'Espace ' + (sp === NN ? 'fine ' : '') + 'insécable avant «\u00A0' + m.sign + '\u00A0»'; },
+        find: function (t) { var out = [], re = /(\S)( ?)([;!?])/g, m;
+          while ((m = re.exec(t))) { var prev = m[1]; if ('!?;'.indexOf(prev) > -1 || prev === NN || prev === NB || /[\(\[]/.test(prev)) continue; if (isUrl(t, m.index)) continue;
+            var s = m.index + 1; out.push({ s: s, e: s + m[2].length, r: sp, sign: m[3] }); }
+          return out; } },
+      { id: 'dp', cat: 'espaces', label: function () { return 'Espace insécable avant «\u00A0:\u00A0»'; },
+        find: function (t) { var out = [], re = /(\S)( ?):(?!\/\/)/g, m;
+          while ((m = re.exec(t))) { if (/\d/.test(m[1]) && /\d/.test(t[re.lastIndex] || '')) continue; if (m[1] === NB || m[1] === NN || isUrl(t, m.index)) continue;
+            var s = m.index + 1; out.push({ s: s, e: s + m[2].length, r: NB, sign: ':' }); }
+          return out; } },
+      { id: 'av', cat: 'espaces', label: function (m) { return 'Pas d’espace avant «\u00A0' + m.sign + '\u00A0»'; },
+        find: function (t) { var out = [], re = /([^\s]) +([,.])(?!\.)/g, m; while ((m = re.exec(t))) { var s = m.index + 1; out.push({ s: s, e: re.lastIndex - 1, r: '', sign: m[2] }); } return out; } },
+      { id: 'dbl', cat: 'espaces', label: function () { return 'Espaces multiples'; },
+        find: function (t) { var out = [], re = /([^ \n]) {2,}(?=\S)/g, m; while ((m = re.exec(t))) out.push({ s: m.index + 1, e: re.lastIndex, r: ' ' }); return out; } },
+      { id: 'mil', cat: 'espaces', label: function () { return 'Séparateur de milliers (espace fine)'; },
+        find: function (t) { var out = [], re = /\b\d{5,}\b/g, m;
+          while ((m = re.exec(t))) { var n = m[0], r = n.replace(/\B(?=(\d{3})+(?!\d))/g, NN); out.push({ s: m.index, e: m.index + n.length, r: r }); }
+          var re2 = /\b(\d{1,3})((?: \d{3})+)\b/g; while ((m = re2.exec(t))) out.push({ s: m.index, e: re2.lastIndex, r: m[0].replace(/ /g, NN) });
+          return out; } },
+      { id: 'unit', cat: 'espaces', label: function (m) { return 'Espace insécable avant l’unité «\u00A0' + m.sign + '\u00A0»'; },
+        find: function (t) { var out = [], re = /(\d)( ?)(%|€|\$|km\/h|km|kg|cm|mm|min|h|°C|Mo|Go)(?![\p{L}\d])/gu, m;
+          while ((m = re.exec(t))) { var want = m[3] === '%' ? NN : NB; if (m[2] === want) continue; var s = m.index + 1; out.push({ s: s, e: s + m[2].length, r: want, sign: m[3] }); }
+          return out; } }
+    );
+    if (o.signes !== false) R.push(
+      { id: 'gui', cat: 'signes', label: function () { return 'Guillemets français «\u00A0…\u00A0»'; },
+        find: function (t) { var out = [], re = /"([^"\n]{1,400})"/g, m; while ((m = re.exec(t))) out.push({ s: m.index, e: re.lastIndex, r: '«' + NB + m[1].trim() + NB + '»' }); 
+          var re2 = /«( ?)(?=\S)/g; while ((m = re2.exec(t))) out.push({ s: m.index + 1, e: m.index + 1 + m[1].length, r: NB, sign: '«' });
+          var re3 = /(\S)( ?)»/g; while ((m = re3.exec(t))) { if (m[1] === NB || m[1] === NN) continue; out.push({ s: m.index + 1, e: m.index + 1 + m[2].length, r: NB, sign: '»' }); }
+          return out; } },
+      { id: 'apo', cat: 'signes', label: function () { return 'Apostrophe typographique ’'; },
+        find: function (t) { var out = [], re = /(\p{L})'(?=\p{L})/gu, m; while ((m = re.exec(t))) out.push({ s: m.index + m[1].length, e: m.index + m[1].length + 1, r: '’' }); return out; } },
+      { id: 'susp', cat: 'signes', label: function () { return 'Points de suspension …'; },
+        find: function (t) { var out = [], re = /\.{3}/g, m; while ((m = re.exec(t))) out.push({ s: m.index, e: m.index + 3, r: '…' }); return out; } },
+      { id: 'tiret', cat: 'signes', label: function () { return 'Tiret d’incise «\u00A0–\u00A0»'; },
+        find: function (t) { var out = [], re = / - /g, m; while ((m = re.exec(t))) out.push({ s: m.index + 1, e: m.index + 2, r: '–' }); return out; } }
+    );
+    if (o.ortho !== false) R.push(
+      { id: 'ord', cat: 'ortho', label: function () { return 'Abréviation de l’ordinal : «\u00A0e\u00A0»'; },
+        find: function (t) { var out = [], re = /\b(\d+)(ème|eme|è|ième)(?![\p{L}])/gu, m; while ((m = re.exec(t))) out.push({ s: m.index + m[1].length, e: re.lastIndex, r: 'e' }); return out; } },
+      { id: 'maj', cat: 'ortho', label: function () { return 'Majuscule accentuée'; },
+        find: function (t) { var out = [], re = /\bE(tat|tats|cole|coles|glise|tudiant|tudiants|tudiante|conomie|quipe|té|crit|crits|valuation)\b/g, m;
+          while ((m = re.exec(t))) out.push({ s: m.index, e: m.index + 1, r: 'É' });
+          var re2 = /(^|[.!?…]\s+|\n)A (?=\p{Ll})/gu; while ((m = re2.exec(t))) out.push({ s: m.index + m[1].length, e: m.index + m[1].length + 1, r: 'À' });
+          return out; } },
+      { id: 'lig', cat: 'ortho', label: function () { return 'Ligature œ'; },
+        find: function (t) { var out = [], re = /\b(c|s|v|n|m|ch|b|v)oe(ur|urs|uvre|uvres|il|ils|uf|ufs|u|ux|sophage)\b/gi, m;
+          while ((m = re.exec(t))) { var i = m.index + m[1].length, up = t[i] === 'O'; out.push({ s: i, e: i + 2, r: up ? 'Œ' : 'œ' }); }
+          var re2 = /\b([Oo])e(uvre|uvres|il|ils|uf|ufs|cuménique)\b/g; while ((m = re2.exec(t))) out.push({ s: m.index, e: m.index + 2, r: m[1] === 'O' ? 'Œ' : 'œ' });
+          return out; } }
+    );
+    return R;
+  }
+  function isUrl(t, i) { var a = t.lastIndexOf(' ', i), b = t.lastIndexOf('\n', i), w = t.slice(Math.max(a, b) + 1, i + 2); return /^(https?:|www\.)/i.test(w) || /@/.test(w); }
+
+  /* Toutes les corrections, triées, sans recouvrement, et sans les corrections nulles. */
+  function analyse(t, o) {
+    var list = [];
+    rules(o).forEach(function (rule) { rule.find(t).forEach(function (m) { if (t.slice(m.s, m.e) === m.r) return; m.rule = rule; list.push(m); }); });
+    list.sort(function (a, b) { return a.s - b.s || b.e - a.e; });
+    var out = [], end = -1;
+    list.forEach(function (m) { if (m.s >= end || (m.s === m.e && m.s > end)) { out.push(m); end = Math.max(end, m.e); } });
+    return out;
+  }
+  function esc(s) { return s.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+  /* Espaces insécables rendues visibles dans le miroir (sans changer la largeur). */
+  function vis(s) { return esc(s).replace(/\u00A0/g, '<span class="nb">' + NB + '</span>').replace(/\u202F/g, '<span class="nb n1">' + NN + '</span>'); }
+  function show(s) {
+    if (s === '') return '∅';
+    var blank = s.trim() === '';
+    return s.split('').map(function (c) { return c === NB ? '<u title="espace insécable">' + NB + '</u>' : c === NN ? '<u title="espace fine insécable">' + NN + '</u>' : c === ' ' && blank ? '<u title="espace">\u2002</u>' : esc(c); }).join('');
+  }
+
+  function mount(root, opts) {
+    var $ = function (s) { return root.querySelector(s); };
+    var o = { espace: root.dataset.espace || 'fine', invisibles: false, espaces: true, signes: true, ortho: true };
+    Object.assign(o, opts || {});
+    var input = $('[data-ty-input]'), mirror = $('[data-ty-mirror]'), list = $('[data-ty-list]'), ignored = {}, issues = [], fixed = [], hot = -1, lastCount = -1, timer = 0;
+    input.value = o.texte != null ? o.texte : EXEMPLE;
+
+    function key(m) { return m.rule.id + ':' + m.s + ':' + input.value.slice(m.s, m.e); }
+    function run() {
+      var t = input.value;
+      issues = analyse(t, o).filter(function (m) { return !ignored[key(m)]; });
+      /* Miroir : texte + marques + zones fraîchement corrigées */
+      var html = '', pos = 0, marks = issues.map(function (m, i) { var z = m.s === m.e && m.s > 0; return { s: z ? m.s - 1 : m.s, e: m.e, i: i, cat: m.rule.cat, ins: z }; });
+      var fx = fixed.filter(function (f) { return !marks.some(function (m) { return m.s < f.e && m.e > f.s; }); }).map(function (f) { return { s: f.s, e: f.e, fx: true }; });
+      marks.concat(fx).sort(function (a, b) { return a.s - b.s; }).forEach(function (m) {
+        if (m.s < pos) return;
+        html += vis(t.slice(pos, m.s));
+        var inner = t.slice(m.s, m.e);
+        html += m.fx ? '<span class="fx">' + vis(inner) + '</span>' : '<mark data-i="' + m.i + '" class="c-' + m.cat + (m.ins ? ' ins' : '') + (m.i === hot ? ' is-hot' : '') + '">' + vis(inner) + '</mark>';
+        pos = m.e;
+      });
+      html += vis(t.slice(pos)) + '\n\u200B';
+      mirror.innerHTML = html;
+      fixed = [];
+      paintList(t);
+      var words = (t.match(/[\p{L}\d’'-]+/gu) || []).length;
+      $('[data-ty-words]').textContent = words + (words > 1 ? ' mots' : ' mot');
+      $('[data-ty-empty]').hidden = t.length > 0;
+    }
+
+    function paintList(t) {
+      var n = issues.length, countEl = $('[data-ty-count]');
+      if (n !== lastCount) { countEl.textContent = n; countEl.classList.remove('is-tick'); void countEl.offsetWidth; countEl.classList.add('is-tick'); lastCount = n; }
+      $('[data-ty-count-lbl]').textContent = n > 1 ? 'corrections proposées' : 'correction proposée';
+      $('[data-ty-all-n]').textContent = n; $('[data-ty-all]').disabled = n === 0;
+      var cats = { espaces: 0, signes: 0, ortho: 0 }; issues.forEach(function (m) { cats[m.rule.cat]++; });
+      var noms = { espaces: 'Espaces', signes: 'Signes', ortho: 'Orthotypographie' };
+      $('[data-ty-cats]').innerHTML = Object.keys(cats).filter(function (k) { return cats[k]; }).map(function (k) { return '<span class="ty__cat c-' + k + '"><i></i>' + noms[k] + ' · ' + cats[k] + '</span>'; }).join('');
+      $('[data-ty-done]').hidden = n !== 0 || t.length === 0;
+      list.innerHTML = issues.map(function (m, i) {
+        var a = Math.max(0, m.s - 14), b = Math.min(t.length, m.e + 14);
+        var pre = t.slice(a, m.s).replace(/\n/g, ' '), post = t.slice(m.e, b).replace(/\n/g, ' ');
+        var before = t.slice(m.s, m.e);
+        return '<li class="ty__it c-' + m.rule.cat + '" data-i="' + i + '" style="--i:' + i + '"><span class="ty__rule"><i></i>' + m.rule.label(m) + '</span>' +
+          '<span class="ty__acts"><button type="button" data-act="skip">Ignorer</button><button type="button" class="is-fix" data-act="fix">Corriger</button></span>' +
+          '<button type="button" class="ty__diff" data-act="go" aria-label="Aller à la correction ' + (i + 1) + ' dans le texte">' + (a > 0 ? '…' : '') + esc(pre) + (before ? '<del>' + show(before) + '</del>' : '') + '<ins>' + show(m.r) + '</ins>' + esc(post) + (b < t.length ? '…' : '') + '</button></li>';
+      }).join('');
+    }
+
+    function apply(sel) {
+      var t = input.value, done = [], shift = 0;
+      sel.slice().sort(function (a, b) { return a.s - b.s; }).forEach(function (m) { var s0 = m.s + shift; done.push({ s: m.r.length ? s0 : Math.max(0, s0 - 1), e: s0 + Math.max(1, m.r.length) }); shift += m.r.length - (m.e - m.s); });
+      sel.slice().sort(function (a, b) { return b.s - a.s; }).forEach(function (m) { t = t.slice(0, m.s) + m.r + t.slice(m.e); });
+      var caret = input.selectionStart;
+      input.value = t;
+      fixed = done;
+      if (document.activeElement === input) input.setSelectionRange(caret, caret);
+      run();
+    }
+
+    list.addEventListener('click', function (e) {
+      var b = e.target.closest('button'), li = e.target.closest('.ty__it'); if (!b || !li) return;
+      var m = issues[+li.dataset.i]; if (!m) return;
+      if (b.dataset.act === 'go') { input.focus({ preventScroll: true }); input.setSelectionRange(m.s, Math.max(m.e, m.s)); var mk = mirror.querySelector('mark[data-i="' + li.dataset.i + '"]'); if (mk) mk.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); return; }
+      var next = li.nextElementSibling ? +li.dataset.i : +li.dataset.i - 1;
+      li.classList.add('is-out');
+      setTimeout(function () {
+        if (b.dataset.act === 'skip') { ignored[key(m)] = 1; run(); } else apply([m]);
+        var n = list.querySelector('[data-i="' + Math.max(0, next) + '"] .is-fix'); if (n && document.activeElement === document.body) n.focus({ preventScroll: true });
+      }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180);
+    });
+    list.addEventListener('pointerover', function (e) { var li = e.target.closest('.ty__it'); setHot(li ? +li.dataset.i : -1); });
+    list.addEventListener('pointerleave', function () { setHot(-1); });
+    list.addEventListener('focusin', function (e) { var li = e.target.closest('.ty__it'); setHot(li ? +li.dataset.i : -1); });
+    function setHot(i) {
+      if (i === hot) return; hot = i;
+      mirror.querySelectorAll('mark.is-hot').forEach(function (m) { m.classList.remove('is-hot'); });
+      var mk = mirror.querySelector('mark[data-i="' + i + '"]'); if (mk) mk.classList.add('is-hot');
+      list.querySelectorAll('.ty__it').forEach(function (li) { li.classList.toggle('is-hot', +li.dataset.i === i); });
+    }
+
+    $('[data-ty-all]').addEventListener('click', function () { apply(issues.slice()); });
+    $('[data-ty-sample]').addEventListener('click', function () { input.value = EXEMPLE; ignored = {}; run(); input.focus(); });
+    var inv = $('[data-ty-inv]');
+    inv.addEventListener('change', function () { o.invisibles = inv.checked; root.classList.toggle('is-inv', inv.checked); });
+    input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 90); });
+
+    function update(n) {
+      Object.assign(o, n || {});
+      if (n && n.texte != null) input.value = n.texte;
+      inv.checked = !!o.invisibles; root.classList.toggle('is-inv', !!o.invisibles);
+      root.dataset.espace = o.espace;
+      run();
+    }
+    update();
+    return { update: update, reset: function () { input.value = EXEMPLE; ignored = {}; lastCount = -1; run(); }, fixAll: function () { apply(issues.slice()); }, analyse: function (t) { return analyse(t, o); } };
+  }
+  window.CorrecteurTypo = { mount: mount, analyse: analyse };
+  document.querySelectorAll('[data-ty]').forEach(function (el) { if (!el._ty) el._ty = mount(el); });
+})();
+</script>

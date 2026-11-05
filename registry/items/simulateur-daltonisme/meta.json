@@ -1,0 +1,177 @@
+{
+  "id": "simulateur-daltonisme",
+  "nom": "Simulateur de daltonisme",
+  "categorie": "couleurs",
+  "niveau": "essentiel",
+  "description": "Un volet à ressort compare votre interface en vision normale et en protanopie, deutéranopie, tritanopie ou achromatopsie, à sévérité réglable ; les paires de couleurs qui se confondent sont mesurées (ΔE OKLab) et signalées.",
+  "tags": [
+    "Accessibilité",
+    "Daltonisme",
+    "feColorMatrix",
+    "Comparaison",
+    "Graphiques"
+  ],
+  "date": "2026-11-05",
+  "ordre": 11,
+  "palette": "corail",
+  "logo_exemple": {
+    "nom": "Pulsa",
+    "secteur": "Sport connecté (suivi d’entraînement)",
+    "fichier": "logo.svg",
+    "palette": "corail",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1100
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Variables --up, --down, --warn, --chart-1 à 6, accent"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 5 ko, sans dépendance (onglet HTML)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React (useId)"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4 + @tailwindcss/container-queries",
+      "note": "Onglet React : variantes @container"
+    }
+  ],
+  "props": [
+    {
+      "name": "vision",
+      "label": "Vision simulée",
+      "type": "select",
+      "default": "deuteranopie",
+      "options": [
+        {
+          "value": "normale",
+          "label": "Normale"
+        },
+        {
+          "value": "protanopie",
+          "label": "Protanopie (rouge)"
+        },
+        {
+          "value": "deuteranopie",
+          "label": "Deutéranopie (vert)"
+        },
+        {
+          "value": "tritanopie",
+          "label": "Tritanopie (bleu)"
+        },
+        {
+          "value": "achromatopsie",
+          "label": "Achromatopsie"
+        }
+      ],
+      "code": {
+        "html": "data-vision=\"{v}\"",
+        "react": "vision: v0 = '{v}'"
+      }
+    },
+    {
+      "name": "severite",
+      "label": "Sévérité",
+      "type": "number",
+      "default": 100,
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "hint": "Sous 100 % : anomalie (protanomalie…), la forme la plus courante.",
+      "code": {
+        "html": "data-severite=\"{v}\"",
+        "react": "severite: s0 = {v}"
+      }
+    },
+    {
+      "name": "mode",
+      "label": "Affichage",
+      "type": "select",
+      "default": "comparer",
+      "options": [
+        {
+          "value": "comparer",
+          "label": "Comparer (volet)"
+        },
+        {
+          "value": "simuler",
+          "label": "Simuler (plein)"
+        }
+      ],
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "mode = '{v}'"
+      }
+    },
+    {
+      "name": "position",
+      "label": "Position du volet",
+      "type": "number",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "code": {
+        "react": "position = {v}"
+      }
+    },
+    {
+      "name": "seuil",
+      "label": "Seuil de confusion",
+      "type": "number",
+      "default": 7,
+      "min": 2,
+      "max": 20,
+      "step": 1,
+      "unit": "ΔE",
+      "hint": "ΔE OKLab × 100 sous lequel deux couleurs sont jugées confondues.",
+      "code": {
+        "react": "seuil = {v}"
+      }
+    },
+    {
+      "name": "risques",
+      "label": "Paires à risque",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "react": "risques = {v}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/ColorBlindSimulator.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "À passer sur chaque écran qui code une information par la couleur : statuts, graphiques à plusieurs séries, légendes, cartes de chaleur.",
+    "Remplacez la maquette par votre interface (balisage dans data-cvd-src, ou children en React) ; la copie simulée est générée et rendue inerte. Évitez les id dans le contenu dupliqué.",
+    "Une paire signalée n’est pas forcément à changer de teinte : un écart de clarté, une étiquette, une icône ou un motif suffit souvent. Adaptez la liste des paires à votre système (PAIRS / pairs)."
+  ],
+  "accessibilite": [
+    "Matrices de Machado et al. (2009) appliquées en RVB linéaire (color-interpolation-filters), comme la vision humaine ; la sévérité interpole vers l’identité pour les anomalies.",
+    "Visions en radiogroup (flèches) ; volet en role=\"slider\" : flèches par 2 %, Maj + flèche par 10 %, Début et Fin ; au doigt, le défilement vertical reste libre.",
+    "La copie simulée est aria-hidden et inert : lecteurs d’écran et tabulation ne la voient pas. Avec « réduire les animations », le volet suit sans ressort."
+  ]
+}

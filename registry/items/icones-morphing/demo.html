@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icônes qui se transforment — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'violet');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 40px 24px; }
+  @media (max-width: 720px) { .stage { padding: 16px 12px; place-items: start center; } }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .mo__pairs { display: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ raideur: 320, amortissement: 22, epaisseur: 1.5, rotation: true, auto: false });
+  var root = null, api = null, autoT = 0, seen = true;
+  function apply(p) {
+    if (!root) return;
+    root.dataset.stiffness = p.raideur; root.dataset.damping = p.amortissement; root.dataset.spin = String(!!p.rotation);
+    root.style.setProperty('--mo-stroke', p.epaisseur);
+    if (api) api.config();
+    auto(Socle.thumb || p.auto);
+  }
+  // Démo automatique : bascule les icônes une à une (arrêtée hors de l’écran).
+  function auto(on) {
+    clearInterval(autoT); autoT = 0;
+    if (!on || !api || Socle.reducedMotion()) return;
+    var seq = Socle.thumb ? ['play', 'follow', 'volume', 'share', 'play', 'follow', 'volume'] : ['menu', 'play', 'follow', 'volume', 'share', 'menu', 'play', 'follow', 'volume'], i = 0;
+    autoT = setInterval(function () { if (seen) api.toggle(seq[i++ % seq.length]); }, 1100);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-morph-root]');
+    root.dataset.stiffness = props.raideur; root.dataset.damping = props.amortissement; root.dataset.spin = String(!!props.rotation);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = root._morph;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(root);
+    apply(props);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (!api) return; ['play', 'follow', 'volume'].forEach(function (n, i) { setTimeout(function () { api.toggle(n); }, i * 160); }); });
+</script>
+</body>
+</html>

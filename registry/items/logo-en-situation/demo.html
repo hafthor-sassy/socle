@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logo en situation — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'sable');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 40px 24px; }
+  @media (max-width: 760px) { .stage { padding: 20px 12px; place-items: start center; } }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .ls__head, .is-thumb .ls__cap { display: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ nom: 'Strata', tuile: 'accent', avatar: 'circle', rayon: 22.5, retourner: false });
+  var api = null;
+  function apply(p) {
+    if (!api) return;
+    api.brand(p.nom); api.tile(p.tuile); api.avatar(p.avatar); api.radius(p.rayon); api.flip(p.retourner);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = document.querySelector('[data-logo-situ]')._logoSitu;
+    apply(props);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (!api) return; api.flip(true); setTimeout(function () { api.flip(props.retourner); }, 1400); });
+</script>
+</body>
+</html>

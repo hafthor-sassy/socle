@@ -1,0 +1,301 @@
+<!-- Règle de cotes — HTML + CSS + JS, autonome. Nécessite tokens.css. Palette conseillée : <html data-accent="framboise">.
+     Marquez les éléments à mesurer avec data-measure="Nom" et les conteneurs à auditer avec data-measure-group.
+     Survol avec Alt (⌥) : distance entre l'élément sélectionné (clic) et l'élément survolé, en px et en jeton. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="rl" data-redline data-trigger="alt" data-unit="both" data-base="8" data-sizes="true">
+  <div class="rl-bar" role="toolbar" aria-label="Règle de cotes">
+    <span class="rl-bar__brand" aria-hidden="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 16.5 16.5 4l3.5 3.5L7.5 20z"/><path d="M8 12.5l1.5 1.5M10.5 10l2 2M13 7.5l1.5 1.5"/></svg>
+    </span>
+    <div class="rl-seg" role="radiogroup" aria-label="Déclenchement">
+      <button type="button" role="radio" data-rl-trigger="alt">Survol <kbd>⌥</kbd></button>
+      <button type="button" role="radio" data-rl-trigger="always">Toujours</button>
+      <button type="button" role="radio" data-rl-trigger="audit">Tout coter</button>
+    </div>
+    <button class="rl-issues" type="button" data-rl-issues hidden><span class="rl-issues__dot"></span><span data-rl-issues-n>0 écart</span></button>
+    <button class="rl-clear" type="button" data-rl-clear aria-label="Effacer la sélection" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+  <p class="rl-live" aria-live="polite" data-rl-live></p>
+  <div class="rl-layer" aria-hidden="true" data-rl-layer><svg class="rl-svg" data-rl-svg></svg><div class="rl-labels" data-rl-labels></div></div>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .rl { --rl-c: var(--accent); --rl-warn: var(--warn); --rl-spring: cubic-bezier(.34, 1.56, .64, 1); }
+
+  /* Barre d'outils */
+  .rl-bar { display: inline-flex; align-items: center; gap: 8px; padding: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-pill); box-shadow: var(--shadow-popover); }
+  .rl-bar__brand { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); }
+  .rl-seg { display: inline-flex; padding: 2px; background: var(--raised); border-radius: var(--radius-pill); }
+  .rl-seg button, .rl-issues, .rl-clear { min-height: 36px; border: 0; border-radius: var(--radius-pill); background: none; color: var(--text-muted); font: 500 14px/1 var(--font-sans); cursor: pointer; transition: background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out); }
+  .rl-seg button { display: inline-flex; align-items: center; gap: 6px; padding: 0 14px; white-space: nowrap; }
+  .rl-issues { white-space: nowrap; }
+  .rl-seg button:hover, .rl-clear:hover:not(:disabled) { color: var(--text-strong); }
+  .rl-seg button[aria-checked="true"] { background: var(--surface); color: var(--text-strong); box-shadow: var(--shadow-overlay); }
+  .rl-seg kbd { font: 500 12px/1 var(--font-mono); color: var(--text-muted); }
+  .rl-issues { display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; background: var(--tint-amber-bg); color: var(--tint-amber-fg); border: 1px solid var(--tint-amber-border); }
+  .rl-issues[hidden] { display: none; }
+  .rl-issues__dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .rl-clear { display: grid; place-items: center; width: 36px; padding: 0; }
+  .rl-clear:disabled { opacity: .4; cursor: default; }
+  .rl-bar button:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .rl-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Calque de mesure */
+  .rl-layer { position: fixed; inset: 0; z-index: var(--z-overlay); pointer-events: none; }
+  .rl-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .rl-box { fill: none; stroke: var(--rl-c); stroke-width: 1; }
+  .rl-box--anchor { stroke-width: 1.5; }
+  .rl-box--parent { stroke-dasharray: 4 3; opacity: .7; }
+  .rl-handle { fill: var(--surface); stroke: var(--rl-c); stroke-width: 1.25; }
+  .rl-line { stroke: var(--rl-c); stroke-width: 1; fill: none; shape-rendering: crispEdges; }
+  .rl-line--draw { stroke-dasharray: var(--len) var(--len); animation: rl-draw 240ms var(--ease-out) both; }
+  .rl-line--guide { stroke-dasharray: 3 3; opacity: .7; }
+  .rl-line--warn { stroke: var(--rl-warn); }
+  .rl-tick { stroke: var(--rl-c); stroke-width: 1; shape-rendering: crispEdges; }
+  .rl-tick--warn { stroke: var(--rl-warn); }
+  .rl-fill { fill: color-mix(in srgb, var(--rl-c) 10%, transparent); }
+  .rl-fill--warn { fill: color-mix(in srgb, var(--rl-warn) 16%, transparent); }
+  @keyframes rl-draw { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+
+  .rl-labels { position: absolute; inset: 0; }
+  .rl-tag { position: absolute; left: 0; top: 0; display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 7px; border-radius: 6px; background: var(--rl-c); color: var(--accent-fg);
+    font: 600 12px/1 var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; transform: translate(-50%, -50%); box-shadow: 0 2px 8px color-mix(in srgb, var(--rl-c) 30%, transparent); }
+  .rl-tag--pop { animation: rl-pop 360ms var(--rl-spring) both; }
+  .rl-tag--side { transform: translate(0, -50%); --rl-tx: 0; }
+  .rl-tag--above { transform: translate(-50%, -100%); --rl-ty: -100%; }
+  .rl-tag i { font-style: normal; font-weight: 500; opacity: .85; }
+  .rl-tag--warn { background: var(--tint-amber-bg); color: var(--tint-amber-fg); box-shadow: 0 0 0 1px var(--tint-amber-border); }
+  .rl-tag--mini { height: 18px; padding: 0 5px; font-size: 11px; border-radius: 4px; box-shadow: none; }
+  .rl-tag--size { background: var(--surface); color: var(--text-strong); box-shadow: 0 0 0 1px var(--rl-c); }
+  .rl-tag--name { transform: translate(0, -100%); margin-top: -4px; background: none; color: var(--rl-c); box-shadow: none; padding: 0; height: 16px; font: 600 11px/16px var(--font-sans); }
+  @keyframes rl-pop { from { transform: translate(var(--rl-tx, -50%), var(--rl-ty, -50%)) scale(.5); opacity: 0; } to { transform: translate(var(--rl-tx, -50%), var(--rl-ty, -50%)) scale(1); opacity: 1; } }
+
+  [data-redline-scope].is-rl-on [data-measure] { cursor: crosshair; }
+  [data-measure]:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+  @media (max-width: 640px) {
+    .rl-bar { gap: 4px; padding: 4px; max-width: 100%; }
+    .rl-bar__brand { display: none; }
+    .rl-seg button { padding: 0 10px; min-height: 40px; }
+    .rl-seg kbd { display: none; }
+    .rl-issues, .rl-clear { min-height: 40px; }
+    .rl-issues__l { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .rl-line--draw, .rl-tag--pop { animation: none; } }
+</style>
+
+<script>
+/* Règle de cotes. API : Redline.mount(el, { scope, trigger, unit, base, sizes, tokens }) → { set(options), select(el), measure(a, b), clear(), destroy() } */
+(function () {
+  var TOKENS = { 4: 'space-1', 8: 'space-2', 12: 'space-3', 16: 'space-4', 20: 'space-5', 24: 'space-6', 32: 'space-8', 40: 'space-10', 48: 'space-12', 64: 'space-16' };
+  var NS = 'http://www.w3.org/2000/svg';
+
+  function mount(root, opts) {
+    var d = root.dataset;
+    var o = Object.assign({ scope: root.closest('[data-redline-scope]') || document.body, trigger: d.trigger || 'alt', unit: d.unit || 'both', base: +d.base || 8, sizes: d.sizes !== 'false', tokens: TOKENS }, opts || {});
+    var scope = o.scope, svg = root.querySelector('[data-rl-svg]'), labels = root.querySelector('[data-rl-labels]'), live = root.querySelector('[data-rl-live]');
+    var segs = root.querySelectorAll('[data-rl-trigger]'), clearBtn = root.querySelector('[data-rl-clear]'), issues = root.querySelector('[data-rl-issues]'), issuesN = root.querySelector('[data-rl-issues-n]');
+    var alt = false, hover = null, selected = null, lastKey = '', raf = 0, offIdx = 0, offList = [];
+
+    function active() { return o.trigger === 'always' || (o.trigger === 'alt' && alt); }
+    function name(el) { return el.getAttribute('data-measure') || el.tagName.toLowerCase(); }
+    function rect(el) { var r = el.getBoundingClientRect(); return { l: r.left, t: r.top, r: r.right, b: r.bottom, w: r.width, h: r.height }; }
+    function parentOf(el) { var p = el.parentElement; while (p && p !== scope.parentElement) { if (p.hasAttribute('data-measure')) return p; p = p.parentElement; } return null; }
+    function onGrid(v) { return !!o.tokens[v] || v % o.base === 0; }
+    function fmt(v) {
+      var tok = o.tokens[v], warn = !onGrid(v);
+      var html = o.unit === 'token' && tok ? tok : v + (o.unit !== 'px' && tok ? ' <i>· ' + tok + '</i>' : '');
+      if (warn && o.unit !== 'px') html = v + ' <i>· hors grille</i>';
+      return { html: html, warn: warn, text: v + ' px' + (tok ? ' (' + tok + ')' : warn ? ', hors grille' : '') };
+    }
+    function el(tag, attrs, parent) { var n = document.createElementNS(NS, tag); for (var k in attrs) n.setAttribute(k, attrs[k]); (parent || svg).appendChild(n); return n; }
+    function tag(x, y, html, cls, anim) {
+      var t = document.createElement('span'); t.className = 'rl-tag ' + (cls || '') + (anim ? ' rl-tag--pop' : ''); t.innerHTML = html;
+      t.style.left = x + 'px'; t.style.top = y + 'px'; labels.appendChild(t); return t;
+    }
+    function px(v) { return Math.round(v) + 0.5; }
+
+    /* Une cote : trait, deux talons, étiquette */
+    function dim(x1, y1, x2, y2, anim, mini) {
+      var v = Math.round(Math.abs(x2 - x1) + Math.abs(y2 - y1)); if (v <= 0) return null;
+      var f = fmt(v), horiz = y1 === y2, w = f.warn ? ' rl-line--warn' : '';
+      var len = Math.abs(x2 - x1) + Math.abs(y2 - y1);
+      var line = el('path', { class: 'rl-line' + w + (anim ? ' rl-line--draw' : ''), d: 'M' + px(x1) + ' ' + px(y1) + 'L' + px(x2) + ' ' + px(y2), style: '--len:' + len.toFixed(1) });
+      var tk = 'rl-tick' + (f.warn ? ' rl-tick--warn' : '');
+      if (horiz) { el('path', { class: tk, d: 'M' + px(x1) + ' ' + (y1 - 4) + 'v8M' + px(x2) + ' ' + (y1 - 4) + 'v8' }); }
+      else { el('path', { class: tk, d: 'M' + (x1 - 4) + ' ' + px(y1) + 'h8M' + (x1 - 4) + ' ' + px(y2) + 'h8' }); }
+      var cx = (x1 + x2) / 2, cy = (y1 + y2) / 2;
+      // étiquette décalée hors du trait quand la cote est trop courte
+      var room = len > (mini ? 22 : 40), side = '';
+      if (!room) { if (horiz) { cy -= 6; side = ' rl-tag--above'; } else { cx += 10; side = ' rl-tag--side'; } }
+      tag(cx, cy, mini ? String(v) : f.html, (f.warn ? 'rl-tag--warn ' : '') + (mini ? 'rl-tag--mini' : '') + side, anim);
+      return { v: v, f: f, line: line };
+    }
+    function box(r, cls) { el('rect', { class: 'rl-box ' + (cls || ''), x: px(r.l), y: px(r.t), width: Math.max(0, Math.round(r.w) - 1), height: Math.max(0, Math.round(r.h) - 1) }); }
+    function handles(r) { [[r.l, r.t], [r.r, r.t], [r.l, r.b], [r.r, r.b]].forEach(function (p) { el('rect', { class: 'rl-handle', x: p[0] - 3, y: p[1] - 3, width: 6, height: 6 }); }); }
+    function sizeTag(r) { tag(r.l + r.w / 2, r.b + 16, Math.round(r.w) + ' × ' + Math.round(r.h), 'rl-tag--size'); }
+    function nameTag(r, n) { var t = tag(r.l, r.t, n, 'rl-tag--name'); return t; }
+
+    /* Distances entre deux rectangles, à la manière de Figma */
+    function between(A, B, anim) {
+      var out = [];
+      var inside = B.l >= A.l && B.r <= A.r && B.t >= A.t && B.b <= A.b, around = A.l >= B.l && A.r <= B.r && A.t >= B.t && A.b <= B.b;
+      if (inside || around) {
+        var I = inside ? B : A, O = inside ? A : B, my = I.t + I.h / 2, mx = I.l + I.w / 2;
+        out.push(dim(O.l, my, I.l, my, anim), dim(I.r, my, O.r, my, anim), dim(mx, O.t, mx, I.t, anim), dim(mx, I.b, mx, O.b, anim));
+        return out.filter(Boolean);
+      }
+      // horizontal
+      if (B.l >= A.r || A.l >= B.r) {
+        var L = B.l >= A.r ? A : B, R = L === A ? B : A, oy1 = Math.max(A.t, B.t), oy2 = Math.min(A.b, B.b);
+        var y = oy2 > oy1 ? (oy1 + oy2) / 2 : R.t + R.h / 2;
+        if (oy2 <= oy1) el('path', { class: 'rl-line rl-line--guide', d: 'M' + px(L.r) + ' ' + px(y) + 'V' + px(y > L.b ? L.b : L.t) });
+        out.push(dim(L.r, y, R.l, y, anim));
+      }
+      // vertical
+      if (B.t >= A.b || A.t >= B.b) {
+        var T = B.t >= A.b ? A : B, D = T === A ? B : A, ox1 = Math.max(A.l, B.l), ox2 = Math.min(A.r, B.r);
+        var x = ox2 > ox1 ? (ox1 + ox2) / 2 : D.l + D.w / 2;
+        if (ox2 <= ox1) el('path', { class: 'rl-line rl-line--guide', d: 'M' + px(x) + ' ' + px(T.b) + 'H' + px(x > T.r ? T.r : T.l) });
+        out.push(dim(x, T.b, x, D.t, anim));
+      }
+      return out.filter(Boolean);
+    }
+
+    /* Audit : marges internes et écarts de chaque groupe */
+    function audit() {
+      var bad = [];
+      scope.querySelectorAll('[data-measure-group]').forEach(function (g) {
+        var G = rect(g), kids = Array.from(g.children).filter(function (k) { return k.offsetParent !== null && getComputedStyle(k).position !== 'absolute'; }).map(rect);
+        if (!kids.length) return;
+        var u = kids.reduce(function (a, k) { return { l: Math.min(a.l, k.l), t: Math.min(a.t, k.t), r: Math.max(a.r, k.r), b: Math.max(a.b, k.b) }; }, { l: 1e9, t: 1e9, r: -1e9, b: -1e9 });
+        var res = [];
+        if (g.hasAttribute('data-measure-pad')) {
+          var mx = u.l + (u.r - u.l) / 2, my = u.t + (u.b - u.t) / 2;
+          res.push(dim(mx, G.t, mx, u.t, false, true), dim(mx, u.b, mx, G.b, false, true), dim(G.l, my, u.l, my, false, true), dim(u.r, my, G.r, my, false, true));
+        }
+        for (var i = 1; i < kids.length; i++) {
+          var a = kids[i - 1], b = kids[i];
+          if (b.t >= a.b - 1) { var x = Math.max(a.l, b.l) + 12; el('rect', { class: 'rl-fill', x: Math.max(a.l, b.l), y: a.b, width: Math.min(a.r, b.r) - Math.max(a.l, b.l), height: Math.max(0, b.t - a.b) }); res.push(dim(x, a.b, x, b.t, false, true)); }
+          else if (b.l >= a.r - 1) { var y = (Math.max(a.t, b.t) + Math.min(a.b, b.b)) / 2; el('rect', { class: 'rl-fill', x: a.r, y: Math.max(a.t, b.t), width: Math.max(0, b.l - a.r), height: Math.min(a.b, b.b) - Math.max(a.t, b.t) }); res.push(dim(a.r, y, b.l, y, false, true)); }
+        }
+        res.filter(Boolean).forEach(function (m) { if (m.f.warn) bad.push({ g: g, v: m.v }); });
+      });
+      // remplit en ambre les écarts hors grille
+      return bad;
+    }
+
+    function draw(force) {
+      raf = 0;
+      var key = [o.trigger, alt, hover && name(hover), selected && name(selected)].join('|');
+      var anim = force !== 'reflow' && key !== lastKey; lastKey = key;
+      svg.innerHTML = ''; labels.innerHTML = '';
+      var bad = [];
+      if (o.trigger === 'audit') bad = audit();
+      var measuring = (active() || (o.trigger === 'audit' && selected)) && hover && hover !== selected;
+      if (selected) { var S = rect(selected); box(S, 'rl-box--anchor'); handles(S); if (o.sizes && !measuring) sizeTag(S); nameTag(S, name(selected)); }
+      if ((active() || (o.trigger === 'audit' && selected)) && hover) {
+        var H = rect(hover), anchorEl = selected && selected !== hover ? selected : parentOf(hover);
+        if (hover !== selected) { box(H); if (!selected) { nameTag(H, name(hover)); if (o.sizes) sizeTag(H); } }
+        if (anchorEl) {
+          var A = rect(anchorEl); if (!selected) box(A, 'rl-box--parent');
+          var ms = between(A, H, anim);
+          if (anim && ms.length) say(name(anchorEl), name(hover), ms);
+        }
+      }
+      // compteur des écarts hors grille (audit) ou de la mesure en cours
+      offList = bad;
+      issues.hidden = !bad.length;
+      if (bad.length) { var lbl = bad.length + (bad.length > 1 ? ' écarts hors grille' : ' écart hors grille'); issuesN.innerHTML = bad.length + '<span class="rl-issues__l">' + lbl.slice(String(bad.length).length) + '</span>'; issues.setAttribute('aria-label', lbl + ', afficher'); }
+      clearBtn.disabled = !selected;
+      scope.classList.toggle('is-rl-on', active() || o.trigger === 'audit');
+    }
+    function say(a, b, ms) {
+      live.textContent = 'De ' + a + ' à ' + b + ' : ' + ms.map(function (m) { return m.f.text; }).join(', ') + '.';
+      root.dispatchEvent(new CustomEvent('redlinemeasure', { detail: { from: a, to: b, values: ms.map(function (m) { return m.v; }) } }));
+    }
+    function schedule(mode) { if (!raf) raf = requestAnimationFrame(function () { draw(mode); }); }
+
+    function pick(t) { var m = t && t.closest ? t.closest('[data-measure]') : null; return m && scope.contains(m) ? m : null; }
+    function onMove(e) { if (e.pointerType === 'touch') return; var h = pick(e.target); alt = e.altKey; if (h !== hover) { hover = h; schedule(); } else if (alt !== lastAlt) schedule(); lastAlt = alt; }
+    var lastAlt = false;
+    function onLeave(e) { if (e.pointerType === 'touch') return; hover = null; schedule(); }
+    function onClick(e) {
+      var t = pick(e.target);
+      if (e.pointerType === 'touch') {
+        // au toucher (modes Toujours et Tout coter) : 1er appui sélectionne, 2e appui mesure, appui dans le vide efface
+        if (o.trigger === 'alt') return;
+        if (t) e.preventDefault();
+        if (!t) { selected = null; hover = null; }
+        else if (!selected || hover) { selected = t; hover = null; }
+        else if (t === selected) { selected = null; }
+        else { hover = t; alt = true; }
+        lastKey = ''; schedule(); return;
+      }
+      if (!(active() || o.trigger === 'audit' || e.altKey)) return;
+      e.preventDefault();
+      selected = !t || selected === t ? null : t; schedule();
+    }
+    function onKey(e) {
+      if (e.key === 'Alt') { if (alt !== (e.type === 'keydown')) { alt = e.type === 'keydown'; schedule(); } if (e.type === 'keydown') e.preventDefault(); return; }
+      if (e.type !== 'keydown') return;
+      var tg = e.target && e.target.tagName;
+      if (/INPUT|TEXTAREA|SELECT/.test(tg)) return;
+      if (e.key === 'Escape') { selected = null; hover = null; schedule(); }
+      if ((e.key === 'm' || e.key === 'M') && !e.metaKey && !e.ctrlKey) set({ trigger: o.trigger === 'always' ? 'alt' : 'always' }, true);
+      if (e.key === 'Enter' && e.target.hasAttribute && e.target.hasAttribute('data-measure') && scope.contains(e.target)) { e.preventDefault(); selected = selected === e.target ? null : e.target; schedule(); }
+    }
+    function onFocus(e) { try { if (!e.target.matches(':focus-visible')) return; } catch (x) {} var t = pick(e.target); if (t && (active() || o.trigger === 'audit')) { hover = t; alt = alt || o.trigger !== 'alt'; schedule(); } }
+    function blurAlt() { if (alt) { alt = false; schedule(); } }
+
+    scope.addEventListener('pointermove', onMove, { passive: true });
+    scope.addEventListener('pointerleave', onLeave);
+    scope.addEventListener('click', onClick, true);
+    scope.addEventListener('focusin', onFocus);
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('keyup', onKey);
+    window.addEventListener('blur', blurAlt);
+    window.addEventListener('scroll', function () { schedule('reflow'); }, { passive: true, capture: true });
+    window.addEventListener('resize', function () { schedule('reflow'); });
+
+    segs.forEach(function (b, i) {
+      b.addEventListener('click', function () { set({ trigger: b.dataset.rlTrigger }, true); });
+      b.addEventListener('keydown', function (e) {
+        var k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!k) return;
+        e.preventDefault(); var n = segs[(i + k + segs.length) % segs.length]; set({ trigger: n.dataset.rlTrigger }, true); n.focus();
+      });
+    });
+    clearBtn.addEventListener('click', function () { selected = null; hover = null; schedule(); });
+    issues.addEventListener('click', function () { if (!offList.length) return; var g = offList[offIdx++ % offList.length].g; g.scrollIntoView({ block: 'center', behavior: 'smooth' }); live.textContent = offList.length + ' écart hors grille, dans ' + name(g) + '.'; });
+
+    function syncFocusables() {
+      var on = o.trigger !== 'alt';
+      scope.querySelectorAll('[data-measure]').forEach(function (m) {
+        if (/^(BUTTON|A|INPUT|SELECT|TEXTAREA)$/.test(m.tagName)) return;
+        if (on) m.setAttribute('tabindex', '0'); else m.removeAttribute('tabindex');
+      });
+    }
+    function set(next, fromUser) {
+      Object.assign(o, next || {});
+      segs.forEach(function (b) { var on = b.dataset.rlTrigger === o.trigger; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+      syncFocusables(); lastKey = ''; schedule();
+      if (fromUser) root.dispatchEvent(new CustomEvent('redlinechange', { detail: { trigger: o.trigger } }));
+    }
+    set({});
+    return {
+      set: set, clear: function () { selected = null; hover = null; schedule(); },
+      select: function (a) { selected = a; schedule(); },
+      measure: function (a, b) { selected = a; hover = b; alt = true; lastKey = ''; schedule(); },
+      redraw: function () { lastKey = ''; schedule(); },
+      destroy: function () { window.removeEventListener('keydown', onKey); window.removeEventListener('keyup', onKey); }
+    };
+  }
+  window.Redline = { mount: mount, tokens: TOKENS };
+  document.querySelectorAll('[data-redline]:not([data-rl-manual])').forEach(function (el) { el._rl = mount(el); });
+})();
+</script>

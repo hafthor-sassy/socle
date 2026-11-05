@@ -1,0 +1,54 @@
+{
+  "id": "depot-fichiers-aimante",
+  "nom": "Dépôt de fichiers aimanté",
+  "categorie": "champs",
+  "niveau": "premium",
+  "ordre": 21,
+  "description": "Dès qu’un fichier approche, la zone se réveille, se penche vers lui et happe son aperçu vers son centre sur un ressort ; au dépôt, chaque fichier s’envole vers la liste avec miniature, progression, refus clairs (format, taille) et reprise après une coupure réseau. Au doigt, la zone devient un grand bouton.",
+  "tags": ["Drag & drop", "Upload", "Ressort", "Formulaire", "Accessible"],
+  "date": "2026-11-05",
+  "palette": "jade",
+  "logo_exemple": { "nom": "Liasse", "secteur": "Comptabilité en ligne", "fichier": "logo.svg", "palette": "jade", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1100 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, accent, états, rayons, focus" },
+    { "nom": "Script MagnetDrop", "note": "≈ 8 ko, inclus dans l’onglet HTML, sans dépendance ; rAF seulement pendant un glisser" },
+    { "nom": "Envoi", "note": "Simulé par défaut : remplacez el._drop.upload(item, progress) par votre fetch / XHR" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "framer-motion ≥ 11", "note": "Onglet React seulement : ressorts de l’aimant, envol et sortie des lignes" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "force", "label": "Force de l’aimant", "type": "number", "default": 0.55, "min": 0, "max": 1, "step": 0.05,
+      "hint": "Part du chemin vers le centre parcourue par l’aperçu quand il touche la zone.",
+      "code": { "html": "data-pull=\"{v}\"", "react": "pull = {v}," } },
+    { "name": "portee", "label": "Portée", "type": "number", "default": 140, "min": 0, "max": 280, "step": 10, "unit": "px",
+      "hint": "Distance hors de la zone à partir de laquelle elle attire.",
+      "code": { "html": "data-radius=\"{v}\"", "react": "radius = {v}," } },
+    { "name": "raideur", "label": "Raideur du ressort", "type": "number", "default": 210, "min": 80, "max": 500, "step": 10,
+      "code": { "html": "data-stiffness=\"{v}\"", "react": "stiffness = {v}," } },
+    { "name": "amortissement", "label": "Amortissement", "type": "number", "default": 20, "min": 8, "max": 40, "step": 1,
+      "code": { "html": "data-damping=\"{v}\"", "react": "damping = {v}," } },
+    { "name": "taille", "label": "Taille max par fichier", "type": "number", "default": 10, "min": 1, "max": 50, "step": 1, "unit": "Mo",
+      "code": { "html": "data-max=\"{v}\"", "react": "maxSize = {v}," } },
+    { "name": "echec", "label": "Simuler une coupure réseau", "type": "boolean", "default": true,
+      "hint": "Démo : le relevé bancaire échoue à 64 % et propose de réessayer." }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/MagnetDrop.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Dépôt de pièces (factures, justificatifs, contrats, médias) quand plusieurs fichiers arrivent d’un coup et que chacun a son propre sort.",
+    "Branchez l’envoi : el._drop.upload = (item, progress) => Promise ; appelez progress(0 à 1) et rejetez avec un message clair (« Connexion perdue ») pour proposer la reprise.",
+    "Validez aussi côté serveur : le type et la taille vérifiés ici ne servent qu’à prévenir tôt.",
+    "Toute la page écoute le glisser ; la zone n’accepte le dépôt qu’en son sein (curseur « interdit » ailleurs)."
+  ],
+  "accessibilite": [
+    "Toujours un vrai bouton « Parcourir les fichiers » : le glisser-déposer n’est jamais le seul chemin (clavier, lecteur d’écran, tactile).",
+    "Chaque ligne : barre role=\"progressbar\" nommée, boutons Retirer / Réessayer de 44 px nommés avec le fichier ; le focus passe à la ligne suivante après un retrait.",
+    "Ajouts, refus, envois et échecs annoncés dans une région role=\"status\" ; erreurs en texte, jamais la couleur seule.",
+    "Avec « réduire les animations » : ni aimant ni envol, les lignes apparaissent à leur place."
+  ]
+}

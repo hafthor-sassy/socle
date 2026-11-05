@@ -1,0 +1,136 @@
+{
+  "id": "icones-morphing",
+  "nom": "Icônes qui se transforment",
+  "categorie": "icones",
+  "niveau": "premium",
+  "ordre": 11,
+  "description": "Menu ↔ fermer, lecture ↔ pause, plus ↔ coche, son ↔ muet, envoyer ↔ envoyé : les tracés s’interpolent point à point sur un vrai ressort, les traits pivotent au lieu de se tordre. Démontré dans un lecteur de podcast complet.",
+  "tags": [
+    "SVG",
+    "Morphing",
+    "Ressort",
+    "Lecteur",
+    "Toggle"
+  ],
+  "date": "2026-11-05",
+  "palette": "violet",
+  "logo_exemple": {
+    "nom": "Onde",
+    "secteur": "Média audio (plateforme de podcasts)",
+    "fichier": "logo.svg",
+    "palette": "violet",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 900
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Couleurs, rayons, focus, polices"
+    },
+    {
+      "nom": "Script MorphIcons",
+      "note": "≈ 4 ko, inclus dans l’onglet HTML, sans dépendance (pas de GSAP)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "raideur",
+      "label": "Raideur du ressort",
+      "type": "number",
+      "default": 320,
+      "min": 60,
+      "max": 800,
+      "step": 10,
+      "hint": "Haute : bascule vive. Basse : transformation lente et lisible.",
+      "code": {
+        "html": "data-stiffness=\"{v}\"",
+        "react": "stiffness={{v}}"
+      }
+    },
+    {
+      "name": "amortissement",
+      "label": "Amortissement",
+      "type": "number",
+      "default": 22,
+      "min": 6,
+      "max": 50,
+      "step": 1,
+      "hint": "Bas : les traits dépassent et rebondissent. Haut : arrivée sans rebond.",
+      "code": {
+        "html": "data-damping=\"{v}\"",
+        "react": "damping={{v}}"
+      }
+    },
+    {
+      "name": "epaisseur",
+      "label": "Épaisseur du trait",
+      "type": "number",
+      "default": 1.5,
+      "min": 1,
+      "max": 2.5,
+      "step": 0.25,
+      "code": {
+        "html": "--mo-stroke: {v}",
+        "react": "stroke={{v}}"
+      }
+    },
+    {
+      "name": "rotation",
+      "label": "Pivot du menu",
+      "type": "boolean",
+      "default": true,
+      "hint": "Le menu fait un demi-tour en devenant une croix.",
+      "code": {
+        "html": "data-spin=\"{v}\"",
+        "react": "spin={{v}}"
+      }
+    },
+    {
+      "name": "auto",
+      "label": "Démo automatique",
+      "type": "boolean",
+      "default": false,
+      "hint": "Bascule les icônes une à une (arrêt hors de l’écran)."
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/MorphIcon.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour un bouton qui bascule entre deux états d’une même action (ouvrir / fermer, lire / mettre en pause) : la forme dit ce qui va se passer.",
+    "Les deux états d’une paire ont le même nombre de segments ; un trait qui disparaît se réduit à un point et s’efface (barre du milieu du menu).",
+    "Les traits droits sont interpolés en polaire (centre, longueur, angle) : la croix naît d’une rotation, jamais d’un trait qui se plie.",
+    "320 / 22 donne une bascule nette avec un soupçon de dépassement ; descendez à 120 / 12 pour une démonstration plus lente."
+  ],
+  "accessibilite": [
+    "Le nom accessible suit l’état : « Lire l’épisode » devient « Mettre en pause », « Ouvrir le menu » devient « Fermer le menu ».",
+    "aria-expanded sur le menu (Échap le ferme et rend le focus), aria-pressed sur S’abonner et Muet, annonces aria-live polies.",
+    "Barre de lecture en role=slider : flèches gauche et droite par pas de 15 s, valeur parlée en minutes.",
+    "« Réduire les animations » : chaque icône passe directement à son autre état ; les anneaux de la pochette ne pulsent plus et s’arrêtent hors de l’écran.",
+    "Boutons de 44 px minimum, lecture à 64 px."
+  ]
+}

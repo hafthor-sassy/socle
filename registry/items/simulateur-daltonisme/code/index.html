@@ -1,0 +1,350 @@
+<!-- Simulateur de daltonisme — nécessite tokens.css. Filtres SVG feColorMatrix (Machado 2009, espace RVB linéaire),
+     comparaison à volet et détection des couleurs qui se confondent, mesurée sur les variables réellement rendues. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="cvd" data-cvd data-vision="deuteranopie" data-severite="100" data-mode="comparer" aria-label="Simulateur de daltonisme">
+  <svg class="cvd__defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <filter id="cvd-filter" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" data-cvd-matrix values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0"/></filter>
+  </svg>
+
+  <header class="cvd__bar">
+    <div class="cvd__visions" role="radiogroup" aria-label="Type de vision" data-cvd-visions>
+      <button type="button" role="radio" data-v="normale"><b>Normale</b><small>Référence</small></button>
+      <button type="button" role="radio" data-v="protanopie"><b>Protanopie</b><small>Rouge · 1 % des hommes</small></button>
+      <button type="button" role="radio" data-v="deuteranopie"><b>Deutéranopie</b><small>Vert · 6 % des hommes</small></button>
+      <button type="button" role="radio" data-v="tritanopie"><b>Tritanopie</b><small>Bleu · 0,01 %</small></button>
+      <button type="button" role="radio" data-v="achromatopsie"><b>Achromatopsie</b><small>Aucune couleur</small></button>
+    </div>
+    <label class="cvd__sev">
+      <span class="cvd__lbl">Sévérité <output data-cvd-sev-out>100 %</output></span>
+      <input type="range" min="0" max="100" step="5" value="100" data-cvd-sev aria-describedby="cvd-sev-hint">
+      <span id="cvd-sev-hint" class="cvd__hint" data-cvd-sev-hint>Dichromatie complète</span>
+    </label>
+  </header>
+
+  <div class="cvd__body">
+    <div class="cvd__stage" data-cvd-stage>
+      <div class="cvd__layer cvd__layer--a" data-cvd-src>
+        <!-- Maquette d'exemple : remplacez-la par votre propre interface. -->
+        <div class="pz">
+          <header class="pz__top">
+            <span class="pz__logo" aria-label="Pulsa"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="30"/><path d="M18 54h15l8-19 12 34 8-15h21"/></svg><b>Pulsa</b></span>
+            <span class="pz__week">Semaine 45 · 3–9 nov.</span>
+          </header>
+          <div class="pz__kpis">
+            <article class="pz__card"><p class="pz__k">FC moyenne</p><p class="pz__v">148 <small>bpm</small></p><p class="pz__d is-down">▲ 6 vs semaine 44</p></article>
+            <article class="pz__card"><p class="pz__k">VO2 max</p><p class="pz__v">47</p><p class="pz__d is-up">▲ 2 en 30 jours</p></article>
+            <article class="pz__card"><p class="pz__k">Récupération</p><p class="pz__v">82 <small>%</small></p><p class="pz__d is-warn">Sommeil court</p></article>
+          </div>
+          <article class="pz__card pz__zones">
+            <div class="pz__row"><p class="pz__k">Zones cardiaques · fractionné 8 × 400 m</p><span class="pz__tag is-down">Surcharge</span></div>
+            <div class="pz__stack" aria-hidden="true"><i style="--w:12%" class="z1"></i><i style="--w:18%" class="z2"></i><i style="--w:27%" class="z3"></i><i style="--w:29%" class="z4"></i><i style="--w:14%" class="z5"></i></div>
+            <ul class="pz__legend">
+              <li><i class="z1"></i>Z1 Repos</li><li><i class="z2"></i>Z2 Endurance</li><li><i class="z3"></i>Z3 Tempo</li><li><i class="z4"></i>Z4 Seuil</li><li><i class="z5"></i>Z5 Max</li>
+            </ul>
+          </article>
+          <article class="pz__card pz__trend">
+            <div class="pz__row"><p class="pz__k">Distance hebdomadaire</p><span class="pz__key"><i class="k1"></i>2026 <i class="k2"></i>2025</span></div>
+            <svg viewBox="0 0 320 110" class="pz__chart" aria-hidden="true">
+              <path class="g" d="M0 20h320M0 55h320M0 90h320"/>
+              <path class="s2" d="M0 78 40 70 80 74 120 58 160 62 200 50 240 56 280 44 320 48"/>
+              <path class="s1" d="M0 70 40 60 80 64 120 44 160 40 200 30 240 36 280 22 320 18"/>
+              <circle class="s1d" cx="280" cy="22" r="4.5"/>
+            </svg>
+          </article>
+          <article class="pz__card pz__list">
+            <p class="pz__k">Séances</p>
+            <ul>
+              <li><i class="is-up"></i><span>Sortie longue · 21 km</span><b class="is-up">Validée</b></li>
+              <li><i class="is-down"></i><span>Seuil 3 × 10 min</span><b class="is-down">Écourtée</b></li>
+              <li><i class="is-warn"></i><span>Côtes 10 × 200 m</span><b class="is-warn">À reprogrammer</b></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+      <div class="cvd__layer cvd__layer--b" data-cvd-sim aria-hidden="true" inert></div>
+      <div class="cvd__split" data-cvd-split role="slider" tabindex="0" aria-label="Position du volet de comparaison" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50 %">
+        <span class="cvd__tagl">Vision normale</span><span class="cvd__tagr" data-cvd-tag>Deutéranopie</span>
+        <span class="cvd__knob" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg></span>
+      </div>
+    </div>
+
+    <aside class="cvd__risk" data-cvd-risk aria-live="polite">
+      <header class="cvd__risk-head">
+        <p class="cvd__lbl">Paires à risque</p>
+        <p class="cvd__score"><b data-cvd-count>0</b> <span data-cvd-count-lbl>paire qui se confond</span></p>
+      </header>
+      <ul class="cvd__pairs" data-cvd-pairs></ul>
+      <p class="cvd__tip">ΔE OKLab × 100 entre les deux couleurs, avant → après simulation. Sous le seuil, ajoutez une étiquette, un motif ou une icône.</p>
+    </aside>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .cvd { container-type: inline-size; width: 100%; max-width: 1200px; margin: 0 auto; display: grid; gap: 16px; font-family: var(--font-sans); color: var(--text); }
+  .cvd *, .cvd *::before, .cvd *::after { box-sizing: border-box; }
+  .cvd__defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .cvd p, .cvd ul { margin: 0; }
+  .cvd__lbl { font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .cvd__lbl output { color: var(--text-strong); margin-left: 4px; }
+
+  /* Barre de réglages */
+  .cvd__bar { display: grid; gap: 16px; }
+  .cvd__visions { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; padding: 4px; border-radius: 16px; background: var(--raised); border: 1px solid var(--border); }
+  .cvd__visions button:nth-child(-n+3) { grid-column: span 2; } .cvd__visions button:nth-child(n+4) { grid-column: span 3; }
+    .cvd__visions button { min-width: 0; display: grid; gap: 2px; justify-items: start; min-height: 52px; padding: 8px 14px; border: 0; border-radius: 12px; background: transparent; color: var(--text-muted); font: inherit; text-align: left; cursor: pointer; scroll-snap-align: start; transition: background-color var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out); }
+  .cvd__visions button b { font-size: 14px; line-height: 20px; font-weight: 500; color: var(--text); }
+  .cvd__visions button small { display: none; font-size: 12px; line-height: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .cvd__visions button { min-height: 44px; padding: 8px 10px; justify-items: center; text-align: center; }
+  .cvd__visions button:hover { background: var(--state-hover); }
+  .cvd__visions button[aria-checked="true"] { background: var(--surface); box-shadow: var(--shadow-overlay), 0 0 0 1px var(--border); }
+  .cvd__visions button[aria-checked="true"] b { color: var(--text-strong); }
+  .cvd__visions button:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: -2px; }
+  .cvd__sev { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 4px 16px; }
+  .cvd__sev .cvd__hint { grid-column: 1 / -1; font-size: 13px; color: var(--text-muted); }
+  .cvd__sev input { width: 100%; height: 44px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+  .cvd[data-vision="normale"] .cvd__sev { opacity: .45; pointer-events: none; }
+
+  /* Scène et volet */
+  .cvd__body { display: grid; gap: 16px; }
+  .cvd__stage { --cvd-x: 50%; position: relative; min-width: 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: var(--bg); isolation: isolate; touch-action: pan-y; user-select: none; }
+  .cvd__layer { padding: 16px; }
+  .cvd[data-mode="comparer"]:not([data-vision="normale"]) .cvd__layer { padding-top: 52px; }
+  .cvd__layer--b { position: absolute; inset: 0; filter: url(#cvd-filter); clip-path: inset(0 0 0 var(--cvd-x)); background: var(--bg); pointer-events: none; }
+  .cvd[data-mode="simuler"] .cvd__layer--b { clip-path: none; }
+  .cvd[data-mode="simuler"] .cvd__split { display: none; }
+  .cvd[data-vision="normale"] .cvd__layer--b, .cvd[data-vision="normale"] .cvd__split { display: none; }
+  .cvd__split { position: absolute; top: 0; bottom: 0; left: var(--cvd-x); width: 44px; margin-left: -22px; z-index: 2; cursor: ew-resize; touch-action: none; outline: none; }
+  .cvd__split::before { content: ""; position: absolute; top: 0; bottom: 0; left: 21px; width: 2px; background: var(--text-strong); opacity: .9; }
+  .cvd__knob { position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 999px; background: var(--text-strong); color: var(--bg); display: grid; place-items: center; box-shadow: var(--shadow-popover); transition: transform 360ms cubic-bezier(.34, 1.56, .64, 1); }
+  .cvd__knob svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .cvd__split:hover .cvd__knob, .cvd__split.is-drag .cvd__knob { transform: scale(1.12); }
+  .cvd__split:focus-visible .cvd__knob { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 3px; }
+  .cvd__tagl, .cvd__tagr { position: absolute; top: 12px; padding: 4px 10px; border-radius: 999px; background: var(--text-strong); color: var(--bg); font: 500 12px/16px var(--font-sans); white-space: nowrap; pointer-events: none; transition: opacity var(--motion-base) var(--ease-out); }
+  .cvd__tagl { right: 30px; } .cvd__tagr { left: 30px; }
+
+  /* Panneau des risques */
+  .cvd__risk { display: grid; gap: 12px; align-content: start; padding: 16px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+  .cvd__risk[hidden] { display: none; }
+  .cvd__risk-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .cvd__score { font-size: 14px; color: var(--text-muted); }
+  .cvd__score b { font-size: 22px; font-weight: 600; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .cvd__pairs { list-style: none; padding: 0; display: grid; gap: 4px; }
+  .cvd__pairs li { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; min-height: 48px; padding: 6px 8px; border-radius: 12px; font-size: 14px; line-height: 20px; animation: cvd-in 420ms cubic-bezier(.2, 0, 0, 1) both; animation-delay: calc(var(--i) * 30ms); }
+  .cvd__pairs li.is-bad { background: var(--tint-red-bg); }
+  .cvd__sw { display: flex; width: 40px; height: 24px; border-radius: 8px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--border); filter: url(#cvd-filter); }
+  .cvd__sw i { flex: 1; }
+  .cvd__pairs b { font-weight: 500; color: var(--text-strong); display: block; }
+  .cvd__pairs small { font-size: 12px; color: var(--text-muted); }
+  .cvd__de { text-align: right; font: 500 13px/18px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-muted); white-space: nowrap; }
+  .cvd__de em { font-style: normal; display: block; font-size: 11px; letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .is-bad .cvd__de, .is-bad .cvd__de em { color: var(--tint-red-fg); }
+  .is-ok .cvd__de em { color: var(--up); }
+  .cvd__tip { font-size: 13px; line-height: 20px; color: var(--text-muted); }
+  @keyframes cvd-in { from { opacity: 0; transform: translateY(6px); } }
+
+  /* Maquette Pulsa */
+  .pz { display: grid; gap: 12px; grid-template-columns: 1fr; }
+  .pz__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; }
+  .pz__logo { display: inline-flex; align-items: center; gap: 8px; color: var(--text-strong); }
+  .pz__logo svg { width: 28px; height: 28px; } .pz__logo rect { fill: var(--accent); } .pz__logo path { fill: none; stroke: var(--accent-fg); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+  .pz__logo b { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+  .pz__week { font-size: 13px; color: var(--text-muted); }
+  .pz__kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .pz__card { min-width: 0; padding: 14px 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); display: grid; gap: 4px; align-content: start; }
+  .pz__k { font-size: 13px; line-height: 18px; color: var(--text-muted); }
+  .pz__v { font-size: 26px; line-height: 32px; font-weight: 600; letter-spacing: var(--track-tight); color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .pz__v small { font-size: 14px; font-weight: 500; color: var(--text-muted); letter-spacing: 0; }
+  .pz__d { font-size: 13px; line-height: 18px; font-weight: 500; }
+  .is-up { color: var(--up); } .is-down { color: var(--down); } .is-warn { color: var(--warn); }
+  .pz__row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .pz__tag { padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; background: var(--tint-red-bg); }
+  .pz__zones { gap: 12px; }
+  .pz__stack { display: flex; height: 28px; gap: 3px; }
+  .pz__stack i { width: var(--w); border-radius: 6px; }
+  .z1 { background: var(--chart-1); } .z2 { background: var(--chart-3); } .z3 { background: var(--chart-6); } .z4 { background: var(--chart-2); } .z5 { background: var(--down); }
+  .pz__legend { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--text-muted); }
+  .pz__legend li { display: inline-flex; align-items: center; gap: 6px; }
+  .pz__legend i, .pz__key i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .pz__key { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); }
+  .pz__key .k1 { background: var(--accent); } .pz__key .k2 { background: var(--chart-3); margin-left: 8px; }
+  .pz__chart { width: 100%; height: auto; display: block; overflow: visible; }
+  .pz__chart .g { stroke: var(--chart-grid); fill: none; }
+  .pz__chart .s1 { stroke: var(--accent); stroke-width: 3; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+  .pz__chart .s2 { stroke: var(--chart-3); stroke-width: 3; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+  .pz__chart .s1d { fill: var(--surface); stroke: var(--accent); stroke-width: 3; }
+  .pz__list ul { list-style: none; padding: 0; display: grid; gap: 2px; margin-top: 4px; }
+  .pz__list li { display: grid; grid-template-columns: 10px 1fr auto; gap: 10px; align-items: center; min-height: 36px; font-size: 14px; color: var(--text); border-top: 1px solid var(--border); }
+  .pz__list li:first-child { border-top: 0; }
+  .pz__list li i { width: 10px; height: 10px; border-radius: 999px; background: currentColor; }
+  .pz__list li b { font-size: 13px; font-weight: 500; }
+
+  @container (min-width: 640px) {
+    .pz { grid-template-columns: 1.2fr 1fr; }
+    .pz__top, .pz__kpis, .pz__zones { grid-column: 1 / -1; }
+    .cvd__layer { padding: 24px; }
+  }
+  @container (min-width: 760px) {
+    .cvd__visions { grid-template-columns: repeat(5, 1fr); }
+    .cvd__visions button:nth-child(n) { grid-column: auto; justify-items: start; text-align: left; padding: 8px 14px; min-height: 52px; }
+    .cvd__visions button small { display: block; }
+  }
+  @container (min-width: 1000px) {
+    .cvd__bar { grid-template-columns: 1fr 260px; align-items: center; }
+    .cvd__body { grid-template-columns: 1fr 340px; align-items: start; }
+  }
+  @container (max-width: 520px) {
+    .pz__kpis { grid-template-columns: 1fr 1fr; }
+    .pz__kpis .pz__card:last-child { grid-column: 1 / -1; }
+    .pz__v { font-size: 22px; line-height: 28px; }
+    .cvd__layer { padding: 12px; }
+    .cvd__tagl, .cvd__tagr { font-size: 11px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cvd *, .cvd *::before { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<script>
+/* SimulateurDaltonisme — vanilla, sans dépendance.
+   SimulateurDaltonisme.mount(el, { vision, severite, mode, position, seuil, risques }) */
+(function () {
+  /* Matrices de Machado, Oliveira et Fernandes (2009), sévérité 1, en RVB linéaire. */
+  var M = {
+    normale: [1, 0, 0, 0, 1, 0, 0, 0, 1],
+    protanopie: [0.152286, 1.052583, -0.204868, 0.114503, 0.786281, 0.099216, -0.003882, -0.048116, 1.051998],
+    deuteranopie: [0.367322, 0.860646, -0.227968, 0.280085, 0.672501, 0.047413, -0.01182, 0.04294, 0.968881],
+    tritanopie: [1.255528, -0.076749, -0.178779, -0.078411, 0.930809, 0.147602, 0.004733, 0.691367, 0.3039],
+    achromatopsie: [0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722, 0.2126, 0.7152, 0.0722]
+  };
+  var NOMS = { normale: 'Vision normale', protanopie: 'Protanopie', deuteranopie: 'Deutéranopie', tritanopie: 'Tritanopie', achromatopsie: 'Achromatopsie' };
+  var ANOMALIES = { protanopie: 'Protanomalie', deuteranopie: 'Deutéranomalie', tritanopie: 'Tritanomalie', achromatopsie: 'Vision des couleurs réduite' };
+  /* Paires de variables comparées : celles qu'une interface oppose pour dire quelque chose. */
+  var PAIRS = [
+    ['--up', '--down', 'Hausse / baisse', 'Statuts et deltas'],
+    ['--accent', '--down', 'Accent / erreur', 'Bouton et message d’erreur'],
+    ['--warn', '--down', 'Alerte / erreur', 'Niveaux de gravité'],
+    ['--accent', '--chart-3', 'Série 2026 / 2025', 'Courbe comparée'],
+    ['--chart-3', '--chart-6', 'Zone 2 / zone 3', 'Barre empilée'],
+    ['--chart-6', '--chart-2', 'Zone 3 / zone 4', 'Barre empilée'],
+    ['--chart-2', '--down', 'Zone 4 / zone 5', 'Barre empilée'],
+    ['--chart-1', '--chart-4', 'Série 1 / série 4', 'Palette de graphiques']
+  ];
+
+  function mix(v, s) { var I = M.normale; return v.map(function (x, i) { return I[i] + (x - I[i]) * s; }); }
+
+  var cx;
+  function rgb(c) {
+    if (!cx) { var cv = document.createElement('canvas'); cv.width = cv.height = 1; cx = cv.getContext('2d', { willReadFrequently: true }); }
+    cx.clearRect(0, 0, 1, 1); cx.fillStyle = '#000'; cx.fillStyle = c; cx.fillRect(0, 0, 1, 1);
+    var d = cx.getImageData(0, 0, 1, 1).data; return [d[0] / 255, d[1] / 255, d[2] / 255];
+  }
+  function lin(v) { return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+  function oklab(l) {
+    var L = Math.cbrt(0.4122214708 * l[0] + 0.5363325363 * l[1] + 0.0514459929 * l[2]);
+    var m = Math.cbrt(0.2119034982 * l[0] + 0.6806995451 * l[1] + 0.1073969566 * l[2]);
+    var s = Math.cbrt(0.0883024619 * l[0] + 0.2817188376 * l[1] + 0.6299787005 * l[2]);
+    return [0.2104542553 * L + 0.793617785 * m - 0.0040720468 * s, 1.9779984951 * L - 2.428592205 * m + 0.4505937099 * s, 0.0259040371 * L + 0.7827717662 * m - 0.808675766 * s];
+  }
+  function sim(l, m) { return [0, 1, 2].map(function (r) { return Math.min(1, Math.max(0, m[r * 3] * l[0] + m[r * 3 + 1] * l[1] + m[r * 3 + 2] * l[2])); }); }
+  function dE(a, b) { return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) * 100; }
+  function fr(n) { return n.toFixed(1).replace('.', ','); }
+
+  function mount(root, opts) {
+    opts = opts || {};
+    var $ = function (s) { return root.querySelector(s); };
+    var stage = $('[data-cvd-stage]'), src = $('[data-cvd-src]'), simL = $('[data-cvd-sim]'), split = $('[data-cvd-split]');
+    var matrix = $('[data-cvd-matrix]'), sev = $('[data-cvd-sev]'), group = $('[data-cvd-visions]');
+    /* Identifiant de filtre unique : plusieurs simulateurs peuvent cohabiter. */
+    var fid = 'cvd-' + Math.random().toString(36).slice(2, 8);
+    $('filter').id = fid;
+    simL.style.filter = 'url(#' + fid + ')';
+    root.style.setProperty('--cvd-filter', 'url(#' + fid + ')');
+    var state = { vision: root.dataset.vision || 'deuteranopie', severite: +root.dataset.severite || 100, mode: root.dataset.mode || 'comparer', position: 50, seuil: 7, risques: true };
+    ['vision', 'severite', 'mode', 'position', 'seuil', 'risques'].forEach(function (k) { if (opts[k] != null) state[k] = opts[k]; });
+
+    function cloneScene() { simL.innerHTML = src.innerHTML; }
+    cloneScene();
+
+    /* Choix de la vision : radiogroup au clavier (flèches). */
+    group.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) set({ vision: b.dataset.v }); });
+    group.addEventListener('keydown', function (e) {
+      var d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return;
+      e.preventDefault();
+      var bs = Array.prototype.slice.call(group.children), i = bs.findIndex(function (b) { return b.dataset.v === state.vision; });
+      var n = bs[(i + d + bs.length) % bs.length]; n.focus(); set({ vision: n.dataset.v });
+    });
+    sev.addEventListener('input', function () { set({ severite: +sev.value }); });
+
+    /* Volet : glisser au doigt ou à la souris (ressort léger), flèches au clavier. */
+    var target = state.position, cur = state.position, vel = 0, raf = 0;
+    function place(x) { stage.style.setProperty('--cvd-x', x + '%'); split.setAttribute('aria-valuenow', Math.round(x)); split.setAttribute('aria-valuetext', Math.round(x) + ' % en vision normale'); }
+    function tick() {
+      var f = (target - cur) * 0.22; vel = vel * 0.55 + f; cur += vel;
+      if (Math.abs(target - cur) < 0.05 && Math.abs(vel) < 0.05) { cur = target; place(cur); raf = 0; return; }
+      place(cur); raf = requestAnimationFrame(tick);
+    }
+    function go(x, instant) {
+      target = Math.max(0, Math.min(100, x)); state.position = target;
+      if (instant || matchMedia('(prefers-reduced-motion: reduce)').matches) { cur = target; vel = 0; place(cur); return; }
+      if (!raf) raf = requestAnimationFrame(tick);
+    }
+    function fromEvent(e) { var r = stage.getBoundingClientRect(); return (e.clientX - r.left) / r.width * 100; }
+    var drag = false;
+    split.addEventListener('pointerdown', function (e) { drag = true; split.setPointerCapture(e.pointerId); split.classList.add('is-drag'); go(fromEvent(e)); });
+    split.addEventListener('pointermove', function (e) { if (drag) go(fromEvent(e)); });
+    ['pointerup', 'pointercancel'].forEach(function (t) { split.addEventListener(t, function () { drag = false; split.classList.remove('is-drag'); }); });
+    stage.addEventListener('click', function (e) { if (state.mode === 'comparer' && e.target === stage) go(fromEvent(e)); });
+    split.addEventListener('keydown', function (e) {
+      var step = e.shiftKey ? 10 : 2, k = e.key;
+      if (k === 'ArrowLeft' || k === 'ArrowDown') go(state.position - step);
+      else if (k === 'ArrowRight' || k === 'ArrowUp') go(state.position + step);
+      else if (k === 'Home') go(0); else if (k === 'End') go(100); else return;
+      e.preventDefault();
+    });
+
+    function set(o) { Object.assign(state, o); render(); }
+
+    function render() {
+      root.dataset.vision = state.vision; root.dataset.mode = state.mode;
+      var m = mix(M[state.vision] || M.normale, state.severite / 100);
+      matrix.setAttribute('values', [m[0], m[1], m[2], 0, 0, m[3], m[4], m[5], 0, 0, m[6], m[7], m[8], 0, 0, 0, 0, 0, 1, 0].map(function (v) { return +v.toFixed(6); }).join(' '));
+      group.querySelectorAll('button').forEach(function (b) { var on = b.dataset.v === state.vision; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
+      sev.value = state.severite;
+      $('[data-cvd-sev-out]').textContent = state.severite + ' %';
+      $('[data-cvd-sev-hint]').textContent = state.vision === 'normale' ? 'Choisissez une vision à simuler' : state.severite >= 100 ? (state.vision === 'achromatopsie' ? 'Monochromatie complète' : 'Dichromatie complète') : state.severite === 0 ? 'Aucun effet' : ANOMALIES[state.vision] + ' à ' + state.severite + ' %';
+      $('[data-cvd-tag]').textContent = NOMS[state.vision];
+      go(state.position, true);
+      risks(m);
+    }
+
+    function risks(m) {
+      var box = $('[data-cvd-risk]'); box.hidden = !state.risques; if (!state.risques) return;
+      var cs = getComputedStyle(src), bad = 0, i = 0;
+      var html = PAIRS.map(function (p) {
+        var a = cs.getPropertyValue(p[0]).trim(), b = cs.getPropertyValue(p[1]).trim();
+        if (!a || !b) return '';
+        var la = rgb(a).map(lin), lb = rgb(b).map(lin);
+        var before = dE(oklab(la), oklab(lb)), after = dE(oklab(sim(la, m)), oklab(sim(lb, m)));
+        var isBad = after < state.seuil && state.vision !== 'normale'; if (isBad) bad++;
+        return '<li class="' + (isBad ? 'is-bad' : 'is-ok') + '" style="--i:' + (i++) + '"><span class="cvd__sw" style="filter:var(--cvd-filter)" aria-hidden="true"><i style="background:' + a + '"></i><i style="background:' + b + '"></i></span>' +
+          '<span><b>' + p[2] + '</b><small>' + p[3] + '</small></span>' +
+          '<span class="cvd__de">' + fr(before) + ' → ' + fr(after) + '<em>' + (state.vision === 'normale' ? 'Référence' : isBad ? 'Se confondent' : 'Distinctes') + '</em></span></li>';
+      }).join('');
+      $('[data-cvd-pairs]').innerHTML = html;
+      $('[data-cvd-count]').textContent = bad;
+      $('[data-cvd-count-lbl]').textContent = bad > 1 ? 'paires qui se confondent' : 'paire qui se confond';
+    }
+
+    function update(o) { Object.assign(state, o || {}); cloneScene(); render(); }
+    render();
+    /* Thème ou palette changés sur la page : on recalcule (les couleurs suivent déjà les variables). */
+    new MutationObserver(function () { render(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-accent', 'style'] });
+    return { update: update, set: set, go: go };
+  }
+  window.SimulateurDaltonisme = { mount: mount, matrices: M };
+  document.querySelectorAll('[data-cvd]').forEach(function (el) { if (!el._cvd) el._cvd = mount(el); });
+})();
+</script>

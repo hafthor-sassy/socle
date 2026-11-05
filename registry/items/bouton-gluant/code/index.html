@@ -1,0 +1,382 @@
+<!-- Bouton gluant — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Le bouton principal se dédouble en actions qui s'en détachent comme des gouttes : filtre SVG « goo » (flou + seuil alpha)
+     sur un calque de formes, positions sur ressorts physiques, icônes nettes sur un calque séparé. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="gl" data-gl-app>
+  <aside class="gl__side" aria-label="Carnets">
+    <span class="gl__brand">
+      <svg class="gl__logo" viewBox="0 0 100 100" aria-hidden="true"><path class="gl__logo-p" d="M68.73 61.07C67.78 52.25 69.01 49.06 77.49 45.74A16 16 0 1 0 58.67 26.24C55.41 34.26 52.12 35.42 42.73 30.12A30 30 0 1 0 68.73 61.07Z"/><circle class="gl__logo-a" cx="90" cy="10" r="8"/></svg>
+      <span class="gl__word">glane</span>
+    </span>
+    <nav class="gl__nav">
+      <a href="#" aria-current="page"><span>Toutes les notes</span><span class="gl__count" data-gl-total>24</span></a>
+      <a href="#"><span>Favoris</span><span class="gl__count">6</span></a>
+      <a href="#"><span>Veille</span><span class="gl__count">9</span></a>
+      <a href="#"><span>Archives</span><span class="gl__count">41</span></a>
+    </nav>
+  </aside>
+
+  <section class="gl__main" aria-labelledby="gl-h">
+    <header class="gl__top">
+      <span class="gl__brand gl__brand--m" aria-hidden="true">
+        <svg class="gl__logo" viewBox="0 0 100 100"><path class="gl__logo-p" d="M68.73 61.07C67.78 52.25 69.01 49.06 77.49 45.74A16 16 0 1 0 58.67 26.24C55.41 34.26 52.12 35.42 42.73 30.12A30 30 0 1 0 68.73 61.07Z"/><circle class="gl__logo-a" cx="90" cy="10" r="8"/></svg>
+        <span class="gl__word">glane</span>
+      </span>
+      <h2 class="gl__h" id="gl-h">Toutes les notes</h2>
+      <span class="gl__search" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>Rechercher</span>
+    </header>
+
+    <ul class="gl__list" data-gl-list aria-live="polite">
+      <li class="gl__note"><span class="gl__type">Image</span><h3>Moodboard printemps</h3><p>Lin lavé, terracotta, verts de sauge. Douze références à trier pour l’atelier.</p><span class="gl__when">Il y a 2 h</span></li>
+      <li class="gl__note"><span class="gl__type">Lien</span><h3>Agents de recherche : l’état de l’art</h3><p>Trois articles et un fil à relire avant la réunion de jeudi.</p><span class="gl__when">Hier</span></li>
+      <li class="gl__note"><span class="gl__type">Note</span><h3>Éloge de la lenteur</h3><p>« Rien ne sert de courir » : piste pour l’édito de décembre.</p><span class="gl__when">Lundi</span></li>
+      <li class="gl__note"><span class="gl__type">Vocal</span><h3>Idée en marchant</h3><p>Une série courte sur les métiers du livre, 4 min 12 s.</p><span class="gl__when">3 nov.</span></li>
+    </ul>
+
+    <!-- Bouton gluant -->
+    <div class="goo" data-goo data-count="4" data-layout="auto" data-gap="76" data-stiffness="200" data-damping="16" data-stagger="60" data-blur="10" data-labels="true" data-stretch="true">
+      <svg class="goo__defs" aria-hidden="true" focusable="false"><filter id="goo-filter" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -11"/></filter></svg>
+      <div class="goo__layer" aria-hidden="true"><span class="goo__blob goo__blob--main"></span></div>
+      <ul class="goo__menu" id="goo-menu" aria-label="Créer" inert>
+        <li><button class="goo__action" type="button" data-action="note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3zM14 8l3 3"/></svg><span class="goo__tip">Note</span></button></li>
+        <li><button class="goo__action" type="button" data-action="photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h3.2L9 6h6l1.8 2.5H20V18H4z"/><circle cx="12" cy="13" r="3.2"/></svg><span class="goo__tip">Photo</span></button></li>
+        <li><button class="goo__action" type="button" data-action="vocal"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3.5" width="6" height="11" rx="3"/><path d="M6 11.5a6 6 0 0 0 12 0M12 17.5v3"/></svg><span class="goo__tip">Mémo vocal</span></button></li>
+        <li><button class="goo__action" type="button" data-action="lien"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span class="goo__tip">Lien</span></button></li>
+        <li><button class="goo__action" type="button" data-action="tache"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/></svg><span class="goo__tip">Tâche</span></button></li>
+      </ul>
+      <button class="goo__main" type="button" aria-expanded="false" aria-controls="goo-menu" aria-label="Créer une note">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+  </section>
+</div>
+<!-- /SECTION -->
+
+<script>
+/* GooButton — speed dial gluant, sans dépendance.
+   Attributs : data-layout (arc | colonne | ligne), data-gap (px), data-stiffness, data-damping, data-stagger (ms),
+   data-blur (viscosité, px), data-labels (étiquettes), data-stretch (étirement selon la vitesse), data-count (nombre d'actions).
+   Événement : « goo:select » (detail.action) sur l'élément [data-goo]. API : el._goo.open() / close() / toggle() / config(). */
+(function () {
+  var reduce = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+
+  function Goo(root) {
+    this.root = root;
+    this.main = root.querySelector('.goo__main');
+    this.layer = root.querySelector('.goo__layer');
+    this.menu = root.querySelector('.goo__menu');
+    this.blur = root.querySelector('feGaussianBlur');
+    this.items = [];
+    this.isOpen = false;
+    this.raf = 0;
+    this.last = 0;
+    this.mainS = { s: 1, v: 0, t: 1 };
+    this.coarse = window.matchMedia ? matchMedia('(pointer: coarse), (max-width: 640px)') : { matches: false };
+    var self = this;
+    if (this.coarse.addEventListener) this.coarse.addEventListener('change', function () { self.config(); });
+    this.items = Array.prototype.map.call(this.menu.querySelectorAll('.goo__action'), function (btn, i) {
+      var blob = document.createElement('span');
+      blob.className = 'goo__blob';
+      self.layer.insertBefore(blob, self.layer.firstChild);
+      btn.addEventListener('click', function () {
+        root.dispatchEvent(new CustomEvent('goo:select', { detail: { action: btn.dataset.action }, bubbles: true }));
+        self.close(true);
+      });
+      btn.addEventListener('pointerenter', function () { it.hot = true; self.wake(); });
+      btn.addEventListener('pointerleave', function () { it.hot = false; self.wake(); });
+      btn.addEventListener('focus', function () { it.hot = true; self.wake(); });
+      btn.addEventListener('blur', function () { it.hot = false; self.wake(); });
+      var it = { btn: btn, blob: blob, li: btn.parentNode, x: 0, y: 0, vx: 0, vy: 0, s: 0.6, vs: 0, tx: 0, ty: 0, ts: 0.6, delay: 0, hot: false };
+      return it;
+    });
+    this.main.addEventListener('click', function (e) { self.toggle(e.detail === 0); });
+    this.main.addEventListener('pointerenter', function (e) { if (e.pointerType !== 'touch') { self.peek = true; self.target(); } });
+    this.main.addEventListener('pointerleave', function () { self.peek = false; self.target(); });
+    this.main.addEventListener('pointerdown', function () { self.mainS.t = 0.9; self.wake(); });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (ev) { self.main.addEventListener(ev, function () { self.mainS.t = 1; self.wake(); }); });
+    root.addEventListener('keydown', function (e) { self.key(e); });
+    root.addEventListener('focusout', function (e) { if (self.isOpen && !root.contains(e.relatedTarget) && e.relatedTarget) self.close(); });
+    document.addEventListener('pointerdown', function (e) { if (self.isOpen && !root.contains(e.target)) self.close(); });
+    if (reduce.addEventListener) reduce.addEventListener('change', function () { self.config(); });
+    root._goo = this;
+    this.config();
+  }
+
+  Goo.prototype.config = function () {
+    var d = this.root.dataset, n = Math.max(1, Math.min(this.items.length, +d.count || this.items.length));
+    this.k = +d.stiffness || 200;
+    this.c = +d.damping || 16;
+    this.stagger = d.stagger != null ? +d.stagger : 60;
+    this.n = n;
+    this.root.classList.toggle('goo--flat', reduce.matches);
+    this.blur.setAttribute('stdDeviation', d.blur || 10);
+    var gap = +d.gap || 76, layout = d.layout || 'auto', self = this;
+    // auto : éventail au pointeur fin, colonne étiquetée au doigt / écran étroit
+    if (layout === 'auto') layout = this.coarse.matches ? 'colonne' : 'arc';
+    this.root.dataset.resolved = layout;
+    this.pos = [];
+    for (var i = 0; i < n; i++) {
+      var p;
+      if (layout === 'colonne') p = [0, -(i + 1) * gap];
+      else if (layout === 'ligne') p = [-(i + 1) * gap, 0];
+      else {
+        // Quart de cercle de la gauche (180°) vers le haut (270°) ; rayon tel que deux gouttes voisines soient à « gap » l'une de l'autre
+        var step = n > 1 ? (Math.PI / 2) / (n - 1) : 0;
+        var r = Math.max(gap + 40, n > 1 ? gap / (2 * Math.sin(step / 2)) : 0), a = Math.PI + (n > 1 ? step * i : Math.PI / 4);
+        p = [Math.cos(a) * r, Math.sin(a) * r];
+      }
+      this.pos.push(p);
+    }
+    this.items.forEach(function (it, i) {
+      var on = i < n;
+      it.li.hidden = !on;
+      it.blob.hidden = !on;
+      it.btn.dataset.tip = layout === 'ligne' ? 'top' : 'left';
+    });
+    // Calque filtré dimensionné sur l'étendue des gouttes (le flou coûte à la surface)
+    var minX = 0, minY = 0;
+    this.pos.forEach(function (p) { minX = Math.min(minX, p[0]); minY = Math.min(minY, p[1]); });
+    var pad = 64, W = -minX + pad * 2, H = -minY + pad * 2;
+    this.ox = -minX + pad; this.oy = -minY + pad;
+    var half = this.main.offsetWidth / 2 || 30;
+    this.layer.style.width = W + 'px';
+    this.layer.style.height = H + 'px';
+    this.layer.style.left = (half - this.ox) + 'px';
+    this.layer.style.top = (half - this.oy) + 'px';
+    this.layer.style.setProperty('--ox', this.ox + 'px');
+    this.layer.style.setProperty('--oy', this.oy + 'px');
+    this.root.classList.toggle('goo--labels', d.labels !== 'false');
+    this.target();
+  };
+
+  Goo.prototype.target = function () {
+    var self = this, n = this.n, open = this.isOpen;
+    this.items.forEach(function (it, i) {
+      if (i >= n) return;
+      var p = self.pos[i], f = open ? 1 : (self.peek ? 0.16 : 0);
+      it.tx = p[0] * f; it.ty = p[1] * f;
+      it.ts = open ? (it.hot ? 1.12 : 1) : (self.peek ? 0.7 : 0.6);
+      it.delay = performance.now() + (open ? i : (n - 1 - i)) * self.stagger;
+    });
+    this.wake();
+  };
+
+  Goo.prototype.wake = function () {
+    if (reduce.matches) { this.snap(); return; }
+    if (!this.raf) { this.last = 0; this.raf = requestAnimationFrame(this.frame.bind(this)); }
+  };
+
+  Goo.prototype.snap = function () {
+    var self = this;
+    this.items.forEach(function (it) { it.x = it.tx; it.y = it.ty; it.s = it.ts; it.vx = it.vy = it.vs = 0; self.paint(it); });
+    this.mainS.s = this.mainS.t; this.paintMain();
+  };
+
+  Goo.prototype.paint = function (it) {
+    var stretch = this.root.dataset.stretch !== 'false' ? Math.min(0.35, Math.hypot(it.vx, it.vy) / 2600) : 0;
+    var ang = Math.atan2(it.vy, it.vx) * 180 / Math.PI;
+    it.blob.style.transform = 'translate(' + it.x.toFixed(2) + 'px,' + it.y.toFixed(2) + 'px) rotate(' + ang.toFixed(1) + 'deg) scale(' + (it.s * (1 + stretch)).toFixed(3) + ',' + (it.s * (1 - stretch * 0.55)).toFixed(3) + ') rotate(' + (-ang).toFixed(1) + 'deg)';
+    it.li.style.transform = 'translate(' + it.x.toFixed(2) + 'px,' + it.y.toFixed(2) + 'px)';
+    var d = Math.hypot(it.x, it.y), full = Math.hypot(it.tx, it.ty) || 1;
+    it.li.style.setProperty('--goo-in', Math.max(0, Math.min(1, this.isOpen ? (d / full - 0.55) / 0.45 : (d - 34) / 40)).toFixed(3));
+  };
+
+  Goo.prototype.paintMain = function () {
+    var s = this.mainS.s.toFixed(3);
+    this.layer.querySelector('.goo__blob--main').style.transform = 'scale(' + s + ')';
+    this.main.style.transform = 'scale(' + s + ')';
+  };
+
+  Goo.prototype.frame = function (t) {
+    var dt = this.last ? Math.min(0.032, (t - this.last) / 1000) : 1 / 60;
+    this.last = t;
+    var k = this.k, c = this.c, moving = false, self = this, now = performance.now();
+    this.items.forEach(function (it, i) {
+      if (i >= self.n) return;
+      if (now >= it.delay) {
+        var ax = -k * (it.x - it.tx) - c * it.vx, ay = -k * (it.y - it.ty) - c * it.vy, as = -k * 1.4 * (it.s - it.ts) - c * 1.1 * it.vs;
+        it.vx += ax * dt; it.vy += ay * dt; it.vs += as * dt;
+        it.x += it.vx * dt; it.y += it.vy * dt; it.s += it.vs * dt;
+      }
+      if (Math.abs(it.x - it.tx) + Math.abs(it.y - it.ty) + Math.abs(it.vx) + Math.abs(it.vy) > 0.05 || Math.abs(it.s - it.ts) + Math.abs(it.vs) > 0.001 || now < it.delay) moving = true;
+      else { it.x = it.tx; it.y = it.ty; it.s = it.ts; it.vx = it.vy = it.vs = 0; }
+      self.paint(it);
+    });
+    var m = this.mainS, am = -520 * (m.s - m.t) - 22 * m.v;
+    m.v += am * dt; m.s += m.v * dt;
+    if (Math.abs(m.s - m.t) + Math.abs(m.v) > 0.001) moving = true; else { m.s = m.t; m.v = 0; }
+    this.paintMain();
+    this.raf = moving ? requestAnimationFrame(this.frame.bind(this)) : 0;
+  };
+
+  Goo.prototype.open = function (focusFirst) {
+    if (this.isOpen) return;
+    this.isOpen = true;
+    this.root.classList.add('is-open');
+    this.main.setAttribute('aria-expanded', 'true');
+    this.menu.removeAttribute('inert');
+    this.target();
+    if (focusFirst) { var f = this.items[0].btn; setTimeout(function () { f.focus(); }, 60); }
+  };
+  Goo.prototype.close = function (refocus) {
+    if (!this.isOpen) return;
+    this.isOpen = false;
+    this.root.classList.remove('is-open');
+    this.main.setAttribute('aria-expanded', 'false');
+    this.menu.setAttribute('inert', '');
+    this.items.forEach(function (it) { it.hot = false; });
+    this.target();
+    if (refocus) this.main.focus();
+  };
+  Goo.prototype.toggle = function (kbd) { this.isOpen ? this.close() : this.open(kbd); };
+
+  Goo.prototype.key = function (e) {
+    if (e.key === 'Escape' && this.isOpen) { e.preventDefault(); this.close(true); return; }
+    var list = this.items.slice(0, this.n).map(function (it) { return it.btn; });
+    var i = list.indexOf(document.activeElement);
+    if (i < 0 || !/^Arrow|^Home$|^End$/.test(e.key)) return;
+    e.preventDefault();
+    var next = e.key === 'Home' ? 0 : e.key === 'End' ? list.length - 1 : (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? i + 1 : i - 1;
+    if (next < 0) { this.main.focus(); return; }
+    list[Math.min(list.length - 1, next)].focus();
+  };
+
+  window.GooButton = {
+    attach: function (el) { return el._goo || new Goo(el); },
+    init: function (scope) { (scope || document).querySelectorAll('[data-goo]').forEach(function (el) { window.GooButton.attach(el); }); },
+  };
+  window.GooButton.init();
+
+  /* Mise en scène Glane : chaque action crée une carte en tête de liste. */
+  var NEW = {
+    note: ['Note', 'Nouvelle note', 'Commencez à écrire, Glane enregistre au fil de l’eau.'],
+    photo: ['Image', 'Photo du tableau blanc', 'Texte reconnu automatiquement, prêt à copier.'],
+    vocal: ['Vocal', 'Mémo vocal', 'Enregistrement en cours, transcription à la fin.'],
+    lien: ['Lien', 'Lien enregistré', 'L’aperçu et le résumé arrivent dans un instant.'],
+    tache: ['Tâche', 'Nouvelle tâche', 'Échéance : vendredi. Ajoutez une personne si besoin.'],
+  };
+  document.querySelectorAll('[data-gl-app]').forEach(function (app) {
+    var list = app.querySelector('[data-gl-list]'), total = app.querySelector('[data-gl-total]');
+    app.addEventListener('goo:select', function (e) {
+      var d = NEW[e.detail.action]; if (!d) return;
+      var li = document.createElement('li');
+      li.className = 'gl__note is-new';
+      li.innerHTML = '<span class="gl__type"></span><h3></h3><p></p><span class="gl__when">À l’instant</span>';
+      li.children[0].textContent = d[0]; li.children[1].textContent = d[1]; li.children[2].textContent = d[2];
+      list.insertBefore(li, list.firstChild);
+      if (list.children.length > 6) list.lastElementChild.remove();
+      if (total) total.textContent = +total.textContent + 1;
+    });
+  });
+})();
+</script>
+
+<style>
+  /* ——— Bouton gluant ——— */
+  .goo { --goo-main: 60px; --goo-size: 48px; position: absolute; right: 24px; bottom: 24px; z-index: 2; width: var(--goo-main); height: var(--goo-main); }
+  .goo__defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .goo__layer { position: absolute; pointer-events: none; filter: url(#goo-filter); }
+  .goo__blob {
+    position: absolute;
+    left: calc(var(--ox) - var(--goo-size) / 2);
+    top: calc(var(--oy) - var(--goo-size) / 2);
+    width: var(--goo-size);
+    height: var(--goo-size);
+    border-radius: 50%;
+    background: var(--accent);
+    transform: scale(.6);
+    will-change: transform;
+  }
+  .goo__blob--main { left: calc(var(--ox) - var(--goo-main) / 2); top: calc(var(--oy) - var(--goo-main) / 2); width: var(--goo-main); height: var(--goo-main); transform: none; }
+
+  .goo__main {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    padding: 0; border: 0; border-radius: 50%;
+    background: transparent; color: var(--accent-fg);
+    cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+  }
+  .goo__main svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; transition: rotate 520ms cubic-bezier(.34, 1.56, .64, 1); }
+  .goo.is-open .goo__main svg { rotate: 135deg; }
+  .goo__main:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 4px; }
+
+  .goo__menu { position: absolute; left: 0; top: 0; width: var(--goo-main); height: var(--goo-main); margin: 0; padding: 0; list-style: none; }
+  .goo__menu li { --goo-in: 0; position: absolute; left: calc((var(--goo-main) - var(--goo-size)) / 2); top: calc((var(--goo-main) - var(--goo-size)) / 2); width: var(--goo-size); height: var(--goo-size); will-change: transform; }
+  .goo__action {
+    position: relative; display: grid; place-items: center;
+    width: 100%; height: 100%; padding: 0; border: 0; border-radius: 50%;
+    background: transparent; color: var(--accent-fg);
+    cursor: pointer; opacity: var(--goo-in);
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+  }
+  .goo:not(.is-open) .goo__action { pointer-events: none; }
+  .goo__action svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .goo__action:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 3px; }
+  .goo__tip {
+    position: absolute; right: calc(100% + 12px); top: 50%;
+    padding: 6px 10px; border: 1px solid var(--border); border-radius: var(--radius-ctl);
+    background: var(--surface); color: var(--text-strong);
+    font: 500 14px/20px var(--font-sans); white-space: nowrap;
+    box-shadow: var(--shadow-popover);
+    opacity: 0; translate: 6px -50%; pointer-events: none;
+    transition: opacity 160ms var(--ease-out), translate 220ms var(--ease-out);
+  }
+  .goo__action[data-tip=top] .goo__tip { right: auto; left: 50%; top: auto; bottom: calc(100% + 10px); translate: -50% 6px; }
+  .goo.is-open .goo__action:hover .goo__tip, .goo.is-open .goo__action:focus-visible .goo__tip,
+  .goo.is-open.goo--labels[data-resolved=colonne] .goo__tip { opacity: calc(var(--goo-in) * 1); translate: 0 -50%; transition-delay: 80ms; }
+  .goo.is-open .goo__action[data-tip=top]:hover .goo__tip, .goo.is-open .goo__action[data-tip=top]:focus-visible .goo__tip { translate: -50% 0; }
+  .goo:not(.goo--labels) .goo__tip { position: absolute; width: 1px; height: 1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); opacity: 0 !important; }
+
+  /* Réduction des animations : pas de filtre, apparition sèche */
+  .goo--flat .goo__layer { filter: none; }
+  .goo--flat .goo__main svg { transition: none; }
+  @media (prefers-reduced-motion: reduce) { .goo__tip { transition: none; } }
+
+  /* ——— Mise en scène : Glane, notes et veille ——— */
+  .gl { position: relative; display: grid; grid-template-columns: 216px 1fr; width: min(100%, 920px); height: 580px; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-sheet); background: var(--surface); font-family: var(--font-sans); color: var(--text); }
+  .gl__side { display: grid; align-content: start; gap: 24px; padding: 20px 12px; border-right: 1px solid var(--border); background: var(--raised); }
+  .gl__brand { display: inline-flex; align-items: center; gap: 8px; padding: 0 8px; color: var(--text-strong); }
+  .gl__logo { width: 26px; height: 26px; }
+  .gl__logo-p { fill: var(--accent); }
+  .gl__logo-a { fill: var(--text-strong); }
+  .gl__word { font: 600 18px/1 var(--font-sans); letter-spacing: -0.025em; }
+  .gl__nav { display: grid; gap: 2px; }
+  .gl__nav a { display: flex; align-items: center; justify-content: space-between; min-height: 40px; padding: 0 10px; border-radius: var(--radius-ctl); color: var(--text); font-size: 15px; text-decoration: none; }
+  .gl__nav a:hover { background: var(--state-hover); }
+  .gl__nav a[aria-current] { background: var(--surface); color: var(--text-strong); font-weight: 550; box-shadow: var(--shadow-overlay); }
+  .gl__nav a:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: -2px; }
+  .gl__count { font: 500 12px/1 var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .gl__main { position: relative; display: grid; grid-template-rows: auto 1fr; min-width: 0; min-height: 0; }
+  .gl__top { display: flex; align-items: center; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--border); }
+  .gl__brand--m { display: none; }
+  .gl__h { margin: 0; flex: 1; font: 600 18px/24px var(--font-sans); letter-spacing: var(--track-snug); color: var(--text-strong); }
+  .gl__search { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius-ctl); color: var(--text-muted); font-size: 14px; min-width: 200px; }
+  .gl__search svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; }
+  .gl__list { display: grid; grid-template-columns: 1fr 1fr; align-content: start; gap: 12px; margin: 0; padding: 20px 24px 120px; overflow: auto; list-style: none; }
+  .gl__note { display: grid; gap: 6px; align-content: start; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); }
+  .gl__note h3 { margin: 0; font: 600 16px/22px var(--font-sans); color: var(--text-strong); }
+  .gl__note p { margin: 0; font-size: 14px; line-height: 20px; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .gl__type { justify-self: start; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--accent-subtle); color: var(--text-strong); font: 500 12px/18px var(--font-sans); }
+  .gl__when { font: 500 12px/16px var(--font-mono); color: var(--text-muted); }
+  .gl__note.is-new { border-color: var(--accent-subtle-border); animation: gl-in 520ms cubic-bezier(.34, 1.4, .64, 1) both; }
+  .gl::after { content: ""; position: absolute; inset: 0; z-index: 1; background: color-mix(in srgb, var(--surface) 70%, transparent); opacity: 0; pointer-events: none; transition: opacity 260ms var(--ease-out); }
+  .gl:has(.goo.is-open)::after { opacity: 1; }
+  .dark .gl::after { background: color-mix(in srgb, var(--surface) 88%, transparent); }
+  @keyframes gl-in { from { opacity: 0; transform: translateY(-8px) scale(.97); } }
+  @media (prefers-reduced-motion: reduce) { .gl__note.is-new { animation: none; } }
+
+  @media (max-width: 640px) {
+    .gl { grid-template-columns: 1fr; height: 720px; border-radius: var(--radius-card); }
+    .gl__side { display: none; }
+    .gl__top { flex-wrap: wrap; gap: 12px; padding: 16px; }
+    .gl__brand--m { display: inline-flex; padding: 0; }
+    .gl__h { flex-basis: 100%; order: 3; font-size: 22px; line-height: 28px; }
+    .gl__search { min-width: 0; margin-left: auto; height: 44px; width: 44px; padding: 0; justify-content: center; font-size: 0; }
+    .gl__search svg { width: 20px; height: 20px; }
+    .gl__list { grid-template-columns: 1fr; padding: 16px 16px 140px; }
+    .gl__note p { font-size: 15px; line-height: 22px; }
+    .goo { right: 20px; bottom: 20px; }
+  }
+</style>

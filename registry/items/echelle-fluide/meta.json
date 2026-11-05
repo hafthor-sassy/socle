@@ -1,0 +1,194 @@
+{
+  "id": "echelle-fluide",
+  "nom": "Banc de l’échelle fluide",
+  "categorie": "typographie",
+  "niveau": "essentiel",
+  "description": "On étire un cadre à la poignée, à la règle ou par largeurs types : chaque niveau de l’échelle en clamp() se recalcule, la taille réellement rendue s’affiche en px, la courbe montre où l’on se trouve, et les variables s’exportent.",
+  "tags": [
+    "clamp()",
+    "Container queries",
+    "Échelle modulaire",
+    "Responsive",
+    "Export"
+  ],
+  "date": "2026-11-05",
+  "ordre": 13,
+  "palette": "bordeaux",
+  "logo_exemple": {
+    "nom": "Brève",
+    "secteur": "Média d’information",
+    "fichier": "logo.svg",
+    "palette": "bordeaux",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1100
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, texte, accent"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 6 ko, sans dépendance (onglet HTML)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React ; fluidScale() exportée pour générer l’échelle sans interface"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4 + @tailwindcss/container-queries",
+      "note": "Onglet React : variantes @container"
+    }
+  ],
+  "props": [
+    {
+      "name": "largeur",
+      "label": "Largeur du cadre",
+      "type": "number",
+      "default": 834,
+      "min": 320,
+      "max": 1600,
+      "step": 1,
+      "unit": "px",
+      "code": {
+        "html": "data-largeur=\"{v}\"",
+        "react": "largeur = {v}"
+      }
+    },
+    {
+      "name": "vmin",
+      "label": "Écran minimal",
+      "type": "number",
+      "default": 360,
+      "min": 320,
+      "max": 768,
+      "step": 8,
+      "unit": "px",
+      "hint": "En dessous, chaque niveau reste à sa taille minimale.",
+      "code": {
+        "html": "data-vmin=\"{v}\"",
+        "react": "vmin = {v}"
+      }
+    },
+    {
+      "name": "vmax",
+      "label": "Écran maximal",
+      "type": "number",
+      "default": 1440,
+      "min": 960,
+      "max": 1600,
+      "step": 8,
+      "unit": "px",
+      "code": {
+        "html": "data-vmax=\"{v}\"",
+        "react": "vmax = {v}"
+      }
+    },
+    {
+      "name": "baseMin",
+      "label": "Texte au minimum",
+      "type": "number",
+      "default": 16,
+      "min": 14,
+      "max": 18,
+      "step": 0.5,
+      "unit": "px",
+      "hint": "16 px conseillé : en dessous, les champs déclenchent le zoom sur iOS.",
+      "code": {
+        "react": "baseMin = {v}"
+      }
+    },
+    {
+      "name": "baseMax",
+      "label": "Texte au maximum",
+      "type": "number",
+      "default": 19,
+      "min": 16,
+      "max": 22,
+      "step": 0.5,
+      "unit": "px",
+      "code": {
+        "react": "baseMax = {v}"
+      }
+    },
+    {
+      "name": "ratioMin",
+      "label": "Rapport sur petit écran",
+      "type": "select",
+      "default": "1.2",
+      "options": [
+        {
+          "value": "1.125",
+          "label": "1,125 · seconde majeure"
+        },
+        {
+          "value": "1.2",
+          "label": "1,2 · tierce mineure"
+        },
+        {
+          "value": "1.25",
+          "label": "1,25 · tierce majeure"
+        }
+      ],
+      "code": {
+        "react": "ratioMin = {v}"
+      }
+    },
+    {
+      "name": "ratioMax",
+      "label": "Rapport sur grand écran",
+      "type": "select",
+      "default": "1.333",
+      "options": [
+        {
+          "value": "1.25",
+          "label": "1,25 · tierce majeure"
+        },
+        {
+          "value": "1.333",
+          "label": "1,333 · quarte juste"
+        },
+        {
+          "value": "1.414",
+          "label": "1,414 · quarte augmentée"
+        },
+        {
+          "value": "1.5",
+          "label": "1,5 · quinte juste"
+        }
+      ],
+      "code": {
+        "react": "ratioMax = {v}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/FluidScaleBench.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour régler une échelle typographique fluide avant de la figer dans le système : un rapport serré sur téléphone (1,2) et plus ample sur grand écran (1,333) garde des titres lisibles partout sans point de rupture.",
+    "Dans le banc, les tailles sont en cqi (relatives au cadre) pour simuler toutes les largeurs dans une seule page ; l’export utilise vw, à poser dans :root.",
+    "Survolez ou parcourez un niveau au clavier : les éléments qui l’utilisent sont entourés dans l’article et sa courbe est mise en avant."
+  ],
+  "accessibilite": [
+    "Les bornes sont en rem : l’échelle suit le réglage de taille du navigateur (zoom texte à 200 % respecté).",
+    "Règle en role=\"slider\" : flèches par 10 px, Maj + flèche par 100 px, Début et Fin ; largeurs types en boutons à état (aria-pressed).",
+    "Au-delà de la place disponible, le cadre est réduit visuellement et l’échelle d’aperçu est annoncée ; « réduire les animations » coupe les transitions de largeur."
+  ]
+}

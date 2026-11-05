@@ -1,0 +1,149 @@
+{
+  "id": "zone-protection",
+  "nom": "Zone de protection",
+  "categorie": "logos",
+  "niveau": "essentiel",
+  "ordre": 21,
+  "description": "Planche de charte interactive : la marge de sécurité du logo cotée en multiples de x, un bouton à glisser qui fait rougir la zone dès qu’il y entre, les tailles minimales et la grille des usages interdits (étiré, recoloré, ombré, pivoté, détouré, fond chargé, réordonné).",
+  "tags": [
+    "Charte",
+    "Marge de sécurité",
+    "Glisser",
+    "Usages interdits",
+    "SVG"
+  ],
+  "date": "2026-11-05",
+  "palette": "cobalt",
+  "logo_exemple": {
+    "nom": "brise",
+    "secteur": "Banque en ligne",
+    "fichier": "logo.svg",
+    "palette": "cobalt",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1100
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Couleurs, teintes d’état (rouge, vert), rayons, polices"
+    },
+    {
+      "nom": "Script ClearZone",
+      "note": "≈ 1,5 ko, inclus dans l’onglet HTML : glisser et détection de collision"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "marge",
+      "label": "Marge (× x)",
+      "type": "number",
+      "default": 1,
+      "min": 0.5,
+      "max": 2,
+      "step": 0.25,
+      "hint": "x = la moitié de la hauteur de l’icône.",
+      "code": {
+        "html": "--zp-m: {v}",
+        "react": "margin={{v}}"
+      }
+    },
+    {
+      "name": "version",
+      "label": "Version du logo",
+      "type": "select",
+      "default": "horizontal",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "Horizontale"
+        },
+        {
+          "value": "stacked",
+          "label": "Empilée"
+        },
+        {
+          "value": "icon",
+          "label": "Icône"
+        }
+      ],
+      "code": {
+        "html": "data-version=\"{v}\"",
+        "react": "version=\"{v}\""
+      }
+    },
+    {
+      "name": "fond",
+      "label": "Fond",
+      "type": "select",
+      "default": "light",
+      "options": [
+        {
+          "value": "light",
+          "label": "Clair"
+        },
+        {
+          "value": "dark",
+          "label": "Inversé"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        }
+      ],
+      "hint": "Le logo prend sa déclinaison adaptée au fond.",
+      "code": {
+        "html": "data-ground=\"{v}\"",
+        "react": "ground=\"{v}\""
+      }
+    },
+    {
+      "name": "cotes",
+      "label": "Afficher les cotes",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-cotes=\"{v}\"",
+        "react": "dimensions={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/ClearZone.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Page « Logo » d’une charte de marque, d’un kit presse ou d’un brand center en ligne.",
+    "Exprimez toujours la marge dans une unité tirée du logo (x) plutôt qu’en pixels : elle reste juste à toutes les tailles.",
+    "Le bouton à glisser rend la règle concrète pour un client ou un prestataire : faites-le essayer en réunion.",
+    "Limitez la grille d’interdits aux erreurs réellement vues : six à huit cas suffisent."
+  ],
+  "accessibilite": [
+    "L’élément à glisser est un bouton : flèches pour le déplacer (Maj + flèche par 32 px), Échap pour le remettre en place.",
+    "L’état de la zone est annoncé par une région role=status (« Trop près : le bouton entre de 16 px… »).",
+    "Chaque cas interdit porte une étiquette écrite (« Interdit » / « Correct ») en plus du trait rouge : la couleur n’est jamais seule.",
+    "« Réduire les animations » : la marge change sans transition ; textes de contenu à 14 px minimum."
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "bouton-gluant",
+  "nom": "Bouton gluant",
+  "categorie": "boutons",
+  "niveau": "premium",
+  "ordre": 21,
+  "description": "Le bouton principal se dédouble en actions qui s’en détachent comme des gouttes, puis les réabsorbe : filtre SVG « goo » sur un calque de formes, positions sur de vrais ressorts avec étirement selon la vitesse, icônes et étiquettes restées nettes. Au survol, les gouttes pointent déjà sous la surface.",
+  "tags": ["SVG", "Goo", "Ressort", "Speed dial", "Mobile"],
+  "date": "2026-11-05",
+  "palette": "orchidee",
+  "logo_exemple": { "nom": "Glane", "secteur": "Prise de notes et veille", "fichier": "logo.svg", "palette": "orchidee", "typo": "Geist SemiBold" },
+  "thumb": { "width": 960 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Accent, surfaces, rayons, focus" },
+    { "nom": "Script GooButton", "note": "≈ 5 ko, inclus dans l’onglet HTML, sans dépendance ; rAF actif seulement pendant le mouvement" },
+    { "nom": "Filtre SVG", "note": "feGaussianBlur + feColorMatrix, déclaré dans le balisage (aucun fichier externe)" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "framer-motion ≥ 11", "note": "Onglet React seulement : ressorts et décalage des gouttes" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "actions", "label": "Actions", "type": "number", "default": 4, "min": 2, "max": 5, "step": 1,
+      "code": { "html": "data-count=\"{v}\"" } },
+    { "name": "disposition", "label": "Disposition", "type": "select", "default": "auto",
+      "options": [{ "value": "auto", "label": "Auto (éventail / colonne au doigt)" }, { "value": "arc", "label": "Éventail" }, { "value": "colonne", "label": "Colonne" }, { "value": "ligne", "label": "Ligne" }],
+      "code": { "html": "data-layout=\"{v}\"", "react": "layout = '{v}'," } },
+    { "name": "ecart", "label": "Écart entre gouttes", "type": "number", "default": 76, "min": 60, "max": 120, "step": 4, "unit": "px",
+      "code": { "html": "data-gap=\"{v}\"", "react": "gap = {v}," } },
+    { "name": "viscosite", "label": "Viscosité", "type": "number", "default": 10, "min": 4, "max": 16, "step": 1, "unit": "px",
+      "hint": "Flou du filtre : plus il est fort, plus les gouttes restent liées longtemps.",
+      "code": { "html": "data-blur=\"{v}\"", "react": "blur = {v}," } },
+    { "name": "raideur", "label": "Raideur du ressort", "type": "number", "default": 200, "min": 80, "max": 500, "step": 10,
+      "code": { "html": "data-stiffness=\"{v}\"", "react": "stiffness = {v}," } },
+    { "name": "amortissement", "label": "Amortissement", "type": "number", "default": 16, "min": 8, "max": 40, "step": 1,
+      "code": { "html": "data-damping=\"{v}\"", "react": "damping = {v}," } },
+    { "name": "decalage", "label": "Décalage entre gouttes", "type": "number", "default": 60, "min": 0, "max": 140, "step": 10, "unit": "ms",
+      "code": { "html": "data-stagger=\"{v}\"", "react": "stagger = {v}," } },
+    { "name": "etiquettes", "label": "Étiquettes en colonne", "type": "boolean", "default": true,
+      "code": { "html": "data-labels=\"{v}\"", "react": "labels = {v}," } },
+    { "name": "etirement", "label": "Étirement selon la vitesse", "type": "boolean", "default": true,
+      "code": { "html": "data-stretch=\"{v}\"" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/GooButton.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Bouton de création flottant d’une app (notes, tâches, médias, messagerie) qui ouvre 2 à 5 actions sœurs ; au-delà, préférez un menu.",
+    "Écoutez l’événement goo:select (detail.action) sur [data-goo] ; el._goo.open(), close() et toggle() pilotent le bouton.",
+    "Laissez la disposition sur « auto » : éventail au pointeur fin, colonne étiquetée au doigt et sur écran étroit.",
+    "Le filtre ne s’applique qu’au calque des formes, dimensionné sur l’étendue des gouttes : icônes et textes restent nets et le coût reste faible."
+  ],
+  "accessibilite": [
+    "Bouton principal natif avec aria-expanded et aria-controls ; au clavier, Entrée ouvre et place le focus sur la première action.",
+    "Flèches pour parcourir les actions, Échap referme et rend le focus ; menu inert quand il est fermé (ni focus ni lecture).",
+    "Chaque action a un nom accessible (son étiquette) même quand l’étiquette est masquée ; cibles de 48 px.",
+    "Avec « réduire les animations » : pas de filtre ni de ressort, les actions apparaissent à leur place."
+  ]
+}

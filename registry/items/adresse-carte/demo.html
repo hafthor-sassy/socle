@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adresse avec carte — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 48px 24px; }
+  @media (max-width: 600px) { .stage { padding: 16px 12px; place-items: start center; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage"><div id="mount" style="display:contents"></div></main>
+<script>
+  var props = Socle.props({ zoom: 3.2, zone: 1.6, raideur: 170, amortissement: 22, latence: 220, style: 'plan', afficherZone: true, trajet: true });
+  var root = null, first = true;
+  function render(p) {
+    if (!root) return;
+    root.dataset.style = p.style;
+    root.dataset.zone = String(!!p.afficherZone);
+    root.dataset.trajet = String(!!p.trajet);
+    root.style.setProperty('--adr-zoom', p.zoom);
+    root.style.setProperty('--adr-zone-km', p.zone);
+    root.style.setProperty('--adr-stiffness', p.raideur);
+    root.style.setProperty('--adr-damping', p.amortissement);
+    root.style.setProperty('--adr-latence', p.latence);
+    if (root._adresse && !first) root._adresse.refresh();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-adresse]');
+    render(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    first = false;
+    if (root._adresse) root._adresse.refresh();
+    /* Vignette : une adresse est déjà choisie, la carte cadre l'épingle. */
+    if (Socle.thumb && root._adresse) root._adresse.choose('21 rue victor hugo');
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (root && root._adresse) root._adresse.demo('112 rue garibaldi'); });
+</script>
+</body>
+</html>

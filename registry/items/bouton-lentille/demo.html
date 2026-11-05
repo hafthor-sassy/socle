@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bouton lentille — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'neon-violet');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  #mount { min-height: 100vh; display: grid; }
+  #mount .lu { min-height: 100vh; }
+  .is-thumb .lu__nav, .is-thumb .lu__date, .is-thumb .lens--quiet { display: none; }
+</style>
+</head>
+<body>
+<main id="mount"></main>
+<script>
+  var props = Socle.props({ refraction: 1, aberration: 0.35, givre: 1.5, voile: 0.42, repos: 0.3, forme: 'pill', anime: true });
+  var ready = false;
+  function apply(p) {
+    if (!ready) return;
+    document.querySelectorAll('[data-lens]').forEach(function (b) {
+      b.dataset.refraction = p.refraction; b.dataset.aberration = p.aberration; b.dataset.frost = p.givre;
+      b.dataset.veil = p.voile; b.dataset.rest = p.repos;
+      b.style.borderRadius = p.forme === 'pill' ? '' : (p.forme === '16' ? '16px' : '12px');
+    });
+    if (window.LensButton) { LensButton.config(); LensButton.animate(!!p.anime); }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    ready = true;
+    document.querySelectorAll('[data-lens]').forEach(function (b) {
+      b.dataset.refraction = props.refraction; b.dataset.aberration = props.aberration; b.dataset.frost = props.givre; b.dataset.veil = props.voile; b.dataset.rest = props.repos;
+    });
+    document.querySelector('.lu').dataset.animate = String(!!props.anime);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    apply(props);
+    // Vignette : un reflet fictif balaie le bouton principal
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var b = document.querySelector('[data-lens]'), l = b._lens, i = 0;
+      setInterval(function () { i++; l.hot = i % 2 === 1; l.lightT = l.hot ? [b.offsetWidth * 0.8, b.offsetHeight * 0.3] : null; l.aim(); }, 1400);
+    }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () {
+    var b = document.querySelector('[data-lens]'); if (!b || !b._lens) return;
+    var l = b._lens; l.hot = true; l.aim();
+    var w = b.offsetWidth, x = 0, id = setInterval(function () { x += 0.04; l.lightT = [w * x, b.offsetHeight * 0.4]; LensButton.redraw(); if (x >= 1) { clearInterval(id); l.hot = false; l.lightT = null; l.aim(); } }, 30);
+  });
+</script>
+</body>
+</html>

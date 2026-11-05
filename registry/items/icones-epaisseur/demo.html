@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Épaisseur réglable — démo</title>
+<script>(function (q) { if (!q.get('accent')) document.documentElement.setAttribute('data-accent', 'lagon'); })(new URLSearchParams(location.search));</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .page { padding: 32px 24px 48px; max-width: 1280px; margin: 0 auto; }
+  @media (max-width: 600px) { .page { padding: 12px 12px 32px; } }
+  .is-thumb .page { padding: 0; max-width: none; }
+  .is-thumb .ic { border: 0; border-radius: 0; min-height: 100vh; }
+  .is-thumb .ic__insp, .is-thumb .ic-search, .is-thumb .ic-switch { display: none; }
+  .is-thumb .ic__body { grid-template-columns: 1fr; }
+  .is-thumb .ic__grid { grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  .is-thumb .ic__gridwrap { padding: 32px; }
+  .is-thumb .ic-tile { height: 236px; gap: 20px; }
+  .is-thumb .ic-tile svg { width: 72px; height: 72px; }
+  .is-thumb .ic-tile span { font-size: 20px; line-height: 28px; }
+  .is-thumb .ic-tile:nth-child(n+19) { display: none; }
+</style>
+</head>
+<body>
+<main class="page" id="mount"></main>
+<script>
+  var props = Socle.props({ trait: 1.5, taille: 24, constant: false, format: 'svg' });
+  var inst = null;
+  function opts(p) { return { stroke: p.trait, size: p.taille, compensate: !!p.constant, format: p.format }; }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), sec = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = sec ? sec[1].replace('data-stroke-icons', 'data-stroke-icons data-ic-manual') : '';
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    inst = StrokeIcons.mount(mount.querySelector('[data-stroke-icons]'), opts(props));
+    /* Vignette : le trait respire de 1 à 2 px */
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var v = [1, 1.5, 2, 1.5], i = 0, vis = true;
+      new IntersectionObserver(function (e) { vis = e[0].isIntersecting; }).observe(document.body);
+      setInterval(function () { if (vis) inst.set({ stroke: v[i++ % v.length] }); }, 900);
+    }
+  }).catch(function () {});
+  Socle.onChange(function (p) { if (inst) inst.set(opts(p)); });
+  Socle.onReplay(function () {
+    if (!inst) return;
+    inst.replay();
+    var seq = [1, 1.25, 1.5, 1.75, 2, props.trait], i = 0;
+    (function next() { if (i < seq.length) { inst.set({ stroke: seq[i++] }); setTimeout(next, 260); } })();
+  });
+</script>
+</body>
+</html>

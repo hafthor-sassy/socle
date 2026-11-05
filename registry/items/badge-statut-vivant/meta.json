@@ -1,0 +1,192 @@
+{
+  "id": "badge-statut-vivant",
+  "nom": "Badge de statut vivant",
+  "categorie": "badges",
+  "niveau": "essentiel",
+  "description": "Six états de service (opérationnel, en cours, dégradé, incident, maintenance, hors ligne), chacun avec sa forme, son onde et son libellé : jamais la couleur seule. L’onde accélère avec la gravité, l’arc tourne pendant un déploiement, et le changement d’état fait défiler le libellé comme un tambour pendant que la largeur s’ajuste.",
+  "tags": [
+    "Statut",
+    "Pulsation",
+    "Page d’état",
+    "Daltonisme",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 23,
+  "palette": "petrole",
+  "logo_exemple": {
+    "nom": "Fanal",
+    "secteur": "Hébergement cloud",
+    "fichier": "logo.svg",
+    "palette": "petrole",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 960
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Teintes vert, bleu, ambre, rouge, violet, neutre (fond, texte, bordure)"
+    },
+    {
+      "nom": "≈ 2 ko de JS",
+      "note": "HTML : StatutVivant.set(el, état, libellé) pour changer d’état en douceur"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "statut",
+      "label": "Statut",
+      "type": "select",
+      "default": "ok",
+      "options": [
+        {
+          "value": "ok",
+          "label": "Opérationnel"
+        },
+        {
+          "value": "en-cours",
+          "label": "En cours"
+        },
+        {
+          "value": "degrade",
+          "label": "Dégradé"
+        },
+        {
+          "value": "incident",
+          "label": "Incident"
+        },
+        {
+          "value": "maintenance",
+          "label": "Maintenance"
+        },
+        {
+          "value": "hors-ligne",
+          "label": "Hors ligne"
+        }
+      ],
+      "code": {
+        "html": "data-live data-state=\"{v}\"",
+        "react": "state=\"{v}\""
+      }
+    },
+    {
+      "name": "libelle",
+      "label": "Libellé personnalisé",
+      "type": "text",
+      "default": "",
+      "hint": "Vide : libellé par défaut de l’état.",
+      "code": {
+        "react": "label=\"{v}\""
+      }
+    },
+    {
+      "name": "variante",
+      "label": "Variante",
+      "type": "select",
+      "default": "teinte",
+      "options": [
+        {
+          "value": "teinte",
+          "label": "Teinté"
+        },
+        {
+          "value": "contour",
+          "label": "Contour"
+        },
+        {
+          "value": "discret",
+          "label": "Discret (sans fond)"
+        }
+      ],
+      "code": {
+        "html": "data-variant=\"{v}\"",
+        "react": "variant=\"{v}\""
+      }
+    },
+    {
+      "name": "taille",
+      "label": "Taille",
+      "type": "select",
+      "default": "md",
+      "options": [
+        {
+          "value": "sm",
+          "label": "Petite"
+        },
+        {
+          "value": "md",
+          "label": "Moyenne"
+        },
+        {
+          "value": "lg",
+          "label": "Grande"
+        }
+      ],
+      "code": {
+        "html": "data-size=\"{v}\"",
+        "react": "size=\"{v}\""
+      }
+    },
+    {
+      "name": "pulsation",
+      "label": "Onde et rotation",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-pulse=\"{v}\"",
+        "react": "pulse={{v}}"
+      }
+    },
+    {
+      "name": "vitesse",
+      "label": "Vitesse",
+      "type": "number",
+      "default": 1,
+      "min": 0.5,
+      "max": 2,
+      "step": 0.1,
+      "unit": "×",
+      "code": {
+        "html": "--stb-speed: {v}",
+        "react": "speed={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/BadgeStatut.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Page d’état, tableau de bord d’infrastructure, liste d’intégrations, suivi de commande ou d’agent : partout où un état change sans que l’utilisateur agisse.",
+    "Réservez l’onde aux états qui méritent l’œil (incident, dégradé) ou au statut global ; dans une longue liste, passez la pulsation à faux et gardez seulement la forme.",
+    "Le libellé dit ce qui se passe (« Correctif en cours de déploiement ») plutôt que le nom de l’état : l’utilisateur n’a pas à déchiffrer un code couleur."
+  ],
+  "accessibilite": [
+    "Chaque état a une forme distincte (point, arc, demi-disque, losange, pause, cercle vide) et un libellé : lisible en niveaux de gris et pour les daltoniens.",
+    "Le statut global est dans une région aria-live polie : le nouveau libellé est annoncé une fois, l’ancien est masqué aux lecteurs d’écran pendant le défilement.",
+    "Ondes coupées hors écran (IntersectionObserver) et avec « réduire les animations » ; le changement d’état devient alors instantané. Teintes AA en clair et en sombre, 14 px minimum sur mobile."
+  ]
+}

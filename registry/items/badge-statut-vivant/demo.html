@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Badge de statut vivant — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 48px 24px; }
+  @media (max-width: 600px) { .stage { padding: 16px 12px 40px; } }
+  .is-thumb .stage { padding: 32px; }
+</style>
+</head>
+<body>
+<main class="stage"><div id="mount" style="display:contents"></div></main>
+<script>
+  var props = Socle.props({ statut: 'ok', libelle: '', variante: 'teinte', taille: 'md', pulsation: true, vitesse: 1 });
+  var root = null;
+  var AUTO = { 'ok': 'Tous les systèmes fonctionnent', 'en-cours': 'Déploiement en cours', 'degrade': 'Performances dégradées', 'incident': 'Incident en cours', 'maintenance': 'Maintenance programmée', 'hors-ligne': 'Service hors ligne' };
+  function render(p) {
+    if (!root || !root._statuts) return;
+    root.dataset.variant = p.variante;
+    root.dataset.size = p.taille;
+    root.dataset.pulse = String(!!p.pulsation);
+    root.style.setProperty('--stb-speed', p.vitesse);
+    root._statuts.set(p.statut, (p.libelle || '').trim() || AUTO[p.statut]);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-statuts]');
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    render(props);
+    if (Socle.thumb && root._statuts) root._statuts.set('incident', 'Incident en cours');
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (root && root._statuts) root._statuts.scenario(function () { render(props); }); });
+</script>
+</body>
+</html>

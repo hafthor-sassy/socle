@@ -1,0 +1,209 @@
+{
+  "id": "calque-grille",
+  "nom": "Calque de grille",
+  "categorie": "espacements",
+  "niveau": "essentiel",
+  "ordre": 2,
+  "description": "La touche G pose sur n’importe quelle page ses colonnes, gouttières et une ligne de base de 8 px, qui s’adaptent au point de rupture. Maj + G change de calque, Échap le retire ; un bouton fait de même au toucher.",
+  "tags": [
+    "Grille",
+    "Raccourci clavier",
+    "Contrôle qualité",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "palette": "cobalt",
+  "logo_exemple": {
+    "nom": "Corniche",
+    "secteur": "Studio d’architecture",
+    "fichier": "logo.svg",
+    "palette": "cobalt",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1280
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent ou couleur sémantique du calque, surfaces du panneau, z-index"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 3 ko, sans dépendance ; aucune boucle, rien ne tourne quand la grille est masquée"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "visible",
+      "label": "Grille affichée",
+      "type": "boolean",
+      "default": true,
+      "hint": "Équivaut à la touche G (cliquez d’abord dans l’aperçu).",
+      "code": {
+        "html": "data-visible=\"{v}\"",
+        "react": "defaultVisible={{v}}"
+      }
+    },
+    {
+      "name": "mode",
+      "label": "Calque",
+      "type": "select",
+      "default": "both",
+      "options": [
+        {
+          "value": "both",
+          "label": "Les deux"
+        },
+        {
+          "value": "columns",
+          "label": "Colonnes"
+        },
+        {
+          "value": "baseline",
+          "label": "Base"
+        }
+      ],
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "defaultMode=\"{v}\""
+      }
+    },
+    {
+      "name": "colonnes",
+      "label": "Colonnes (bureau)",
+      "type": "number",
+      "default": 12,
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "hint": "Téléphone : 4 colonnes ; tablette : 8 au plus.",
+      "code": {
+        "html": "data-columns=\"{v}\"",
+        "react": "columns={{v}}"
+      }
+    },
+    {
+      "name": "gouttiere",
+      "label": "Gouttière",
+      "type": "number",
+      "default": 24,
+      "min": 8,
+      "max": 48,
+      "step": 8,
+      "unit": "px",
+      "code": {
+        "html": "data-gutter=\"{v}\"",
+        "react": "gutter={{v}}"
+      }
+    },
+    {
+      "name": "marge",
+      "label": "Marge latérale",
+      "type": "number",
+      "default": 48,
+      "min": 16,
+      "max": 96,
+      "step": 8,
+      "unit": "px",
+      "code": {
+        "html": "data-margin=\"{v}\"",
+        "react": "margin={{v}}"
+      }
+    },
+    {
+      "name": "base",
+      "label": "Ligne de base",
+      "type": "number",
+      "default": 8,
+      "min": 4,
+      "max": 16,
+      "step": 4,
+      "unit": "px",
+      "code": {
+        "html": "data-baseline=\"{v}\"",
+        "react": "baseline={{v}}"
+      }
+    },
+    {
+      "name": "ton",
+      "label": "Couleur du calque",
+      "type": "select",
+      "default": "accent",
+      "options": [
+        {
+          "value": "accent",
+          "label": "Accent"
+        },
+        {
+          "value": "info",
+          "label": "Bleu"
+        },
+        {
+          "value": "down",
+          "label": "Rouge"
+        },
+        {
+          "value": "neutral",
+          "label": "Neutre"
+        }
+      ],
+      "code": {
+        "html": "data-tone=\"{v}\"",
+        "react": "tone=\"{v}\""
+      }
+    },
+    {
+      "name": "opacite",
+      "label": "Intensité",
+      "type": "number",
+      "default": 12,
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "unit": "%",
+      "code": {
+        "html": "data-opacity=\"{v}\"",
+        "react": "opacity={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/GridOverlay.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Outil de contrôle pendant la conception et la recette : gardez-le en développement, ou derrière un paramètre (?grille) en production.",
+    "Réglez colonnes, gouttière, marge et largeur maximale sur ceux de votre conteneur : le calque ne sert que s’il dit la vérité.",
+    "La ligne de base suit le document au défilement : titres et paragraphes dont l’interligne est un multiple de 8 tombent sur les traits forts tous les 32 px.",
+    "Un seul calque par page ; il ne capte jamais le pointeur et n’empêche aucun clic."
+  ],
+  "accessibilite": [
+    "Raccourci G ignoré dans les champs de saisie et avec ⌘, Ctrl ou Alt ; annoncé par aria-keyshortcuts sur le bouton.",
+    "Bouton à bascule (aria-pressed) de 48 px pour le toucher ; segments en radiogroup, flèches gauche / droite.",
+    "Le calque est masqué aux lecteurs d’écran ; l’état (affiché, calque, nombre de colonnes) est donné par une région du panneau.",
+    "Avec « réduire les animations », colonnes et panneau apparaissent sans mouvement."
+  ]
+}

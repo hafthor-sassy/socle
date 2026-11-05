@@ -1,0 +1,178 @@
+{
+  "id": "carte-chemise",
+  "nom": "Carte chemise",
+  "categorie": "cartes",
+  "niveau": "premium",
+  "description": "Une carte qui s’ouvre comme une chemise cartonnée : au survol le rabat s’entrouvre, au clic il bascule en 3D sur un ressort et les pièces sortent une à une en éventail, avec ombre portée qui se retire et lumière qui glisse sur le carton. Les pièces deviennent alors des liens au clavier.",
+  "tags": [
+    "3D",
+    "Ressort",
+    "Perspective",
+    "Dossiers",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 22,
+  "palette": "ocre",
+  "logo_exemple": {
+    "nom": "Liasse",
+    "secteur": "Expertise comptable en ligne",
+    "fichier": "logo.svg",
+    "palette": "ocre",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1040
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent doux (carton), surfaces, teintes de statut"
+    },
+    {
+      "nom": "≈ 3 ko de JS",
+      "note": "HTML : ressorts maison, rAF arrêté au repos et hors écran"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, sans bibliothèque d’animation"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "ouverture",
+      "label": "Angle d’ouverture",
+      "type": "number",
+      "default": 58,
+      "min": 20,
+      "max": 80,
+      "step": 1,
+      "unit": "°",
+      "code": {
+        "html": "--chem-angle: {v};",
+        "react": "angle={{v}}"
+      }
+    },
+    {
+      "name": "eventail",
+      "label": "Éventail des pièces",
+      "type": "number",
+      "default": 5,
+      "min": 0,
+      "max": 14,
+      "step": 1,
+      "unit": "°",
+      "code": {
+        "html": "--chem-fan: {v};",
+        "react": "fan={{v}}"
+      }
+    },
+    {
+      "name": "raideur",
+      "label": "Raideur",
+      "type": "number",
+      "default": 260,
+      "min": 80,
+      "max": 600,
+      "step": 10,
+      "code": {
+        "html": "--chem-stiffness: {v};",
+        "react": "stiffness={{v}}"
+      }
+    },
+    {
+      "name": "amortissement",
+      "label": "Amortissement",
+      "type": "number",
+      "default": 19,
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "hint": "Bas : le rabat rebondit en s’ouvrant. Haut : geste posé, sans rebond.",
+      "code": {
+        "html": "--chem-damping: {v};",
+        "react": "damping={{v}}"
+      }
+    },
+    {
+      "name": "decalage",
+      "label": "Décalage entre pièces",
+      "type": "number",
+      "default": 55,
+      "min": 0,
+      "max": 160,
+      "step": 5,
+      "unit": "ms",
+      "code": {
+        "html": "--chem-stagger: {v}",
+        "react": "stagger={{v}}"
+      }
+    },
+    {
+      "name": "mode",
+      "label": "Déclenchement",
+      "type": "select",
+      "default": "clic",
+      "options": [
+        {
+          "value": "clic",
+          "label": "Survol entrouvre, clic ouvre"
+        },
+        {
+          "value": "survol",
+          "label": "Survol ouvre"
+        },
+        {
+          "value": "clic-seul",
+          "label": "Clic seulement"
+        }
+      ],
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "mode=\"{v}\""
+      }
+    },
+    {
+      "name": "unique",
+      "label": "Une seule chemise ouverte",
+      "type": "boolean",
+      "default": false,
+      "code": {
+        "html": "data-unique=\"{v}\"",
+        "react": "unique={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/CarteChemise.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour un ensemble de dossiers, projets, collections ou commandes dont on veut voir le contenu sans quitter la liste : la métaphore physique dit tout de suite « il y a des pièces dedans ».",
+    "Trois pièces visibles au maximum : au-delà, montrez les trois dernières et un lien « Tout voir » ; l’éventail devient illisible.",
+    "Le statut (prêt, à valider, incomplet) reste sur le rabat, lisible fermé : on n’ouvre que les chemises qui le méritent."
+  ],
+  "accessibilite": [
+    "Le rabat est un vrai bouton (aria-expanded, aria-controls) ; Entrée ouvre et place le focus sur la dernière pièce, Échap referme et rend le focus au rabat.",
+    "Chemise fermée : les pièces sont inertes (attribut inert), donc hors tabulation et hors lecteur d’écran ; ouvertes, ce sont des liens nommés.",
+    "Statuts avec icône et texte (jamais la couleur seule), contrastes AA sur le carton en clair et en sombre ; au toucher, un appui ouvre directement (pas d’état de survol).",
+    "Avec « réduire les animations », les ressorts sont coupés : la chemise passe d’un état à l’autre sans mouvement."
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "id": "carte-lumiere-partagee",
+  "nom": "Carte à lumière partagée",
+  "categorie": "cartes",
+  "niveau": "essentiel",
+  "description": "Une seule source de lumière pour toute la grille : le halo suit le pointeur avec une légère inertie et s’accroche aux bords de chaque carte voisine, l’icône la plus proche prend la teinte. Au toucher, la lumière suit le défilement ; au clavier, elle se pose sur la carte qui a le focus.",
+  "tags": [
+    "Survol",
+    "Halo",
+    "Grille",
+    "Fonctionnalités",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 21,
+  "palette": "azur",
+  "logo_exemple": {
+    "nom": "Équipage",
+    "secteur": "Logiciel RH",
+    "fichier": "logo.svg",
+    "palette": "azur",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1040
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, bordures, accent vif pour la source"
+    },
+    {
+      "nom": "≈ 2 ko de JS",
+      "note": "HTML : script intégré, sans dépendance"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "rayon",
+      "label": "Rayon du halo",
+      "type": "number",
+      "default": 320,
+      "min": 120,
+      "max": 560,
+      "step": 20,
+      "unit": "px",
+      "code": {
+        "html": "--lum-r: {v}px;",
+        "react": "radius={{v}}"
+      }
+    },
+    {
+      "name": "intensite",
+      "label": "Intensité",
+      "type": "number",
+      "default": 0.9,
+      "min": 0.2,
+      "max": 1,
+      "step": 0.05,
+      "code": {
+        "html": "--lum-i: {v};",
+        "react": "intensity={{v}}"
+      }
+    },
+    {
+      "name": "bordure",
+      "label": "Épaisseur éclairée",
+      "type": "number",
+      "default": 1,
+      "min": 1,
+      "max": 3,
+      "step": 0.5,
+      "unit": "px",
+      "code": {
+        "html": "--lum-b: {v}px;",
+        "react": "borderWidth={{v}}"
+      }
+    },
+    {
+      "name": "inertie",
+      "label": "Inertie",
+      "type": "number",
+      "default": 0.16,
+      "min": 0,
+      "max": 0.9,
+      "step": 0.02,
+      "hint": "0 : la lumière colle au pointeur. 0,6 et plus : elle traîne derrière, comme un liquide.",
+      "code": {
+        "html": "--lum-inertie: {v}",
+        "react": "inertia={{v}}"
+      }
+    },
+    {
+      "name": "interieur",
+      "label": "Lueur intérieure",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-interieur=\"{v}\"",
+        "react": "inner={{v}}"
+      }
+    },
+    {
+      "name": "source",
+      "label": "Couleur de la source",
+      "type": "select",
+      "default": "accent",
+      "options": [
+        {
+          "value": "accent",
+          "label": "Accent de la palette"
+        },
+        {
+          "value": "neutre",
+          "label": "Blanc / encre"
+        }
+      ],
+      "code": {
+        "html": "data-source=\"{v}\"",
+        "react": "source=\"{v}\""
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/CarteLumierePartagee.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Grille de fonctionnalités, d’offres ou d’intégrations (3 à 9 cartes) sur une page produit : la lumière relie les cartes entre elles et donne envie de les parcourir.",
+    "Une seule grille éclairée par écran : l’effet perd son sens s’il est partout. Préférez « Blanc / encre » sur une page déjà très colorée.",
+    "La lumière ne dépend que de --lx / --ly / --lum-o sur chaque carte : vous pouvez la piloter vous-même (aim(fx, fy) en HTML) pour une démonstration automatique."
+  ],
+  "accessibilite": [
+    "Cartes en liste sémantique, titre-lien étendu à toute la carte (une seule tabulation par carte), anneau de focus visible ; le focus clavier déplace aussi la lumière.",
+    "Effet purement décoratif : il n’ajoute aucune information, le contraste du texte reste celui de la surface (AA mesuré en clair et en sombre).",
+    "Avec « réduire les animations », l’inertie et les fondus sont coupés : la lumière reste un simple repère sous le pointeur ; au toucher, aucun geste n’est intercepté (défilement passif)."
+  ]
+}

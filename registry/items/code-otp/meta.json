@@ -1,0 +1,149 @@
+{
+  "id": "code-otp",
+  "nom": "Code à 6 chiffres",
+  "categorie": "champs",
+  "niveau": "essentiel",
+  "ordre": 20,
+  "description": "Saisie d’un code de vérification : un seul vrai champ sous des cases dessinées, donc collage, remplissage automatique du SMS et lecteurs d’écran natifs. Les chiffres glissent dans leur case, la réussite passe en vague, l’erreur tremble puis vide le champ ; renvoi avec compte à rebours.",
+  "tags": [
+    "OTP",
+    "Authentification",
+    "Formulaire",
+    "Mobile",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "palette": "indigo",
+  "logo_exemple": {
+    "nom": "Fonderie",
+    "secteur": "Outil développeur (plateforme de déploiement)",
+    "fichier": "logo.svg",
+    "palette": "indigo",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 640
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, focus, teintes succès / erreur, Geist Mono"
+    },
+    {
+      "nom": "Script OtpField",
+      "note": "≈ 3 ko, inclus dans l’onglet HTML, sans dépendance"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "longueur",
+      "label": "Longueur",
+      "type": "number",
+      "default": 6,
+      "min": 4,
+      "max": 8,
+      "step": 1,
+      "code": {
+        "html": "data-length=\"{v}\"",
+        "react": "length = {v},"
+      }
+    },
+    {
+      "name": "groupes",
+      "label": "Séparateur au milieu",
+      "type": "boolean",
+      "default": true,
+      "hint": "Groupes de 3 (ou moitié de la longueur) ; data-group=\"0\" pour aucun."
+    },
+    {
+      "name": "type",
+      "label": "Caractères",
+      "type": "select",
+      "default": "numeric",
+      "options": [
+        {
+          "value": "numeric",
+          "label": "Chiffres"
+        },
+        {
+          "value": "alphanumeric",
+          "label": "Lettres et chiffres"
+        }
+      ],
+      "code": {
+        "html": "data-type=\"{v}\"",
+        "react": "type = '{v}',"
+      }
+    },
+    {
+      "name": "masque",
+      "label": "Masquer la saisie",
+      "type": "boolean",
+      "default": false,
+      "code": {
+        "html": "data-mask=\"{v}\"",
+        "react": "mask = {v},"
+      }
+    },
+    {
+      "name": "code",
+      "label": "Code attendu (démo)",
+      "type": "text",
+      "default": "424242",
+      "code": {
+        "html": "data-expected=\"{v}\""
+      }
+    },
+    {
+      "name": "vague",
+      "label": "Décalage de la vague",
+      "type": "number",
+      "default": 70,
+      "min": 0,
+      "max": 160,
+      "step": 10,
+      "unit": "ms",
+      "code": {
+        "html": "data-wave=\"{v}\"",
+        "react": "wave = {v},"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/OtpInput.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Double authentification, confirmation d’e-mail ou de téléphone, code d’invitation (lettres et chiffres).",
+    "Écoutez « otp:complete » (detail.value), vérifiez côté serveur, puis appelez el._otp.success() ou el._otp.error() ; en React, onComplete renvoie true ou false.",
+    "Gardez autocomplete=\"one-time-code\" et inputmode=\"numeric\" : iOS et Android proposent le code du SMS au-dessus du clavier.",
+    "Annoncez toujours où le code a été envoyé, sa durée de validité et une seconde voie (renvoi, clé de sécurité)."
+  ],
+  "accessibilite": [
+    "Un seul champ texte étiqueté (« Code de vérification à 6 chiffres ») : le lecteur d’écran lit la saisie d’un bloc, les cases sont décoratives (aria-hidden).",
+    "État annoncé dans une région role=\"status\" (vérification, réussite, essais restants) ; aria-invalid et aria-busy sur le champ.",
+    "Cases de 60 px max qui se partagent la largeur : jamais de défilement horizontal, même à 8 caractères sur 320 px ; police 16 px pour éviter le zoom iOS.",
+    "Avec « réduire les animations » : pas de glissement, de vague ni de tremblement, curseur fixe."
+  ]
+}

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Règle de cotes — démo</title>
+<script>(function (q) { if (!q.get('accent')) document.documentElement.setAttribute('data-accent', 'framboise'); })(new URLSearchParams(location.search));</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .page { min-height: 100vh; padding: 24px 24px 48px; display: grid; justify-items: center; align-content: start; gap: 32px; }
+  .tb { position: sticky; top: 16px; z-index: 5; }
+  .layout { display: grid; grid-template-columns: 456px 280px; gap: 32px; align-items: start; }
+
+  /* Carte d'exemple : Ferro, déploiement. Chaque écart est un jeton, sauf l'erreur volontaire. */
+  .fe { --fe-err: 0px; display: flex; flex-direction: column; gap: 24px; padding: 24px; background: var(--surface); border-radius: var(--radius-sheet); outline: 1px solid var(--border); outline-offset: -1px; }
+  .fe.has-err .fe-actions { margin-top: -10px; }
+  .fe-head { display: flex; align-items: center; gap: 12px; }
+  .fe-logo { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: var(--radius-ctl); background: var(--accent-subtle); color: var(--text-strong); }
+  .fe-logo svg { width: 24px; height: 24px; }
+  .fe-title { min-width: 0; flex: 1; }
+  .fe-title b { display: block; color: var(--text-strong); font: 600 16px/24px var(--font-sans); letter-spacing: -0.01em; }
+  .fe-title span { display: block; color: var(--text-muted); font: 400 14px/20px var(--font-mono); }
+  .fe-badge { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: var(--radius-pill); background: var(--tint-green-bg); color: var(--tint-green-fg); font: 500 13px/1 var(--font-sans); }
+  .fe-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .fe-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 16px; border-radius: var(--radius-card); background: var(--raised); }
+  .fe-meta div { display: grid; gap: 4px; min-width: 0; }
+  .fe-meta dt { color: var(--text-muted); font: 500 12px/16px var(--font-sans); }
+  .fe-meta dd { margin: 0; color: var(--text-strong); font: 500 14px/20px var(--font-mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fe-steps { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .fe-steps li { display: flex; align-items: center; gap: 12px; height: 32px; color: var(--text); font: 400 15px/24px var(--font-sans); }
+  .fe-steps svg { flex: none; color: var(--up); }
+  .fe-steps .t { margin-left: auto; color: var(--text-muted); font: 400 13px/20px var(--font-mono); }
+  .fe-actions { display: flex; justify-content: flex-end; gap: 8px; }
+  .fe-btn { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border: 1px solid var(--border-control); border-radius: var(--radius-ctl); background: var(--surface); color: var(--text-strong); font: 500 15px/1 var(--font-sans); cursor: pointer; }
+  .fe-btn--solid { background: var(--accent); border-color: transparent; color: var(--accent-fg); }
+
+  .legend { padding: 20px; background: var(--surface); border-radius: var(--radius-sheet); outline: 1px solid var(--border); outline-offset: -1px; }
+  .legend h2 { margin: 0 0 4px; font: 600 15px/24px var(--font-sans); }
+  .legend p { margin: 0 0 16px; color: var(--text-muted); font: 400 14px/20px var(--font-sans); }
+  .legend ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+  .legend li { display: grid; grid-template-columns: 72px 1fr 32px; align-items: center; gap: 8px; height: 28px; padding: 0 8px; border-radius: 6px; color: var(--text-muted); font: 500 12px/1 var(--font-mono); transition: background-color var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out); }
+  .legend li i { display: block; height: 8px; width: calc(var(--v) * 1.6px); border-radius: 2px; background: var(--border-control); opacity: .5; transition: background-color var(--motion-base) var(--ease-out), opacity var(--motion-base) var(--ease-out); }
+  .legend li b { text-align: right; font-weight: 500; color: var(--text); }
+  .legend li.on { background: var(--accent-subtle); color: var(--text-strong); }
+  .legend li.on i { background: var(--accent); opacity: 1; }
+  .legend .last { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--text); font: 400 14px/20px var(--font-sans); min-height: 56px; }
+  .legend .last strong { color: var(--text-strong); font-weight: 600; }
+  .legend kbd { padding: 1px 6px; border-radius: 4px; border: 1px solid var(--border); font: 500 12px/18px var(--font-mono); color: var(--text-strong); }
+
+  @media (max-width: 860px) {
+    .page { padding: 12px 12px 40px; gap: 20px; }
+    .tb { top: 8px; }
+    .layout { grid-template-columns: minmax(0, 1fr); width: 100%; max-width: 456px; gap: 20px; }
+  }
+  @media (max-width: 520px) {
+    .fe { padding: 16px; gap: 16px; }
+    .fe.has-err .fe-actions { margin-top: -6px; }
+    .fe-meta { grid-template-columns: 1fr 1fr; padding: 12px; gap: 12px; }
+    .fe-meta div:last-child { grid-column: 1 / -1; }
+    .fe-actions { display: grid; grid-template-columns: 1fr 1fr; }
+    .fe-btn { height: 44px; justify-content: center; font-size: 16px; }
+    .legend ul { grid-template-columns: 1fr 1fr; column-gap: 8px; }
+    .legend li { grid-template-columns: 1fr auto; } .legend li i { display: none; }
+  }
+  @media (max-width: 860px) { .legend ul { grid-template-columns: 1fr 1fr; column-gap: 8px; } }
+  .is-thumb .page { padding: 48px; align-content: center; }
+  .is-thumb .legend, .is-thumb .rl-bar { display: none; }
+  .is-thumb .layout { grid-template-columns: 456px; }
+</style>
+</head>
+<body>
+<main class="page" data-redline-scope id="scope">
+  <div class="tb" id="mount"></div>
+  <div class="layout">
+    <article class="fe has-err" data-measure="Carte" data-measure-group data-measure-pad aria-label="Déploiement api-paiements">
+      <header class="fe-head" data-measure="En-tête" data-measure-group>
+        <span class="fe-logo" data-measure="Logo">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3.25 19.6 7.6v8.8L12 20.75 4.4 16.4V7.6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M8.75 13.75 12 10.5l3.25 3.25" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="fe-title" data-measure="Titre"><b>api-paiements</b><span>ferro.app/atelier-nord</span></span>
+        <span class="fe-badge" data-measure="Statut">En ligne</span>
+      </header>
+      <dl class="fe-meta" data-measure="Détails" data-measure-group data-measure-pad>
+        <div data-measure="Branche"><dt>Branche</dt><dd>main</dd></div>
+        <div data-measure="Commit"><dt>Commit</dt><dd>3f9c2e1</dd></div>
+        <div data-measure="Région"><dt>Région</dt><dd>Paris · eu-west-3</dd></div>
+      </dl>
+      <ol class="fe-steps" data-measure="Étapes" data-measure-group aria-label="Étapes du déploiement">
+        <li data-measure="Étape 1"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>Installation des dépendances<span class="t">12 s</span></li>
+        <li data-measure="Étape 2"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>Compilation<span class="t">48 s</span></li>
+        <li data-measure="Étape 3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>Tests de bout en bout<span class="t">1 min 06</span></li>
+        <li data-measure="Étape 4"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>Mise en ligne<span class="t">9 s</span></li>
+      </ol>
+      <footer class="fe-actions" data-measure="Actions" data-measure-group>
+        <button class="fe-btn" type="button" data-measure="Journal">Journal</button>
+        <button class="fe-btn fe-btn--solid" type="button" data-measure="Redéployer">Redéployer</button>
+      </footer>
+    </article>
+    <aside class="legend" aria-labelledby="lg-t">
+      <h2 id="lg-t">Jetons d’espacement</h2>
+      <p>Survolez la carte : la cote s’allume ici. Clic pour fixer un point de départ, <kbd>Échap</kbd> pour effacer.</p>
+      <ul id="lg"></ul>
+      <p class="last" id="last" aria-hidden="true">Aucune mesure pour l’instant.</p>
+    </aside>
+  </div>
+</main>
+<script>
+  var props = Socle.props({ declencheur: 'always', unite: 'both', base: 8, tailles: true, erreur: true });
+  var inst = null, rl = null, TOK = { 4: 'space-1', 8: 'space-2', 12: 'space-3', 16: 'space-4', 20: 'space-5', 24: 'space-6', 32: 'space-8', 40: 'space-10', 48: 'space-12', 64: 'space-16' };
+  document.getElementById('lg').innerHTML = Object.keys(TOK).map(function (v) { return '<li data-v="' + v + '" style="--v:' + v + '"><span>' + TOK[v] + '</span><i></i><b>' + v + '</b></li>'; }).join('');
+  var touch = window.matchMedia && matchMedia('(hover: none)').matches;
+  if (touch) document.querySelector('.legend p').innerHTML = 'Touchez un élément pour fixer le départ, puis un second pour mesurer. Touchez le vide pour effacer.';
+  function opts(p) { return { trigger: touch && p.declencheur === 'alt' ? 'always' : p.declencheur, unit: p.unite, base: p.base, sizes: !!p.tailles }; }
+  function render(p) {
+    document.querySelector('.fe').classList.toggle('has-err', !!p.erreur);
+    if (inst) { inst.set(opts(p)); inst.redraw(); }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), sec = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = sec ? sec[1].replace('data-redline', 'data-redline data-rl-manual') : '';
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    rl = mount.querySelector('[data-redline]');
+    rl.addEventListener('redlinemeasure', function (e) {
+      var d = e.detail, vals = d.values;
+      document.querySelectorAll('#lg li').forEach(function (li) { li.classList.toggle('on', vals.indexOf(+li.dataset.v) > -1); });
+      var off = vals.filter(function (v) { return !TOK[v] && v % props.base; });
+      document.getElementById('last').innerHTML = '<strong>' + d.from + '</strong> → <strong>' + d.to + '</strong> : ' + vals.join(' · ') + ' px' + (off.length ? ' — ' + off.join(', ') + ' px hors grille' : '');
+    });
+    inst = Redline.mount(rl, Object.assign(opts(props), { scope: document.getElementById('scope') }));
+    render(props);
+    // Mesure d'accueil : de l'en-tête aux détails, pour que l'aperçu parle tout de suite
+    var q = function (n) { return document.querySelector('[data-measure="' + n + '"]'); };
+    if (Socle.thumb) inst.set({ trigger: 'audit' });
+    else setTimeout(function () { inst.measure(q('Étapes'), q('Actions')); }, 350);
+  }).catch(function () {});
+  Socle.onChange(render);
+  Socle.onReplay(function () {
+    if (!inst) return;
+    var q = function (n) { return document.querySelector('[data-measure="' + n + '"]'); };
+    var seq = [['Carte', 'Titre'], ['En-tête', 'Détails'], ['Étapes', 'Actions']], i = 0;
+    (function next() { if (i >= seq.length) return; inst.measure(q(seq[i][0]), q(seq[i][1])); i++; setTimeout(next, 1100); })();
+  });
+</script>
+</body>
+</html>
