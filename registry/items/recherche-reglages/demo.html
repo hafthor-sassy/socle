@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recherche ⌘K des réglages — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'lavande');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 40px 24px; }
+  @media (max-width: 759px) { .stage { padding: 0; align-content: start; } }
+  .is-thumb .stage { padding: 24px; }
+  .is-thumb .rr { height: 640px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ raccourci: 'mod+k', ressort: 'doux', surlignage: 2400, tolerance: 'souple', apercu: true });
+  var root = null, api = null, seq = [];
+  function apply(p) {
+    if (!root) return;
+    root.dataset.shortcut = p.raccourci; root.dataset.spring = p.ressort; root.dataset.highlight = p.surlignage;
+    root.dataset.tolerance = p.tolerance; root.dataset.preview = String(p.apercu);
+    api && api.sync();
+  }
+  function clearSeq() { seq.forEach(clearTimeout); seq = []; }
+  function typeIn(q, start, step) {
+    var input = root.querySelector('[data-rr-input]');
+    q.split('').forEach(function (ch, i) { seq.push(setTimeout(function () { input.value = q.slice(0, i + 1); input.dispatchEvent(new Event('input')); }, start + i * step)); });
+    return start + q.length * step;
+  }
+  function play() {
+    if (!api) return; clearSeq(); api.close(false);
+    root.querySelector('[data-rr-scroll]').scrollTop = 0;
+    seq.push(setTimeout(api.open, 300));
+    var t = typeIn('relance', 900, 90);
+    seq.push(setTimeout(function () { root.querySelector('[data-rr-input]').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); }, t + 700));
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-rr]');
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    api = root._rr; apply(props);
+    if (Socle.thumb) { api.search('rap'); }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(play);
+</script>
+</body>
+</html>

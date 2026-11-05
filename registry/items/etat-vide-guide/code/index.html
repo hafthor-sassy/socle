@@ -1,0 +1,392 @@
+<!-- État vide guidé — HTML + CSS + JS, sans bibliothèque. Nécessite tokens.css.
+     Une illustration au trait, une phrase, une action. Quatre variantes dans le même composant :
+     premiers pas (first), aucun résultat (search), erreur (error), hors ligne (offline).
+     Réglages sur [data-empty-state] : data-variant, data-size (standard | compact), data-draw (true | false : tracé du trait),
+     data-retry (secondes avant la nouvelle tentative automatique hors ligne, 0 = désactivée).
+     API : el.emptyState.set('search', { query: 'Lyon' }) ; événement « empty:action » (detail.variant, detail.action).
+     Les boutons [data-ev-action="retry"] passent en chargement et attendent el.emptyState.done(ok). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="qa" data-qa>
+  <header class="qa__bar">
+    <a class="qa__brand" href="#" aria-label="Quai, accueil">
+      <svg viewBox="0 0 100 100" width="28" height="28" aria-hidden="true"><rect width="100" height="100" rx="28" style="fill:var(--accent)"/><rect x="29" y="22" width="42" height="34" rx="5" style="fill:var(--accent-fg)"/><path d="M50 22v13" fill="none" style="stroke:var(--accent)" stroke-width="6" stroke-linecap="round"/><rect x="17" y="62" width="66" height="8" rx="4" style="fill:var(--accent-fg)"/><path d="M21 81q7-6 14.5 0t14.5 0 14.5 0 14.5 0" fill="none" style="stroke:var(--accent-fg)" stroke-width="5" stroke-linecap="round"/></svg>
+      <span>Quai</span>
+    </a>
+    <nav class="qa__nav" aria-label="Sections">
+      <a href="#" aria-current="page">Expéditions</a><a href="#">Entrepôts</a><a href="#">Retours</a><a href="#">Transporteurs</a>
+    </nav>
+    <label class="qa__search">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span class="sr-only">Rechercher une expédition</span>
+      <input type="search" placeholder="Rechercher une expédition" autocomplete="off" data-qa-search>
+      <kbd aria-hidden="true">/</kbd>
+    </label>
+  </header>
+
+  <div class="qa__head">
+    <div>
+      <h1 class="qa__title">Expéditions</h1>
+      <p class="qa__sub">Entrepôt de Vénissieux · novembre</p>
+    </div>
+    <div class="qa__filters" data-qa-filters>
+      <button type="button" class="qa__chip" data-chip>Statut : en transit <span aria-hidden="true">×</span><span class="sr-only">, retirer le filtre</span></button>
+      <button type="button" class="qa__chip" data-chip>Transporteur : Colissimo <span aria-hidden="true">×</span><span class="sr-only">, retirer le filtre</span></button>
+    </div>
+  </div>
+
+  <!-- Le composant -->
+  <section class="ev" data-empty-state data-variant="first" data-size="standard" data-draw="true" data-secondary="true" data-retry="15" aria-live="polite">
+
+    <div class="ev__panel" data-for="first">
+      <div class="ev__figure"><svg class="ev__art" viewBox="0 0 160 128" aria-hidden="true">
+        <ellipse class="ev__floor" cx="84" cy="110" rx="50" ry="5"/>
+        <path class="ev__face" d="M72 58l4-30 26 3-4 30z"/>
+        <path class="ev__l" d="M72 58l4-30 26 3-4 30"/>
+        <circle class="ev__l ev__thin" cx="89" cy="35" r="2.5"/>
+        <path class="ev__l ev__thin" d="M80 44l14 2M79 51l9 1"/>
+        <path class="ev__side" d="M110 66l16-10v40l-16 10z"/>
+        <path class="ev__face" d="M50 66h60v40H50z"/>
+        <path class="ev__l" d="M50 66h60v40H50zM110 66l16-10v40l-16 10M50 66l16-10h60"/>
+        <path class="ev__face" d="M50 66L36 50l18-8 12 14z"/>
+        <path class="ev__l" d="M50 66L36 50l18-8 12 14"/>
+        <path class="ev__face" d="M110 66l22 6 12-12-18-4z"/>
+        <path class="ev__l" d="M110 66l22 6 12-12-18-4"/>
+        <path class="ev__l ev__thin" d="M60 78h24M60 86h14"/>
+        <path class="ev__l ev__dash" d="M104 26c6-8 14-11 22-9"/>
+        <g class="ev__pop"><path class="ev__a" d="M136 8v16M128 16h16"/><circle class="ev__dot" cx="146" cy="32" r="2.5"/></g>
+      </svg></div>
+      <div class="ev__copy">
+        <h2 class="ev__title">Votre première expédition vous attend</h2>
+        <p class="ev__text">Importez vos commandes ou créez un envoi : Quai choisit le transporteur et imprime l’étiquette.</p>
+      </div>
+      <div class="ev__actions">
+        <button type="button" class="ev__btn ev__btn--primary" data-ev-action="create">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+          Créer une expédition
+        </button>
+        <button type="button" class="ev__btn ev__btn--ghost" data-ev-action="import" data-ev-secondary>Importer un fichier CSV</button>
+      </div>
+    </div>
+
+    <div class="ev__panel" data-for="search" hidden>
+      <div class="ev__figure"><svg class="ev__art" viewBox="0 0 160 128" aria-hidden="true">
+        <ellipse class="ev__floor" cx="80" cy="112" rx="52" ry="5"/>
+        <path class="ev__l ev__thin" d="M30 42h44M30 58h30M30 74h38M30 90h24"/>
+        <circle class="ev__face" cx="92" cy="62" r="24"/>
+        <circle class="ev__l" cx="92" cy="62" r="24"/>
+        <path class="ev__l ev__dash" d="M80 56h24M80 68h14"/>
+        <path class="ev__l ev__thick" d="M110 80l18 18"/>
+        <g class="ev__pop"><path class="ev__a" d="M132 26l8-8M138 36h10M126 18v-8"/></g>
+      </svg></div>
+      <div class="ev__copy">
+        <h2 class="ev__title">Aucune expédition pour « <span data-ev-query>Lyon 7e</span> »</h2>
+        <p class="ev__text">Vérifiez l’orthographe ou retirez un filtre : la recherche porte sur le numéro de suivi, le client et la ville.</p>
+      </div>
+      <div class="ev__actions">
+        <button type="button" class="ev__btn ev__btn--primary" data-ev-action="clear">Effacer la recherche</button>
+        <button type="button" class="ev__btn ev__btn--ghost" data-ev-action="filters" data-ev-secondary>Retirer les filtres</button>
+      </div>
+    </div>
+
+    <div class="ev__panel" data-for="error" hidden>
+      <div class="ev__figure"><svg class="ev__art" viewBox="0 0 160 128" aria-hidden="true">
+        <ellipse class="ev__floor" cx="80" cy="112" rx="52" ry="5"/>
+        <path class="ev__l" d="M8 70h26"/>
+        <rect class="ev__face" x="34" y="56" width="22" height="28" rx="4"/>
+        <rect class="ev__l" x="34" y="56" width="22" height="28" rx="4"/>
+        <path class="ev__l" d="M56 63h10M56 77h10"/>
+        <rect class="ev__face" x="94" y="52" width="26" height="36" rx="4"/>
+        <rect class="ev__l" x="94" y="52" width="26" height="36" rx="4"/>
+        <path class="ev__l ev__thin" d="M101 64h4M101 76h4"/>
+        <path class="ev__l" d="M120 70c14 0 14 24 32 24"/>
+        <g class="ev__pop"><path class="ev__a" d="M80 40v10M70 46l4 7M90 46l-4 7M80 100v-10"/></g>
+      </svg></div>
+      <div class="ev__copy">
+        <h2 class="ev__title">Impossible de charger les expéditions</h2>
+        <p class="ev__text">Le service de suivi ne répond pas. Vos envois ne sont pas perdus : rien n’a été modifié.</p>
+      </div>
+      <div class="ev__actions">
+        <button type="button" class="ev__btn ev__btn--primary" data-ev-action="retry">
+          <span class="ev__spin" aria-hidden="true"></span><span class="ev__label">Réessayer</span>
+        </button>
+        <a class="ev__btn ev__btn--ghost" href="#" data-ev-action="status" data-ev-secondary>État du service</a>
+      </div>
+      <p class="ev__meta"><span data-ev-note>Code QUA-503</span> <button type="button" class="ev__copybtn" data-ev-copy="QUA-503">Copier</button></p>
+    </div>
+
+    <div class="ev__panel" data-for="offline" hidden>
+      <div class="ev__figure"><svg class="ev__art" viewBox="0 0 160 128" aria-hidden="true">
+        <ellipse class="ev__floor" cx="80" cy="112" rx="52" ry="5"/>
+        <path class="ev__face" d="M50 92h60a17 17 0 0 0 2-34 25 25 0 0 0-48-6 20 20 0 0 0-14 40z"/>
+        <path class="ev__l" d="M50 92h60a17 17 0 0 0 2-34 25 25 0 0 0-48-6 20 20 0 0 0-14 40z"/>
+        <path class="ev__gap" d="M46 34l70 62"/>
+        <path class="ev__l ev__a" d="M46 34l70 62"/>
+        <g class="ev__pop"><path class="ev__l ev__thin" d="M124 30a20 20 0 0 1 22 0M128 37a12 12 0 0 1 14 0"/><circle class="ev__dot ev__dot--muted" cx="135" cy="44" r="2.5"/></g>
+      </svg></div>
+      <div class="ev__copy">
+        <h2 class="ev__title">Vous êtes hors ligne</h2>
+        <p class="ev__text">Les expéditions s’afficheront dès le retour du réseau. Les étiquettes déjà téléchargées restent disponibles.</p>
+      </div>
+      <div class="ev__actions">
+        <button type="button" class="ev__btn ev__btn--primary" data-ev-action="retry">
+          <span class="ev__spin" aria-hidden="true"></span><span class="ev__label">Réessayer</span>
+        </button>
+        <button type="button" class="ev__btn ev__btn--ghost" data-ev-action="labels" data-ev-secondary>Étiquettes hors ligne</button>
+      </div>
+      <p class="ev__meta" data-ev-countdown><span class="ev__pulse" aria-hidden="true"></span><span data-ev-note>Nouvelle tentative dans 15 s</span></p>
+    </div>
+
+  </section>
+</div>
+<!-- /SECTION -->
+
+<style>
+.qa { --qa-pad: 24px; container: qa / inline-size; width: 100%; max-width: 1040px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; color: var(--text); font-family: var(--font-sans); overflow: hidden; }
+.qa *, .qa *::before, .qa *::after { box-sizing: border-box; }
+.qa .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.qa__bar { display: flex; align-items: center; gap: 24px; height: 64px; padding: 0 var(--qa-pad); border-bottom: 1px solid var(--border); }
+.qa__brand { display: inline-flex; align-items: center; gap: 8px; color: var(--text-strong); font-weight: 600; font-size: 17px; letter-spacing: -0.02em; text-decoration: none; border-radius: 8px; }
+.qa__nav { display: flex; gap: 4px; }
+.qa__nav a { display: inline-flex; align-items: center; height: 36px; padding: 0 12px; border-radius: 8px; color: var(--text-muted); font-size: 14px; font-weight: 500; text-decoration: none; transition: background var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out); }
+.qa__nav a:hover { background: var(--state-hover); color: var(--text-strong); }
+.qa__nav a[aria-current] { color: var(--text-strong); background: var(--raised); }
+.qa__search { position: relative; display: flex; align-items: center; gap: 8px; margin-left: auto; width: 280px; height: 36px; padding: 0 8px 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text-muted); transition: border-color var(--motion-fast) var(--ease-out); }
+.qa__search:focus-within { border-color: var(--border-control); }
+.qa__search input { flex: 1; min-width: 0; height: 100%; border: 0; background: none; outline: none; color: var(--text-strong); font: 400 14px/1 var(--font-sans); }
+.qa__search input::placeholder { color: var(--text-muted); }
+.qa__search input::-webkit-search-cancel-button { display: none; }
+.qa__search kbd { display: grid; place-items: center; width: 20px; height: 20px; border: 1px solid var(--border); border-radius: 4px; font: 500 11px/1 var(--font-mono); color: var(--text-muted); }
+.qa__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding: 32px var(--qa-pad) 0; }
+.qa__title { margin: 0; font-size: var(--t-page); line-height: var(--t-page-lh); letter-spacing: var(--track-tight); font-weight: 600; color: var(--text-strong); }
+.qa__sub { margin: 4px 0 0; font-size: 14px; color: var(--text-muted); }
+.qa__filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.qa__filters:empty { display: none; }
+.qa__chip { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px 0 12px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); font: 500 13px/1 var(--font-sans); cursor: pointer; transition: background var(--motion-fast) var(--ease-out), opacity 160ms var(--ease-out), transform 160ms var(--ease-out); }
+.qa__chip span[aria-hidden] { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 999px; color: var(--text-muted); font-size: 15px; }
+.qa__chip:hover { background: var(--state-hover); }
+.qa__chip.is-leaving { opacity: 0; transform: scale(.9); }
+@container qa (max-width: 920px) { .qa__bar { gap: 16px; } .qa__search { width: 220px; } .qa__search kbd { display: none; } .qa__nav a:last-child { display: none; } }
+
+/* ---------- Composant ---------- */
+.ev { --ev-ink: var(--border-strong); --ev-draw: 760ms; --ev-ease: cubic-bezier(.65,0,.35,1); --ev-spring: cubic-bezier(.34,1.56,.64,1);
+  position: relative; display: grid; place-items: center; min-height: 440px; padding: 48px var(--qa-pad, 24px) 56px; text-align: center;
+  transition: height 320ms var(--ease-out); }
+@supports (transition-timing-function: linear(0, 1)) {
+  .ev { --ev-spring: linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1); }
+}
+.ev__panel { display: grid; justify-items: center; gap: 24px; width: 100%; max-width: 440px; min-width: 0; }
+.ev__panel[hidden] { display: none; }
+.ev__figure { position: relative; display: grid; place-items: center; width: 224px; height: 176px; }
+.ev__figure::before { content: ""; position: absolute; inset: -8px -24px; background-image: radial-gradient(var(--border) 1px, transparent 1.5px); background-size: 12px 12px; -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 100%); mask-image: radial-gradient(closest-side, #000 30%, transparent 100%); opacity: .9; pointer-events: none; }
+.ev__art { position: relative; width: 200px; height: auto; overflow: visible; }
+.qa:has(.ev:not([data-variant="search"])) .qa__filters { display: none; }
+.ev__l { fill: none; stroke: var(--ev-ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.ev__thin { stroke: var(--border-control); stroke-width: 1.25; }
+.ev__thick { stroke-width: 3; }
+.ev__dash { stroke-dasharray: 2 5; }
+.ev__a { fill: none; stroke: var(--accent); stroke-width: 1.75; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.ev__face { fill: var(--surface); }
+.ev__side { fill: var(--raised); }
+.ev__floor { fill: var(--raised); }
+.ev__gap { fill: none; stroke: var(--surface); stroke-width: 7; stroke-linecap: round; }
+.ev__dot { fill: var(--accent); }
+.ev__dot--muted { fill: var(--border-control); }
+.ev__pop { transform-box: fill-box; transform-origin: center; }
+.ev__copy { display: grid; gap: 8px; min-width: 0; }
+.ev__title { margin: 0; font-size: var(--t-section); line-height: var(--t-section-lh); font-weight: 600; letter-spacing: var(--track-snug); color: var(--text-strong); text-wrap: balance; }
+.ev__title [data-ev-query] { color: var(--text-strong); font-weight: 600; overflow-wrap: anywhere; }
+.ev__text { margin: 0; font-size: 15px; line-height: 24px; color: var(--text-muted); text-wrap: pretty; }
+.ev__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.ev__btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid transparent; font: 500 14px/1 var(--font-sans); text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: background var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), transform 160ms var(--ev-spring); }
+.ev__btn:active { transform: scale(.97); }
+.ev__btn--primary { background: var(--accent); color: var(--accent-fg); }
+.ev__btn--primary:hover { background: var(--accent-hover); }
+.ev__btn--ghost { background: transparent; color: var(--text-strong); border-color: var(--border); }
+.ev__btn--ghost:hover { background: var(--state-hover); border-color: var(--border-control); }
+.ev__btn:focus-visible, .ev__copybtn:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+.ev__spin { display: none; width: 16px; height: 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 999px; animation: ev-spin 700ms linear infinite; }
+.ev__btn[aria-busy="true"] { pointer-events: none; }
+.ev__btn[aria-busy="true"] .ev__spin { display: inline-block; }
+.ev__meta { display: inline-flex; align-items: center; gap: 8px; margin: -8px 0 0; font: 400 13px/18px var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.ev__copybtn { height: 28px; padding: 0 8px; border: 0; border-radius: 8px; background: transparent; color: var(--text-strong); font: 500 13px/1 var(--font-sans); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border-control); cursor: pointer; }
+.ev__copybtn:hover { background: var(--state-hover); }
+.ev__pulse { width: 8px; height: 8px; border-radius: 999px; background: var(--warn); animation: ev-pulse 1.6s var(--ease-out) infinite; }
+.ev[data-retry="0"] [data-ev-countdown] { display: none; }
+.ev:not([data-secondary="true"]) [data-ev-secondary] { display: none; }
+
+/* Compact : dans une carte, un panneau latéral, une liste */
+.ev[data-size="compact"] { min-height: 0; padding: 32px var(--qa-pad, 24px); }
+.ev[data-size="compact"] .ev__panel { grid-template-columns: 112px 1fr; grid-template-areas: "art copy" "art actions" "art meta"; justify-items: start; align-items: center; column-gap: 24px; row-gap: 16px; max-width: 560px; text-align: left; }
+.ev[data-size="compact"] .ev__figure { grid-area: art; width: 112px; height: 96px; }
+.ev[data-size="compact"] .ev__art { width: 112px; }
+.ev[data-size="compact"] .ev__copy { grid-area: copy; align-self: end; }
+.ev[data-size="compact"] .ev__actions { grid-area: actions; justify-content: flex-start; align-self: start; }
+.ev[data-size="compact"] .ev__meta { grid-area: meta; margin: 0; }
+.ev[data-size="compact"] .ev__title { font-size: 17px; line-height: 24px; }
+
+/* Entrée : le trait se dessine, puis le détail d'accent rebondit, puis le texte */
+.ev [data-ev-in] .ev__l, .ev [data-ev-in] .ev__a { stroke-dasharray: 1; stroke-dashoffset: 1; animation: ev-draw var(--ev-draw) var(--ev-ease) forwards; animation-delay: calc(var(--i, 0) * 70ms); }
+.ev [data-ev-in] .ev__dash { stroke-dasharray: 2 5; stroke-dashoffset: 0; animation: ev-fade 400ms var(--ease-out) both 360ms; }
+.ev [data-ev-in] .ev__face, .ev [data-ev-in] .ev__side, .ev [data-ev-in] .ev__floor { animation: ev-fade 520ms var(--ease-out) both 120ms; }
+.ev [data-ev-in] .ev__pop { animation: ev-pop 620ms var(--ev-spring) both calc(var(--ev-draw) - 160ms); }
+.ev [data-ev-in] .ev__copy, .ev [data-ev-in] .ev__actions, .ev [data-ev-in] .ev__meta { animation: ev-up 520ms var(--ease-out) both; }
+.ev [data-ev-in] .ev__copy { animation-delay: 140ms; }
+.ev [data-ev-in] .ev__actions { animation-delay: 220ms; }
+.ev [data-ev-in] .ev__meta { animation-delay: 300ms; }
+.ev [data-ev-out] { animation: ev-out 160ms var(--ease-in) forwards; }
+/* Repos : le détail d'accent respire, seulement à l'écran */
+.ev[data-idle="true"] .ev__panel:not([data-ev-in]) .ev__pop { animation: ev-float 3.2s ease-in-out infinite; }
+.ev[data-idle="true"] .ev__panel:not([data-ev-in]) .ev__dash { animation: ev-march 1.4s linear infinite; }
+@keyframes ev-draw { to { stroke-dashoffset: 0; } }
+@keyframes ev-fade { from { opacity: 0; } }
+@keyframes ev-pop { from { opacity: 0; transform: scale(.4) rotate(-20deg); } }
+@keyframes ev-up { from { opacity: 0; transform: translateY(8px); } }
+@keyframes ev-out { to { opacity: 0; transform: translateY(-4px) scale(.985); } }
+@keyframes ev-float { 50% { transform: translateY(-3px) rotate(6deg); } }
+@keyframes ev-march { to { stroke-dashoffset: -14; } }
+@keyframes ev-spin { to { transform: rotate(360deg); } }
+@keyframes ev-pulse { 50% { opacity: .35; } }
+@keyframes ev-shake { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+.ev .is-shake { animation: ev-shake 360ms var(--ease-out); }
+
+@media (max-width: 719px) {
+  .qa { --qa-pad: 16px; border-radius: 12px; }
+  .qa__bar { flex-wrap: wrap; gap: 8px 16px; height: auto; padding: 12px var(--qa-pad); }
+  .qa__nav { order: 3; width: calc(100% + 2 * var(--qa-pad)); margin: 0 calc(-1 * var(--qa-pad)); padding: 0 var(--qa-pad); overflow-x: auto; scrollbar-width: none; }
+  .qa__nav a { flex: none; height: 40px; font-size: 15px; }
+  .qa__search { width: auto; flex: 1; height: 44px; }
+  .qa__search input { font-size: 16px; }
+  .qa__search kbd { display: none; }
+  .qa__head { flex-direction: column; align-items: flex-start; padding-top: 24px; }
+  .qa__chip { height: 36px; font-size: 14px; }
+  .ev { min-height: 0; padding: 40px var(--qa-pad) 40px; }
+  .ev__figure { width: 192px; height: 144px; }
+  .ev__art { width: 168px; }
+  .ev__text { font-size: 15px; }
+  .ev__actions { flex-direction: column; align-self: stretch; width: 100%; }
+  .ev__btn { height: 48px; width: 100%; font-size: 15px; }
+  .ev__meta { font-size: 13px; }
+  .ev[data-size="compact"] .ev__panel { grid-template-columns: 72px 1fr; grid-template-areas: "art copy" "actions actions" "meta meta"; column-gap: 16px; }
+  .ev[data-size="compact"] .ev__figure { width: 72px; height: 64px; }
+  .ev[data-size="compact"] .ev__art { width: 72px; }
+  .ev[data-size="compact"] .ev__actions { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ev *, .ev { animation: none !important; transition: none !important; }
+}
+</style>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+  function init(el) {
+    if (el.emptyState) return el.emptyState;
+    var timer = null, left = 0, busy = null;
+    function panel(v) { return el.querySelector('.ev__panel[data-for="' + v + '"]'); }
+    function current() { return el.querySelector('.ev__panel:not([hidden])'); }
+    function number(p) { /* ordre du tracé : chaque trait reçoit son rang */
+      p.querySelectorAll('.ev__l, .ev__a').forEach(function (n, i) { if (!n.classList.contains('ev__dash')) n.setAttribute('pathLength', '1'); n.style.setProperty('--i', i); });
+    }
+    function play(p) {
+      if (reduce && reduce.matches) return;
+      p.removeAttribute('data-ev-in'); void p.offsetWidth; p.setAttribute('data-ev-in', '');
+      clearTimeout(p._t); p._t = setTimeout(function () { p.removeAttribute('data-ev-in'); }, 1400);
+    }
+    function countdown() {
+      clearInterval(timer);
+      var s = parseInt(el.dataset.retry, 10) || 0, note = panel('offline').querySelector('[data-ev-note]');
+      if (el.dataset.variant !== 'offline' || !s) return;
+      left = s; note.textContent = 'Nouvelle tentative dans ' + left + ' s';
+      timer = setInterval(function () {
+        left -= 1;
+        if (left <= 0) { clearInterval(timer); retry(panel('offline').querySelector('[data-ev-action="retry"]')); return; }
+        note.textContent = 'Nouvelle tentative dans ' + left + ' s';
+      }, 1000);
+    }
+    function set(v, opts) {
+      opts = opts || {};
+      var next = panel(v); if (!next) return;
+      if (opts.query != null) el.querySelectorAll('[data-ev-query]').forEach(function (q) { q.textContent = opts.query; });
+      var prev = current();
+      el.dataset.variant = v;
+      if (prev === next) { if (opts.replay) play(next); countdown(); return; }
+      var h0 = el.offsetHeight, swap = function () {
+        if (prev) { prev.hidden = true; prev.removeAttribute('data-ev-out'); }
+        next.hidden = false;
+        if (!(reduce && reduce.matches) && h0) { /* hauteur animée entre deux variantes */
+          var h1 = el.offsetHeight; el.style.height = h0 + 'px'; void el.offsetWidth; el.style.height = h1 + 'px';
+          setTimeout(function () { el.style.height = ''; }, 340);
+        }
+        if (el.dataset.draw !== 'false') play(next);
+        countdown();
+      };
+      if (prev && !(reduce && reduce.matches) && opts.animate !== false) { prev.setAttribute('data-ev-out', ''); setTimeout(swap, 150); } else swap();
+    }
+    function retry(btn) {
+      if (!btn || btn.getAttribute('aria-busy') === 'true') return;
+      clearInterval(timer);
+      btn.setAttribute('aria-busy', 'true'); btn.querySelector('.ev__label').textContent = 'Connexion…';
+      busy = btn;
+      el.dispatchEvent(new CustomEvent('empty:action', { bubbles: true, detail: { variant: el.dataset.variant, action: 'retry' } }));
+      /* Sans écouteur qui appelle done(), la tentative échoue au bout de 1,2 s (démonstration). */
+      if (!el.hasAttribute('data-ev-manual')) setTimeout(function () { done(false); }, 1200);
+    }
+    function done(ok) {
+      if (!busy) return;
+      var btn = busy; busy = null;
+      btn.removeAttribute('aria-busy'); btn.querySelector('.ev__label').textContent = 'Réessayer';
+      if (ok) return;
+      var p = btn.closest('.ev__panel'), note = p.querySelector('[data-ev-note]');
+      if (!(reduce && reduce.matches)) { var art = p.querySelector('.ev__figure'); art.classList.remove('is-shake'); void art.offsetWidth; art.classList.add('is-shake'); }
+      var t = new Date(), hh = String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0');
+      if (p.dataset.for === 'error') note.textContent = 'Code QUA-503 · échec à ' + hh;
+      else countdown();
+    }
+    el.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-ev-action], [data-ev-copy]'); if (!b || !el.contains(b)) return;
+      if (b.hasAttribute('data-ev-copy')) {
+        var code = b.getAttribute('data-ev-copy');
+        (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).catch(function () {});
+        b.textContent = 'Copié'; setTimeout(function () { b.textContent = 'Copier'; }, 1400); return;
+      }
+      if (b.getAttribute('href') === '#') e.preventDefault();
+      var a = b.getAttribute('data-ev-action');
+      if (a === 'retry') return retry(b);
+      el.dispatchEvent(new CustomEvent('empty:action', { bubbles: true, detail: { variant: el.dataset.variant, action: a } }));
+    });
+    el.querySelectorAll('.ev__panel').forEach(number);
+    if (!el.dataset.secondary) el.dataset.secondary = 'true';
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { el.dataset.idle = es[0].isIntersecting ? 'true' : 'false'; }).observe(el);
+    else el.dataset.idle = 'true';
+    window.addEventListener('offline', function () { set('offline'); });
+    window.addEventListener('online', function () { if (el.dataset.variant === 'offline') done(true); });
+    var api = { set: set, done: done, play: function () { var p = current(); if (p) play(p); }, refresh: countdown };
+    el.emptyState = api;
+    set(el.dataset.variant || 'first', { animate: false });
+    return api;
+  }
+  document.querySelectorAll('[data-empty-state]').forEach(init);
+
+  /* Exemple d'usage : la recherche de l'en-tête bascule vers « aucun résultat », les puces retirent les filtres. */
+  document.querySelectorAll('[data-qa]').forEach(function (app) {
+    var ev = app.querySelector('[data-empty-state]'), input = app.querySelector('[data-qa-search]'), base = ev.dataset.variant, t;
+    input.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        var q = input.value.trim();
+        if (q) ev.emptyState.set('search', { query: q });
+        else ev.emptyState.set(base === 'search' ? 'first' : base);
+      }, 220);
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === '/' && document.activeElement !== input && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); input.focus(); } });
+    app.addEventListener('click', function (e) { var c = e.target.closest('[data-chip]'); if (c) { c.classList.add('is-leaving'); setTimeout(function () { c.remove(); }, 160); } });
+    ev.addEventListener('empty:action', function (e) {
+      if (e.detail.action === 'clear') { input.value = ''; ev.emptyState.set('first'); input.focus(); }
+      if (e.detail.action === 'filters') app.querySelectorAll('[data-chip]').forEach(function (c) { c.classList.add('is-leaving'); setTimeout(function () { c.remove(); }, 160); });
+    });
+  });
+})();
+</script>

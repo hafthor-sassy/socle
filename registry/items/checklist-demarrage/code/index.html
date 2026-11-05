@@ -1,0 +1,507 @@
+<!-- Checklist de démarrage — HTML + CSS + JS, sans bibliothèque. Nécessite tokens.css.
+     Anneau de progression à ressort, tâches qui se cochent (le trait se dessine, le titre se barre), la suivante s'ouvre
+     d'elle-même, et une pluie de confettis discrète (canvas) quand tout est fait. En carte ou en lanceur flottant.
+     Réglages sur [data-checklist] : data-layout (card | launcher), data-done (tâches faites au départ), data-confetti (true | false),
+     data-count (nombre de confettis), data-auto-next (true | false), data-stiffness et data-damping (ressort de l'anneau).
+     API : el.checklist.complete('payments') ; el.checklist.reset(3) ; événement « checklist:change » (detail.done, detail.total, detail.key). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="et" data-et>
+  <header class="et__bar">
+    <a class="et__brand" href="#" aria-label="Étal, accueil"><svg viewBox="0 0 100 100" width="28" height="28" aria-hidden="true"><rect width="100" height="100" rx="28" style="fill:var(--accent)"/><path d="M18 40l8-16h48l8 16" fill="none" style="stroke:var(--accent-fg)" stroke-width="6" stroke-linejoin="round"/><path d="M18 40a8 8 0 0 0 16 0a8 8 0 0 0 16 0a8 8 0 0 0 16 0a8 8 0 0 0 16 0" fill="none" style="stroke:var(--accent-fg)" stroke-width="6" stroke-linejoin="round"/><path d="M26 54v22h48V54" fill="none" style="stroke:var(--accent-fg)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><rect x="43" y="60" width="14" height="16" rx="2" style="fill:var(--accent-fg)"/></svg><span>Étal</span></a>
+    <span class="et__shop">Atelier Brume</span>
+    <span class="et__status" data-et-status><span class="et__dot" aria-hidden="true"></span><span data-et-status-label>Brouillon</span></span>
+    <span class="et__avatar" aria-hidden="true">IB</span>
+  </header>
+
+  <main class="et__main">
+    <div class="et__hello">
+      <h1 class="et__h1">Bonjour Inès</h1>
+      <p class="et__lead">Atelier Brume ouvre bientôt. Voici ce qu’il reste à faire avant vos premières commandes.</p>
+    </div>
+
+    <div class="et__grid">
+      <!-- Le composant -->
+      <section class="ck" data-checklist data-layout="card" data-done="3" data-confetti="true" data-count="70" data-auto-next="true" data-stiffness="210" data-damping="20" aria-labelledby="ck-title">
+        <button type="button" class="ck__launcher" aria-expanded="false" aria-controls="ck-panel">
+          <span class="ck__mini" aria-hidden="true"><svg viewBox="0 0 36 36"><circle class="ck__track" cx="18" cy="18" r="14"/><circle class="ck__bar" cx="18" cy="18" r="14" pathLength="100"/></svg></span>
+          <span>Démarrage</span><span class="ck__mini-frac" data-ck-mini>3/5</span>
+        </button>
+        <div class="ck__panel" id="ck-panel">
+          <header class="ck__head">
+            <div class="ck__ring" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><circle class="ck__track" cx="32" cy="32" r="26"/><circle class="ck__bar" cx="32" cy="32" r="26" pathLength="100"/></svg>
+              <span class="ck__frac"><span class="ck__num" data-ck-count>3</span><span class="ck__of">/5</span></span>
+              <svg class="ck__done-ico" viewBox="0 0 24 24"><path d="M6.5 12.5l3.5 3.5 7.5-8" pathLength="1"/></svg>
+            </div>
+            <div class="ck__heading">
+              <h2 class="ck__title" id="ck-title" data-ck-title>Ouvrez votre boutique</h2>
+              <p class="ck__sub" data-ck-sub>Encore 2 étapes · environ 3 min</p>
+            </div>
+            <button type="button" class="ck__close" aria-label="Fermer le guide" data-ck-close><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+          </header>
+          <div class="ck__progress" aria-hidden="true"><span></span></div>
+          <ol class="ck__list" role="list">
+        <li class="ck__item" data-ck-item="shop" data-min="1">
+          <div class="ck__row">
+            <button type="button" class="ck__check" role="checkbox" aria-checked="false" aria-label="Créer votre boutique"><svg viewBox="0 0 24 24" aria-hidden="true"><circle class="ck__circle" cx="12" cy="12" r="10"/><path class="ck__tick" d="M7.5 12.3l3 3 6-6.3" pathLength="1"/></svg></button>
+            <button type="button" class="ck__toggle" aria-expanded="false" aria-controls="ck-shop">
+              <span class="ck__name">Créer votre boutique</span>
+              <span class="ck__time">1 min</span><svg class="ck__chev" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="ck__detail" id="ck-shop" inert>
+            <div class="ck__inner">
+              <p class="ck__text">Nom, adresse de la boutique et logo. Vous pourrez tout changer plus tard.</p>
+              <div class="ck__acts">
+              <button type="button" class="ck__btn ck__btn--primary" data-ck-do><span class="ck__spin" aria-hidden="true"></span><span>Modifier les informations</span></button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="ck__item" data-ck-item="product" data-min="4">
+          <div class="ck__row">
+            <button type="button" class="ck__check" role="checkbox" aria-checked="false" aria-label="Ajouter un premier produit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle class="ck__circle" cx="12" cy="12" r="10"/><path class="ck__tick" d="M7.5 12.3l3 3 6-6.3" pathLength="1"/></svg></button>
+            <button type="button" class="ck__toggle" aria-expanded="false" aria-controls="ck-product">
+              <span class="ck__name">Ajouter un premier produit</span>
+              <span class="ck__time">4 min</span><svg class="ck__chev" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="ck__detail" id="ck-product" inert>
+            <div class="ck__inner">
+              <p class="ck__text">Une photo, un prix, un stock : la fiche se publie avec la boutique.</p>
+              <div class="ck__acts">
+              <button type="button" class="ck__btn ck__btn--primary" data-ck-do><span class="ck__spin" aria-hidden="true"></span><span>Ajouter un produit</span></button>
+              <button type="button" class="ck__btn ck__btn--ghost" data-ck-later>Importer un catalogue</button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="ck__item" data-ck-item="shipping" data-min="3">
+          <div class="ck__row">
+            <button type="button" class="ck__check" role="checkbox" aria-checked="false" aria-label="Choisir vos modes de livraison"><svg viewBox="0 0 24 24" aria-hidden="true"><circle class="ck__circle" cx="12" cy="12" r="10"/><path class="ck__tick" d="M7.5 12.3l3 3 6-6.3" pathLength="1"/></svg></button>
+            <button type="button" class="ck__toggle" aria-expanded="false" aria-controls="ck-shipping">
+              <span class="ck__name">Choisir vos modes de livraison</span>
+              <span class="ck__time">3 min</span><svg class="ck__chev" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="ck__detail" id="ck-shipping" inert>
+            <div class="ck__inner">
+              <p class="ck__text">Colissimo, Mondial Relay ou retrait à l’atelier, avec vos propres tarifs.</p>
+              <div class="ck__acts">
+              <button type="button" class="ck__btn ck__btn--primary" data-ck-do><span class="ck__spin" aria-hidden="true"></span><span>Configurer la livraison</span></button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="ck__item" data-ck-item="payments" data-min="2">
+          <div class="ck__row">
+            <button type="button" class="ck__check" role="checkbox" aria-checked="false" aria-label="Activer les paiements"><svg viewBox="0 0 24 24" aria-hidden="true"><circle class="ck__circle" cx="12" cy="12" r="10"/><path class="ck__tick" d="M7.5 12.3l3 3 6-6.3" pathLength="1"/></svg></button>
+            <button type="button" class="ck__toggle" aria-expanded="false" aria-controls="ck-payments">
+              <span class="ck__name">Activer les paiements</span>
+              <span class="ck__time">2 min</span><svg class="ck__chev" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="ck__detail" id="ck-payments" inert>
+            <div class="ck__inner">
+              <p class="ck__text">Reliez votre compte bancaire pour recevoir vos ventes sous 2 jours ouvrés. Carte, Apple Pay et virement.</p>
+              <div class="ck__acts">
+              <button type="button" class="ck__btn ck__btn--primary" data-ck-do><span class="ck__spin" aria-hidden="true"></span><span>Activer les paiements</span></button>
+              <button type="button" class="ck__btn ck__btn--ghost" data-ck-later>Plus tard</button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="ck__item" data-ck-item="publish" data-min="1">
+          <div class="ck__row">
+            <button type="button" class="ck__check" role="checkbox" aria-checked="false" aria-label="Publier la boutique"><svg viewBox="0 0 24 24" aria-hidden="true"><circle class="ck__circle" cx="12" cy="12" r="10"/><path class="ck__tick" d="M7.5 12.3l3 3 6-6.3" pathLength="1"/></svg></button>
+            <button type="button" class="ck__toggle" aria-expanded="false" aria-controls="ck-publish">
+              <span class="ck__name">Publier la boutique</span>
+              <span class="ck__time">1 min</span><svg class="ck__chev" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="ck__detail" id="ck-publish" inert>
+            <div class="ck__inner">
+              <p class="ck__text">Votre adresse etal.shop/atelier-brume devient visible et vos clients peuvent commander.</p>
+              <div class="ck__acts">
+              <button type="button" class="ck__btn ck__btn--primary" data-ck-do><span class="ck__spin" aria-hidden="true"></span><span>Publier maintenant</span></button>
+              <button type="button" class="ck__btn ck__btn--ghost" data-ck-later>Prévisualiser</button>
+              </div>
+            </div>
+          </div>
+        </li>
+          </ol>
+          <div class="ck__finish" inert>
+            <div class="ck__inner">
+              <p class="ck__text">Votre boutique est visible sur etal.shop/atelier-brume. Partagez le lien à vos clients et suivez vos premières commandes ici.</p>
+              <div class="ck__acts">
+                <a class="ck__btn ck__btn--primary" href="#" data-ck-visit>Voir ma boutique</a>
+                <button type="button" class="ck__btn ck__btn--ghost" data-ck-hide>Masquer ce guide</button>
+              </div>
+            </div>
+          </div>
+          <p class="ck__sr" role="status" data-ck-live></p>
+        </div>
+        <canvas class="ck__confetti" aria-hidden="true"></canvas>
+      </section>
+
+      <aside class="et__preview" aria-label="Aperçu de la boutique">
+        <div class="et__url"><span class="et__lock" aria-hidden="true"></span>etal.shop/atelier-brume</div>
+        <div class="et__shophead">
+          <div>
+            <p class="et__shopname">Atelier Brume</p>
+            <p class="et__shoptag">Céramique tournée à la main · Nantes</p>
+          </div>
+          <span class="et__pill" data-needs="shipping">Livraison et retrait atelier</span>
+        </div>
+        <ul class="et__products" role="list">
+          <li class="et__product" data-needs="product"><span class="et__art"><svg viewBox="0 0 80 64" aria-hidden="true"><path d="M14 30h52c0 14-11 24-26 24S14 44 14 30z"/><path d="M30 54v6h20v-6"/><path d="M24 36c6 4 26 4 32 0" class="et__thin"/></svg></span><span class="et__pname">Bol Marée</span><span class="et__price">38 €</span></li>
+          <li class="et__product et__product--ghost"><span class="et__art"><svg viewBox="0 0 80 64" aria-hidden="true"><path d="M32 12h16M34 12c0 8-10 12-10 26s6 22 16 22 16-8 16-22-10-18-10-26"/><path d="M27 34h26" class="et__thin"/></svg></span><span class="et__pname">Vase Estran</span><span class="et__price">64 €</span></li>
+          <li class="et__product et__product--ghost"><span class="et__art"><svg viewBox="0 0 80 64" aria-hidden="true"><path d="M20 22h34v26c0 6-5 10-11 10H31c-6 0-11-4-11-10z"/><path d="M54 28h4c5 0 8 4 8 8s-3 8-8 8h-4"/><path d="M28 14c0-3 3-3 3-6M38 14c0-3 3-3 3-6" class="et__thin"/></svg></span><span class="et__pname">Tasse Grève</span><span class="et__price">26 €</span></li>
+        </ul>
+        <div class="et__pay" data-needs="payments"><span class="et__card" aria-hidden="true"></span>Paiement par carte, Apple Pay et virement</div>
+      </aside>
+    </div>
+  </main>
+</div>
+<!-- /SECTION -->
+
+<style>
+.et { position: relative; container: et / inline-size; width: 100%; max-width: 1120px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; color: var(--text); font-family: var(--font-sans); }
+.et *, .et *::before, .et *::after { box-sizing: border-box; }
+.et__bar { display: flex; align-items: center; gap: 12px; height: 64px; padding: 0 24px; border-bottom: 1px solid var(--border); }
+.et__brand { display: inline-flex; align-items: center; gap: 8px; color: var(--text-strong); font-weight: 600; font-size: 17px; letter-spacing: -0.02em; text-decoration: none; border-radius: 8px; }
+.et__shop { padding-left: 12px; border-left: 1px solid var(--border); color: var(--text); font-size: 14px; font-weight: 500; }
+.et__status { display: inline-flex; align-items: center; gap: 8px; height: 28px; padding: 0 12px; border-radius: 999px; background: var(--tint-neutral-bg); color: var(--tint-neutral-fg); font-size: 13px; font-weight: 500; transition: background var(--motion-slow) var(--ease-out), color var(--motion-slow) var(--ease-out); }
+.et__dot { width: 8px; height: 8px; border-radius: 999px; background: currentColor; opacity: .7; }
+.et__status.is-live { background: var(--tint-green-bg); color: var(--tint-green-fg); }
+.et__status.is-live .et__dot { opacity: 1; animation: ck-ping 1.8s var(--ease-out) infinite; }
+.et__avatar { display: grid; place-items: center; width: 32px; height: 32px; margin-left: auto; border-radius: 999px; background: var(--raised); color: var(--text-strong); font-size: 12px; font-weight: 600; }
+.et__main { padding: 40px 24px 48px; }
+.et__hello { margin-bottom: 32px; }
+.et__h1 { margin: 0; font-size: var(--t-page); line-height: var(--t-page-lh); font-weight: 600; letter-spacing: var(--track-tight); color: var(--text-strong); }
+.et__lead { margin: 8px 0 0; max-width: 560px; font-size: 15px; line-height: 24px; color: var(--text-muted); }
+.et__grid { display: grid; grid-template-columns: minmax(0, 480px) minmax(0, 1fr); gap: 24px; align-items: start; }
+.et__url { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@container et (max-width: 880px) { .et__grid { grid-template-columns: minmax(0, 1fr); } .et__preview { max-width: 560px; } }
+.et:has(.ck[data-layout="launcher"]) .et__grid { grid-template-columns: minmax(0, 1fr); }
+.et:has(.ck[data-layout="launcher"]) .et__main { padding-bottom: 104px; min-height: 640px; }
+
+/* Aperçu de boutique : chaque élément [data-needs] apparaît quand la tâche est faite */
+.et__preview { padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); }
+.et__url { display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 8px; background: var(--surface); color: var(--text-muted); font: 400 13px/1 var(--font-mono); }
+.et__lock { width: 10px; height: 8px; border: 1.5px solid currentColor; border-radius: 2px; position: relative; top: 1px; }
+.et__lock::before { content: ""; position: absolute; left: 1px; bottom: 6px; width: 5px; height: 5px; border: 1.5px solid currentColor; border-bottom: 0; border-radius: 4px 4px 0 0; }
+.et__shophead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 24px 4px 16px; }
+.et__shopname { margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: var(--track-snug); color: var(--text-strong); }
+.et__shoptag { margin: 0; font-size: 14px; color: var(--text-muted); }
+.et__pill { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; background: var(--accent-subtle); color: var(--text-strong); font-size: 13px; font-weight: 500; }
+.et__products { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.et__product { display: grid; gap: 4px; padding: 8px 8px 12px; border-radius: 12px; background: var(--surface); }
+.et__art { display: grid; place-items: center; aspect-ratio: 5 / 4; border-radius: 8px; background: var(--raised); }
+.et__art svg { width: 64%; fill: none; stroke: var(--border-strong); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.et__art .et__thin { stroke: var(--border-control); stroke-dasharray: 2 4; }
+.et__pname { margin-top: 4px; font-size: 14px; font-weight: 500; color: var(--text-strong); }
+.et__price { font-size: 13px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.et__product--ghost { opacity: .5; }
+.et__product--ghost .et__art svg { stroke-dasharray: 3 4; }
+.et__pay { display: flex; align-items: center; gap: 8px; margin-top: 16px; padding: 12px; border-radius: 8px; background: var(--surface); font-size: 13px; color: var(--text); }
+.et__card { width: 20px; height: 14px; border-radius: 3px; border: 1.5px solid var(--text-muted); box-shadow: inset 0 3px 0 -1px var(--text-muted); }
+.et [data-needs] { transition: opacity 420ms var(--ease-out), transform 520ms var(--ck-spring, var(--ease-out)), filter 420ms var(--ease-out); }
+.et [data-needs]:not(.is-on) { opacity: .28; filter: grayscale(1); transform: scale(.97); }
+
+/* ---------- Composant ---------- */
+.ck { --ck-spring: cubic-bezier(.34,1.56,.64,1); position: relative; font-family: var(--font-sans); color: var(--text); }
+@supports (transition-timing-function: linear(0, 1)) {
+  .ck, .et { --ck-spring: linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1); }
+}
+.ck__panel { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; }
+.ck__head { display: flex; align-items: center; gap: 16px; padding: 20px 20px 16px; }
+.ck__ring { position: relative; flex: none; width: 64px; height: 64px; }
+.ck__ring svg, .ck__mini svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.ck__track { fill: none; stroke: var(--raised); stroke-width: 6; }
+.ck__bar { fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; }
+.ck__mini .ck__track, .ck__mini .ck__bar { stroke-width: 5; }
+.ck__frac { position: absolute; inset: 0; display: flex; align-items: baseline; justify-content: center; padding-top: 20px; font-variant-numeric: tabular-nums; color: var(--text-strong); transition: opacity 240ms var(--ease-out), transform 360ms var(--ck-spring); }
+.ck__num { display: inline-block; font-size: 20px; line-height: 24px; font-weight: 600; letter-spacing: var(--track-tight); }
+.ck__of { font-size: 13px; color: var(--text-muted); }
+.ck__num.is-up { animation: ck-roll-up 420ms var(--ck-spring); }
+.ck__num.is-down { animation: ck-roll-down 420ms var(--ck-spring); }
+.ck__done-ico { position: absolute; inset: 0; margin: auto; width: 28px !important; height: 28px !important; transform: none !important; fill: none; stroke: var(--accent); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+.ck__done-ico path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 480ms cubic-bezier(.65,0,.35,1) 260ms; }
+.ck.is-complete .ck__frac { opacity: 0; transform: scale(.6); }
+.ck.is-complete .ck__done-ico { opacity: 1; }
+.ck.is-complete .ck__done-ico path { stroke-dashoffset: 0; }
+.ck__heading { min-width: 0; flex: 1; }
+.ck__title { margin: 0; font-size: 17px; line-height: 24px; font-weight: 600; letter-spacing: var(--track-snug); color: var(--text-strong); }
+.ck__sub { margin: 2px 0 0; font-size: 14px; line-height: 20px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.ck__title.is-swap, .ck__sub.is-swap { animation: ck-swap 420ms var(--ease-out); }
+.ck__close { display: none; flex: none; place-items: center; width: 40px; height: 40px; margin: -8px -8px 0 0; align-self: flex-start; border: 0; border-radius: 8px; background: transparent; color: var(--text-muted); cursor: pointer; }
+.ck__close:hover { background: var(--state-hover); color: var(--text-strong); }
+.ck__progress { height: 1px; margin: 0 20px; background: var(--border); }
+.ck__progress span { display: none; }
+.ck__list { margin: 0; padding: 8px; list-style: none; }
+.ck__item { border-radius: 12px; transition: background var(--motion-base) var(--ease-out); }
+.ck__item.is-open { background: var(--raised); }
+.ck__row { display: flex; align-items: center; }
+.ck__check { display: grid; place-items: center; flex: none; width: 44px; height: 48px; padding: 0; border: 0; background: none; cursor: pointer; border-radius: 8px; }
+.ck__check svg { width: 22px; height: 22px; overflow: visible; }
+.ck__circle { fill: transparent; stroke: var(--border-control); stroke-width: 1.5; transform-origin: center; transform-box: fill-box; transition: fill 160ms var(--ease-out), stroke 160ms var(--ease-out), transform 520ms var(--ck-spring); }
+.ck__check:hover .ck__circle { stroke: var(--text-strong); }
+.ck__tick { fill: none; stroke: var(--accent-fg); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 320ms cubic-bezier(.65,0,.35,1) 90ms; }
+.ck__item.is-done .ck__circle { fill: var(--accent); stroke: var(--accent); }
+.ck__item.is-done .ck__tick { stroke-dashoffset: 0; }
+.ck__item.is-pop .ck__circle { animation: ck-pop 560ms var(--ck-spring); }
+.ck__toggle { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; height: 48px; padding: 0 12px 0 4px; border: 0; background: none; color: var(--text-strong); font: 500 15px/20px var(--font-sans); text-align: left; cursor: pointer; border-radius: 8px; }
+.ck__name { position: relative; flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color 240ms var(--ease-out); }
+.ck__name::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; margin-top: -0.5px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 380ms cubic-bezier(.65,0,.35,1) 120ms; }
+.ck__item.is-done .ck__name { color: var(--text-muted); }
+.ck__item.is-done .ck__name::after { transform: scaleX(1); }
+.ck__time { flex: none; margin-left: auto; font-size: 13px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.ck__item.is-done .ck__time { visibility: hidden; }
+.ck__chev { flex: none; color: var(--text-muted); transition: transform 320ms var(--ck-spring); }
+.ck__item.is-open .ck__chev { transform: rotate(180deg); }
+.ck__detail, .ck__finish { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 360ms cubic-bezier(.2,0,0,1); }
+.ck__item.is-open .ck__detail, .ck.is-complete .ck__finish { grid-template-rows: 1fr; }
+.ck__inner { min-height: 0; overflow: hidden; }
+.ck__detail .ck__inner { padding: 0 16px 0 48px; opacity: 0; transform: translateY(-4px); transition: opacity 240ms var(--ease-out), transform 360ms var(--ease-out); }
+.ck__item.is-open .ck__detail .ck__inner { opacity: 1; transform: none; transition-delay: 80ms; }
+.ck__text { margin: 0; padding-top: 0; font-size: 14px; line-height: 22px; color: var(--text-muted); text-wrap: pretty; }
+.ck__acts { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 0 16px; }
+.ck__finish .ck__inner { padding: 0 20px; }
+.ck__finish .ck__text { padding-top: 16px; border-top: 1px solid var(--border); }
+.ck__finish .ck__acts { padding-bottom: 20px; }
+.ck__btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 8px; border: 1px solid transparent; font: 500 14px/1 var(--font-sans); text-decoration: none; white-space: nowrap; cursor: pointer; transition: background var(--motion-fast) var(--ease-out), transform 160ms var(--ck-spring); }
+.ck__btn:active { transform: scale(.97); }
+.ck__btn--primary { background: var(--accent); color: var(--accent-fg); }
+.ck__btn--primary:hover { background: var(--accent-hover); }
+.ck__btn--ghost { background: var(--surface); color: var(--text-strong); border-color: var(--border); }
+.ck__btn--ghost:hover { border-color: var(--border-control); }
+.ck__spin { display: none; width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 999px; animation: ck-spin 700ms linear infinite; }
+.ck__btn[aria-busy="true"] { pointer-events: none; }
+.ck__btn[aria-busy="true"] .ck__spin { display: inline-block; }
+.ck :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+.ck__check:focus-visible { outline-offset: -4px; }
+.ck__confetti { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 60; }
+.ck__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
+
+/* Lanceur flottant */
+.ck__launcher { display: none; }
+.ck[data-layout="launcher"] { position: absolute; right: 24px; bottom: 24px; z-index: 10; display: grid; justify-items: end; gap: 12px; }
+.ck[data-layout="launcher"] .ck__launcher { order: 2; display: inline-flex; align-items: center; gap: 10px; height: 48px; padding: 0 16px 0 8px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-strong); font: 500 14px/1 var(--font-sans); cursor: pointer; box-shadow: var(--shadow-popover); transition: transform 200ms var(--ck-spring); }
+.ck[data-layout="launcher"] .ck__launcher:active { transform: scale(.96); }
+.ck__mini { position: relative; width: 32px; height: 32px; }
+.ck__mini-frac { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.ck[data-layout="launcher"] .ck__panel { order: 1; width: min(400px, calc(100vw - 32px)); box-shadow: var(--shadow-popover); transform-origin: calc(100% - 48px) calc(100% + 24px); transition: opacity 180ms var(--ease-out), transform 420ms var(--ck-spring), visibility 0s linear 0s; }
+.ck[data-layout="launcher"]:not(.is-expanded) .ck__panel { opacity: 0; transform: scale(.88) translateY(8px); visibility: hidden; pointer-events: none; transition: opacity 140ms var(--ease-in), transform 200ms var(--ease-in), visibility 0s linear 200ms; }
+.ck[data-layout="launcher"] .ck__close { display: grid; }
+
+@keyframes ck-roll-up { from { transform: translateY(70%); opacity: 0; } }
+@keyframes ck-roll-down { from { transform: translateY(-70%); opacity: 0; } }
+@keyframes ck-pop { 0% { transform: scale(.6); } 100% { transform: scale(1); } }
+@keyframes ck-swap { from { opacity: 0; transform: translateY(6px); } }
+@keyframes ck-spin { to { transform: rotate(360deg); } }
+@keyframes ck-ping { 50% { opacity: .45; } }
+
+@media (max-width: 719px) {
+  .et { border-radius: 12px; }
+  .et__bar { padding: 0 16px; }
+  .et__shop { display: none; }
+  .et__main { padding: 24px 16px 32px; }
+  .et__hello { margin-bottom: 24px; }
+  .et__grid { grid-template-columns: minmax(0, 1fr); }
+  .et__products { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .et__pname { font-size: 13px; }
+  .ck__head { padding: 16px 16px 12px; gap: 12px; }
+  .ck__list { padding: 4px; }
+  .ck__toggle { height: 56px; font-size: 15px; }
+  .ck__check { height: 56px; }
+  .ck__detail .ck__inner { padding: 0 12px 0 44px; }
+  .ck__acts { flex-direction: column; align-items: stretch; }
+  .ck__btn { height: 44px; font-size: 15px; }
+  .ck__text { font-size: 15px; line-height: 24px; }
+  .ck[data-layout="launcher"] { position: fixed; left: 12px; right: 12px; bottom: calc(12px + var(--safe-bottom)); }
+  .ck[data-layout="launcher"] .ck__panel { width: 100%; max-height: calc(100vh - 96px); overflow-y: auto; transform-origin: 50% 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ck *, .ck, .et [data-needs] { animation: none !important; transition: none !important; }
+}
+</style>
+
+<script>
+(function () {
+  var mq = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+  function reduced() { return !!(mq && mq.matches); }
+  function plural(n, a, b) { return n > 1 ? b : a; }
+
+  /* Ressort amorti (Euler semi-implicite, pas fixe de 1/120 s). */
+  function Spring(v, onUpdate) {
+    this.x = v; this.v = 0; this.to = v; this.k = 210; this.c = 20; this.cb = onUpdate; this.raf = 0; this.last = 0; this.paused = false;
+  }
+  Spring.prototype.set = function (to, instant) {
+    this.to = to;
+    if (instant || reduced()) { this.x = to; this.v = 0; this.cb(this.x); return; }
+    if (!this.raf && !this.paused) this.start();
+  };
+  Spring.prototype.start = function () {
+    var s = this; s.last = performance.now();
+    s.raf = requestAnimationFrame(function tick(now) {
+      var dt = Math.min(0.05, (now - s.last) / 1000); s.last = now;
+      for (var t = 0; t < dt; t += 1 / 120) { var h = Math.min(1 / 120, dt - t); s.v += (-s.k * (s.x - s.to) - s.c * s.v) * h; s.x += s.v * h; }
+      s.cb(s.x);
+      if (Math.abs(s.x - s.to) < 0.0005 && Math.abs(s.v) < 0.0005) { s.x = s.to; s.cb(s.x); s.raf = 0; return; }
+      s.raf = s.paused ? 0 : requestAnimationFrame(tick);
+    });
+  };
+
+  /* Confettis : rectangles et pastilles aux couleurs de la palette, gravité, traînée, battement. */
+  function Confetti(canvas) {
+    var ctx = canvas.getContext('2d'), parts = [], raf = 0, last = 0, visible = true, dpr = 1;
+    function colors() {
+      var cs = getComputedStyle(canvas);
+      return ['--accent', '--accent-vivid', '--accent-subtle-border', '--border-strong', '--accent'].map(function (v) { return cs.getPropertyValue(v).trim() || 'currentColor'; });
+    }
+    function size() {
+      var r = canvas.getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr);
+    }
+    function frame(now) {
+      var dt = Math.min(0.033, (now - last) / 1000); last = now;
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      parts = parts.filter(function (p) { return p.t < p.life; });
+      parts.forEach(function (p) {
+        p.t += dt; p.vy += 1500 * dt; p.vx *= Math.pow(0.12, dt); p.vy *= Math.pow(0.32, dt);
+        p.x += (p.vx + Math.sin(p.t * p.w) * 24) * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
+        var a = Math.min(1, (p.life - p.t) / 0.45);
+        ctx.save(); ctx.globalAlpha = a; ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillStyle = p.c;
+        if (p.round) { ctx.beginPath(); ctx.arc(0, 0, p.s * 0.45, 0, 6.283); ctx.fill(); }
+        else ctx.fillRect(-p.s / 2, -p.s * 0.8 * Math.abs(Math.cos(p.t * p.w)) - 0.5, p.s, p.s * 1.6 * Math.abs(Math.cos(p.t * p.w)) + 1);
+        ctx.restore();
+      });
+      raf = parts.length && visible ? requestAnimationFrame(frame) : 0;
+      if (!parts.length) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) {
+      visible = es[0].isIntersecting;
+      if (visible && parts.length && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+    }).observe(canvas);
+    return {
+      burst: function (x, y, n) {
+        if (reduced()) return;
+        size(); var pal = colors();
+        for (var i = 0; i < n; i++) {
+          var ang = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 0.95, sp = 420 + Math.random() * 620;
+          parts.push({ x: x, y: y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 14,
+            s: 5 + Math.random() * 4, round: Math.random() < 0.28, c: pal[i % pal.length], w: 6 + Math.random() * 8, t: 0, life: 1.3 + Math.random() * 0.9 });
+        }
+        if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+      }
+    };
+  }
+
+  function init(el) {
+    if (el.checklist) return el.checklist;
+    var items = [].slice.call(el.querySelectorAll('[data-ck-item]')), total = items.length;
+    var bars = el.querySelectorAll('.ck__bar'), num = el.querySelector('[data-ck-count]'), mini = el.querySelector('[data-ck-mini]');
+    var title = el.querySelector('[data-ck-title]'), sub = el.querySelector('[data-ck-sub]'), live = el.querySelector('[data-ck-live]');
+    var finish = el.querySelector('.ck__finish'), launcher = el.querySelector('.ck__launcher'), panel = el.querySelector('.ck__panel');
+    var api, confetti = Confetti(el.querySelector('.ck__confetti')), baseTitle = title.textContent, wasComplete = false;
+    var spring = new Spring(0, function (x) { bars.forEach(function (b) { b.style.strokeDashoffset = (100 - Math.max(0, Math.min(1, x)) * 100).toFixed(2); }); });
+    function tune() { spring.k = parseFloat(el.dataset.stiffness) || 210; spring.c = parseFloat(el.dataset.damping) || 20; }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { spring.paused = !es[0].isIntersecting; if (!spring.paused && spring.x !== spring.to) spring.start(); }).observe(el);
+
+    function doneCount() { return items.filter(function (i) { return i.classList.contains('is-done'); }).length; }
+    function swap(node, text) { if (node.textContent === text) return; node.textContent = text; if (!reduced()) { node.classList.remove('is-swap'); void node.offsetWidth; node.classList.add('is-swap'); } }
+    function open(item, on) {
+      item.classList.toggle('is-open', on);
+      item.querySelector('.ck__toggle').setAttribute('aria-expanded', String(on));
+      var d = item.querySelector('.ck__detail'); if (on) d.removeAttribute('inert'); else d.setAttribute('inert', '');
+    }
+    function update(instant, key) {
+      tune();
+      var n = doneCount(), left = total - n, mins = items.reduce(function (s, i) { return s + (i.classList.contains('is-done') ? 0 : +i.dataset.min || 0); }, 0);
+      var prev = +num.textContent;
+      if (prev !== n) { num.textContent = n; if (!instant && !reduced()) { num.className = 'ck__num ' + (n > prev ? 'is-up' : 'is-down'); } }
+      if (mini) mini.textContent = n + '/' + total;
+      spring.set(n / total, instant);
+      var complete = n === total;
+      el.classList.toggle('is-complete', complete);
+      if (complete) finish.removeAttribute('inert'); else finish.setAttribute('inert', '');
+      swap(title, complete ? 'Votre boutique est en ligne' : baseTitle);
+      swap(sub, complete ? 'Les ' + total + ' étapes sont faites. Bravo\u00a0!' : 'Encore ' + left + ' ' + plural(left, 'étape', 'étapes') + ' · environ ' + mins + '\u00a0min');
+      if (complete && !wasComplete && !instant && el.dataset.confetti !== 'false') {
+        setTimeout(function () {
+          api.burst();
+        }, 260);
+      }
+      wasComplete = complete;
+      el.dispatchEvent(new CustomEvent('checklist:change', { bubbles: true, detail: { done: n, total: total, key: key || null, complete: complete } }));
+    }
+    function setDone(item, on, instant) {
+      if (item.classList.contains('is-done') === on) return;
+      item.classList.toggle('is-done', on);
+      item.querySelector('.ck__check').setAttribute('aria-checked', String(on));
+      if (on && !instant && !reduced()) { item.classList.remove('is-pop'); void item.offsetWidth; item.classList.add('is-pop'); }
+      if (instant) return;
+      if (on) {
+        open(item, false);
+        if (el.dataset.autoNext !== 'false') {
+          var i = items.indexOf(item), next = items.slice(i + 1).concat(items.slice(0, i)).filter(function (x) { return !x.classList.contains('is-done'); })[0];
+          if (next) setTimeout(function () { open(next, true); }, reduced() ? 0 : 220);
+        }
+      }
+      var n = doneCount();
+      live.textContent = (on ? 'Étape terminée\u00a0: ' : 'Étape à refaire\u00a0: ') + item.querySelector('.ck__name').textContent + '. ' + n + ' sur ' + total + '.';
+      update(false, item.dataset.ckItem);
+    }
+    function reset(k) {
+      k = Math.max(0, Math.min(total, k == null ? parseInt(el.dataset.done, 10) || 0 : k));
+      wasComplete = k === total;
+      items.forEach(function (it, i) { setDone(it, i < k, true); open(it, false); it.classList.remove('is-pop'); });
+      var first = items[k]; if (first) open(first, true);
+      update(true);
+    }
+    el.addEventListener('click', function (e) {
+      var t = e.target.closest('button, a'); if (!t || !el.contains(t)) return;
+      var item = t.closest('[data-ck-item]');
+      if (t.classList.contains('ck__check')) return setDone(item, !item.classList.contains('is-done'));
+      if (t.classList.contains('ck__toggle')) { var on = !item.classList.contains('is-open'); items.forEach(function (x) { if (x !== item) open(x, false); }); return open(item, on); }
+      if (t.hasAttribute('data-ck-do')) {
+        if (t.getAttribute('aria-busy') === 'true') return;
+        t.setAttribute('aria-busy', 'true');
+        setTimeout(function () { t.removeAttribute('aria-busy'); setDone(item, true); var c = item.querySelector('.ck__check'); if (document.activeElement === t) c.focus(); }, reduced() ? 0 : 650);
+        return;
+      }
+      if (t.hasAttribute('data-ck-later')) return open(item, false);
+      if (t === launcher) return expand(!el.classList.contains('is-expanded'), true);
+      if (t.hasAttribute('data-ck-close')) { expand(false); return launcher.focus(); }
+      if (t.hasAttribute('data-ck-hide')) { e.preventDefault(); el.dispatchEvent(new CustomEvent('checklist:hide', { bubbles: true })); }
+      if (t.hasAttribute('data-ck-visit')) e.preventDefault();
+    });
+    function expand(on, focus) {
+      el.classList.toggle('is-expanded', on); launcher.setAttribute('aria-expanded', String(on));
+      if (on) { panel.removeAttribute('inert'); if (focus) setTimeout(function () { var f = panel.querySelector('.is-open [data-ck-do]') || panel.querySelector('.ck__item:not(.is-done) .ck__check') || panel.querySelector('.ck__close'); if (f) f.focus({ preventScroll: true }); }, 60); }
+      else if (el.dataset.layout === 'launcher') panel.setAttribute('inert', '');
+    }
+    el.addEventListener('keydown', function (e) { if (e.key === 'Escape' && el.classList.contains('is-expanded')) { expand(false); launcher.focus(); } });
+    function layout() { if (el.dataset.layout === 'launcher') { if (!el.classList.contains('is-expanded')) panel.setAttribute('inert', ''); } else { panel.removeAttribute('inert'); el.classList.remove('is-expanded'); } }
+    api = { complete: function (key) { var it = el.querySelector('[data-ck-item="' + key + '"]'); if (it) setDone(it, true); }, reset: reset, expand: expand, layout: layout, tune: tune,
+      burst: function () { var r = el.querySelector('.ck__ring').getBoundingClientRect(); confetti.burst(r.left + r.width / 2, r.top + r.height / 2, parseInt(el.dataset.count, 10) || 70); } };
+    el.checklist = api;
+    layout(); reset();
+    return api;
+  }
+  document.querySelectorAll('[data-checklist]').forEach(init);
+
+  /* Exemple : l'aperçu de la boutique suit la checklist. */
+  document.querySelectorAll('[data-et]').forEach(function (app) {
+    function sync() {
+      app.querySelectorAll('[data-needs]').forEach(function (n) { var it = app.querySelector('[data-ck-item="' + n.dataset.needs + '"]'); n.classList.toggle('is-on', !!(it && it.classList.contains('is-done'))); });
+      var pub = app.querySelector('[data-ck-item="publish"]'), on = !!(pub && pub.classList.contains('is-done')), st = app.querySelector('[data-et-status]');
+      st.classList.toggle('is-live', on); st.querySelector('[data-et-status-label]').textContent = on ? 'En ligne' : 'Brouillon';
+    }
+    app.addEventListener('checklist:change', sync); sync();
+  });
+})();
+</script>

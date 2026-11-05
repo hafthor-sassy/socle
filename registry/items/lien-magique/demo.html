@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lien magique — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'miel');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 48px 24px; }
+  @media (max-width: 599px) { .stage { padding: 0; align-content: start; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ delai: 30, expiration: 15, fournisseurs: 'auto', croissant: true, etat: 'saisie' });
+  var root = null, api = null, last = null, seq = [];
+  function apply(p) {
+    if (!root) return;
+    root.dataset.delay = p.delai; root.dataset.expiry = p.expiration; root.dataset.providers = p.fournisseurs; root.dataset.backoff = String(p.croissant);
+    if (api) { if (last !== p.etat) { p.etat === 'envoye' ? api.sent('claire.dumas@gmail.com') : api.reset(); } api.sync(); }
+    last = p.etat;
+  }
+  function play() {
+    if (!api) return; seq.forEach(clearTimeout); seq = []; api.reset();
+    seq.push(setTimeout(function () { api.type('claire.dumas@gmail.com', function () { seq.push(setTimeout(api.submit, 350)); }); }, 300));
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-ml]');
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    api = root._ml; last = null; apply(props);
+    if (Socle.thumb && props.etat !== 'envoye') api.sent('claire.dumas@gmail.com');
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(play);
+</script>
+</body>
+</html>

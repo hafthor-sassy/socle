@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 jouable — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 40px 32px; }
+  @media (max-width: 719px) { .stage { align-content: start; padding: 16px 12px; } }
+  .is-thumb .stage { padding: 32px 48px; }
+  .is-thumb .nf__find { display: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ mode: 'gravity', code: '404', gravite: 1800, rebond: 0.3, poussee: 32, zone: false });
+  var mount = document.getElementById('mount'), nf = null, last = {};
+  function attrs(p) {
+    nf.dataset.mode = p.mode; nf.dataset.gravity = String(p.gravite); nf.dataset.bounce = String(p.rebond);
+    nf.dataset.push = String(p.poussee); nf.dataset.showCursor = String(!!p.zone);
+  }
+  function render(p) {
+    if (!nf || !nf.notFound) return;
+    attrs(p);
+    if (p.code !== last.code) nf.notFound.setCode(p.code);
+    else if (p.mode !== last.mode) nf.notFound.reset();
+    else nf.notFound.wake();
+    last = { code: p.code, mode: p.mode };
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = (t.match(/<script>([\s\S]*?)<\/script>/) || [])[1] || '';
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    nf = mount.querySelector('[data-not-found]');
+    attrs(props); nf.dataset.code = props.code;
+    try { new Function(js)(); } catch (e) { console.error(e); }
+    last = { code: props.code, mode: props.mode };
+    if (Socle.thumb) thumb();
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (nf && nf.notFound) nf.notFound.reset(); });
+  /* Vignette : un curseur fictif balaie les chiffres, puis tout se remet en place ; en pause hors écran. */
+  function thumb() {
+    if (Socle.reducedMotion()) return;
+    var visible = true, api = nf.notFound;
+    api.reset(false);
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(mount);
+    setTimeout(function loop() {
+      if (visible && !document.hidden) {
+        var s = api.size(), t0 = performance.now();
+        (function sweep(now) {
+          var k = (now - t0) / 1100; if (k > 1) { api.release(); setTimeout(function () { api.reset(); }, 1500); return; }
+          var x = -40 + k * (s[0] + 80), y = s[1] * (0.82 - 0.25 * Math.sin(k * Math.PI));
+          api.poke(x, y, (s[0] + 80) / 1.1, 0); requestAnimationFrame(sweep);
+        })(t0);
+      }
+      setTimeout(loop, 5200);
+    }, 900);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!-- Clés API — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Création avec affichage unique de la clé secrète (déchiffrement animé, copie, confirmation),
+     rotation avec délai de grâce et compte à rebours avant révocation, révocation confirmée dans la ligne.
+     Les clés de l'exemple vivent dans <script type="application/json" data-ak-data>. Branchez create / rotate / revoke sur votre API. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="ak" data-ak data-speed="2880" data-grace="86400" data-prefix="iso" data-reveal="true" data-confirm="true">
+  <header class="ak__top">
+    <span class="ak__brand">
+      <svg class="ak__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="ak__logo-bg"/><ellipse cx="49" cy="51" rx="30" ry="23" transform="rotate(-18 49 51)" class="ak__logo-ln"/><ellipse cx="53" cy="49" rx="17.5" ry="12.5" transform="rotate(-18 53 49)" class="ak__logo-ln"/><circle cx="56" cy="48" r="4.5" class="ak__logo-dot"/></svg>
+      <span class="ak__word">isobare</span>
+    </span>
+    <span class="ak__proj"><span class="ak__dot" aria-hidden="true"></span>Projet : Météo-Rail</span>
+    <a class="ak__docs" href="#" onclick="return false">Documentation</a>
+  </header>
+
+  <div class="ak__body">
+    <div class="ak__head">
+      <div>
+        <h2 class="ak__title">Clés API</h2>
+        <p class="ak__lead">Signez vos appels à l’API Prévisions. Une clé secrète n’est affichée qu’une seule fois.</p>
+      </div>
+      <button class="ak-btn ak-btn--pri" type="button" data-ak-create>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>Créer une clé
+      </button>
+    </div>
+    <div class="ak__tabs" role="tablist" aria-label="Environnement">
+      <button type="button" role="tab" aria-selected="true" data-ak-env="live" id="ak-t-live" aria-controls="ak-list">Production <span data-ak-n="live"></span></button>
+      <button type="button" role="tab" aria-selected="false" data-ak-env="test" id="ak-t-test" aria-controls="ak-list" tabindex="-1">Test <span data-ak-n="test"></span></button>
+    </div>
+    <div class="ak__table" id="ak-list" role="tabpanel" aria-labelledby="ak-t-live">
+      <div class="ak__thead" aria-hidden="true"><span>Nom</span><span>Clé</span><span>Dernier appel</span><span></span></div>
+      <ul class="ak__list" data-ak-list aria-label="Clés"></ul>
+    </div>
+    <p class="ak__foot">Les clés révoquées refusent les appels avec une erreur 401. Le journal garde leur trace pendant 90 jours.</p>
+  </div>
+
+  <!-- Fenêtre : création, rotation, affichage unique -->
+  <div class="ak-dlg" data-ak-dlg hidden>
+    <div class="ak-dlg__scrim" data-ak-dismiss></div>
+    <div class="ak-dlg__panel" role="dialog" aria-modal="true" aria-labelledby="ak-dlg-t" data-ak-panel>
+      <div class="ak-dlg__step" data-step="form">
+        <h3 class="ak-dlg__t" id="ak-dlg-t" data-ak-dlg-title>Nouvelle clé secrète</h3>
+        <p class="ak-dlg__d" data-ak-dlg-lead>Donnez-lui le nom du service qui l’utilisera : vous la retrouverez plus vite le jour où il faudra la révoquer.</p>
+        <div class="ak-fields" data-ak-form-create>
+          <label class="ak-lbl" for="ak-name">Nom</label>
+          <input class="ak-in" id="ak-name" type="text" placeholder="Serveur de production" autocomplete="off" maxlength="40">
+          <p class="ak-err" data-ak-err hidden>Donnez un nom à la clé.</p>
+          <fieldset class="ak-scopes">
+            <legend class="ak-lbl">Permissions</legend>
+            <label class="ak-scope"><input type="checkbox" value="previsions" checked><span><b>Prévisions</b><small>Lecture · /v2/previsions</small></span></label>
+            <label class="ak-scope"><input type="checkbox" value="historique"><span><b>Historique</b><small>Lecture · /v2/archives</small></span></label>
+            <label class="ak-scope"><input type="checkbox" value="alertes"><span><b>Alertes</b><small>Écriture · webhooks</small></span></label>
+          </fieldset>
+        </div>
+        <div class="ak-fields" data-ak-form-rotate hidden>
+          <fieldset class="ak-grace">
+            <legend class="ak-lbl">Garder l’ancienne clé valable</legend>
+            <label><input type="radio" name="ak-grace" value="0"><span>Non, révoquer tout de suite</span></label>
+            <label><input type="radio" name="ak-grace" value="3600"><span>Pendant 1 heure</span></label>
+            <label><input type="radio" name="ak-grace" value="86400" checked><span>Pendant 24 heures</span></label>
+          </fieldset>
+        </div>
+        <div class="ak-dlg__act">
+          <button class="ak-btn" type="button" data-ak-dismiss>Annuler</button>
+          <button class="ak-btn ak-btn--pri" type="button" data-ak-submit><span class="ak-spin" aria-hidden="true"></span><span data-ak-submit-t>Créer la clé</span></button>
+        </div>
+      </div>
+
+      <div class="ak-dlg__step" data-step="secret" hidden>
+        <span class="ak-ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 12.5 4 4 8-9"/></svg></span>
+        <h3 class="ak-dlg__t" data-ak-secret-title>Copiez votre clé maintenant</h3>
+        <p class="ak-dlg__d">Isobare n’en garde qu’une empreinte : <strong>elle ne sera plus jamais affichée</strong>. Rangez-la dans votre gestionnaire de secrets.</p>
+        <div class="ak-secret">
+          <code class="ak-secret__v" data-ak-secret aria-label="Clé secrète"></code>
+          <button class="ak-btn ak-copy" type="button" data-ak-copy="secret"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 4.5H6A1.5 1.5 0 0 0 4.5 6v7"/></svg><svg class="ak-chk" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10.5 3 3 7-7"/></svg><span>Copier</span></button>
+        </div>
+        <details class="ak-snip">
+          <summary>Exemple d’appel</summary>
+          <pre><code data-ak-snippet></code></pre>
+        </details>
+        <label class="ak-ack" data-ak-ack-wrap><input type="checkbox" data-ak-ack><span>J’ai enregistré la clé en lieu sûr</span></label>
+        <div class="ak-dlg__act">
+          <button class="ak-btn ak-btn--pri" type="button" data-ak-done disabled>Terminé</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="ak__sr" aria-live="polite" data-ak-live></p>
+
+  <script type="application/json" data-ak-data>
+  [
+    { "id": "k1", "name": "Serveur de production", "env": "live", "scopes": ["previsions", "historique"], "tail": "3f9a", "created": "12 mars 2026", "last": "il y a 2 min", "calls": "48 210 appels / 7 j" },
+    { "id": "k2", "name": "Application iOS", "env": "live", "scopes": ["previsions"], "tail": "b71c", "created": "4 juin 2026", "last": "il y a 1 h", "calls": "9 874 appels / 7 j" },
+    { "id": "k3", "name": "Alertes gel (cron)", "env": "live", "scopes": ["previsions", "alertes"], "tail": "e02d", "created": "18 sept. 2026", "last": "hier, 23:40", "calls": "1 402 appels / 7 j" }
+  ]
+  </script>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .ak {
+    --ak-spring: linear(0, .013 .6%, .05 1.2%, .2 2.6%, .44 4.4%, .67 6.4%, .85 8.6%, .96 11%, 1.02 13.6%, 1.04 16.6%, 1.03 20.4%, 1.01 25%, 1 32%, 1);
+    position: relative; width: 100%; max-width: 1040px; margin: 0 auto; min-height: 640px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; isolation: isolate;
+    font-family: var(--font-sans); color: var(--text);
+  }
+  .ak *, .ak *::before, .ak *::after { box-sizing: border-box; }
+  .ak svg { flex: none; }
+  .ak :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+  .ak__top { display: flex; align-items: center; gap: 16px; height: 60px; padding: 0 24px; border-bottom: 1px solid var(--border); }
+  .ak__brand { display: inline-flex; align-items: center; gap: 8px; }
+  .ak__logo { width: 28px; height: 28px; }
+  .ak__logo-bg { fill: var(--accent); } .ak__logo-ln { fill: none; stroke: var(--accent-fg); stroke-width: 5; } .ak__logo-dot { fill: var(--accent-fg); }
+  .ak__word { font-weight: 600; font-size: 18px; letter-spacing: -.03em; color: var(--text-strong); }
+  .ak__proj { display: inline-flex; align-items: center; gap: 8px; padding-left: 16px; border-left: 1px solid var(--border); font-size: 14px; color: var(--text-muted); }
+  .ak__dot { width: 8px; height: 8px; border-radius: 999px; background: var(--up); }
+  .ak__docs { margin-left: auto; font-size: 14px; color: var(--text-muted); text-decoration: none; }
+  .ak__docs:hover { color: var(--text-strong); text-decoration: underline; text-underline-offset: 3px; }
+
+  .ak__body { padding: 32px; }
+  .ak__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .ak__title { margin: 0; font-size: var(--t-page); line-height: var(--t-page-lh); letter-spacing: -.02em; font-weight: 600; color: var(--text-strong); }
+  .ak__lead { margin: 6px 0 0; font-size: 15px; color: var(--text-muted); max-width: 52ch; }
+  .ak__tabs { display: flex; gap: 4px; margin: 24px 0 16px; border-bottom: 1px solid var(--border); }
+  .ak__tabs button { position: relative; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; border: 0; background: none; color: var(--text-muted); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .ak__tabs button span { min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--raised); color: var(--text-muted); font: 500 12px/20px var(--font-mono); }
+  .ak__tabs button[aria-selected="true"] { color: var(--text-strong); }
+  .ak__tabs button[aria-selected="true"]::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--accent); }
+
+  .ak__table { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .ak__thead, .ak-row__main { display: grid; grid-template-columns: minmax(200px, 1.25fr) minmax(230px, 1.15fr) minmax(140px, .8fr) 264px; align-items: center; column-gap: 24px; }
+  .ak__thead { height: 40px; padding: 0 20px; background: var(--raised); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
+  .ak__list { list-style: none; margin: 0; padding: 0; }
+  .ak-row { position: relative; border-top: 1px solid var(--border); overflow: hidden; }
+  .ak-row:first-child { border-top: 0; }
+  .ak-row__main { min-height: 76px; padding: 14px 20px; }
+  .ak-row__name { font-size: 15px; font-weight: 500; color: var(--text-strong); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .ak-tag { height: 22px; padding: 0 8px; border-radius: 999px; font-size: 12px; font-weight: 500; line-height: 22px; background: var(--accent-subtle); color: var(--text-strong); border: 1px solid var(--accent-subtle-border); }
+  .ak-scopes-l { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .ak-scopes-l span { height: 22px; padding: 0 8px; border-radius: 6px; background: var(--raised); border: 1px solid var(--border); font: 500 12px/20px var(--font-mono); color: var(--text-muted); }
+  .ak-key { font: 500 14px/1.4 var(--font-mono); color: var(--text); letter-spacing: -.01em; white-space: nowrap; }
+  .ak-key i { font-style: normal; color: var(--text-muted); letter-spacing: .08em; }
+  .ak-row__meta { font-size: 14px; color: var(--text); }
+  .ak-created { display: block; margin-top: 4px; font-size: 13px; color: var(--text-muted); }
+  .ak-row__meta small { display: block; font-size: 13px; color: var(--text-muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .ak-row__act { display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* Rotation en cours */
+  .ak-count { display: none; align-items: center; gap: 12px; padding: 0 20px 14px; }
+  .ak-row.is-rotating .ak-count { display: flex; }
+  .ak-count__t { font-size: 14px; color: var(--warn); font-weight: 500; white-space: nowrap; }
+  .ak-count__t b { font: 600 14px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+  .ak-count__bar { flex: 1; height: 4px; border-radius: 999px; background: var(--raised); overflow: hidden; min-width: 80px; }
+  .ak-count__bar span { display: block; height: 100%; border-radius: inherit; background: var(--warn); transform-origin: 0 50%; }
+  .ak-row.is-rotating .ak-key { color: var(--text-muted); }
+  .ak-row.is-rotating .ak-row__main { padding-bottom: 8px; }
+
+  /* Confirmation de révocation dans la ligne */
+  .ak-confirm { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 360ms var(--ak-spring); }
+  .ak-confirm > div { overflow: hidden; }
+  .ak-row.is-confirm .ak-confirm { grid-template-rows: 1fr; }
+  .ak-confirm__in { display: flex; align-items: center; gap: 16px; margin: 0 12px 12px; padding: 12px 12px 12px 16px; border-radius: 10px; background: var(--tint-red-bg); border: 1px solid var(--tint-red-border); }
+  .ak-confirm__in p { flex: 1; margin: 0; font-size: 14px; color: var(--tint-red-fg); }
+  .ak-confirm__in p b { font-weight: 600; }
+
+  .ak-row.is-revoked .ak-row__main { opacity: .55; }
+  .ak-row.is-revoked .ak-key { text-decoration: line-through; text-decoration-color: var(--down); }
+  .ak-row.is-new { animation: ak-new 1600ms var(--ease-out) both; }
+  @keyframes ak-new { 0% { background: var(--accent-subtle); } 60% { background: var(--accent-subtle); } 100% { background: transparent; } }
+  .ak-row.is-leaving { transition: height 420ms var(--ak-spring), opacity 260ms var(--ease-out); opacity: 0; }
+  .ak-badge { height: 22px; padding: 0 8px; border-radius: 999px; font-size: 12px; font-weight: 500; line-height: 20px; border: 1px solid; }
+  .ak-badge--warn { background: var(--tint-amber-bg); color: var(--tint-amber-fg); border-color: var(--tint-amber-border); }
+  .ak-badge--down { background: var(--tint-red-bg); color: var(--tint-red-fg); border-color: var(--tint-red-border); }
+
+  .ak-empty { display: grid; justify-items: center; gap: 8px; padding: 48px 24px; text-align: center; }
+  .ak-empty svg { width: 56px; height: 56px; fill: none; stroke: var(--text-muted); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .ak-empty b { font-size: 15px; font-weight: 500; color: var(--text-strong); margin-top: 4px; }
+  .ak-empty p { margin: 0 0 8px; font-size: 14px; color: var(--text-muted); max-width: 40ch; }
+  .ak__foot { margin: 16px 0 0; font-size: 13px; color: var(--text-muted); }
+
+  /* Boutons */
+  .ak-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--border-control); background: var(--surface); color: var(--text-strong); font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    transition: background var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), transform 300ms var(--ak-spring); }
+  .ak-btn:hover { background: var(--state-hover); }
+  .ak-btn:active { transform: scale(.97); }
+  .ak-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .ak-btn--pri { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+  .ak-btn--pri:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .ak-btn--pri:disabled { background: var(--raised); border-color: var(--border); color: var(--text-disabled); cursor: not-allowed; transform: none; }
+  .ak-btn--danger { background: var(--down); border-color: var(--down); color: var(--surface); }
+  .ak-btn--ghost { border-color: transparent; background: transparent; color: var(--text-muted); }
+  .ak-btn--ghost:hover { color: var(--text-strong); background: var(--state-hover); }
+  .ak-btn--icon { width: 40px; padding: 0; }
+  .ak-spin { display: none; width: 16px; height: 16px; border-radius: 999px; border: 2px solid currentColor; border-right-color: transparent; animation: ak-rot 700ms linear infinite; }
+  .ak-btn.is-busy .ak-spin { display: inline-block; }
+  @keyframes ak-rot { to { transform: rotate(360deg); } }
+
+  /* Fenêtre */
+  .ak-dlg { position: absolute; inset: 0; z-index: 50; display: grid; place-items: center; padding: 24px; }
+  .ak-dlg[hidden] { display: none; }
+  .ak-dlg__scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; transition: opacity 200ms var(--ease-out); }
+  .ak-dlg__panel { position: relative; width: min(560px, 100%); max-height: 100%; overflow: auto; padding: 28px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-popover);
+    opacity: 0; transform: translateY(12px) scale(.97); transition: opacity 180ms var(--ease-out), transform 460ms var(--ak-spring); }
+  .ak-dlg.is-open .ak-dlg__scrim { opacity: 1; }
+  .ak-dlg.is-open .ak-dlg__panel { opacity: 1; transform: none; }
+  .ak-dlg__step[hidden] { display: none; }
+  .ak-dlg__step.is-in { animation: ak-step 420ms var(--ak-spring) both; }
+  @keyframes ak-step { from { opacity: 0; transform: translateX(16px); } }
+  .ak-dlg__t { margin: 0; font-size: var(--t-section); line-height: 1.3; font-weight: 600; color: var(--text-strong); letter-spacing: -.01em; }
+  .ak-dlg__d { margin: 8px 0 20px; font-size: 14px; line-height: 21px; color: var(--text-muted); }
+  .ak-dlg__d strong { color: var(--text-strong); font-weight: 600; }
+  .ak-dlg__act { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+  .ak-fields { display: grid; gap: 8px; }
+  .ak-lbl { font-size: 14px; font-weight: 500; color: var(--text-strong); padding: 0; }
+  .ak-in { height: 44px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-control); background: var(--surface); color: var(--text-strong); font: inherit; font-size: max(16px, 1rem); }
+  .ak-in[aria-invalid="true"] { border-color: var(--down); }
+  .ak-err { margin: 0; font-size: 13px; color: var(--down); }
+  .ak-err[hidden] { display: none; }
+  .ak-scopes, .ak-grace { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; border: 0; }
+  .ak-scopes legend, .ak-grace legend { margin-bottom: 8px; }
+  .ak-scope { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: border-color var(--motion-fast), background var(--motion-fast); }
+  .ak-scope:has(input:checked) { border-color: var(--accent); background: var(--accent-subtle); }
+  .ak-scope input, .ak-grace input, .ak-ack input { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); flex: none; }
+  .ak-scope b { display: block; font-size: 14px; font-weight: 500; color: var(--text-strong); }
+  .ak-scope small { display: block; font: 13px/18px var(--font-mono); color: var(--text-muted); }
+  .ak-grace label { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; color: var(--text-strong); cursor: pointer; }
+  .ak-grace label:has(input:checked) { border-color: var(--accent); background: var(--accent-subtle); }
+
+  .ak-ok { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 16px; border-radius: 999px; background: var(--tint-green-bg); color: var(--tint-green-fg); }
+  .ak-ok svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 20; stroke-dashoffset: 20; animation: ak-draw 500ms 150ms var(--ease-out) forwards; }
+  @keyframes ak-draw { to { stroke-dashoffset: 0; } }
+  .ak-secret { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 14px; border-radius: 10px; background: var(--raised); border: 1px solid var(--border); }
+  .ak-secret__v { flex: 1; min-width: 0; font: 500 14px/22px var(--font-mono); color: var(--text-strong); word-break: break-all; user-select: all; }
+  .ak-secret__v .s { color: var(--text-muted); }
+  .ak-copy { flex: none; min-width: 108px; }
+  .ak-copy .ak-chk { display: none; }
+  .ak-copy.is-done { border-color: var(--tint-green-border); background: var(--tint-green-bg); color: var(--tint-green-fg); }
+  .ak-copy.is-done svg:first-child { display: none; }
+  .ak-copy.is-done .ak-chk { display: block; stroke-dasharray: 16; stroke-dashoffset: 16; animation: ak-draw 360ms var(--ease-out) forwards; }
+  .ak-snip { margin-top: 12px; border-radius: 10px; border: 1px solid var(--border); }
+  .ak-snip summary { display: flex; align-items: center; min-height: 44px; padding: 0 14px; font-size: 14px; color: var(--text); cursor: pointer; list-style: none; }
+  .ak-snip summary::-webkit-details-marker { display: none; }
+  .ak-snip summary::after { content: ""; margin-left: auto; width: 7px; height: 7px; border-right: 1.5px solid var(--text-muted); border-bottom: 1.5px solid var(--text-muted); transform: rotate(45deg); transition: transform var(--motion-base) var(--ease-out); }
+  .ak-snip[open] summary::after { transform: rotate(-135deg); }
+  .ak-snip pre { margin: 0; padding: 12px 14px 14px; border-top: 1px solid var(--border); overflow-x: auto; font: 13px/20px var(--font-mono); color: var(--text); white-space: pre; }
+  .ak-ack { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-top: 12px; font-size: 14px; color: var(--text-strong); cursor: pointer; }
+  .ak-ack[hidden] { display: none; }
+  .ak__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Tablette : la clé et le dernier appel passent sous le nom */
+  @media (max-width: 1079px) {
+    .ak__thead { display: none; }
+    .ak-row__main { grid-template-columns: 1fr 1fr auto; row-gap: 12px; }
+    .ak-row__n { grid-column: 1 / 3; grid-row: 1; }
+    .ak-row__k { grid-column: 1; grid-row: 2; }
+    .ak-row__meta { grid-column: 2; grid-row: 2; }
+    .ak-row__act { grid-column: 3; grid-row: 1 / 3; align-self: start; }
+  }
+  /* Mobile : cartes, actions en pleine largeur, fenêtre en feuille */
+  @media (max-width: 599px) {
+    .ak { border-radius: 0; border-width: 0; min-height: 100vh; }
+    .ak__top { padding: 0 16px; } .ak__docs { display: none; } .ak__proj { margin-left: auto; border: 0; padding: 0; }
+    .ak__body { padding: 24px 16px; }
+    .ak__head { flex-direction: column; align-items: stretch; }
+    .ak__head .ak-btn { height: 44px; }
+    .ak__table { border: 0; border-radius: 0; overflow: visible; display: grid; }
+    .ak__list { display: grid; gap: 12px; }
+    .ak-row { border: 1px solid var(--border); border-radius: 12px; }
+    .ak-row:first-child { border-top: 1px solid var(--border); }
+    .ak-row__main { grid-template-columns: 1fr; padding: 16px; }
+    .ak-row__n, .ak-row__k, .ak-row__meta, .ak-row__act { grid-column: 1; grid-row: auto; }
+    .ak-key { font-size: 14px; }
+    .ak-row__act { justify-content: stretch; }
+    .ak-row__act .ak-btn { flex: 1; height: 44px; }
+    .ak-row__act .ak-btn--icon { flex: none; width: 44px; }
+    .ak-count { padding: 0 16px 16px; flex-wrap: wrap; }
+    .ak-count__bar { flex-basis: 100%; }
+    .ak-confirm__in { flex-direction: column; align-items: stretch; margin: 0 12px 12px; }
+    .ak-confirm__in .ak-btn { height: 44px; }
+    .ak-dlg { padding: 0; place-items: end stretch; }
+    .ak-dlg__panel { width: 100%; padding: 24px 16px calc(16px + var(--safe-bottom)); border-radius: 16px 16px 0 0; border-width: 1px 0 0; transform: translateY(40px); max-height: 92%; }
+    .ak-dlg__act .ak-btn { flex: 1; height: 48px; }
+    .ak-secret { flex-direction: column; align-items: stretch; }
+    .ak-copy { height: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ak *, .ak *::before, .ak *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; animation-delay: 0ms !important; }
+    .ak-spin { animation: none; border-right-color: currentColor; opacity: .6; }
+  }
+</style>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-ak]').forEach(function (root) {
+    if (root._ak) return;
+    var $ = function (s, el) { return (el || root).querySelector(s); };
+    var listEl = $('[data-ak-list]'), dlg = $('[data-ak-dlg]'), panel = $('[data-ak-panel]'), live = $('[data-ak-live]');
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+    var SEED = JSON.parse($('[data-ak-data]').textContent);
+    var keys = [], env = 'live', mode = 'create', target = null, opener = null, seen = true, tick = 0, scrambleRaf = 0, uid = 0;
+    var SCOPE = { previsions: 'prévisions', historique: 'historique', alertes: 'alertes' };
+    var ICON = {
+      rotate: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M15.5 8A6 6 0 0 0 4.6 6.5M4.5 12a6 6 0 0 0 10.9 1.5"/><path d="M15.8 3.5V8h-4.4M4.2 16.5V12h4.4"/></svg>',
+      trash: '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.7 9.5h6.6L14 6"/></svg>',
+      empty: '<svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="20" cy="28" r="9"/><path d="M29 28h20M42 28v7M48 28v5"/><circle cx="20" cy="28" r="2.5"/></svg>'
+    };
+    function opt() { return { speed: +root.dataset.speed || 1, grace: +root.dataset.grace, prefix: (root.dataset.prefix || 'iso').replace(/[^a-z0-9]/gi, '').toLowerCase() || 'iso', reveal: root.dataset.reveal !== 'false', confirm: root.dataset.confirm !== 'false' }; }
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function say(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); }
+    var A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    function rand(n) { var a = new Uint8Array(n), s = ''; (window.crypto || {}).getRandomValues ? crypto.getRandomValues(a) : a.forEach(function (_, i) { a[i] = Math.random() * 256; }); for (var i = 0; i < n; i++) s += A[a[i] % 62]; return s; }
+    function pre(k) { return opt().prefix + '_' + k.env + '_'; }
+    function reset() { keys = SEED.map(function (k) { return Object.assign({ status: 'active' }, k); }); env = 'live'; }
+
+    /* Rendu */
+    function rowHTML(k) {
+      var o = opt(), scopes = k.scopes.map(function (s) { return '<span>' + SCOPE[s] + '</span>'; }).join('');
+      var badge = k.status === 'rotating' ? '<span class="ak-badge ak-badge--warn">En rotation</span>' : k.status === 'revoked' ? '<span class="ak-badge ak-badge--down">Révoquée</span>' : k.fresh ? '<span class="ak-tag">Nouvelle</span>' : '';
+      var act = k.status === 'revoked' ? '' : k.status === 'rotating'
+        ? '<button class="ak-btn" type="button" data-a="cancel">Garder</button><button class="ak-btn" type="button" data-a="now">Révoquer maintenant</button>'
+        : '<button class="ak-btn" type="button" data-a="rotate">' + ICON.rotate + '<span>Faire tourner</span></button><button class="ak-btn ak-btn--icon ak-btn--ghost" type="button" data-a="revoke" aria-label="Révoquer « ' + esc(k.name) + ' »" title="Révoquer">' + ICON.trash + '</button>';
+      return '<li class="ak-row' + (k.status === 'rotating' ? ' is-rotating' : '') + (k.status === 'revoked' ? ' is-revoked' : '') + '" data-id="' + k.id + '" aria-label="' + esc(k.name) + '">' +
+        '<div class="ak-row__main">' +
+          '<div class="ak-row__n"><div class="ak-row__name">' + esc(k.name) + badge + '</div><div class="ak-scopes-l" aria-label="Permissions">' + scopes + '</div></div>' +
+          '<div class="ak-row__k"><span class="ak-key" aria-label="Clé se terminant par ' + k.tail.split('').join(' ') + '">' + pre(k) + '<i aria-hidden="true">••••••••</i>' + k.tail + '</span><small class="ak-created">Créée ' + (k.created === 'aujourd’hui' ? 'aujourd’hui' : 'le ' + esc(k.created)) + '</small></div>' +
+          '<div class="ak-row__meta">' + esc(k.last) + '<small>' + esc(k.calls) + '</small></div>' +
+          '<div class="ak-row__act">' + act + '</div>' +
+        '</div>' +
+        '<div class="ak-count" aria-hidden="' + (k.status === 'rotating' ? 'false' : 'true') + '"><span class="ak-count__t">Révocation dans <b data-cd>--:--:--</b></span><span class="ak-count__bar"><span data-bar></span></span></div>' +
+        '<div class="ak-confirm"><div><div class="ak-confirm__in" role="group" aria-label="Confirmer la révocation"><p>Révoquer <b>' + esc(k.name) + '</b> ? Les appels signés avec cette clé échoueront aussitôt (401).</p>' +
+          '<button class="ak-btn" type="button" data-a="keep" tabindex="-1">Annuler</button><button class="ak-btn ak-btn--danger" type="button" data-a="kill" tabindex="-1">Révoquer</button></div></div></div>' +
+      '</li>';
+    }
+    function counts() { ['live', 'test'].forEach(function (e) { $('[data-ak-n="' + e + '"]').textContent = keys.filter(function (k) { return k.env === e && k.status !== 'revoked'; }).length; }); }
+    function render(flip) {
+      var before = {};
+      if (flip && !(reduce && reduce.matches)) listEl.querySelectorAll('.ak-row').forEach(function (r) { before[r.dataset.id] = r.getBoundingClientRect().top; });
+      var vis = keys.filter(function (k) { return k.env === env; });
+      listEl.innerHTML = vis.length ? vis.map(rowHTML).join('') :
+        '<li class="ak-empty">' + ICON.empty + '<b>Aucune clé ' + (env === 'test' ? 'de test' : 'de production') + '</b><p>' + (env === 'test' ? 'Les clés de test appellent le bac à sable : données fictives, sans quota.' : 'Créez une clé pour signer vos appels.') + '</p><button class="ak-btn ak-btn--pri" type="button" data-ak-create>Créer une clé ' + (env === 'test' ? 'de test' : '') + '</button></li>';
+      counts(); updateCountdowns();
+      if (flip) listEl.querySelectorAll('.ak-row').forEach(function (r) {
+        var b = before[r.dataset.id]; if (b == null) return; var d = b - r.getBoundingClientRect().top; if (!d) return;
+        r.animate([{ transform: 'translateY(' + d + 'px)' }, { transform: 'none' }], { duration: 480, easing: getComputedStyle(root).getPropertyValue('--ak-spring').trim() || 'ease-out' });
+      });
+    }
+
+    /* Comptes à rebours : l'échéance est une date ; l'affichage se met en pause hors écran */
+    function fmt(ms) { var s = Math.max(0, Math.ceil(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60); s = s % 60; return [h, m, s].map(function (v) { return (v < 10 ? '0' : '') + v; }).join(':'); }
+    function updateCountdowns() {
+      var now = Date.now(), sp = opt().speed;
+      keys.forEach(function (k) {
+        if (k.status !== 'rotating') return;
+        var left = (k.revokeAt - now) * sp, row = listEl.querySelector('[data-id="' + k.id + '"]');
+        if (left <= 0) { revoke(k, 'auto'); return; }
+        if (!row) return;
+        row.querySelector('[data-cd]').textContent = fmt(left);
+        row.querySelector('[data-bar]').style.transform = 'scaleX(' + Math.max(0, left / k.graceMs) + ')';
+      });
+    }
+    function loop() { clearInterval(tick); tick = setInterval(function () { if (seen && !document.hidden) updateCountdowns(); else keys.forEach(function (k) { if (k.status === 'rotating' && (k.revokeAt - Date.now()) * opt().speed <= 0) revoke(k, 'auto'); }); }, 250); }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(root);
+
+    function revoke(k, why) {
+      if (k.status === 'revoked') return;
+      k.status = 'revoked'; k.fresh = false; render(false);
+      say('Clé « ' + k.name + ' » révoquée' + (why === 'auto' ? ' : le délai de grâce est écoulé.' : '.'));
+      var row = listEl.querySelector('[data-id="' + k.id + '"]');
+      setTimeout(function () {
+        if (!row || !row.isConnected) { keys = keys.filter(function (x) { return x !== k; }); return; }
+        row.style.height = row.offsetHeight + 'px'; void row.offsetHeight; row.classList.add('is-leaving'); row.style.height = '0px'; row.style.borderTopWidth = '0';
+        setTimeout(function () { keys = keys.filter(function (x) { return x !== k; }); render(true); }, reduce && reduce.matches ? 0 : 440);
+      }, reduce && reduce.matches ? 600 : 1400);
+    }
+
+    /* Fenêtre */
+    function show(step) {
+      root.querySelectorAll('.ak-dlg__step').forEach(function (s) { var on = s.dataset.step === step; s.hidden = !on; s.classList.toggle('is-in', on && !dlg.hidden); });
+    }
+    function openDlg(m, k) {
+      mode = m; target = k || null; opener = document.activeElement;
+      $('[data-ak-dlg-title]').textContent = m === 'rotate' ? 'Faire tourner « ' + k.name + ' »' : 'Nouvelle clé ' + (env === 'test' ? 'de test' : 'secrète');
+      $('[data-ak-dlg-lead]').textContent = m === 'rotate' ? 'Une nouvelle clé est créée avec les mêmes permissions. L’ancienne peut rester valable le temps de déployer la nouvelle.' : 'Donnez-lui le nom du service qui l’utilisera : vous la retrouverez plus vite le jour où il faudra la révoquer.';
+      $('[data-ak-form-create]').hidden = m === 'rotate'; $('[data-ak-form-rotate]').hidden = m !== 'rotate';
+      $('[data-ak-submit-t]').textContent = m === 'rotate' ? 'Créer la nouvelle clé' : 'Créer la clé';
+      var g = String(opt().grace); root.querySelectorAll('input[name="ak-grace"]').forEach(function (r) { r.checked = r.value === g; });
+      var nm = $('#ak-name'); nm.value = ''; nm.removeAttribute('aria-invalid'); $('[data-ak-err]').hidden = true;
+      dlg.hidden = false; show('form');
+      requestAnimationFrame(function () { dlg.classList.add('is-open'); (m === 'rotate' ? $('input[name="ak-grace"]:checked') : nm).focus(); });
+    }
+    function closeDlg() {
+      cancelAnimationFrame(scrambleRaf); dlg.classList.remove('is-open');
+      setTimeout(function () { dlg.hidden = true; }, reduce && reduce.matches ? 0 : 200);
+      var back = opener && opener.isConnected ? opener : $('[data-ak-create]'); back && back.focus();
+    }
+    function submit() {
+      var btn = $('[data-ak-submit]'), nm = $('#ak-name');
+      if (mode === 'create' && !nm.value.trim()) { nm.setAttribute('aria-invalid', 'true'); $('[data-ak-err]').hidden = false; nm.focus(); nm.animate && !(reduce && reduce.matches) && nm.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-6px)' }, { transform: 'translateX(5px)' }, { transform: 'translateX(-3px)' }, { transform: 'none' }], { duration: 320 }); return; }
+      btn.classList.add('is-busy'); btn.disabled = true;
+      setTimeout(function () { /* ici : POST /keys ou POST /keys/:id/rotate, la réponse contient le secret en clair une seule fois */
+        btn.classList.remove('is-busy'); btn.disabled = false;
+        var secret = rand(32), k;
+        if (mode === 'rotate') {
+          var g = +$('input[name="ak-grace"]:checked').value;
+          k = { id: 'n' + (++uid), name: target.name, env: target.env, scopes: target.scopes.slice(), tail: secret.slice(-4), created: 'aujourd’hui', last: 'Jamais utilisée', calls: '0 appel', status: 'active', fresh: true };
+          keys.splice(keys.indexOf(target), 0, k);
+          if (g > 0) { target.status = 'rotating'; target.graceMs = g * 1000; target.revokeAt = Date.now() + g * 1000 / opt().speed; }
+          else target.status = 'revoke-pending';
+        } else {
+          var scopes = Array.prototype.filter.call(root.querySelectorAll('.ak-scope input'), function (c) { return c.checked; }).map(function (c) { return c.value; });
+          k = { id: 'n' + (++uid), name: nm.value.trim(), env: env, scopes: scopes.length ? scopes : ['previsions'], tail: secret.slice(-4), created: 'aujourd’hui', last: 'Jamais utilisée', calls: '0 appel', status: 'active', fresh: true };
+          keys.unshift(k);
+        }
+        reveal(k, secret);
+      }, reduce && reduce.matches ? 0 : 700);
+    }
+    function reveal(k, secret) {
+      var full = pre(k) + secret, v = $('[data-ak-secret]'), o = opt();
+      $('[data-ak-secret-title]').textContent = mode === 'rotate' ? 'Nouvelle clé pour « ' + k.name + ' »' : 'Copiez votre clé maintenant';
+      $('[data-ak-snippet]').textContent = 'curl "https://api.isobare.dev/v2/previsions?lat=45.76&lon=4.83" \\\n  -H "Authorization: Bearer ' + full + '"';
+      var ack = $('[data-ak-ack]'), done = $('[data-ak-done]'), copy = $('[data-ak-copy]');
+      ack.checked = false; $('[data-ak-ack-wrap]').hidden = !o.confirm; done.disabled = o.confirm; copy.classList.remove('is-done'); copy.querySelector('span').textContent = 'Copier';
+      v.dataset.full = full; show('secret'); $('[data-step="secret"]').classList.add('is-in');
+      if (o.reveal && !(reduce && reduce.matches)) {
+        var p = pre(k).length, t0 = performance.now(), dur = 900;
+        (function step(now) {
+          var t = Math.min(1, (now - t0) / dur), n = p + Math.floor((full.length - p) * t), out = esc(full.slice(0, n));
+          if (n < full.length) out += '<span class="s">' + rand(full.length - n) + '</span>';
+          v.innerHTML = out; if (t < 1) scrambleRaf = requestAnimationFrame(step);
+        })(t0);
+      } else v.textContent = full;
+      copy.focus();
+      say('Clé créée. Elle ne sera affichée qu’une fois : copiez-la maintenant.');
+    }
+    function finish() {
+      var rot = mode === 'rotate' && target;
+      if (rot && target.status === 'revoke-pending') { target.status = 'active'; var t = target; closeDlg(); render(true); revoke(t, 'now'); return; }
+      closeDlg(); render(true);
+      if (rot) say('Ancienne clé valable encore ' + fmt(target.graceMs) + '.');
+      setTimeout(function () { keys.forEach(function (k) { if (k.fresh) { var r = listEl.querySelector('[data-id="' + k.id + '"]'); r && r.classList.add('is-new'); } }); }, 30);
+      setTimeout(function () { keys.forEach(function (k) { k.fresh = false; }); }, 8000);
+    }
+    function copyText(text, btn) {
+      function ok() { btn.classList.add('is-done'); btn.querySelector('span').textContent = 'Copiée'; say('Clé copiée dans le presse-papiers.'); var a = $('[data-ak-ack]'); if (a && !opt().confirm) $('[data-ak-done]').disabled = false; }
+      function fallback() {
+        var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;opacity:0;left:-999px'; root.appendChild(ta); ta.select();
+        var good = false; try { good = document.execCommand('copy'); } catch (e) {} ta.remove();
+        if (good) ok(); else { var r = document.createRange(); r.selectNodeContents($('[data-ak-secret]')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.querySelector('span').textContent = '⌘C / Ctrl C'; }
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fallback); else fallback();
+    }
+
+    /* Événements */
+    root.addEventListener('click', function (ev) {
+      var t = ev.target;
+      if (t.closest('[data-ak-create]')) { openDlg('create'); return; }
+      var tab = t.closest('[data-ak-env]'); if (tab) { setEnv(tab.dataset.akEnv); return; }
+      if (t.closest('[data-ak-dismiss]')) { if (!$('[data-step="secret"]').hidden) return; closeDlg(); return; }
+      if (t.closest('[data-ak-submit]')) { submit(); return; }
+      if (t.closest('[data-ak-copy]')) { copyText($('[data-ak-secret]').dataset.full, t.closest('[data-ak-copy]')); return; }
+      if (t.closest('[data-ak-done]')) { finish(); return; }
+      var b = t.closest('[data-a]'); if (!b) return;
+      var row = b.closest('.ak-row'), k = keys.find(function (x) { return x.id === row.dataset.id; }); if (!k) return;
+      var a = b.dataset.a;
+      if (a === 'rotate') openDlg('rotate', k);
+      if (a === 'revoke') { row.classList.add('is-confirm'); row.querySelectorAll('.ak-confirm button').forEach(function (x) { x.tabIndex = 0; }); setTimeout(function () { row.querySelector('[data-a="keep"]').focus(); }, 60); }
+      if (a === 'keep') { row.classList.remove('is-confirm'); row.querySelectorAll('.ak-confirm button').forEach(function (x) { x.tabIndex = -1; }); row.querySelector('[data-a="revoke"]').focus(); }
+      if (a === 'kill' || a === 'now') revoke(k, 'now');
+      if (a === 'cancel') { k.status = 'active'; render(false); say('Rotation annulée : « ' + k.name + ' » reste valable.'); var r2 = listEl.querySelector('[data-id="' + k.id + '"] [data-a="rotate"]'); r2 && r2.focus(); }
+    });
+    $('[data-ak-ack]').addEventListener('change', function (e) { $('[data-ak-done]').disabled = !e.target.checked; });
+    $('#ak-name').addEventListener('input', function (e) { if (e.target.value.trim()) { e.target.removeAttribute('aria-invalid'); $('[data-ak-err]').hidden = true; } });
+    $('#ak-name').addEventListener('keydown', function (e) { if (e.key === 'Enter') submit(); });
+    panel.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.stopPropagation(); if ($('[data-step="secret"]').hidden) closeDlg(); else say('Copiez la clé puis cochez la confirmation pour fermer.'); }
+      if (e.key === 'Tab') { /* piège de focus */
+        var f = Array.prototype.filter.call(panel.querySelectorAll('button, input, summary'), function (x) { return !x.disabled && x.offsetParent !== null; });
+        if (!f.length) return; var i = f.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    root.querySelector('[role="tablist"]').addEventListener('keydown', function (e) { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { setEnv(env === 'live' ? 'test' : 'live'); $('[data-ak-env="' + env + '"]').focus(); } });
+    function setEnv(e) {
+      env = e; root.querySelectorAll('[data-ak-env]').forEach(function (b) { var on = b.dataset.akEnv === e; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; });
+      $('#ak-list').setAttribute('aria-labelledby', 'ak-t-' + e); render(false);
+    }
+
+    reset(); render(false); loop();
+    root._ak = {
+      sync: function () { render(false); },
+      reset: function () { cancelAnimationFrame(scrambleRaf); dlg.hidden = true; dlg.classList.remove('is-open'); reset(); setEnv('live'); },
+      create: function (name) { openDlg('create'); if (name) { $('#ak-name').value = name; submit(); } },
+      rotate: function (id, grace) { var k = keys.find(function (x) { return x.id === id; }); if (!k) return; openDlg('rotate', k); if (grace != null) { root.querySelectorAll('input[name="ak-grace"]').forEach(function (r) { r.checked = +r.value === grace; }); submit(); } },
+      ack: function () { var a = $('[data-ak-ack]'); a.checked = true; a.dispatchEvent(new Event('change')); },
+      finish: finish, keys: function () { return keys; }
+    };
+  });
+})();
+</script>

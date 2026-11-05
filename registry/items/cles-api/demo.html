@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clés API — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'ardoise');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 40px 24px; }
+  @media (max-width: 599px) { .stage { padding: 0; align-content: start; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ vitesse: '2880', grace: '86400', prefixe: 'iso', revelation: true, confirmation: true });
+  var root = null, api = null, seq = [];
+  function apply(p) {
+    if (!root) return;
+    root.dataset.speed = p.vitesse; root.dataset.grace = p.grace; root.dataset.prefix = p.prefixe;
+    root.dataset.reveal = String(p.revelation); root.dataset.confirm = String(p.confirmation);
+    api && api.sync();
+  }
+  function play() {
+    if (!api) return; seq.forEach(clearTimeout); seq = []; api.reset();
+    seq.push(setTimeout(function () { api.rotate('k1', +props.grace || 86400); }, 500));
+    seq.push(setTimeout(function () { api.ack(); }, 2900));
+    seq.push(setTimeout(function () { api.finish(); }, 3500));
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-ak]');
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    api = root._ak; apply(props);
+    if (Socle.thumb) { api.rotate('k1', 86400); setTimeout(function () { api.ack(); api.finish(); }, 1000); }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(play);
+</script>
+</body>
+</html>

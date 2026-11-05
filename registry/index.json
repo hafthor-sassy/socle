@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "total": 94,
+  "total": 102,
   "items": [
     {
       "id": "bouton-magnetique",
@@ -37,6 +37,35 @@
         "width": 720
       },
       "ordre": 1
+    },
+    {
+      "id": "etat-vide-guide",
+      "nom": "État vide guidé",
+      "categorie": "etats-vides",
+      "niveau": "essentiel",
+      "palette": "sarcelle",
+      "description": "Une illustration au trait qui se dessine, une phrase, une action : quatre variantes dans un même composant (premiers pas, aucun résultat, erreur, hors ligne), avec nouvelle tentative et compte à rebours. Démo : la page Expéditions d’un logiciel de logistique, où la recherche bascule d’elle-même vers « aucun résultat ».",
+      "tags": [
+        "État vide",
+        "Illustration au trait",
+        "Aucun résultat",
+        "Erreur",
+        "Hors ligne",
+        "Accessible",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 1,
+      "logo_exemple": {
+        "nom": "Quai",
+        "secteur": "Logistique e-commerce (gestion des expéditions)",
+        "fichier": "registry/items/etat-vide-guide/logo.svg",
+        "palette": "sarcelle",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "fil-activite-agent",
@@ -378,6 +407,36 @@
       }
     },
     {
+      "id": "checklist-demarrage",
+      "nom": "Checklist de démarrage",
+      "categorie": "etats-vides",
+      "niveau": "premium",
+      "palette": "olive",
+      "description": "Le guide de premiers pas d’un nouveau compte : un anneau de progression mû par un vrai ressort, des étapes qui se cochent (la coche se dessine, le titre se barre), la suivante qui s’ouvre d’elle-même, et une pluie de confettis discrète aux couleurs de la palette quand tout est fait. En carte dans la page ou en lanceur flottant. Démo : l’ouverture d’une boutique en ligne d’artisan, dont l’aperçu se remplit à chaque étape.",
+      "tags": [
+        "Onboarding",
+        "Progression",
+        "Ressort",
+        "Confettis",
+        "Canvas",
+        "Lanceur flottant",
+        "Accessible",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 2,
+      "logo_exemple": {
+        "nom": "Étal",
+        "secteur": "Boutiques en ligne pour artisans (e-commerce)",
+        "fichier": "registry/items/checklist-demarrage/logo.svg",
+        "palette": "olive",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "hero-shader",
       "nom": "Hero shader interactif",
       "categorie": "hero",
@@ -517,6 +576,36 @@
         "secteur": "E-commerce mode",
         "fichier": "registry/items/transitions-natives/logo.svg",
         "palette": "aubergine",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "page-404-jouable",
+      "nom": "404 jouable",
+      "categorie": "etats-vides",
+      "niveau": "premium",
+      "palette": "minuit",
+      "description": "Une page introuvable qu’on n’a pas envie de quitter tout de suite : les chiffres « 404 » sont de vrais corps rigides qui tombent, s’empilent et basculent ; le curseur les pousse, on les attrape et on les lance, ou ils flottent et reviennent à leur place. Juste dessous, une recherche à suggestions remet le visiteur sur ses rails. Démo : la billetterie d’un réseau de musées.",
+      "tags": [
+        "404",
+        "Physique 2D",
+        "Corps rigides",
+        "Glisser-lancer",
+        "Recherche",
+        "Combobox",
+        "Accessible",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 3,
+      "logo_exemple": {
+        "nom": "Cimaise",
+        "secteur": "Billetterie d’expositions et de musées (culture)",
+        "fichier": "registry/items/page-404-jouable/logo.svg",
+        "palette": "minuit",
         "typo": "Geist SemiBold"
       }
     },
@@ -1784,6 +1873,35 @@
       }
     },
     {
+      "id": "recherche-reglages",
+      "nom": "Recherche ⌘K des réglages",
+      "categorie": "reglages",
+      "niveau": "premium",
+      "palette": "lavande",
+      "description": "Une page de réglages qu’on traverse au clavier : ⌘K ouvre une recherche floue sur tous les réglages (titres, mots-clés, sections, fautes de frappe), un clic ou Entrée referme la palette, fait défiler jusqu’au réglage, le surligne et place le focus sur son contrôle. L’index est lu dans le DOM : chaque nouveau réglage est cherchable sans rien déclarer. Démontré dans le logiciel d’une école de musique.",
+      "tags": [
+        "Réglages",
+        "Palette de commandes",
+        "⌘K",
+        "Recherche floue",
+        "Clavier",
+        "Défilement ciblé",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1120
+      },
+      "ordre": 30,
+      "logo_exemple": {
+        "nom": "Pupitre",
+        "secteur": "Gestion d’écoles de musique",
+        "fichier": "registry/items/recherche-reglages/logo.svg",
+        "palette": "lavande",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "pricing-bascule",
       "nom": "Bascule à chiffres roulants",
       "categorie": "pricing",
@@ -1809,6 +1927,35 @@
         "secteur": "Logiciel collaboratif (SaaS)",
         "fichier": "registry/items/pricing-bascule/logo.svg",
         "palette": "aubergine",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "cles-api",
+      "nom": "Clés API",
+      "categorie": "reglages",
+      "niveau": "premium",
+      "palette": "ardoise",
+      "description": "La page de clés d’un outil développeur, complète : création avec affichage unique du secret (déchiffrement animé, copie, confirmation obligatoire), rotation avec délai de grâce et compte à rebours avant révocation, révocation confirmée dans la ligne, onglets Production / Test et état vide. Démontré sur l’API d’un service météo.",
+      "tags": [
+        "Réglages",
+        "Clés API",
+        "Outil développeur",
+        "Sécurité",
+        "Compte à rebours",
+        "Copie",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1040
+      },
+      "ordre": 31,
+      "logo_exemple": {
+        "nom": "Isobare",
+        "secteur": "API météo pour développeurs",
+        "fichier": "registry/items/cles-api/logo.svg",
+        "palette": "ardoise",
         "typo": "Geist SemiBold"
       }
     },
@@ -1898,6 +2045,63 @@
         "secteur": "Application de course à pied",
         "fichier": "registry/items/graphe-activite/logo.svg",
         "palette": "sauge",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "lien-magique",
+      "nom": "Lien magique",
+      "categorie": "authentification",
+      "niveau": "essentiel",
+      "palette": "miel",
+      "description": "Connexion sans mot de passe en deux temps : l’e-mail (avec correction des fautes de domaine), puis l’écran « Vérifiez votre boîte » avec une enveloppe qui se scelle, un bouton vers la bonne messagerie d’après le domaine, un renvoi minuté à délai croissant et le retour pour corriger l’adresse. Démontré pour une boulangerie qui prend les commandes en ligne.",
+      "tags": [
+        "Authentification",
+        "Sans mot de passe",
+        "E-mail",
+        "Minuteur",
+        "Formulaire",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 640
+      },
+      "ordre": 32,
+      "logo_exemple": {
+        "nom": "Fournil",
+        "secteur": "Boulangerie (commande en ligne)",
+        "fichier": "registry/items/lien-magique/logo.svg",
+        "palette": "miel",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "connexion-scene",
+      "nom": "Connexion à scène vivante",
+      "categorie": "authentification",
+      "niveau": "premium",
+      "palette": "argile",
+      "description": "Un écran de connexion avec un personnage qui réagit : la chouette suit des yeux le curseur de saisie lettre par lettre, se cache les yeux sous ses ailes pendant le mot de passe, jette un œil s’il est affiché, fronce les sourcils et secoue la tête à l’erreur, puis sautille quand la connexion réussit. Regard sur ressort, bulles de dialogue, clignements aléatoires. Démontré pour un réseau de médiathèques.",
+      "tags": [
+        "Authentification",
+        "Connexion",
+        "Personnage",
+        "SVG animé",
+        "Ressort",
+        "Micro-interactions",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1040
+      },
+      "ordre": 33,
+      "logo_exemple": {
+        "nom": "Chevêche",
+        "secteur": "Réseau de médiathèques",
+        "fichier": "registry/items/connexion-scene/logo.svg",
+        "palette": "argile",
         "typo": "Geist SemiBold"
       }
     },
@@ -2014,6 +2218,35 @@
         "secteur": "Banque en ligne pour indépendants",
         "fichier": "registry/items/avatar-video/logo.svg",
         "palette": "rubis",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "passkey",
+      "nom": "Passkey",
+      "categorie": "authentification",
+      "niveau": "premium",
+      "palette": "sarcelle",
+      "description": "Connexion par clé d’accès : un vrai appel WebAuthn quand le navigateur le permet, sinon une simulation fidèle. Empreinte à maintenir (les crêtes s’allument du centre vers l’extérieur, l’anneau se remplit, relâcher trop tôt fait tout redescendre) ou visage (cadre qui se resserre, anneau de points), coche ou croix animée, puis l’espace de l’utilisateur. Repli par mot de passe dans la même carte. Démontré pour une mutuelle santé.",
+      "tags": [
+        "Authentification",
+        "Passkey",
+        "WebAuthn",
+        "Sans mot de passe",
+        "Maintenir",
+        "Biométrie",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 640
+      },
+      "ordre": 34,
+      "logo_exemple": {
+        "nom": "Mélisse",
+        "secteur": "Mutuelle santé",
+        "fichier": "registry/items/passkey/logo.svg",
+        "palette": "sarcelle",
         "typo": "Geist SemiBold"
       }
     },

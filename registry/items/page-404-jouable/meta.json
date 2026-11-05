@@ -1,0 +1,56 @@
+{
+  "id": "page-404-jouable",
+  "nom": "404 jouable",
+  "categorie": "etats-vides",
+  "niveau": "premium",
+  "ordre": 3,
+  "description": "Une page introuvable qu’on n’a pas envie de quitter tout de suite : les chiffres « 404 » sont de vrais corps rigides qui tombent, s’empilent et basculent ; le curseur les pousse, on les attrape et on les lance, ou ils flottent et reviennent à leur place. Juste dessous, une recherche à suggestions remet le visiteur sur ses rails. Démo : la billetterie d’un réseau de musées.",
+  "tags": ["404", "Physique 2D", "Corps rigides", "Glisser-lancer", "Recherche", "Combobox", "Accessible", "Responsive"],
+  "date": "2026-11-05",
+  "difficulte": 2,
+  "technique": "Moteur maison sans bibliothèque : boîtes orientées, axe séparateur (SAT) entre chiffres, impulsions séquentielles avec frottement et rebond, sous-pas de 1/120 s, correction de position ; curseur cinématique qui pousse, ressort d’attrape pour lancer ; boucle requestAnimationFrame arrêtée au repos et hors écran ; chiffres vectorisés depuis Geist (SVG), couleurs par variables de tokens",
+  "poids": "≈ 6 Ko gzip (moteur + recherche, chiffres 0 à 9 compris), aucune dépendance",
+  "palette": "minuit",
+  "thumb": { "width": 1180 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "--text-strong et --accent pour les chiffres, surfaces, --shadow-popover pour les suggestions" },
+    { "nom": "react ≥ 18", "note": "Onglet React : NotFoundPlayground, NotFoundSearch et l’exemple CimaiseNotFound" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "mode", "label": "Mode", "type": "select", "default": "gravity",
+      "options": [{ "value": "gravity", "label": "Gravité" }, { "value": "float", "label": "Apesanteur" }],
+      "hint": "Gravité : les chiffres tombent, s’empilent et restent où on les laisse. Apesanteur : un ressort les ramène à leur place.",
+      "code": { "html": "data-mode=\"{v}\"", "react": "mode=\"{v}\"" } },
+    { "name": "code", "label": "Code affiché", "type": "select", "default": "404",
+      "options": [{ "value": "404", "label": "404" }, { "value": "410", "label": "410" }, { "value": "500", "label": "500" }, { "value": "503", "label": "503" }],
+      "code": { "html": "data-code=\"{v}\"", "react": "code=\"{v}\"" } },
+    { "name": "gravite", "label": "Gravité", "type": "number", "default": 1800, "min": 600, "max": 3200, "step": 100, "unit": "px/s²",
+      "code": { "html": "data-gravity=\"{v}\"", "react": "gravity={{v}}" } },
+    { "name": "rebond", "label": "Rebond", "type": "number", "default": 0.3, "min": 0, "max": 0.8, "step": 0.05,
+      "code": { "html": "data-bounce=\"{v}\"", "react": "bounce={{v}}" } },
+    { "name": "poussee", "label": "Rayon du curseur", "type": "number", "default": 32, "min": 12, "max": 72, "step": 4, "unit": "px",
+      "hint": "Zone autour du curseur qui pousse les chiffres au survol.",
+      "code": { "html": "data-push=\"{v}\"", "react": "push={{v}}" } },
+    { "name": "zone", "label": "Afficher la zone du curseur", "type": "boolean", "default": false,
+      "code": { "react": "showCursor={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/PageIntrouvable.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour la page 404 d’un site grand public, d’une marque ou d’un produit qui assume un ton joueur. Le jeu attire l’œil ; la recherche, juste dessous, fait le vrai travail : gardez-la visible sans défiler sur ordinateur.",
+    "Remplissez la recherche avec vos vraies pages (ITEMS) : les plus visitées en « Recherches fréquentes », puis le filtre porte sur le titre, la ligne d’information et le type, sans tenir compte des accents.",
+    "HTML : el.notFound.setCode('500') pour une page d’erreur serveur, el.notFound.shake() et el.notFound.reset() pour piloter la scène ; écoutez « notfound:navigate » sur la recherche pour ouvrir le résultat choisi.",
+    "Évitez-la dans un parcours de paiement ou un outil métier : une erreur y appelle une explication et un chemin, pas un jouet."
+  ],
+  "accessibilite": [
+    "Le vrai titre est un h1 « Erreur 404 : page introuvable » pour les lecteurs d’écran ; la scène et ses chiffres sont décoratifs (aria-hidden). « Secouer » et « Replacer » rendent le jeu accessible au clavier.",
+    "La recherche est une combobox ARIA (aria-expanded, aria-activedescendant, listbox) : flèches pour parcourir, Entrée pour ouvrir, Échap pour fermer puis effacer ; le nombre de suggestions est annoncé (role=\"status\"). Champ de 16 px, options de 48 px (56 px sur mobile).",
+    "Toucher : on attrape un chiffre au doigt et on le lance ; balayer ailleurs pousse les chiffres sans bloquer le défilement vertical (touch-action: pan-y).",
+    "Avec « réduire les animations » : aucune physique ni chute, les chiffres restent alignés, les boutons de jeu sont masqués ; contraste AA mesuré en clair et en sombre."
+  ],
+  "logo_exemple": { "nom": "Cimaise", "secteur": "Billetterie d’expositions et de musées (culture)", "fichier": "logo.svg", "palette": "minuit", "typo": "Geist SemiBold" }
+}

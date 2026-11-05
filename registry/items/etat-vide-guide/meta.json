@@ -1,0 +1,175 @@
+{
+  "id": "etat-vide-guide",
+  "nom": "État vide guidé",
+  "categorie": "etats-vides",
+  "niveau": "essentiel",
+  "ordre": 1,
+  "description": "Une illustration au trait qui se dessine, une phrase, une action : quatre variantes dans un même composant (premiers pas, aucun résultat, erreur, hors ligne), avec nouvelle tentative et compte à rebours. Démo : la page Expéditions d’un logiciel de logistique, où la recherche bascule d’elle-même vers « aucun résultat ».",
+  "tags": [
+    "État vide",
+    "Illustration au trait",
+    "Aucun résultat",
+    "Erreur",
+    "Hors ligne",
+    "Accessible",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "difficulte": 1,
+  "technique": "SVG au trait (pathLength = 1, tracé par stroke-dashoffset en cascade), détail d’accent en ressort CSS linear(), hauteur animée entre variantes, écoute des événements online / offline, respiration du détail en pause hors écran (IntersectionObserver)",
+  "poids": "≈ 2,5 Ko gzip (CSS + JS), illustrations comprises ; aucune dépendance",
+  "palette": "sarcelle",
+  "thumb": {
+    "width": 1180
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent, surfaces, --border-strong pour le trait, --warn pour l’indicateur hors ligne"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React : EmptyState et l’exemple QuaiExpeditions"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "variante",
+      "label": "Variante",
+      "type": "select",
+      "default": "first",
+      "options": [
+        {
+          "value": "first",
+          "label": "Premiers pas"
+        },
+        {
+          "value": "search",
+          "label": "Aucun résultat"
+        },
+        {
+          "value": "error",
+          "label": "Erreur"
+        },
+        {
+          "value": "offline",
+          "label": "Hors ligne"
+        }
+      ],
+      "hint": "Dans la démo, taper dans la recherche de l’en-tête bascule aussi vers « aucun résultat ».",
+      "code": {
+        "html": "data-variant=\"{v}\"",
+        "react": "variant=\"{v}\""
+      }
+    },
+    {
+      "name": "taille",
+      "label": "Taille",
+      "type": "select",
+      "default": "standard",
+      "options": [
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "compact",
+          "label": "Compact"
+        }
+      ],
+      "code": {
+        "html": "data-size=\"{v}\"",
+        "react": "size=\"{v}\""
+      },
+      "hint": "Standard pour une page entière ; compact pour une carte ou un panneau (illustration à gauche)."
+    },
+    {
+      "name": "trace",
+      "label": "Tracé du trait",
+      "type": "boolean",
+      "default": true,
+      "hint": "Le dessin se trace à chaque changement de variante ; désactivé, tout apparaît d’un coup.",
+      "code": {
+        "html": "data-draw=\"{v}\"",
+        "react": "draw={{v}}"
+      }
+    },
+    {
+      "name": "secondaire",
+      "label": "Action secondaire",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-secondary=\"{v}\"",
+        "react": "secondary={{v}}"
+      }
+    },
+    {
+      "name": "recherche",
+      "label": "Terme recherché",
+      "type": "text",
+      "default": "Lyon 7e",
+      "hint": "Affiché dans la variante « aucun résultat ».",
+      "code": {
+        "html": "<span data-ev-query>{v}</span>",
+        "react": "query=\"{v}\""
+      }
+    },
+    {
+      "name": "relance",
+      "label": "Relance hors ligne",
+      "type": "number",
+      "default": 15,
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "hint": "Compte à rebours avant la nouvelle tentative automatique. 0 : seulement au clic.",
+      "code": {
+        "html": "data-retry=\"{v}\"",
+        "react": "retryAfter={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/EmptyState.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Un état vide n’est pas une absence : dites ce qui va apparaître ici et donnez l’action qui le fait apparaître. Une phrase, un bouton principal, au plus une action secondaire.",
+    "Premiers pas : le bénéfice, pas la fonction. Aucun résultat : répétez le terme et proposez d’effacer ou de retirer un filtre. Erreur : rassurez (rien n’est perdu) et donnez un code copiable pour le support. Hors ligne : dites ce qui reste disponible.",
+    "HTML : el.emptyState.set('search', { query }) change de variante ; écoutez « empty:action » et appelez el.emptyState.done(true | false) après une nouvelle tentative (ajoutez data-ev-manual pour piloter vous-même le résultat).",
+    "React : <EmptyState variant onRetry={() => fetch(…).then(r => r.ok)} onAction={(a) => …} /> ; le texte de chaque variante se surcharge par la prop copy.",
+    "Taille compacte pour une carte de tableau de bord ou un panneau latéral ; la version standard pour une page entière."
+  ],
+  "accessibilite": [
+    "Le conteneur est une région aria-live polie : le changement de variante (par exemple après une recherche) est annoncé ; l’illustration est décorative (aria-hidden).",
+    "Le titre est un vrai h2, les actions de vrais boutons de 40 px (48 px sur mobile, pleine largeur) ; « Réessayer » passe en aria-busy pendant la tentative et un retour d’échec secoue l’illustration, sans jamais déplacer le focus.",
+    "Contraste AA mesuré en clair et en sombre pour le texte (--text-muted sur --surface) et les boutons (--accent-fg sur --accent) ; le trait de l’illustration utilise --border-strong, l’accent reste rare.",
+    "Avec « réduire les animations » : ni tracé, ni rebond, ni respiration, ni hauteur animée ; la variante change d’un coup."
+  ],
+  "logo_exemple": {
+    "nom": "Quai",
+    "secteur": "Logistique e-commerce (gestion des expéditions)",
+    "fichier": "logo.svg",
+    "palette": "sarcelle",
+    "typo": "Geist SemiBold"
+  }
+}

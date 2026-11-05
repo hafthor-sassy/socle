@@ -1,0 +1,161 @@
+{
+  "id": "cles-api",
+  "nom": "Clés API",
+  "categorie": "reglages",
+  "niveau": "premium",
+  "description": "La page de clés d’un outil développeur, complète : création avec affichage unique du secret (déchiffrement animé, copie, confirmation obligatoire), rotation avec délai de grâce et compte à rebours avant révocation, révocation confirmée dans la ligne, onglets Production / Test et état vide. Démontré sur l’API d’un service météo.",
+  "tags": [
+    "Réglages",
+    "Clés API",
+    "Outil développeur",
+    "Sécurité",
+    "Compte à rebours",
+    "Copie",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 31,
+  "palette": "ardoise",
+  "logo_exemple": {
+    "nom": "Isobare",
+    "secteur": "API météo pour développeurs",
+    "fichier": "logo.svg",
+    "palette": "ardoise",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1040
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1120
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, accent, teintes vert / ambre / rouge des états, surcouche"
+    },
+    {
+      "nom": "Script ClésAPI",
+      "note": "≈ 12 ko non minifié, inclus dans l’onglet HTML, sans dépendance : secret par crypto.getRandomValues, FLIP sur Web Animations, presse-papiers avec repli"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "vitesse",
+      "label": "Vitesse du compte à rebours",
+      "type": "select",
+      "default": "2880",
+      "options": [
+        {
+          "value": "2880",
+          "label": "Démo"
+        },
+        {
+          "value": "60",
+          "label": "× 60"
+        },
+        {
+          "value": "1",
+          "label": "Réel"
+        }
+      ],
+      "hint": "Démo : 24 h passent en 30 s. En production, gardez le temps réel (data-speed=\"1\").",
+      "code": {
+        "html": "data-speed=\"{v}\"",
+        "react": "speed = {v},"
+      }
+    },
+    {
+      "name": "grace",
+      "label": "Délai de grâce proposé",
+      "type": "select",
+      "default": "86400",
+      "options": [
+        {
+          "value": "0",
+          "label": "Aucun"
+        },
+        {
+          "value": "3600",
+          "label": "1 heure"
+        },
+        {
+          "value": "86400",
+          "label": "24 heures"
+        }
+      ],
+      "code": {
+        "html": "data-grace=\"{v}\"",
+        "react": "defaultGrace = {v},"
+      }
+    },
+    {
+      "name": "prefixe",
+      "label": "Préfixe des clés",
+      "type": "text",
+      "default": "iso",
+      "hint": "Donne iso_live_… et iso_test_… : un préfixe reconnaissable permet aux scanners de secrets (GitHub, GitLab) de repérer une fuite.",
+      "code": {
+        "html": "data-prefix=\"{v}\"",
+        "react": "prefix = '{v}',"
+      }
+    },
+    {
+      "name": "revelation",
+      "label": "Déchiffrement animé du secret",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-reveal=\"{v}\"",
+        "react": "scramble = {v},"
+      }
+    },
+    {
+      "name": "confirmation",
+      "label": "Exiger « J’ai enregistré la clé »",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-confirm=\"{v}\"",
+        "react": "requireAck = {v},"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/ClesApi.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour la page « Clés API » ou « Jetons d’accès » d’un produit qui expose une API : SaaS B2B, plateforme de paiement, outil de données, agent IA appelable par API.",
+    "Le secret n’existe en clair que dans la réponse de création : stockez seulement une empreinte (hachage) et les 4 derniers caractères pour l’affichage. Remplacez le setTimeout de submit() par votre POST /keys ou POST /keys/:id/rotate.",
+    "Rotation sans coupure : la nouvelle clé est créée, l’ancienne reste valable pendant le délai de grâce (le temps de redéployer), puis est révoquée automatiquement. L’échéance est une date côté serveur ; le compte à rebours n’est qu’un affichage.",
+    "API : root._ak.create(nom), .rotate(id, secondes), .reset(). En React : props keys, onCreate, onRotate, onRevoke (promesses qui renvoient le secret).",
+    "À éviter pour des jetons personnels à courte durée (OAuth) : une liste de sessions suffit."
+  ],
+  "accessibilite": [
+    "La fenêtre est une boîte de dialogue modale (aria-modal, focus piégé, retour du focus au déclencheur). Échap ferme le formulaire mais pas l’écran du secret, pour ne pas le perdre par erreur : la région live l’explique.",
+    "Le secret est annoncé une fois créé ; « Copier » devient « Copiée » avec une coche, et repli : sélection du texte si le presse-papiers est refusé.",
+    "Onglets Production / Test en role=\"tablist\" (flèches ← →). Clés lues « se terminant par 3 f 9 a » plutôt que des puces.",
+    "La révocation se confirme dans la ligne (focus sur Annuler par défaut) ; les états « En rotation » et « Révoquée » sont écrits, pas seulement colorés.",
+    "Textes ≥ 13 px en mono, cibles de 44 px sur mobile (cartes empilées, fenêtre en feuille), AA en clair et en sombre. Avec « réduire les animations » : pas de déchiffrement ni de glissement."
+  ]
+}

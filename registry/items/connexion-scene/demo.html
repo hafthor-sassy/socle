@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connexion à scène vivante — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'argile');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 40px 24px; }
+  @media (max-width: 639px) { .stage { padding: 0; align-content: start; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ suivi: 'pointer', bulles: true, ressort: 'doux', clignement: true, cote: 'right' });
+  var root = null, api = null, seq = [];
+  function apply(p) {
+    if (!root) return;
+    root.dataset.follow = p.suivi; root.dataset.bubbles = String(p.bulles); root.dataset.spring = p.ressort; root.dataset.blink = String(p.clignement); root.dataset.side = p.cote;
+    if (api && !p.bulles) api.bubble('');
+  }
+  function play() {
+    if (!api) return; seq.forEach(clearTimeout); seq = []; api.reset();
+    seq.push(setTimeout(function () {
+      api.typeId('claire.dumas@exemple.fr', function () {
+        seq.push(setTimeout(function () { api.typePw('lecture', function () {
+          seq.push(setTimeout(api.submit, 500));
+          seq.push(setTimeout(function () { api.typePw('chouette', function () { seq.push(setTimeout(api.toggle, 400)); seq.push(setTimeout(api.submit, 1600)); }); }, 3200));
+        }); }, 500));
+      });
+    }, 400));
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-cs]');
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    api = root._cs; apply(props);
+    if (Socle.thumb) { api.pose('cover'); api.bubble('Je ne regarde pas !'); }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(play);
+</script>
+</body>
+</html>

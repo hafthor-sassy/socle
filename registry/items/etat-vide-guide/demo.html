@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>État vide guidé — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 40px 32px; }
+  @media (max-width: 719px) { .stage { align-content: start; padding: 16px 12px; } }
+  .is-thumb .stage { padding: 40px 56px; }
+  .is-thumb .qa__nav a:nth-child(n+3) { display: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ variante: 'first', taille: 'standard', trace: true, secondaire: true, recherche: 'Lyon 7e', relance: 15 });
+  var mount = document.getElementById('mount'), ev = null, js = '';
+  function apply(p, replay) {
+    if (!ev || !ev.emptyState) return;
+    ev.dataset.size = p.taille;
+    ev.dataset.draw = String(!!p.trace);
+    ev.dataset.secondary = String(!!p.secondaire);
+    ev.dataset.retry = String(p.relance);
+    ev.emptyState.set(p.variante, { query: p.recherche || 'Lyon 7e', replay: replay });
+    if (p.variante === ev.dataset.variant) ev.emptyState.refresh();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    js = (t.match(/<script>([\s\S]*?)<\/script>/) || [])[1] || '';
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    ev = mount.querySelector('[data-empty-state]');
+    ev.dataset.variant = props.variante;
+    ev.dataset.size = props.taille; ev.dataset.draw = String(!!props.trace); ev.dataset.secondary = String(!!props.secondaire); ev.dataset.retry = String(props.relance);
+    mount.querySelectorAll('[data-ev-query]').forEach(function (q) { q.textContent = props.recherche; });
+    if (props.variante === 'search') mount.querySelector('[data-qa-search]').value = props.recherche;
+    try { new Function(js)(); } catch (e) { console.error(e); }
+    if (Socle.thumb) return thumb();
+    ev.emptyState.play();
+  });
+  Socle.onChange(function (p) {
+    apply(p, false);
+    var input = mount.querySelector('[data-qa-search]');
+    if (input) input.value = p.variante === 'search' ? p.recherche : '';
+  });
+  Socle.onReplay(function (p) { if (ev && ev.emptyState) ev.emptyState.play(); });
+  /* Vignette : les quatre variantes défilent, en pause hors écran. */
+  function thumb() {
+    ev.dataset.retry = '0';
+    if (Socle.reducedMotion()) return;
+    var order = ['first', 'search', 'error', 'offline'], i = order.indexOf(props.variante), visible = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(mount);
+    ev.emptyState.play();
+    setInterval(function () { if (!visible || document.hidden) return; i = (i + 1) % order.length; ev.emptyState.set(order[i], { query: 'Lyon 7e' }); }, 3200);
+  }
+</script>
+</body>
+</html>

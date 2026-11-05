@@ -1,0 +1,150 @@
+{
+  "id": "lien-magique",
+  "nom": "Lien magique",
+  "categorie": "authentification",
+  "niveau": "essentiel",
+  "description": "Connexion sans mot de passe en deux temps : l’e-mail (avec correction des fautes de domaine), puis l’écran « Vérifiez votre boîte » avec une enveloppe qui se scelle, un bouton vers la bonne messagerie d’après le domaine, un renvoi minuté à délai croissant et le retour pour corriger l’adresse. Démontré pour une boulangerie qui prend les commandes en ligne.",
+  "tags": [
+    "Authentification",
+    "Sans mot de passe",
+    "E-mail",
+    "Minuteur",
+    "Formulaire",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 32,
+  "palette": "miel",
+  "logo_exemple": {
+    "nom": "Fournil",
+    "secteur": "Boulangerie (commande en ligne)",
+    "fichier": "logo.svg",
+    "palette": "miel",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 640
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, accent, états"
+    },
+    {
+      "nom": "Script LienMagique",
+      "note": "≈ 6 ko non minifié, inclus dans l’onglet HTML, sans dépendance"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "delai",
+      "label": "Délai avant renvoi",
+      "type": "number",
+      "default": 30,
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "s",
+      "code": {
+        "html": "data-delay=\"{v}\"",
+        "react": "resendDelay = {v},"
+      }
+    },
+    {
+      "name": "croissant",
+      "label": "Délai croissant (×2 à chaque renvoi)",
+      "type": "boolean",
+      "default": true,
+      "hint": "30 s, puis 1 min, puis 2 min (plafonné à 5 min) : limite les abus sans bloquer un vrai utilisateur.",
+      "code": {
+        "html": "data-backoff=\"{v}\"",
+        "react": "backoff = {v},"
+      }
+    },
+    {
+      "name": "expiration",
+      "label": "Validité du lien",
+      "type": "number",
+      "default": 15,
+      "min": 5,
+      "max": 60,
+      "step": 5,
+      "unit": "min",
+      "code": {
+        "html": "data-expiry=\"{v}\"",
+        "react": "expiryMinutes = {v},"
+      }
+    },
+    {
+      "name": "fournisseurs",
+      "label": "Boutons de messagerie",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "tous",
+          "label": "Gmail + Outlook"
+        }
+      ],
+      "code": {
+        "html": "data-providers=\"{v}\"",
+        "react": "providers = '{v}',"
+      },
+      "hint": "Auto : un seul bouton vers la messagerie reconnue d’après le domaine (Gmail, Outlook, Yahoo, iCloud, Orange, Proton)."
+    },
+    {
+      "name": "etat",
+      "label": "État affiché",
+      "type": "select",
+      "default": "saisie",
+      "options": [
+        {
+          "value": "saisie",
+          "label": "Saisie"
+        },
+        {
+          "value": "envoye",
+          "label": "Lien envoyé"
+        }
+      ]
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/LienMagique.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour un service grand public où l’on se connecte rarement (commande, réservation, espace client) : pas de mot de passe à retenir, et le même lien crée le compte.",
+    "Remplacez send() par votre POST /auth/magic-link. La réponse doit être identique que le compte existe ou non, pour ne pas révéler les adresses inscrites.",
+    "Le bouton « Ouvrir Gmail » ouvre une recherche filtrée sur votre expéditeur : changez from%3Afournil.fr. Les domaines reconnus (Gmail, Outlook, Yahoo, iCloud, Orange, Proton) sont dans PROVIDERS.",
+    "À éviter pour un outil ouvert plusieurs fois par jour : préférez une passkey ou une session longue."
+  ],
+  "accessibilite": [
+    "Champ type=\"email\" avec autocomplete=\"email\" et inputmode, erreur reliée par aria-describedby ; la suggestion de domaine (« gmial.com » → « gmail.com ») est un bouton.",
+    "Au passage à l’écran de vérification, le focus va sur le titre et une région live annonce l’adresse et la durée de validité ; le renvoi annonce aussi son résultat.",
+    "Le compte à rebours est écrit en toutes lettres dans le bouton (l’anneau n’est qu’un appoint) ; liens externes signalés « nouvel onglet ».",
+    "Cibles de 44 à 48 px, champ de 16 px, AA en clair et en sombre. Avec « réduire les animations » : enveloppe fixe, sans vol ni glissement."
+  ]
+}

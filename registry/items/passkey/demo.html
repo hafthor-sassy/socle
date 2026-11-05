@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passkey — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'sarcelle');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 48px 24px; }
+  @media (max-width: 599px) { .stage { padding: 0; align-content: start; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ mode: 'auto', maintien: 1200, webauthn: 'auto', issue: 'success' });
+  var root = null, api = null, seq = [];
+  function apply(p) {
+    if (!root) return;
+    root.dataset.mode = p.mode; root.dataset.hold = p.maintien; root.dataset.webauthn = p.webauthn; root.dataset.outcome = p.issue;
+    api && api.sync();
+  }
+  function play() {
+    if (!api) return; seq.forEach(clearTimeout); seq = []; api.reset();
+    var face = root.dataset.modeNow === 'face';
+    if (face) { seq.push(setTimeout(api.face, 500)); return; }
+    seq.push(setTimeout(function () { api.hold(500); }, 500));
+    seq.push(setTimeout(function () { api.hold(+props.maintien + 200); }, 1900));
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-pk]');
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    api = root._pk; apply(props);
+    if (Socle.thumb) api.progress(.62);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(play);
+</script>
+</body>
+</html>

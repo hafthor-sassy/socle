@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checklist de démarrage — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 40px 32px; }
+  @media (max-width: 719px) { .stage { align-content: start; padding: 16px 12px; } }
+  .is-thumb .stage { padding: 32px 48px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ disposition: 'card', faites: 3, confettis: true, quantite: 70, suivante: true, raideur: 210, amortissement: 20 });
+  var mount = document.getElementById('mount'), ck = null, last = {}, timers = [];
+  function attrs(p) {
+    ck.dataset.layout = p.disposition; ck.dataset.done = String(p.faites); ck.dataset.confetti = String(!!p.confettis);
+    ck.dataset.count = String(p.quantite); ck.dataset.autoNext = String(!!p.suivante); ck.dataset.stiffness = String(p.raideur); ck.dataset.damping = String(p.amortissement);
+  }
+  function clear() { timers.forEach(clearTimeout); timers = []; }
+  function render(p) {
+    if (!ck || !ck.checklist) return;
+    attrs(p); ck.checklist.tune();
+    if (p.disposition !== last.disposition) { ck.checklist.layout(); if (p.disposition === 'launcher') ck.checklist.expand(true); }
+    if (p.faites !== last.faites) { clear(); ck.checklist.reset(p.faites); }
+    last = { disposition: p.disposition, faites: p.faites };
+  }
+  /* Rejouer : retour à l'état de départ, puis les étapes restantes se cochent une à une. */
+  function play(p) {
+    clear(); ck.checklist.reset(p.faites);
+    if (p.disposition === 'launcher') ck.checklist.expand(true);
+    var keys = [].slice.call(ck.querySelectorAll('[data-ck-item]')).slice(p.faites).map(function (i) { return i.dataset.ckItem; });
+    keys.forEach(function (k, i) { timers.push(setTimeout(function () { ck.checklist.complete(k); }, 700 + i * 1100)); });
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = (t.match(/<script>([\s\S]*?)<\/script>/) || [])[1] || '';
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    ck = mount.querySelector('[data-checklist]');
+    attrs(props);
+    try { new Function(js)(); } catch (e) { console.error(e); }
+    last = { disposition: props.disposition, faites: props.faites };
+    if (props.disposition === 'launcher') ck.checklist.expand(true);
+    if (Socle.thumb) return thumb();
+  });
+  Socle.onChange(render);
+  Socle.onReplay(play);
+  /* Vignette : les deux dernières étapes se cochent, confettis, puis on recommence ; en pause hors écran. */
+  function thumb() {
+    if (Socle.reducedMotion()) return;
+    var visible = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(mount);
+    (function loop() { if (visible && !document.hidden) play({ faites: 3, disposition: props.disposition }); setTimeout(loop, 6400); })();
+  }
+</script>
+</body>
+</html>

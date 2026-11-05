@@ -1,0 +1,161 @@
+{
+  "id": "connexion-scene",
+  "nom": "Connexion à scène vivante",
+  "categorie": "authentification",
+  "niveau": "premium",
+  "description": "Un écran de connexion avec un personnage qui réagit : la chouette suit des yeux le curseur de saisie lettre par lettre, se cache les yeux sous ses ailes pendant le mot de passe, jette un œil s’il est affiché, fronce les sourcils et secoue la tête à l’erreur, puis sautille quand la connexion réussit. Regard sur ressort, bulles de dialogue, clignements aléatoires. Démontré pour un réseau de médiathèques.",
+  "tags": [
+    "Authentification",
+    "Connexion",
+    "Personnage",
+    "SVG animé",
+    "Ressort",
+    "Micro-interactions",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 33,
+  "palette": "argile",
+  "logo_exemple": {
+    "nom": "Chevêche",
+    "secteur": "Réseau de médiathèques",
+    "fichier": "logo.svg",
+    "palette": "argile",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1040
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1120
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, accent (plumage via color-mix), teinte ambre du bec, états"
+    },
+    {
+      "nom": "Script de la scène",
+      "note": "≈ 9 ko non minifié, inclus dans l’onglet HTML, sans dépendance : ressort du regard en rAF (arrêté au repos et hors écran), mesure du curseur de saisie, poses en CSS"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "suivi",
+      "label": "Au repos, la chouette regarde",
+      "type": "select",
+      "default": "pointer",
+      "options": [
+        {
+          "value": "pointer",
+          "label": "Pointeur"
+        },
+        {
+          "value": "fields",
+          "label": "Champs"
+        }
+      ],
+      "code": {
+        "html": "data-follow=\"{v}\"",
+        "react": "follow = '{v}',"
+      },
+      "hint": "Pointeur : au repos, elle suit la souris. Champs : elle ne regarde que la saisie."
+    },
+    {
+      "name": "bulles",
+      "label": "Bulles de dialogue",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-bubbles=\"{v}\"",
+        "react": "bubbles = {v},"
+      }
+    },
+    {
+      "name": "ressort",
+      "label": "Ressort du regard et des ailes",
+      "type": "select",
+      "default": "doux",
+      "options": [
+        {
+          "value": "doux",
+          "label": "Doux"
+        },
+        {
+          "value": "joueur",
+          "label": "Joueur"
+        }
+      ],
+      "code": {
+        "html": "data-spring=\"{v}\"",
+        "react": "spring = '{v}',"
+      }
+    },
+    {
+      "name": "clignement",
+      "label": "Clignements aléatoires",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-blink=\"{v}\"",
+        "react": "blink = {v},"
+      }
+    },
+    {
+      "name": "cote",
+      "label": "Côté de la scène",
+      "type": "select",
+      "default": "right",
+      "options": [
+        {
+          "value": "right",
+          "label": "Droite"
+        },
+        {
+          "value": "left",
+          "label": "Gauche"
+        }
+      ],
+      "hint": "Sur mobile, la scène passe toujours au-dessus du formulaire et la chouette regarde vers le bas.",
+      "code": {
+        "html": "data-side=\"{v}\"",
+        "react": "side = '{v}',"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/ConnexionScene.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour un service grand public qui veut une connexion chaleureuse et mémorable : bibliothèque, éducation, jeu, application familiale, communauté. Le personnage rassure au moment sensible (mot de passe) au lieu de décorer.",
+    "Remplacez signIn() par votre POST /session. Le personnage se change en gardant les groupes : .cs-head (regard), .cs-wing--l / --r (poses cover, peek, happy), [data-cs-lid] (paupières).",
+    "API : root._cs.pose('cover' | 'peek' | 'happy' | 'sad' | 'idle'), .look(x, y) entre −1 et 1, .bubble(texte, durée), .reset().",
+    "À éviter dans un outil professionnel sobre (banque, admin, B2B) : préférez un formulaire calme ou une passkey."
+  ],
+  "accessibilite": [
+    "La scène est décorative (aria-hidden) : toute information passe par le formulaire — erreurs sous le champ (aria-describedby, aria-invalid) et région aria-live pour l’erreur et la réussite.",
+    "Bouton « Afficher le mot de passe » en aria-pressed avec libellé qui change ; le focus revient au champ. Après connexion, le focus va sur le titre de bienvenue.",
+    "Les champs gardent autocomplete=\"username\" / \"current-password\" : gestionnaires de mots de passe et remplissage automatique fonctionnent.",
+    "Champs de 48 px, texte de 16 px sur mobile, AA en clair et en sombre. Avec « réduire les animations » : poses appliquées sans mouvement, ni clignement, ni scintillement."
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "id": "checklist-demarrage",
+  "nom": "Checklist de démarrage",
+  "categorie": "etats-vides",
+  "niveau": "premium",
+  "ordre": 2,
+  "description": "Le guide de premiers pas d’un nouveau compte : un anneau de progression mû par un vrai ressort, des étapes qui se cochent (la coche se dessine, le titre se barre), la suivante qui s’ouvre d’elle-même, et une pluie de confettis discrète aux couleurs de la palette quand tout est fait. En carte dans la page ou en lanceur flottant. Démo : l’ouverture d’une boutique en ligne d’artisan, dont l’aperçu se remplit à chaque étape.",
+  "tags": ["Onboarding", "Progression", "Ressort", "Confettis", "Canvas", "Lanceur flottant", "Accessible", "Responsive"],
+  "date": "2026-11-05",
+  "difficulte": 2,
+  "technique": "Ressort amorti intégré à pas fixe (1/120 s) sur requestAnimationFrame pour l’anneau, arrêté au repos et en pause hors écran ; coche et rature en stroke-dashoffset / scaleX ; dépliage par grid-template-rows 0fr → 1fr ; confettis canvas plein écran (gravité, traînée, battement), couleurs relues dans les variables de tokens à chaque salve",
+  "poids": "≈ 3,6 Ko gzip (CSS + JS), aucune dépendance",
+  "palette": "olive",
+  "thumb": { "width": 1180 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Accent (anneau, coches, confettis), surfaces, teintes vert et neutre du statut" },
+    { "nom": "react ≥ 18", "note": "Onglet React : Checklist, useSpring, useConfetti et l’exemple EtalOnboarding" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "disposition", "label": "Disposition", "type": "select", "default": "card",
+      "options": [{ "value": "card", "label": "Carte" }, { "value": "launcher", "label": "Lanceur" }],
+      "hint": "Lanceur : une pastille flottante (anneau miniature + 3/5) qui ouvre le guide ; feuille pleine largeur sur mobile.",
+      "code": { "html": "data-layout=\"{v}\"", "react": "layout=\"{v}\"" } },
+    { "name": "faites", "label": "Étapes déjà faites", "type": "number", "default": 3, "min": 0, "max": 5, "step": 1,
+      "code": { "html": "data-done=\"{v}\"", "react": "initialDone={{v}}" } },
+    { "name": "confettis", "label": "Confettis à la fin", "type": "boolean", "default": true,
+      "code": { "html": "data-confetti=\"{v}\"", "react": "confetti={{v}}" } },
+    { "name": "quantite", "label": "Nombre de confettis", "type": "number", "default": 70, "min": 20, "max": 200, "step": 10,
+      "code": { "html": "data-count=\"{v}\"", "react": "confettiCount={{v}}" } },
+    { "name": "suivante", "label": "Ouvrir l’étape suivante", "type": "boolean", "default": true,
+      "code": { "html": "data-auto-next=\"{v}\"", "react": "autoNext={{v}}" } },
+    { "name": "raideur", "label": "Raideur du ressort", "type": "number", "default": 210, "min": 80, "max": 500, "step": 10,
+      "code": { "html": "data-stiffness=\"{v}\"", "react": "stiffness={{v}}" } },
+    { "name": "amortissement", "label": "Amortissement", "type": "number", "default": 20, "min": 8, "max": 40, "step": 1,
+      "hint": "Bas : l’anneau dépasse et revient. Haut : il s’arrête net.",
+      "code": { "html": "data-damping=\"{v}\"", "react": "damping={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/ChecklistDemarrage.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour les premiers jours d’un compte : trois à six étapes concrètes, chacune avec une durée honnête et une action qui la fait vraiment. Commencez à 1 ou 2 étapes déjà faites (la création du compte en est une) : on avance plus volontiers quand on est déjà en route.",
+    "Carte en haut du tableau de bord tant qu’il reste des étapes ; lanceur flottant quand le produit a besoin de toute la place. Proposez « Masquer ce guide » une fois terminé.",
+    "HTML : el.checklist.complete('payments') coche une étape depuis votre code (après l’enregistrement réel) ; écoutez « checklist:change » (done, total, complete) pour mettre à jour le reste de la page, comme l’aperçu de la démo.",
+    "React : <Checklist tasks onAction={(t) => api.save(t.key)} /> coche l’étape quand la promesse se résout ; useSpring et useConfetti sont réutilisables seuls.",
+    "Les confettis ne servent qu’une fois, à la dernière étape. Gardez-les discrets (50 à 90) ; désactivez-les dans un outil professionnel sérieux."
+  ],
+  "accessibilite": [
+    "Chaque coche est un vrai bouton role=\"checkbox\" (aria-checked) de 44 × 48 px (56 px sur mobile) ; chaque titre est un bouton aria-expanded qui pilote son détail, rendu inert quand il est replié.",
+    "Une région role=\"status\" annonce « Étape terminée : Activer les paiements. 4 sur 5. » ; l’anneau et les confettis sont décoratifs (aria-hidden), la progression est dite en texte.",
+    "Lanceur : Échap ferme le guide et rend le focus à la pastille ; à l’ouverture, le focus va à l’action de l’étape en cours.",
+    "Contraste AA mesuré en clair et en sombre (--text-muted sur --surface et --raised, --accent-fg sur --accent) ; avec « réduire les animations », ni ressort, ni rature animée, ni confettis : l’état change d’un coup."
+  ],
+  "logo_exemple": { "nom": "Étal", "secteur": "Boutiques en ligne pour artisans (e-commerce)", "fichier": "logo.svg", "palette": "olive", "typo": "Geist SemiBold" }
+}

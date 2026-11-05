@@ -1,0 +1,160 @@
+{
+  "id": "passkey",
+  "nom": "Passkey",
+  "categorie": "authentification",
+  "niveau": "premium",
+  "description": "Connexion par clé d’accès : un vrai appel WebAuthn quand le navigateur le permet, sinon une simulation fidèle. Empreinte à maintenir (les crêtes s’allument du centre vers l’extérieur, l’anneau se remplit, relâcher trop tôt fait tout redescendre) ou visage (cadre qui se resserre, anneau de points), coche ou croix animée, puis l’espace de l’utilisateur. Repli par mot de passe dans la même carte. Démontré pour une mutuelle santé.",
+  "tags": [
+    "Authentification",
+    "Passkey",
+    "WebAuthn",
+    "Sans mot de passe",
+    "Maintenir",
+    "Biométrie",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 34,
+  "palette": "sarcelle",
+  "logo_exemple": {
+    "nom": "Mélisse",
+    "secteur": "Mutuelle santé",
+    "fichier": "logo.svg",
+    "palette": "sarcelle",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 640
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, accent, rouge d’erreur, teinte verte"
+    },
+    {
+      "nom": "Script Passkey",
+      "note": "≈ 8 ko non minifié, inclus dans l’onglet HTML, sans dépendance : WebAuthn natif (navigator.credentials.get) avec détection, simulation en rAF, vibration si disponible"
+    },
+    {
+      "nom": "Serveur WebAuthn",
+      "note": "En production : challenge et vérification de l’assertion côté serveur (SimpleWebAuthn, py_webauthn, webauthn-ruby…)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "mode",
+      "label": "Biométrie affichée",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "finger",
+          "label": "Empreinte"
+        },
+        {
+          "value": "face",
+          "label": "Visage"
+        }
+      ],
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "mode = '{v}',"
+      },
+      "hint": "Auto : visage sur iPhone et iPad, empreinte ailleurs."
+    },
+    {
+      "name": "maintien",
+      "label": "Durée du maintien (empreinte)",
+      "type": "number",
+      "default": 1200,
+      "min": 600,
+      "max": 2400,
+      "step": 100,
+      "unit": "ms",
+      "code": {
+        "html": "data-hold=\"{v}\"",
+        "react": "holdMs = {v},"
+      }
+    },
+    {
+      "name": "webauthn",
+      "label": "WebAuthn",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Réel si dispo"
+        },
+        {
+          "value": "simule",
+          "label": "Simulé"
+        }
+      ],
+      "hint": "L’aperçu tourne dans une iframe isolée : WebAuthn y est bloqué, la simulation prend le relais et le signale.",
+      "code": {
+        "html": "data-webauthn=\"{v}\"",
+        "react": "webauthn = '{v}',"
+      }
+    },
+    {
+      "name": "issue",
+      "label": "Résultat de la simulation",
+      "type": "select",
+      "default": "success",
+      "options": [
+        {
+          "value": "success",
+          "label": "Reconnu"
+        },
+        {
+          "value": "failure",
+          "label": "Non reconnu"
+        }
+      ],
+      "code": {
+        "html": "data-outcome=\"{v}\"",
+        "react": "simulatedOutcome = '{v}',"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/Passkey.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour un espace client sensible où l’on veut supprimer le mot de passe sans perdre personne : santé, banque, assurance, administration, outil interne.",
+    "En production : demandez un challenge à votre serveur, passez-le à navigator.credentials.get({ publicKey }), renvoyez cred.response au serveur qui vérifie la signature. Le champ autocomplete=\"username webauthn\" active aussi la proposition de clé dans le champ (connexion conditionnelle).",
+    "La simulation sert aux maquettes, démos et navigateurs sans WebAuthn ; elle est signalée par une pastille. Retirez-la (data-webauthn=\"auto\" et pas de repli) si vous ne voulez jamais simuler.",
+    "API : root._pk.reset(), .hold(ms), .face(), .fallback(). En React : props onPasskey (renvoie une promesse) et onPassword.",
+    "À éviter comme seul moyen de connexion : gardez toujours un repli (mot de passe, lien magique)."
+  ],
+  "accessibilite": [
+    "Le capteur est un vrai bouton : maintien au pointeur, au doigt ou à la barre d’espace / Entrée (la répétition du clavier est ignorée). En mode visage ou WebAuthn réel, un simple appui suffit.",
+    "Chaque étape est écrite sous le capteur (« Ne bougez pas… », « Maintenez jusqu’au bout du cercle », « Identité confirmée ») et annoncée par une région live ; l’échec n’est pas signalé que par le rouge (croix et message).",
+    "Le repli par mot de passe est un bouton aria-expanded ; ses champs sont hors tabulation tant qu’il est replié. Après connexion, le focus va sur le titre de bienvenue.",
+    "Cibles de 44 px et plus (capteur de 136 à 160 px), champs de 16 px, AA en clair et en sombre. Avec « réduire les animations » : validation immédiate, sans balayage ni tremblement."
+  ]
+}

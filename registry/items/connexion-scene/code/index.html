@@ -1,0 +1,370 @@
+<!-- Connexion à scène vivante — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Formulaire de connexion à côté d'une chouette en SVG : son regard suit le curseur de saisie (lettre par lettre),
+     elle se cache les yeux pendant la saisie du mot de passe, jette un œil s'il est affiché, secoue la tête
+     en cas d'erreur et sautille quand la connexion réussit. Ressorts en JavaScript, pause hors écran.
+     Branchez l'authentification dans signIn(). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="cs" data-cs data-follow="pointer" data-bubbles="true" data-spring="doux" data-blink="true" data-side="right" data-pose="idle">
+  <div class="cs__form">
+    <div class="cs__brand">
+      <svg class="cs__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="cs__logo-bg"/><path class="cs__logo-ln" d="M20 38c9-9 21-9 30 0 9-9 21-9 30 0"/><circle cx="35" cy="54" r="13" class="cs__logo-lt"/><circle cx="65" cy="54" r="13" class="cs__logo-lt"/><circle cx="37" cy="55" r="5.5" class="cs__logo-bg"/><circle cx="63" cy="55" r="5.5" class="cs__logo-bg"/><path d="M45 70h10l-5 9Z" class="cs__logo-lt"/></svg>
+      <span class="cs__word">chevêche</span>
+    </div>
+
+    <form class="cs__f" data-cs-form novalidate>
+      <h2 class="cs__t" tabindex="-1" data-cs-title>Bon retour à la médiathèque</h2>
+      <p class="cs__d">Réservez, prolongez vos prêts et retrouvez vos lectures dans les 14 médiathèques du réseau.</p>
+
+      <label class="cs__lbl" for="cs-id">E-mail ou numéro de carte</label>
+      <input class="cs__in" id="cs-id" type="text" inputmode="email" autocomplete="username" spellcheck="false" placeholder="claire.dumas@exemple.fr" data-cs-id>
+
+      <div class="cs__lrow"><label class="cs__lbl" for="cs-pw">Mot de passe</label><a class="cs__link" href="#" onclick="return false">Mot de passe oublié ?</a></div>
+      <div class="cs__pw">
+        <input class="cs__in" id="cs-pw" type="password" autocomplete="current-password" aria-describedby="cs-err cs-hint" data-cs-pw>
+        <button class="cs__eye" type="button" aria-pressed="false" aria-label="Afficher le mot de passe" data-cs-toggle>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="cs__eye-o" d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle class="cs__eye-o" cx="12" cy="12" r="3"/><path class="cs__eye-x" d="M4 4l16 16"/></svg>
+        </button>
+      </div>
+      <p class="cs__err" id="cs-err" data-cs-err hidden></p>
+      <p class="cs__hint" id="cs-hint">Démo : le mot de passe est « chouette ».</p>
+
+      <label class="cs__chk"><input type="checkbox" checked><span>Rester connecté sur cet appareil</span></label>
+      <button class="cs-btn cs-btn--pri" type="submit" data-cs-submit><span class="cs-spin" aria-hidden="true"></span><span data-cs-submit-t>Se connecter</span></button>
+      <p class="cs__alt">Pas encore inscrit ? <a class="cs__link" href="#" onclick="return false">Créer ma carte</a></p>
+    </form>
+
+    <div class="cs__ok" data-cs-ok hidden>
+      <span class="cs__ok-i" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 12.5 4 4 8-9"/></svg></span>
+      <h2 class="cs__t" tabindex="-1" data-cs-ok-title>Bonjour Claire</h2>
+      <p class="cs__d">3 prêts en cours, dont <strong>Le Liseur du 6 h 27</strong> à rendre jeudi. Votre réservation est arrivée à la médiathèque Croix-Rousse.</p>
+      <button class="cs-btn" type="button" data-cs-again>Revenir au formulaire</button>
+    </div>
+    <p class="cs__sr" aria-live="polite" data-cs-live></p>
+  </div>
+
+  <div class="cs__scene" aria-hidden="true" data-cs-scene>
+    <svg class="cs__svg" viewBox="0 0 320 380" data-cs-svg>
+      <circle class="cs-moon" cx="62" cy="64" r="28"/>
+      <g class="cs-stars"><circle cx="58" cy="54" r="2"/><circle cx="96" cy="28" r="1.5"/><circle cx="196" cy="34" r="1.5"/><circle cx="292" cy="128" r="2"/><circle cx="30" cy="150" r="1.5"/><circle cx="278" cy="212" r="1.5"/></g>
+      <g class="cs-books">
+        <rect class="cs-b1" x="58" y="336" width="204" height="22" rx="4"/>
+        <rect class="cs-b2" x="72" y="316" width="176" height="20" rx="4"/>
+        <path class="cs-bl" d="M84 326h56M84 347h80"/>
+        <rect class="cs-b3" x="196" y="320" width="10" height="12" rx="2"/>
+      </g>
+      <g class="cs-bubble" data-cs-bubble><rect x="196" y="26" width="116" height="40" rx="12" data-cs-brect/><path class="cs-bubble__tail" d="M210 63l-10 19 24-17"/><text x="254" y="51" text-anchor="middle" data-cs-say>Hou hou ?</text></g>
+      <g class="cs-hop"><g class="cs-shake">
+        <g class="cs-feet"><path d="M128 318c0-8 4-12 8-12s8 4 8 12M176 318c0-8 4-12 8-12s8 4 8 12"/></g>
+        <path class="cs-body" d="M160 112c56 0 86 46 86 102 0 60-36 100-86 100S74 274 74 214c0-56 30-102 86-102Z"/>
+        <ellipse class="cs-belly" cx="160" cy="240" rx="54" ry="60"/>
+        <g class="cs-feather"><path d="M140 222l6 6 6-6M168 222l6 6 6-6M154 246l6 6 6-6M140 270l6 6 6-6M168 270l6 6 6-6"/></g>
+        <g class="cs-head" data-cs-head>
+          <path class="cs-body" d="M100 140 92 86l42 30ZM220 140l8-54-42 30Z"/>
+          <path class="cs-body" d="M160 92c52 0 80 30 80 70 0 36-30 58-80 58s-80-22-80-58c0-40 28-70 80-70Z"/>
+          <circle class="cs-disc" cx="126" cy="160" r="38"/><circle class="cs-disc" cx="194" cy="160" r="38"/>
+          <g class="cs-eyes" data-cs-eyes>
+            <circle class="cs-white" cx="126" cy="160" r="25"/><circle class="cs-white" cx="194" cy="160" r="25"/>
+            <g data-cs-pupils><circle class="cs-pupil" cx="126" cy="160" r="12"/><circle class="cs-pupil" cx="194" cy="160" r="12"/><circle class="cs-glint" cx="130" cy="155" r="3.5"/><circle class="cs-glint" cx="198" cy="155" r="3.5"/></g>
+            <path class="cs-lid" d="M100 160a26 26 0 0 1 52 0Z" data-cs-lid/><path class="cs-lid" d="M168 160a26 26 0 0 1 52 0Z" data-cs-lid/>
+          </g>
+          <g class="cs-happy"><path d="M108 166c6-12 30-12 36 0M176 166c6-12 30-12 36 0"/></g>
+          <path class="cs-brow" d="M100 122c10-6 24-6 32 2M220 122c-10-6-24-6-32 2"/>
+          <path class="cs-beak" d="M160 178l11 14-11 16-11-16Z"/>
+        </g>
+        <g class="cs-wing cs-wing--l"><path d="M100 178c-26 18-34 64-20 108 18-12 32-44 34-82 0-12-4-20-14-26Z"/><path class="cs-wline" d="M92 214c-4 16-4 32 0 48M102 210c-2 14-2 30 2 44"/></g>
+        <g class="cs-wing cs-wing--r"><path d="M220 178c26 18 34 64 20 108-18-12-32-44-34-82 0-12 4-20 14-26Z"/><path class="cs-wline" d="M228 214c4 16 4 32 0 48M218 210c2 14 2 30-2 44"/></g>
+      </g></g>
+    </svg>
+  </div>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .cs {
+    --cs-spring: linear(0, .013 .6%, .05 1.2%, .2 2.6%, .44 4.4%, .67 6.4%, .85 8.6%, .96 11%, 1.02 13.6%, 1.04 16.6%, 1.03 20.4%, 1.01 25%, 1 32%, 1);
+    --cs-wing: color-mix(in oklab, var(--accent) 72%, var(--text-strong));
+    position: relative; display: grid; grid-template-columns: minmax(360px, 1fr) minmax(320px, 1fr); width: 100%; max-width: 1040px; min-height: 620px; margin: 0 auto;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; isolation: isolate;
+    font-family: var(--font-sans); color: var(--text);
+  }
+  .cs[data-spring="joueur"] { --cs-spring: linear(0, .02 .8%, .09 1.8%, .35 4%, .7 6.6%, 1 9.4%, 1.17 12.2%, 1.22 14.4%, 1.2 16.8%, 1.1 21%, 1 25.4%, .95 29.4%, .95 33%, .99 39%, 1.01 45%, 1.01 52%, 1 64%, 1); }
+  .cs[data-side="left"] .cs__scene { order: -1; border-width: 0 1px 0 0; }
+  .cs *, .cs *::before, .cs *::after { box-sizing: border-box; }
+  .cs :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+  /* Formulaire */
+  .cs__form { position: relative; display: flex; flex-direction: column; padding: 40px 48px; }
+  .cs__brand { display: flex; align-items: center; gap: 8px; margin-bottom: 40px; }
+  .cs__logo { width: 32px; height: 32px; }
+  .cs__logo-bg { fill: var(--accent); } .cs__logo-lt { fill: var(--accent-fg); }
+  .cs__logo-ln { fill: none; stroke: var(--accent-fg); stroke-width: 6; stroke-linecap: round; }
+  .cs__word { font-size: 20px; font-weight: 600; letter-spacing: -.03em; color: var(--text-strong); }
+  .cs__f, .cs__ok { display: flex; flex-direction: column; width: 100%; max-width: 400px; }
+  .cs__f[hidden], .cs__ok[hidden] { display: none; }
+  .cs__t { margin: 0; font-size: var(--t-page); line-height: var(--t-page-lh); letter-spacing: -.02em; font-weight: 600; color: var(--text-strong); outline: none; }
+  .cs .cs__t:focus-visible { outline: none; }
+  .cs__d { margin: 8px 0 28px; font-size: 15px; line-height: 22px; color: var(--text-muted); }
+  .cs__d strong { color: var(--text-strong); font-weight: 600; }
+  .cs__lbl { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: var(--text-strong); }
+  .cs__lrow { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 20px; }
+  .cs__link { font-size: 14px; color: var(--text-strong); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+  .cs__link:hover { text-decoration-color: currentColor; }
+  .cs__in { width: 100%; height: 48px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--border-control); background: var(--surface); color: var(--text-strong); font: inherit; font-size: max(16px, 1rem); transition: border-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out); }
+  .cs__in::placeholder { color: var(--text-disabled); }
+  .cs__in:hover { border-color: var(--text-muted); }
+  .cs .cs__in:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-subtle-border); }
+  .cs__in[aria-invalid="true"] { border-color: var(--down); }
+  .cs__pw { position: relative; }
+  .cs__pw .cs__in { padding-right: 52px; }
+  .cs__eye { position: absolute; right: 2px; top: 2px; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 8px; background: none; color: var(--text-muted); cursor: pointer; }
+  .cs__eye:hover { color: var(--text-strong); }
+  .cs__eye svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .cs__eye-x { stroke-dasharray: 23; stroke-dashoffset: 0; transition: stroke-dashoffset 260ms var(--ease-out); }
+  .cs__eye[aria-pressed="true"] .cs__eye-x { stroke-dashoffset: 23; }
+  .cs__err { margin: 8px 0 0; font-size: 14px; color: var(--down); }
+  .cs__err[hidden] { display: none; }
+  .cs__hint { margin: 8px 0 0; font-size: 13px; color: var(--text-muted); }
+  .cs__chk { display: flex; align-items: center; gap: 10px; min-height: 44px; margin-top: 12px; font-size: 14px; color: var(--text); cursor: pointer; }
+  .cs__chk input { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); }
+  .cs-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 18px; border-radius: 10px; border: 1px solid var(--border-control); background: var(--surface); color: var(--text-strong); font: inherit; font-size: 15px; font-weight: 500; cursor: pointer; transition: background var(--motion-fast) var(--ease-out), transform 320ms var(--cs-spring); }
+  .cs-btn:hover { background: var(--state-hover); } .cs-btn:active { transform: scale(.97); }
+  .cs-btn--pri { margin-top: 12px; background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+  .cs-btn--pri:hover { background: var(--accent-hover); }
+  .cs-spin { display: none; width: 16px; height: 16px; border-radius: 999px; border: 2px solid currentColor; border-right-color: transparent; animation: cs-rot 700ms linear infinite; }
+  .cs-btn.is-busy { pointer-events: none; } .cs-btn.is-busy .cs-spin { display: inline-block; }
+  @keyframes cs-rot { to { transform: rotate(360deg); } }
+  .cs__alt { margin: 20px 0 0; font-size: 14px; color: var(--text-muted); }
+  .cs__ok-i { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 20px; border-radius: 999px; background: var(--tint-green-bg); color: var(--tint-green-fg); }
+  .cs__ok-i svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 20; stroke-dashoffset: 20; animation: cs-draw 500ms 200ms var(--ease-out) forwards; }
+  @keyframes cs-draw { to { stroke-dashoffset: 0; } }
+  .cs__ok .cs-btn { align-self: flex-start; }
+  .cs__in-anim > * { animation: cs-up 520ms var(--cs-spring) both; }
+  .cs__in-anim > *:nth-child(2) { animation-delay: 50ms; } .cs__in-anim > *:nth-child(3) { animation-delay: 100ms; } .cs__in-anim > *:nth-child(n+4) { animation-delay: 150ms; }
+  @keyframes cs-up { from { opacity: 0; transform: translateY(10px); } }
+  .cs__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Scène */
+  .cs__scene { position: relative; display: grid; place-items: end center; padding: 32px 24px 0; background: var(--raised); border-left: 1px solid var(--border); overflow: hidden; }
+  .cs__svg { width: min(100%, 400px); height: auto; overflow: visible; }
+  .cs-moon { fill: var(--accent-subtle); }
+  .cs-stars circle { fill: var(--text-disabled); }
+  .cs.is-live .cs-stars circle { animation: cs-tw 3.2s ease-in-out infinite; }
+  .cs.is-live .cs-stars circle:nth-child(2n) { animation-delay: -1.4s; } .cs.is-live .cs-stars circle:nth-child(3n) { animation-delay: -2.2s; }
+  @keyframes cs-tw { 0%, 100% { opacity: .9; } 50% { opacity: .25; } }
+  .cs-b1 { fill: var(--surface); stroke: var(--border-strong); stroke-width: 1.5; }
+  .cs-b2 { fill: var(--accent-subtle); stroke: var(--border-strong); stroke-width: 1.5; }
+  .cs-b3 { fill: var(--accent); }
+  .cs-bl { fill: none; stroke: var(--border-strong); stroke-width: 1.5; stroke-linecap: round; opacity: .6; }
+  .cs-body { fill: var(--accent); }
+  .cs-belly { fill: var(--accent-subtle); }
+  .cs-feather path { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: .55; }
+  .cs-disc { fill: var(--accent-subtle); }
+  .cs-white { fill: var(--surface); }
+  .cs-pupil { fill: var(--text-strong); }
+  .cs-glint { fill: var(--surface); }
+  .cs-lid { fill: var(--accent-subtle); transform-box: fill-box; transform-origin: 50% 0; transform: scaleY(0) translateY(-2px); }
+  .cs-happy path, .cs-brow { fill: none; stroke: var(--text-strong); stroke-width: 5; stroke-linecap: round; }
+  .cs-happy { opacity: 0; }
+  .cs-brow { stroke: color-mix(in oklab, var(--accent) 60%, var(--text-strong)); opacity: 0; transition: opacity 200ms var(--ease-out); }
+  .cs-beak { fill: var(--tint-amber-fg); }
+  .cs-feet path { fill: none; stroke: var(--tint-amber-fg); stroke-width: 5; stroke-linecap: round; }
+  .cs-wing path:first-child { fill: var(--cs-wing); }
+  .cs-wline { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; opacity: .7; }
+  .cs-wing { transform-box: view-box; transition: transform 620ms var(--cs-spring); }
+  .cs-wing--l { transform-origin: 106px 186px; }
+  .cs-wing--r { transform-origin: 214px 186px; }
+  .cs-head { transform-box: view-box; transform-origin: 160px 170px; }
+  .cs-hop, .cs-shake { transform-box: view-box; transform-origin: 160px 320px; }
+  .cs-bubble { opacity: 0; transform-box: view-box; transform-origin: 206px 80px; transform: scale(.6); transition: opacity 180ms var(--ease-out), transform 420ms var(--cs-spring); }
+  .cs-bubble rect, .cs-bubble path { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+  .cs-bubble path { stroke-linejoin: round; }
+  .cs-bubble text { fill: var(--text-strong); font: 600 15px var(--font-sans); }
+  .cs.has-bubble .cs-bubble { opacity: 1; transform: none; }
+
+  /* Poses */
+  .cs[data-pose="cover"] .cs-wing--l, .cs[data-pose="peek"] .cs-wing--l { transform: translate(2px, -2px) rotate(-160deg); }
+  .cs[data-pose="cover"] .cs-wing--r { transform: translate(-2px, -2px) rotate(160deg); }
+  .cs[data-pose="peek"] .cs-wing--r { transform: translate(-2px, 18px) rotate(150deg); }
+  .cs[data-pose="happy"] .cs-eyes { opacity: 0; } .cs[data-pose="happy"] .cs-happy { opacity: 1; }
+  .cs[data-pose="happy"] .cs-wing--l { transform: rotate(28deg); } .cs[data-pose="happy"] .cs-wing--r { transform: rotate(-28deg); }
+  .cs[data-pose="sad"] .cs-brow { opacity: 1; }
+  .cs.is-shake .cs-shake { animation: cs-shake 620ms var(--ease-out); }
+  .cs.is-hop .cs-hop { animation: cs-hop 900ms var(--cs-spring); }
+  @keyframes cs-shake { 0% { transform: rotate(0); } 15% { transform: rotate(-7deg); } 35% { transform: rotate(6deg); } 55% { transform: rotate(-4deg); } 75% { transform: rotate(2deg); } 100% { transform: rotate(0); } }
+  @keyframes cs-hop { 0% { transform: none; } 20% { transform: translateY(6px) scaleY(.95); } 45% { transform: translateY(-26px); } 70% { transform: translateY(0) scaleY(.97); } 100% { transform: none; } }
+
+  /* Tablette */
+  @media (max-width: 879px) {
+    .cs { grid-template-columns: 1fr minmax(260px, .8fr); }
+    .cs__form { padding: 32px; }
+  }
+  /* Mobile : la scène devient un bandeau au-dessus du formulaire, la chouette regarde vers le bas */
+  @media (max-width: 639px) {
+    .cs { grid-template-columns: 1fr; grid-template-rows: auto 1fr; min-height: 100vh; min-height: 100dvh; border-radius: 0; border-width: 0; }
+    .cs__scene, .cs[data-side="left"] .cs__scene { order: -1; height: 232px; padding: 12px 16px 0; border-width: 0 0 1px; place-items: end center; }
+    .cs__svg { width: 184px; }
+    .cs-moon { transform: translate(-30px, 20px); }
+    .cs__form { padding: 24px 20px 32px; }
+    .cs__brand { margin-bottom: 20px; }
+    .cs__t { font-size: 26px; }
+    .cs__d { margin-bottom: 20px; }
+    .cs__f, .cs__ok { max-width: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cs *, .cs *::before, .cs *::after { animation: none !important; transition-duration: 0ms !important; }
+  }
+</style>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-cs]').forEach(function (root) {
+    if (root._cs) return;
+    var $ = function (s) { return root.querySelector(s); };
+    var form = $('[data-cs-form]'), idIn = $('[data-cs-id]'), pw = $('[data-cs-pw]'), toggle = $('[data-cs-toggle]'), err = $('[data-cs-err]'), live = $('[data-cs-live]');
+    var head = $('[data-cs-head]'), pupils = $('[data-cs-pupils]'), lids = root.querySelectorAll('[data-cs-lid]'), say = $('[data-cs-say]'), svg = $('[data-cs-svg]'), ok = $('[data-cs-ok]');
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+    var target = { x: 0, y: 0 }, cur = { x: 0, y: 0 }, vel = { x: 0, y: 0 }, raf = 0, seen = true, blinkT = 0, bubbleT = 0, pointer = null, attempts = 5, busy = false;
+    var SPR = { doux: [0.09, 0.26], joueur: [0.14, 0.16] };
+    function opt() { return { follow: root.dataset.follow || 'pointer', bubbles: root.dataset.bubbles !== 'false', spring: SPR[root.dataset.spring] || SPR.doux, blink: root.dataset.blink !== 'false' }; }
+    function mobile() { return root.offsetWidth < 640 && matchMedia('(max-width: 639px)').matches; }
+    function announce(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); }
+
+    /* Bulle */
+    function bubble(text, ms) {
+      clearTimeout(bubbleT);
+      if (!opt().bubbles || !text) { root.classList.remove('has-bubble'); return; }
+      say.textContent = text;
+      var w = Math.ceil((say.getComputedTextLength ? say.getComputedTextLength() : text.length * 8) + 28), x = 312 - w;
+      $('[data-cs-brect]').setAttribute('x', x); $('[data-cs-brect]').setAttribute('width', w); say.setAttribute('x', x + w / 2);
+      root.classList.add('has-bubble');
+      if (ms) bubbleT = setTimeout(function () { root.classList.remove('has-bubble'); }, ms);
+    }
+    function pose(p) { root.dataset.pose = p; }
+
+    /* Regard : ressort vers la cible (x, y entre -1 et 1) */
+    function step() {
+      var k = opt().spring[0], d = opt().spring[1];
+      ['x', 'y'].forEach(function (a) { vel[a] += (target[a] - cur[a]) * k; vel[a] *= 1 - d; cur[a] += vel[a]; });
+      pupils.style.transform = 'translate(' + (cur.x * 10).toFixed(2) + 'px,' + (cur.y * 9).toFixed(2) + 'px)';
+      head.style.transform = 'translate(' + (cur.x * 5).toFixed(2) + 'px,' + (cur.y * 3).toFixed(2) + 'px) rotate(' + (cur.x * 7).toFixed(2) + 'deg)';
+      var moving = Math.abs(target.x - cur.x) + Math.abs(target.y - cur.y) + Math.abs(vel.x) + Math.abs(vel.y) > 0.002;
+      raf = moving && seen ? requestAnimationFrame(step) : 0;
+    }
+    function look(x, y) {
+      target.x = Math.max(-1, Math.min(1, x)); target.y = Math.max(-1, Math.min(1, y));
+      if (reduce && reduce.matches) { cur.x = target.x; cur.y = target.y; vel.x = vel.y = 0; pupils.style.transform = 'translate(' + cur.x * 10 + 'px,' + cur.y * 9 + 'px)'; head.style.transform = 'rotate(' + cur.x * 7 + 'deg)'; return; }
+      if (!raf && seen) raf = requestAnimationFrame(step);
+    }
+
+    /* Position du curseur de saisie dans le champ, mesurée avec un double invisible */
+    var mirror = document.createElement('span');
+    mirror.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;left:-9999px;top:0';
+    root.appendChild(mirror);
+    function caretRatio(input) {
+      var cs = getComputedStyle(input); mirror.style.font = cs.font; mirror.style.letterSpacing = cs.letterSpacing;
+      var pos = input.selectionStart == null ? input.value.length : input.selectionStart;
+      mirror.textContent = (input.type === 'password' ? input.value.replace(/./g, '•') : input.value).slice(0, pos) || '';
+      var inner = input.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      return Math.max(0, Math.min(1, (mirror.offsetWidth - input.scrollLeft) / inner));
+    }
+    /* Vers où regarder pour voir un point de l'écran */
+    function lookAtPoint(px, py, range) {
+      var r = svg.getBoundingClientRect(), s = r.width / 320, ex = r.left + 160 * s, ey = r.top + 160 * s;
+      var dx = px - ex, dy = py - ey, dist = Math.sqrt(dx * dx + dy * dy) || 1, f = Math.min(1, dist / (range || 360));
+      look(dx / dist * f, dy / dist * f);
+    }
+    function followField(input) {
+      var r = input.getBoundingClientRect(), x = r.left + 14 + (r.width - 28) * caretRatio(input);
+      lookAtPoint(x, r.top + r.height / 2, mobile() ? 260 : 420);
+    }
+    function idle() {
+      pose('idle');
+      if (pointer && opt().follow === 'pointer') lookAtPoint(pointer.x, pointer.y, 420); else look(0, 0.1);
+    }
+
+    /* Clignements aléatoires (en pause hors écran) */
+    function blink() {
+      clearTimeout(blinkT);
+      blinkT = setTimeout(function () {
+        if (seen && opt().blink && root.dataset.pose === 'idle' && !(reduce && reduce.matches)) lids.forEach(function (l) {
+          l.animate([{ transform: 'scaleY(0) translateY(-2px)' }, { transform: 'scaleY(1)', offset: .45 }, { transform: 'scaleY(1)', offset: .55 }, { transform: 'scaleY(0) translateY(-2px)' }], { duration: 220, easing: 'ease-in-out' });
+        });
+        blink();
+      }, 2400 + Math.random() * 3600);
+    }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) {
+      seen = es[0].isIntersecting; root.classList.toggle('is-live', seen && !(reduce && reduce.matches));
+      if (seen && !raf) raf = requestAnimationFrame(step);
+    }).observe(root); else root.classList.add('is-live');
+
+    /* Champs */
+    function onIdField() { if (document.activeElement === idIn) { pose('idle'); followField(idIn); } }
+    ['focus', 'input', 'keyup', 'click', 'select'].forEach(function (ev) { idIn.addEventListener(ev, onIdField); });
+    idIn.addEventListener('focus', function () { bubble(idIn.value ? '' : 'Votre e-mail ?', 1800); });
+    function onPw() {
+      if (toggle.getAttribute('aria-pressed') === 'true') { pose('peek'); followField(pw); bubble('Juste un œil…', 1800); }
+      else { pose('cover'); look(0, 0.2); bubble('Je ne regarde pas !', 1800); }
+    }
+    pw.addEventListener('focus', onPw);
+    pw.addEventListener('input', function () { if (toggle.getAttribute('aria-pressed') === 'true') followField(pw); if (err.hidden === false) clearErr(); });
+    [idIn, pw].forEach(function (i) { i.addEventListener('blur', function () { setTimeout(function () { var a = document.activeElement; if (a !== idIn && a !== pw && a !== toggle && !busy && !form.hidden) idle(); }, 0); }); });
+    toggle.addEventListener('click', function () {
+      var on = toggle.getAttribute('aria-pressed') !== 'true';
+      toggle.setAttribute('aria-pressed', String(on)); toggle.setAttribute('aria-label', on ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+      pw.type = on ? 'text' : 'password'; pw.focus(); onPw();
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (!root.isConnected) return; pointer = { x: e.clientX, y: e.clientY };
+      var a = document.activeElement; if (a !== idIn && a !== pw && a !== toggle && root.dataset.pose === 'idle' && !busy && opt().follow === 'pointer') lookAtPoint(e.clientX, e.clientY, 420);
+    }, { passive: true });
+
+    function clearErr() { err.hidden = true; pw.removeAttribute('aria-invalid'); idIn.removeAttribute('aria-invalid'); if (root.dataset.pose === 'sad') pose('idle'); }
+    function fail(msg, field) {
+      err.textContent = msg; err.hidden = false; field.setAttribute('aria-invalid', 'true');
+      pose('sad'); look(0, 0.15); bubble(field === pw ? 'Ce n’est pas le bon…' : 'Il en manque un bout', 2200);
+      root.classList.remove('is-shake'); void root.offsetWidth; root.classList.add('is-shake');
+      setTimeout(function () { root.classList.remove('is-shake'); }, 700);
+      announce(msg); field.focus(); if (field === pw) pw.select();
+    }
+    function signIn(id, password) { /* ici : POST /session — renvoyez { ok } ; la démo accepte « chouette » */
+      return new Promise(function (r) { setTimeout(function () { r({ ok: password === 'chouette' }); }, reduce && reduce.matches ? 0 : 900); });
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); if (busy) return;
+      if (!idIn.value.trim()) return fail('Saisissez votre e-mail ou votre numéro de carte.', idIn);
+      if (!pw.value) return fail('Saisissez votre mot de passe.', pw);
+      var btn = $('[data-cs-submit]'); busy = true; btn.classList.add('is-busy'); $('[data-cs-submit-t]').textContent = 'Connexion…';
+      pose('idle'); var br = btn.getBoundingClientRect(); lookAtPoint(br.left + br.width / 2, br.top + br.height / 2, 300); bubble('Voyons voir…');
+      signIn(idIn.value.trim(), pw.value).then(function (res) {
+        busy = false; btn.classList.remove('is-busy'); $('[data-cs-submit-t]').textContent = 'Se connecter';
+        if (!res.ok) { attempts = Math.max(1, attempts - 1); return fail('Mot de passe incorrect. Il vous reste ' + attempts + ' essai' + (attempts > 1 ? 's' : '') + '.', pw); }
+        success();
+      });
+    });
+    function success() {
+      pose('happy'); look(0, 0); bubble('Bonne lecture !', 2600);
+      root.classList.remove('is-hop'); void root.offsetWidth; root.classList.add('is-hop'); setTimeout(function () { root.classList.remove('is-hop'); }, 1000);
+      form.hidden = true; ok.hidden = false; ok.classList.remove('cs__in-anim'); void ok.offsetWidth; ok.classList.add('cs__in-anim');
+      $('[data-cs-ok-title]').focus({ preventScroll: true }); announce('Connexion réussie. Bonjour Claire.');
+    }
+    function reset() {
+      ok.hidden = true; form.hidden = false; form.classList.remove('cs__in-anim'); void form.offsetWidth; form.classList.add('cs__in-anim');
+      pw.value = ''; pw.type = 'password'; toggle.setAttribute('aria-pressed', 'false'); toggle.setAttribute('aria-label', 'Afficher le mot de passe');
+      clearErr(); attempts = 5; idle(); bubble('');
+    }
+    $('[data-cs-again]').addEventListener('click', function () { reset(); idIn.focus(); });
+
+    idle(); blink();
+    setTimeout(function () { if (root.dataset.pose === 'idle' && document.activeElement !== idIn) bubble('Hou hou ?', 2400); }, 900);
+    root._cs = {
+      reset: reset, pose: function (p) { pose(p); }, look: look, bubble: bubble,
+      typeId: function (text, cb) { idIn.focus(); idIn.value = ''; var i = 0; (function t() { idIn.value = text.slice(0, ++i); idIn.setSelectionRange(i, i); onIdField(); if (i < text.length) setTimeout(t, 70); else cb && cb(); })(); },
+      typePw: function (text, cb) { pw.focus(); pw.value = ''; var i = 0; (function t() { pw.value = text.slice(0, ++i); pw.dispatchEvent(new Event('input')); if (i < text.length) setTimeout(t, 90); else cb && cb(); })(); },
+      submit: function () { form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit', { cancelable: true })); },
+      toggle: function () { toggle.click(); }
+    };
+  });
+})();
+</script>

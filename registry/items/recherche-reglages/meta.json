@@ -1,0 +1,175 @@
+{
+  "id": "recherche-reglages",
+  "nom": "Recherche ⌘K des réglages",
+  "categorie": "reglages",
+  "niveau": "premium",
+  "description": "Une page de réglages qu’on traverse au clavier : ⌘K ouvre une recherche floue sur tous les réglages (titres, mots-clés, sections, fautes de frappe), un clic ou Entrée referme la palette, fait défiler jusqu’au réglage, le surligne et place le focus sur son contrôle. L’index est lu dans le DOM : chaque nouveau réglage est cherchable sans rien déclarer. Démontré dans le logiciel d’une école de musique.",
+  "tags": [
+    "Réglages",
+    "Palette de commandes",
+    "⌘K",
+    "Recherche floue",
+    "Clavier",
+    "Défilement ciblé",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 30,
+  "palette": "lavande",
+  "logo_exemple": {
+    "nom": "Pupitre",
+    "secteur": "Gestion d’écoles de musique",
+    "fichier": "logo.svg",
+    "palette": "lavande",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1120
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1200
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, accent, surcouches, ombre de popover"
+    },
+    {
+      "nom": "Script de recherche",
+      "note": "≈ 9 ko non minifié, inclus dans l’onglet HTML, sans dépendance : index DOM, correspondance floue, surbrillance glissante sur ressort, défilement animé"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement (valeurs arbitraires sur les variables de tokens.css)"
+    }
+  ],
+  "props": [
+    {
+      "name": "raccourci",
+      "label": "Raccourci d’ouverture",
+      "type": "select",
+      "default": "mod+k",
+      "options": [
+        {
+          "value": "mod+k",
+          "label": "⌘K / Ctrl K"
+        },
+        {
+          "value": "slash",
+          "label": "/"
+        },
+        {
+          "value": "both",
+          "label": "Les deux"
+        }
+      ],
+      "code": {
+        "html": "data-shortcut=\"{v}\"",
+        "react": "shortcut = '{v}',"
+      }
+    },
+    {
+      "name": "ressort",
+      "label": "Ressort",
+      "type": "select",
+      "default": "doux",
+      "options": [
+        {
+          "value": "doux",
+          "label": "Doux"
+        },
+        {
+          "value": "sec",
+          "label": "Sec"
+        },
+        {
+          "value": "joueur",
+          "label": "Joueur"
+        }
+      ],
+      "code": {
+        "html": "data-spring=\"{v}\"",
+        "react": "spring = '{v}',"
+      }
+    },
+    {
+      "name": "surlignage",
+      "label": "Durée du surlignage",
+      "type": "number",
+      "default": 2400,
+      "min": 1200,
+      "max": 5000,
+      "step": 200,
+      "unit": "ms",
+      "code": {
+        "html": "data-highlight=\"{v}\"",
+        "react": "highlightMs = {v},"
+      }
+    },
+    {
+      "name": "tolerance",
+      "label": "Tolérance",
+      "type": "select",
+      "default": "souple",
+      "options": [
+        {
+          "value": "souple",
+          "label": "Souple"
+        },
+        {
+          "value": "stricte",
+          "label": "Stricte"
+        }
+      ],
+      "hint": "Souple : lettres dans l’ordre et une faute de frappe tolérée. Stricte : mots exacts et mots-clés seulement.",
+      "code": {
+        "html": "data-tolerance=\"{v}\"",
+        "react": "tolerance = '{v}',"
+      }
+    },
+    {
+      "name": "apercu",
+      "label": "Afficher la valeur actuelle",
+      "type": "boolean",
+      "default": true,
+      "hint": "Chaque résultat montre la valeur du réglage (Activé, 24 h avant…) lue dans son contrôle.",
+      "code": {
+        "html": "data-preview=\"{v}\"",
+        "react": "showValue = {v},"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/RechercheReglages.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour une page de réglages longue (plus de 15 réglages ou plusieurs sections) : on cherche « facture » ou « sombre » au lieu de deviner la section.",
+    "Ajoutez data-setting et data-keywords=\"synonymes…\" sur une ligne : elle est indexée automatiquement. Les mots-clés couvrent le vocabulaire des utilisateurs (« 2fa », « texto », « dark »).",
+    "API : root._rr.open(), .search(texte), .jump(idDuRéglage), .close(). En React : prop sections (titre, id, réglages avec keywords) et un rendu de contrôle par réglage.",
+    "Les liens profonds (#set-relance) peuvent appeler jump() au chargement pour partager un réglage précis.",
+    "À éviter pour moins de dix réglages : une seule page lisible suffit."
+  ],
+  "accessibilite": [
+    "Champ en role=\"combobox\" avec aria-activedescendant sur une liste role=\"listbox\" : ↑ ↓ pour naviguer, Entrée pour ouvrir, Échap pour vider puis fermer ; le focus reste piégé dans la palette.",
+    "Après le saut, le focus est placé sur le contrôle du réglage et une région aria-live annonce « Relance des impayés, dans Facturation ».",
+    "Le surlignage combine fond, liseré et couleur du titre : il ne repose pas sur la seule couleur. La navigation par sections suit le défilement (aria-current).",
+    "Textes ≥ 14 px, cibles de 44 px et champ de 16 px sur mobile, AA en clair et en sombre.",
+    "Avec « réduire les animations » : défilement instantané et surlignage fixe, sans pulsation."
+  ]
+}

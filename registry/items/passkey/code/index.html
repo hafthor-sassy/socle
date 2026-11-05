@@ -1,0 +1,361 @@
+<!-- Passkey — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Connexion par clé d'accès : un vrai appel WebAuthn (navigator.credentials.get) quand le navigateur le permet,
+     sinon une simulation fidèle — empreinte à maintenir (les crêtes s'allument du centre vers l'extérieur)
+     ou visage (anneau de points). Réussite qui se transforme en coche, échec qui tremble, repli par mot de passe.
+     Côté serveur : générez le challenge, vérifiez l'assertion (bibliothèque SimpleWebAuthn, py_webauthn…). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="pk" data-pk data-mode="auto" data-hold="1200" data-webauthn="auto" data-outcome="success" data-state="idle">
+  <div class="pk__card" data-pk-card>
+    <div class="pk__brand">
+      <svg class="pk__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="pk__logo-bg"/><path class="pk__logo-lf" d="M50 81C29 67 19 55 19 42c0-9 7-16 16-16 7 0 12 4 15 10 3-6 8-10 15-10 9 0 16 7 16 16 0 13-10 25-31 39Z"/><path class="pk__logo-ln" d="M28 47h11l4-8 6 15 4-7h19"/></svg>
+      <span class="pk__word">mélisse</span>
+      <span class="pk__tag">Mutuelle santé</span>
+    </div>
+
+    <div class="pk__main" data-pk-main>
+      <h2 class="pk__t" tabindex="-1">Accédez à votre espace adhérent</h2>
+      <p class="pk__d">Remboursements, carte de tiers payant et téléconsultation, sans mot de passe.</p>
+
+      <div class="pk__scan-wrap">
+        <button class="pk-scan" type="button" data-pk-scan aria-describedby="pk-help" aria-label="Se connecter avec une clé d’accès">
+          <svg class="pk-scan__svg" viewBox="0 0 64 64" aria-hidden="true">
+            <circle class="pk-scan__track" cx="32" cy="32" r="31"/>
+            <circle class="pk-scan__prog" cx="32" cy="32" r="31" pathLength="1" data-pk-ring/>
+            <g class="pk-fp" data-pk-fp>
+              <g class="pk-fp__base">
+                <path d="M28 34A4 4 0 1 1 34 37.5c0 6-1 12-3 17"/>
+                <path d="M24.2 38.5A9 9 0 0 1 36.5 26.2M38.7 28A9 9 0 0 1 38.9 39.8c-.4 6-1.6 11-3.6 15"/>
+                <path d="M18.5 37.6A14 14 0 0 1 27.2 20.8M30.1 20.1A14 14 0 0 1 44.7 39.9c-.5 5-1.6 9-3.2 12.6"/>
+                <path d="M13.3 37.3A19 19 0 0 1 21.1 18.4M24.9 16.4A19 19 0 0 1 50.7 30.7M51 34.7A19 19 0 0 1 49.6 44"/>
+                <path d="M8.1 31.9A24 24 0 0 1 44 13.2M48.1 16.2A24 24 0 0 1 55.9 31.9M24.2 38.5c.6 5-.6 10-3 14"/>
+                <path d="M5.7 21.7A29 29 0 0 1 28 5.3M35 5.2A29 29 0 0 1 58.3 21.7M18.5 37.6c.4 4-.4 8-2 11.4"/>
+              </g>
+              <g class="pk-fp__lit" data-pk-lit>
+                <path pathLength="1" d="M28 34A4 4 0 1 1 34 37.5c0 6-1 12-3 17"/>
+                <path pathLength="1" d="M24.2 38.5A9 9 0 0 1 36.5 26.2M38.7 28A9 9 0 0 1 38.9 39.8c-.4 6-1.6 11-3.6 15"/>
+                <path pathLength="1" d="M18.5 37.6A14 14 0 0 1 27.2 20.8M30.1 20.1A14 14 0 0 1 44.7 39.9c-.5 5-1.6 9-3.2 12.6"/>
+                <path pathLength="1" d="M13.3 37.3A19 19 0 0 1 21.1 18.4M24.9 16.4A19 19 0 0 1 50.7 30.7M51 34.7A19 19 0 0 1 49.6 44"/>
+                <path pathLength="1" d="M8.1 31.9A24 24 0 0 1 44 13.2M48.1 16.2A24 24 0 0 1 55.9 31.9M24.2 38.5c.6 5-.6 10-3 14"/>
+                <path pathLength="1" d="M5.7 21.7A29 29 0 0 1 28 5.3M35 5.2A29 29 0 0 1 58.3 21.7M18.5 37.6c.4 4-.4 8-2 11.4"/>
+              </g>
+              <rect class="pk-fp__beam" x="4" y="0" width="56" height="3" rx="1.5" data-pk-beam/>
+            </g>
+            <g class="pk-face" data-pk-face>
+              <path class="pk-face__br" d="M14 22v-4a4 4 0 0 1 4-4h4M42 14h4a4 4 0 0 1 4 4v4M50 42v4a4 4 0 0 1-4 4h-4M22 50h-4a4 4 0 0 1-4-4v-4"/>
+              <path class="pk-face__ft" d="M25 26v3M39 26v3M32 27v8h-2M26 40c3.5 3 8.5 3 12 0"/>
+              <g class="pk-face__dots" data-pk-dots></g>
+            </g>
+            <g class="pk-done">
+              <circle class="pk-done__bg" cx="32" cy="32" r="24"/>
+              <path class="pk-done__ok" pathLength="1" d="m21 32.5 7.5 7.5L44 24.5"/>
+              <path class="pk-done__ko" pathLength="1" d="M24 24l16 16M40 24 24 40"/>
+            </g>
+          </svg>
+        </button>
+        <p class="pk__help" id="pk-help" data-pk-help>Maintenez votre doigt sur le capteur</p>
+        <span class="pk__chip" data-pk-chip></span>
+      </div>
+
+      <button class="pk-btn pk-btn--pri" type="button" data-pk-go>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="7.5" cy="10" r="3.5"/><path d="M11 10h6.5M15 10v3M17.5 10v2"/></svg>
+        <span>Se connecter avec une clé d’accès</span>
+      </button>
+      <button class="pk-link" type="button" data-pk-fallback aria-expanded="false" aria-controls="pk-pw">Utiliser mon mot de passe</button>
+
+      <div class="pk-pw" id="pk-pw" data-pk-pw>
+        <form class="pk-pw__in" novalidate data-pk-form>
+          <label class="pk-lbl" for="pk-mail">E-mail ou n° d’adhérent</label>
+          <input class="pk-in" id="pk-mail" type="text" autocomplete="username webauthn" value="claire.martin@exemple.fr" tabindex="-1">
+          <label class="pk-lbl" for="pk-pass">Mot de passe</label>
+          <input class="pk-in" id="pk-pass" type="password" autocomplete="current-password" tabindex="-1">
+          <p class="pk-err" data-pk-pwerr hidden>Saisissez votre mot de passe.</p>
+          <button class="pk-btn" type="submit" tabindex="-1">Se connecter</button>
+        </form>
+      </div>
+
+      <details class="pk-what">
+        <summary>Qu’est-ce qu’une clé d’accès ?</summary>
+        <p>Une clé numérique rangée sur votre téléphone ou votre ordinateur, déverrouillée par votre empreinte, votre visage ou le code de l’appareil. Rien à retenir, et elle ne fonctionne que sur melisse.fr : impossible à hameçonner.</p>
+      </details>
+    </div>
+
+    <div class="pk__ok" data-pk-ok hidden>
+      <span class="pk__avatar" aria-hidden="true">CM</span>
+      <h2 class="pk__t" tabindex="-1" data-pk-ok-title>Bonjour Claire</h2>
+      <p class="pk__d">Adhérente n° 0482 117 · Formule Équilibre</p>
+      <ul class="pk__list">
+        <li><span class="pk__li"><b>2 remboursements</b> versés cette semaine</span><span class="pk__v">48,30 €</span></li>
+        <li><span class="pk__li"><b>Carte de tiers payant</b> valable jusqu’au 31 déc. 2026</span><span class="pk__v">Voir</span></li>
+      </ul>
+      <div class="pk__bar" aria-hidden="true"><span></span></div>
+      <p class="pk__redir">Ouverture de votre espace…</p>
+      <button class="pk-link" type="button" data-pk-again>Revenir à la connexion</button>
+    </div>
+    <p class="pk__sr" aria-live="polite" data-pk-live></p>
+  </div>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .pk {
+    --pk-spring: linear(0, .013 .6%, .05 1.2%, .2 2.6%, .44 4.4%, .67 6.4%, .85 8.6%, .96 11%, 1.02 13.6%, 1.04 16.6%, 1.03 20.4%, 1.01 25%, 1 32%, 1);
+    display: grid; place-items: center; width: 100%; font-family: var(--font-sans); color: var(--text);
+  }
+  .pk *, .pk *::before, .pk *::after { box-sizing: border-box; }
+  .pk :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .pk__card { position: relative; width: min(440px, 100%); padding: 32px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); overflow: hidden; }
+  .pk__brand { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+  .pk__logo { width: 32px; height: 32px; }
+  .pk__logo-bg { fill: var(--accent); } .pk__logo-lf { fill: var(--accent-fg); }
+  .pk__logo-ln { fill: none; stroke: var(--accent); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+  .pk__word { font-size: 20px; font-weight: 600; letter-spacing: -.03em; color: var(--text-strong); }
+  .pk__tag { margin-left: auto; height: 24px; padding: 0 10px; border-radius: 999px; background: var(--raised); color: var(--text-muted); font-size: 12px; line-height: 24px; }
+  .pk__t { margin: 0; font-size: var(--t-section); line-height: 1.3; font-weight: 600; letter-spacing: -.01em; color: var(--text-strong); outline: none; }
+  .pk .pk__t:focus-visible { outline: none; }
+  .pk__d { margin: 6px 0 0; font-size: 15px; line-height: 22px; color: var(--text-muted); }
+  .pk__main[hidden], .pk__ok[hidden] { display: none; }
+
+  /* Capteur */
+  .pk__scan-wrap { display: grid; justify-items: center; gap: 12px; margin: 28px 0 24px; }
+  .pk-scan { position: relative; display: grid; place-items: center; width: 136px; height: 136px; padding: 0; border: 0; border-radius: 999px; background: var(--accent-subtle); color: var(--text-muted); cursor: pointer; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+    transition: transform 420ms var(--pk-spring), background var(--motion-base) var(--ease-out); }
+  .pk-scan::before { content: ""; position: absolute; inset: -10px; border-radius: inherit; background: var(--accent-subtle); opacity: 0; transform: scale(.9); transition: opacity 300ms var(--ease-out), transform 600ms var(--pk-spring); }
+  .pk-scan:hover::before { opacity: .55; transform: none; }
+  .pk[data-state="scanning"] .pk-scan { transform: scale(.94); }
+  .pk[data-state="scanning"] .pk-scan::before { opacity: 1; transform: scale(1.06); }
+  .pk-scan__svg { position: relative; width: 112px; height: 112px; overflow: visible; }
+  .pk-scan__track { fill: none; stroke: var(--accent-subtle-border); stroke-width: 1.5; }
+  .pk-scan__prog { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transform: rotate(-90deg); transform-origin: 32px 32px; }
+  .pk-fp, .pk-face, .pk-done { transform-box: view-box; transform-origin: 32px 32px; transition: opacity 260ms var(--ease-out), transform 420ms var(--pk-spring); }
+  .pk-fp path { fill: none; stroke-width: 2.6; stroke-linecap: round; }
+  .pk-fp__base path { stroke: var(--border-strong); }
+  .pk-fp__lit path { stroke: var(--accent); stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .pk-fp__beam { fill: var(--accent); opacity: 0; }
+  .pk[data-state="scanning"] .pk-fp__beam { opacity: .35; }
+  .pk-face { opacity: 0; }
+  .pk-face__br { fill: none; stroke: var(--text-strong); stroke-width: 2.8; stroke-linecap: round; transition: transform 500ms var(--pk-spring); transform-origin: 32px 32px; transform-box: view-box; }
+  .pk-face__ft { fill: none; stroke: var(--text-strong); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .pk-face__dots circle { fill: var(--border-strong); transition: fill 160ms; }
+  .pk-face__dots circle.on { fill: var(--accent); }
+  .pk[data-mode-now="face"] .pk-fp { opacity: 0; }
+  .pk[data-mode-now="face"] .pk-face { opacity: 1; }
+  .pk[data-mode-now="face"][data-state="scanning"] .pk-face__br { transform: scale(.86); }
+  .pk-done { opacity: 0; transform: scale(.6); }
+  .pk-done__bg { fill: var(--accent); }
+  .pk-done__ok, .pk-done__ko { fill: none; stroke: var(--accent-fg); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .pk-done__ko { display: none; }
+  .pk[data-state="success"] .pk-fp, .pk[data-state="success"] .pk-face, .pk[data-state="error"] .pk-fp, .pk[data-state="error"] .pk-face { opacity: 0; transform: scale(.8); }
+  .pk[data-state="success"] .pk-done, .pk[data-state="error"] .pk-done { opacity: 1; transform: none; }
+  .pk[data-state="success"] .pk-done__ok { animation: pk-draw 420ms 120ms var(--ease-out) forwards; }
+  .pk[data-state="success"] .pk-scan__prog { stroke-dashoffset: 0; }
+  .pk[data-state="error"] .pk-done__bg { fill: var(--down); }
+  .pk[data-state="error"] .pk-done__ok { display: none; }
+  .pk[data-state="error"] .pk-done__ko { display: block; stroke: var(--surface); animation: pk-draw 360ms 80ms var(--ease-out) forwards; }
+  .pk[data-state="error"] .pk-scan { background: var(--tint-red-bg); animation: pk-shake 480ms var(--ease-out); }
+  .pk[data-state="error"] .pk-scan__prog { stroke: var(--down); }
+  @keyframes pk-draw { to { stroke-dashoffset: 0; } }
+  @keyframes pk-shake { 0%, 100% { transform: none; } 20% { transform: translateX(-8px); } 40% { transform: translateX(7px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(2px); } }
+  .pk__help { margin: 0; min-height: 22px; font-size: 15px; color: var(--text); text-align: center; }
+  .pk[data-state="error"] .pk__help { color: var(--down); }
+  .pk__chip { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: var(--raised); color: var(--text-muted); font-size: 12px; }
+  .pk__chip:empty { display: none; }
+  .pk__chip::before { content: ""; width: 6px; height: 6px; border-radius: 999px; background: currentColor; }
+  .pk__chip.is-real { background: var(--tint-green-bg); color: var(--tint-green-fg); }
+
+  .pk-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 48px; padding: 0 18px; border-radius: 10px; border: 1px solid var(--border-control); background: var(--surface); color: var(--text-strong); font: inherit; font-size: 15px; font-weight: 500; cursor: pointer; transition: background var(--motion-fast) var(--ease-out), transform 320ms var(--pk-spring); }
+  .pk-btn:hover { background: var(--state-hover); } .pk-btn:active { transform: scale(.97); }
+  .pk-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+  .pk-btn--pri { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+  .pk-btn--pri:hover { background: var(--accent-hover); }
+  .pk-link { display: block; margin: 12px auto 0; min-height: 44px; padding: 0 12px; border: 0; background: none; color: var(--text-strong); font: inherit; font-size: 14px; font-weight: 500; text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; cursor: pointer; }
+  .pk-link:hover { text-decoration-color: currentColor; }
+  .pk-pw { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 460ms var(--pk-spring); }
+  .pk-pw > form { overflow: hidden; }
+  .pk.is-pw .pk-pw { grid-template-rows: 1fr; }
+  .pk-pw__in { display: grid; gap: 8px; padding-top: 4px; opacity: 0; transition: opacity 240ms var(--ease-out); }
+  .pk.is-pw .pk-pw__in { opacity: 1; }
+  .pk-pw__in .pk-btn { margin-top: 8px; }
+  .pk-lbl { font-size: 14px; font-weight: 500; color: var(--text-strong); margin-top: 8px; }
+  .pk-in { height: 48px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--border-control); background: var(--surface); color: var(--text-strong); font: inherit; font-size: max(16px, 1rem); }
+  .pk .pk-in:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-subtle-border); }
+  .pk-in[aria-invalid="true"] { border-color: var(--down); }
+  .pk-err { margin: 0; font-size: 14px; color: var(--down); } .pk-err[hidden] { display: none; }
+  .pk-what { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .pk-what summary { display: flex; align-items: center; justify-content: center; min-height: 44px; font-size: 14px; color: var(--text-muted); cursor: pointer; list-style: none; }
+  .pk-what summary::-webkit-details-marker { display: none; }
+  .pk-what summary::after { content: ""; width: 6px; height: 6px; margin-left: 10px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform var(--motion-base) var(--ease-out); }
+  .pk-what[open] summary::after { transform: translateY(1px) rotate(-135deg); }
+  .pk-what p { margin: 4px 0 0; font-size: 14px; line-height: 21px; color: var(--text-muted); text-align: center; }
+
+  .pk__ok { text-align: left; }
+  .pk__ok.is-in > * { animation: pk-up 520ms var(--pk-spring) both; }
+  .pk__ok.is-in > *:nth-child(2) { animation-delay: 50ms; } .pk__ok.is-in > *:nth-child(3) { animation-delay: 100ms; } .pk__ok.is-in > *:nth-child(n+4) { animation-delay: 150ms; }
+  @keyframes pk-up { from { opacity: 0; transform: translateY(10px); } }
+  .pk__avatar { display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: 16px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font-size: 18px; font-weight: 600; }
+  .pk__list { list-style: none; margin: 20px 0 0; padding: 0; border: 1px solid var(--border); border-radius: 12px; }
+  .pk__list li { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 10px 16px; font-size: 14px; color: var(--text-muted); }
+  .pk__list li + li { border-top: 1px solid var(--border); }
+  .pk__list b { font-weight: 500; color: var(--text-strong); margin-right: 4px; }
+  .pk__li { flex: 1; min-width: 0; line-height: 20px; }
+  .pk__list .pk__v { margin-left: auto; color: var(--text-strong); font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pk__bar { height: 4px; margin-top: 20px; border-radius: 999px; background: var(--raised); overflow: hidden; }
+  .pk__bar span { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+  .pk__ok.is-in .pk__bar span { animation: pk-bar 2400ms 300ms var(--ease-out) forwards; }
+  @keyframes pk-bar { to { transform: none; } }
+  .pk__redir { margin: 8px 0 0; font-size: 13px; color: var(--text-muted); }
+  .pk__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 599px) {
+    .pk { place-items: stretch; }
+    .pk__card { width: 100%; min-height: 100vh; min-height: 100dvh; padding: 24px 20px 32px; border: 0; border-radius: 0; }
+    .pk__scan-wrap { margin: 32px 0 28px; }
+    .pk-scan { width: 160px; height: 160px; }
+    .pk-scan__svg { width: 128px; height: 128px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pk *, .pk *::before, .pk *::after { animation: none !important; transition-duration: 0ms !important; }
+    .pk[data-state="success"] .pk-done__ok, .pk[data-state="error"] .pk-done__ko { stroke-dashoffset: 0; }
+    .pk__ok .pk__bar span { transform: none; }
+  }
+</style>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-pk]').forEach(function (root) {
+    if (root._pk) return;
+    var $ = function (s) { return root.querySelector(s); };
+    var scan = $('[data-pk-scan]'), ring = $('[data-pk-ring]'), lit = root.querySelectorAll('[data-pk-lit] path'), beam = $('[data-pk-beam]'), dotsG = $('[data-pk-dots]');
+    var help = $('[data-pk-help]'), chip = $('[data-pk-chip]'), live = $('[data-pk-live]'), main = $('[data-pk-main]'), ok = $('[data-pk-ok]');
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+    var p = 0, holding = false, raf = 0, last = 0, done = false, fails = 0, real = null, resetT = 0, redirT = 0;
+    /* Anneau de 24 points pour le visage */
+    var NS = 'http://www.w3.org/2000/svg', dots = [];
+    for (var i = 0; i < 24; i++) { var a = (i / 24) * Math.PI * 2 - Math.PI / 2, c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', (32 + 27 * Math.cos(a)).toFixed(2)); c.setAttribute('cy', (32 + 27 * Math.sin(a)).toFixed(2)); c.setAttribute('r', '1.4'); dotsG.appendChild(c); dots.push(c); }
+
+    function opt() { return { mode: root.dataset.mode || 'auto', hold: Math.max(400, +root.dataset.hold || 1200), webauthn: root.dataset.webauthn || 'auto', outcome: root.dataset.outcome || 'success' }; }
+    function mode() { var m = opt().mode; if (m !== 'auto') return m; return /iPhone|iPad/.test(navigator.userAgent) ? 'face' : 'finger'; }
+    function say(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); }
+    function state(s) { root.dataset.state = s; }
+    function texts() {
+      var m = mode(); root.dataset.modeNow = m === 'face' ? 'face' : 'finger';
+      if (root.dataset.state === 'idle') help.textContent = real ? 'Touchez pour utiliser la clé de cet appareil' : m === 'face' ? 'Touchez puis regardez l’écran' : 'Maintenez votre doigt sur le capteur';
+      scan.setAttribute('aria-label', 'Se connecter avec une clé d’accès' + (real || m === 'face' ? '' : ' : maintenez appuyé'));
+      chip.textContent = real ? 'Clé d’accès de cet appareil' : 'Simulation : WebAuthn indisponible ici'; chip.classList.toggle('is-real', !!real);
+    }
+    /* Rendu de la progression : crêtes du centre vers l'extérieur, anneau, faisceau, points */
+    function paint() {
+      var n = lit.length;
+      lit.forEach(function (path, i) { var f = Math.max(0, Math.min(1, p * (n + 1) - i)); path.style.strokeDashoffset = String(1 - f); });
+      ring.style.strokeDashoffset = String(1 - p); ring.style.opacity = p > 0.002 ? '1' : '0';
+      beam.setAttribute('y', (58 - p * 54).toFixed(2));
+      var k = Math.round(p * dots.length); dots.forEach(function (d, i) { d.classList.toggle('on', i < k); });
+    }
+    function loop(now) {
+      var dt = Math.min(64, now - last); last = now;
+      if (holding) p = Math.min(1, p + dt / opt().hold);
+      else p = Math.max(0, p - dt / 260);
+      paint();
+      if (holding && p >= 1) { holding = false; finish(); return; }
+      raf = (holding || p > 0) ? requestAnimationFrame(loop) : 0;
+    }
+    function start() {
+      if (done || root.dataset.state === 'success') return;
+      clearTimeout(resetT); if (root.dataset.state === 'error') state('idle');
+      holding = true; state('scanning'); help.textContent = mode() === 'face' ? 'Analyse du visage…' : 'Ne bougez pas…';
+      if (reduce && reduce.matches) { holding = false; p = 1; paint(); finish(); return; }
+      if (!raf) { last = performance.now(); raf = requestAnimationFrame(loop); }
+    }
+    function release() {
+      if (!holding) return; holding = false;
+      if (p < 1) { state('idle'); help.textContent = 'Maintenez jusqu’au bout du cercle'; if (navigator.vibrate) navigator.vibrate(6); }
+      if (!raf) { last = performance.now(); raf = requestAnimationFrame(loop); }
+    }
+    function finish() {
+      var good = opt().outcome !== 'failure';
+      if (good) success(); else fail('Empreinte non reconnue. Réessayez, ou utilisez votre mot de passe.');
+    }
+    function fail(msg) {
+      fails++; state('error'); help.textContent = mode() === 'face' ? 'Visage non reconnu. Réessayez.' : msg; say(help.textContent);
+      if (navigator.vibrate) navigator.vibrate([20, 60, 20]);
+      resetT = setTimeout(function () { p = 0; paint(); state('idle'); texts(); if (fails >= 2) { $('[data-pk-fallback]').textContent = 'Utiliser plutôt mon mot de passe'; } }, 1600);
+    }
+    function success() {
+      done = true; p = 1; paint(); state('success'); help.textContent = 'Identité confirmée'; if (navigator.vibrate) navigator.vibrate(12);
+      say('Identité confirmée. Bienvenue, Claire.');
+      setTimeout(showWelcome, reduce && reduce.matches ? 200 : 900);
+    }
+    function showWelcome() {
+      var card = $('[data-pk-card]'), h0 = card.offsetHeight;
+      main.hidden = true; ok.hidden = false; ok.classList.remove('is-in'); void ok.offsetWidth; ok.classList.add('is-in');
+      var h1 = card.offsetHeight;
+      if (card.animate && !(reduce && reduce.matches)) card.animate([{ height: h0 + 'px' }, { height: h1 + 'px' }], { duration: 560, easing: getComputedStyle(root).getPropertyValue('--pk-spring').trim() || 'ease-out' });
+      $('[data-pk-ok-title]').focus({ preventScroll: true });
+    }
+    function reset() {
+      clearTimeout(resetT); clearTimeout(redirT); cancelAnimationFrame(raf); raf = 0;
+      done = false; holding = false; p = 0; fails = 0; paint(); state('idle'); ok.hidden = true; main.hidden = false; root.classList.remove('is-pw');
+      $('[data-pk-fallback]').textContent = 'Utiliser mon mot de passe'; $('[data-pk-fallback]').setAttribute('aria-expanded', 'false'); texts();
+    }
+
+    /* WebAuthn réel : le challenge vient de votre serveur (ici, aléatoire pour l'exemple) */
+    function webauthnAvailable() {
+      if (opt().webauthn === 'simule' || !window.PublicKeyCredential || !navigator.credentials || !window.isSecureContext) return Promise.resolve(false);
+      var pol = document.permissionsPolicy || document.featurePolicy;
+      if (pol && pol.allowsFeature && !pol.allowsFeature('publickey-credentials-get')) return Promise.resolve(false);
+      return (PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable ? PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable() : Promise.resolve(false)).catch(function () { return false; });
+    }
+    function realGet() {
+      var challenge = new Uint8Array(32); crypto.getRandomValues(challenge);
+      state('scanning'); help.textContent = 'Suivez les instructions de votre appareil…';
+      var t0 = performance.now(); (function spin(now) { if (root.dataset.state !== 'scanning') return; p = ((now - t0) / 1600) % 1; paint(); requestAnimationFrame(spin); })(t0);
+      return navigator.credentials.get({ publicKey: { challenge: challenge, rpId: location.hostname, userVerification: 'required', timeout: 60000 }, mediation: 'optional' })
+        .then(function (cred) { /* envoyez cred.response à votre serveur pour vérification */ if (cred) success(); else fail('Connexion annulée.'); })
+        .catch(function (e) { p = 0; paint(); if (e && e.name === 'NotAllowedError') { state('idle'); help.textContent = 'Connexion annulée. Réessayez quand vous voulez.'; say(help.textContent); } else { real = false; texts(); fail('Clé d’accès indisponible sur cet appareil.'); } });
+    }
+
+    /* Entrées : maintien au pointeur et au clavier (Espace, Entrée), ou simple appui en mode visage / WebAuthn réel */
+    function tapMode() { return real || mode() === 'face'; }
+    function face() {
+      if (done || holding) return; clearTimeout(resetT); state('scanning'); holding = true; help.textContent = 'Analyse du visage…';
+      if (reduce && reduce.matches) { holding = false; p = 1; paint(); finish(); return; }
+      var t0 = performance.now(), dur = Math.min(opt().hold + 400, 1800);
+      (function f(now) { p = Math.min(1, (now - t0) / dur); paint(); if (p < 1) requestAnimationFrame(f); else { holding = false; finish(); } })(t0);
+    }
+    function activate() { if (real) realGet(); else face(); }
+    scan.addEventListener('pointerdown', function (e) { if (e.button !== 0) return; if (tapMode()) return; e.preventDefault(); scan.setPointerCapture && scan.setPointerCapture(e.pointerId); start(); });
+    scan.addEventListener('pointerup', release); scan.addEventListener('pointercancel', release); scan.addEventListener('lostpointercapture', release);
+    scan.addEventListener('click', function () { if (tapMode()) activate(); });
+    scan.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    scan.addEventListener('keydown', function (e) { if ((e.key === ' ' || e.key === 'Enter') && !tapMode()) { e.preventDefault(); if (!e.repeat) start(); } });
+    scan.addEventListener('keyup', function (e) { if ((e.key === ' ' || e.key === 'Enter') && !tapMode()) { e.preventDefault(); release(); } });
+    $('[data-pk-go]').addEventListener('click', function () {
+      if (tapMode()) { activate(); return; }
+      scan.focus(); help.textContent = 'Maintenez le capteur, ou la barre d’espace'; say(help.textContent);
+      if (scan.animate && !(reduce && reduce.matches)) scan.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 420, easing: 'ease-out' });
+    });
+    var fb = $('[data-pk-fallback]');
+    fb.addEventListener('click', function () {
+      var on = !root.classList.contains('is-pw'); root.classList.toggle('is-pw', on); fb.setAttribute('aria-expanded', String(on));
+      fb.textContent = on ? 'Revenir à la clé d’accès' : 'Utiliser mon mot de passe';
+      root.querySelectorAll('.pk-pw [tabindex]').forEach(function (x) { x.tabIndex = on ? 0 : -1; });
+      if (on) setTimeout(function () { $('#pk-pass').focus(); }, 60);
+    });
+    $('[data-pk-form]').addEventListener('submit', function (e) {
+      e.preventDefault(); var pass = $('#pk-pass'), er = $('[data-pk-pwerr]');
+      if (!pass.value) { pass.setAttribute('aria-invalid', 'true'); er.hidden = false; pass.focus(); return; }
+      pass.removeAttribute('aria-invalid'); er.hidden = true; done = true; showWelcome(); say('Connexion réussie. Bienvenue, Claire.');
+    });
+    $('[data-pk-again]').addEventListener('click', function () { reset(); scan.focus(); });
+
+    texts(); paint();
+    webauthnAvailable().then(function (yes) { real = yes; texts(); });
+    root._pk = {
+      reset: reset, sync: function () { if (opt().webauthn === 'simule') real = false; else webauthnAvailable().then(function (y) { real = y; texts(); }); texts(); },
+      hold: function (ms) { start(); setTimeout(release, ms); }, progress: function (v) { p = v; paint(); state(v > 0 && v < 1 ? 'scanning' : 'idle'); },
+      face: face, fallback: function () { fb.click(); }
+    };
+  });
+})();
+</script>
