@@ -1,0 +1,249 @@
+<!-- Footer dévoilé — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     La page se soulève à la fin du défilement et découvre le footer, posé dessous en position: sticky.
+     Le contenu du footer monte (ou grandit) au rythme du dévoilement, et un voile s'efface : profondeur sans ombre.
+     Si le footer devient plus haut que l'écran, il repasse seul en footer classique (rien n'est jamais caché).
+     Usage : <div data-footer-devoile data-effet="montee" data-rayon="24" data-voile="true"> <div class="fd__page">…</div> <footer class="fd__foot">…</footer> </div> -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="fd" data-footer-devoile data-effet="montee" data-rayon="24" data-voile="true">
+  <div class="fd__page">
+    <header class="fd__bar">
+      <a href="#" class="fd__brand" aria-label="Abri, accueil">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="fd__lg-bg"/><path d="M22 50 50 26l28 24M32 46v26h36V46" class="fd__lg-st"/><rect x="44" y="56" width="12" height="16" rx="2" class="fd__lg-fg"/></svg>
+        <span>abri</span>
+      </a>
+      <nav class="fd__nav" aria-label="Principale"><a href="#">Habitation</a><a href="#">Locataire</a><a href="#">Propriétaire</a><a href="#">Sinistres</a></nav>
+      <a href="#" class="fd__btn fd__btn--sm">Mon espace</a>
+    </header>
+
+    <section class="fd__hero" aria-labelledby="fd-h1">
+      <p class="fd__eyebrow">Assurance habitation · 100 % en ligne</p>
+      <h1 id="fd-h1">L’assurance habitation qui vous répond en trois minutes.</h1>
+      <p class="fd__lead">Un devis sans appel ni paperasse, une attestation envoyée dans la foulée, et une vraie personne au téléphone le jour où l’eau passe sous la porte.</p>
+      <div class="fd__ctas"><a href="#" class="fd__btn">Obtenir mon devis</a><a href="#" class="fd__btn fd__btn--ghost">Comparer les formules</a></div>
+    </section>
+
+    <section class="fd__facts" aria-label="En chiffres">
+      <dl>
+        <div><dt>Délai moyen de remboursement</dt><dd>4 jours</dd></div>
+        <div><dt>Logements assurés</dt><dd>212 000</dd></div>
+        <div><dt>Note des assurés</dt><dd>4,8 / 5</dd></div>
+      </dl>
+    </section>
+
+    <section class="fd__steps" aria-labelledby="fd-steps">
+      <h2 id="fd-steps">Trois étapes, et c’est signé</h2>
+      <ol>
+        <li><b>01</b><h3>Décrivez le logement</h3><p>Surface, étage, nombre de pièces. Nous retrouvons le reste à partir de l’adresse.</p></li>
+        <li><b>02</b><h3>Choisissez vos garanties</h3><p>Dégâts des eaux, vol, bris de glace : chaque option affiche son prix au mois, sans astérisque.</p></li>
+        <li><b>03</b><h3>Recevez l’attestation</h3><p>Par e-mail, au format exigé par les bailleurs, avant même d’avoir fermé l’onglet.</p></li>
+      </ol>
+    </section>
+
+    <section class="fd__quote" aria-label="Témoignage">
+      <blockquote><p>« Fuite un dimanche soir, plombier envoyé le lundi matin, remboursée le jeudi. Je n’ai rempli qu’un formulaire. »</p></blockquote>
+      <p class="fd__who">Inès, locataire à Lyon 7<sup>e</sup>, assurée depuis 2023</p>
+    </section>
+  </div>
+
+  <footer class="fd__foot" aria-labelledby="fd-foot-t">
+    <div class="fd__veil" aria-hidden="true"></div>
+    <div class="fd__inner">
+      <div class="fd__top">
+        <h2 class="fd__title" id="fd-foot-t">Votre logement, couvert dès ce soir.</h2>
+        <div class="fd__cta">
+          <a href="#" class="fd__btn">Obtenir mon devis</a>
+          <p>Dès 6,90 € par mois · résiliable à tout moment</p>
+        </div>
+      </div>
+
+      <div class="fd__cols">
+        <details class="fd__col" open><summary>Assurances</summary><ul role="list"><li><a href="#">Habitation</a></li><li><a href="#">Locataire</a></li><li><a href="#">Propriétaire non occupant</a></li><li><a href="#">Colocation</a></li></ul></details>
+        <details class="fd__col" open><summary>Abri</summary><ul role="list"><li><a href="#">À propos</a></li><li><a href="#">Recrutement <span class="fd__count">4 postes</span></a></li><li><a href="#">Presse</a></li><li><a href="#">Nos engagements</a></li></ul></details>
+        <details class="fd__col" open><summary>Aide</summary><ul role="list"><li><a href="#">Déclarer un sinistre</a></li><li><a href="#">Centre d’aide</a></li><li><a href="#">Nous écrire</a></li><li><a href="#">État du service</a></li></ul></details>
+        <div class="fd__contact">
+          <p class="fd__label">Une question ?</p>
+          <a href="#" class="fd__phone">01 86 95 40 20</a>
+          <p>Du lundi au samedi, de 8 h à 20 h. Appel non surtaxé.</p>
+        </div>
+      </div>
+
+      <div class="fd__legal">
+        <a href="#" class="fd__brand fd__brand--sm" aria-label="Abri, accueil"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="fd__lg-bg"/><path d="M22 50 50 26l28 24M32 46v26h36V46" class="fd__lg-st"/><rect x="44" y="56" width="12" height="16" rx="2" class="fd__lg-fg"/></svg><span>abri</span></a>
+        <p class="fd__status"><span aria-hidden="true"></span>Tous les services fonctionnent</p>
+        <nav aria-label="Informations légales"><a href="#">Mentions légales</a><a href="#">Confidentialité</a><a href="#">Cookies</a></nav>
+        <p class="fd__copy">© 2026 Abri Assurances SAS, courtier en assurances (marque fictive).</p>
+      </div>
+    </div>
+  </footer>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .fd { --fd-r: 24px; --fd-p: 1; position: relative; isolation: isolate; color: var(--text); font-family: var(--font-sans); }
+  .fd a { color: inherit; text-decoration: none; }
+  .fd :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .fd h1, .fd h2, .fd h3, .fd p, .fd dl, .fd dd, .fd ol, .fd ul, .fd blockquote { margin: 0; }
+
+  /* La page : posée au-dessus du footer, elle s'en détache par le bas. */
+  .fd__page { position: relative; z-index: 1; background: var(--bg); border-bottom: 1px solid var(--border); border-radius: 0 0 var(--fd-r) var(--fd-r); }
+  .fd__bar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 32px; height: 64px; padding: 0 32px; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .fd__brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text-strong); font-weight: 600; font-size: 20px; letter-spacing: -.03em; }
+  .fd__brand svg { width: 28px; height: 28px; flex: none; }
+  .fd__brand--sm { font-size: 17px; } .fd__brand--sm svg { width: 24px; height: 24px; }
+  .fd__lg-bg { fill: var(--accent); } .fd__lg-fg { fill: var(--accent-fg); }
+  .fd__lg-st { fill: none; stroke: var(--accent-fg); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+  .fd__nav { display: flex; gap: 24px; margin-left: auto; font-size: var(--t-sm); }
+  .fd__nav a { color: var(--text-muted); transition: color var(--motion-base); }
+  .fd__nav a:hover { color: var(--text-strong); }
+  .fd .fd__btn { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 24px; border-radius: var(--radius-pill); background: var(--accent); color: var(--accent-fg); font-weight: 500; white-space: nowrap; transition: background var(--motion-base), transform var(--motion-fast) var(--ease-out); }
+  .fd .fd__btn:hover { background: var(--accent-hover); }
+  .fd .fd__btn:active { transform: scale(.98); }
+  .fd .fd__btn--sm { height: 36px; padding: 0 16px; font-size: var(--t-sm); }
+  .fd .fd__btn--ghost { background: transparent; color: var(--text-strong); border: 1px solid var(--border-control); }
+  .fd .fd__btn--ghost:hover { background: var(--state-hover); }
+
+  .fd__hero { max-width: 1120px; margin: 0 auto; padding: 120px 32px 96px; }
+  .fd__eyebrow, .fd__label { color: var(--text-muted); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .fd__hero h1 { max-width: 16ch; margin-top: 24px; color: var(--text-strong); font-size: clamp(2.5rem, 1.2rem + 4.4vw, 5rem); line-height: 1.02; font-weight: 600; letter-spacing: -.04em; text-wrap: balance; }
+  .fd__lead { max-width: 54ch; margin-top: 24px; color: var(--text-muted); font-size: 18px; line-height: 1.6; }
+  .fd__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
+
+  .fd__facts { max-width: 1120px; margin: 0 auto; padding: 0 32px 96px; }
+  .fd__facts dl { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border); }
+  .fd__facts dl > div { display: grid; gap: 8px; padding: 32px 24px 0 0; }
+  .fd__facts dt { color: var(--text-muted); font-size: var(--t-sm); }
+  .fd__facts dd { color: var(--text-strong); font-size: clamp(2rem, 1.4rem + 1.6vw, 3rem); font-weight: 600; letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
+
+  .fd__steps { max-width: 1120px; margin: 0 auto; padding: 0 32px 96px; }
+  .fd__steps h2 { color: var(--text-strong); font-size: var(--t-page); line-height: var(--t-page-lh); font-weight: 600; letter-spacing: var(--track-tight); }
+  .fd__steps ol { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; padding: 0; list-style: none; }
+  .fd__steps li { display: grid; align-content: start; gap: 8px; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); }
+  .fd__steps b { color: var(--accent); font: 600 var(--t-xs) / 1 var(--font-mono); }
+  .fd__steps h3 { margin-top: 24px; color: var(--text-strong); font-size: var(--t-section); line-height: var(--t-section-lh); font-weight: 600; }
+  .fd__steps p { color: var(--text-muted); font-size: var(--t-sm); line-height: var(--t-sm-lh); }
+
+  .fd__quote { max-width: 1120px; margin: 0 auto; padding: 32px 32px 144px; }
+  .fd__quote blockquote p { max-width: 30ch; color: var(--text-strong); font-size: clamp(1.5rem, 1rem + 1.6vw, 2.5rem); line-height: 1.2; font-weight: 500; letter-spacing: -.025em; }
+  .fd__who { margin-top: 24px; color: var(--text-muted); font-size: var(--t-sm); }
+
+  /* Le footer : collé en bas de l'écran, sous la page. */
+  .fd__foot { position: sticky; bottom: 0; z-index: 0; overflow: hidden; background: var(--surface); }
+  .fd[data-static="true"] .fd__foot { position: relative; }
+  .fd__veil { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: var(--bg); opacity: calc((1 - var(--fd-p)) * .7); }
+  .fd[data-voile="false"] .fd__veil { display: none; }
+  .fd__inner { position: relative; max-width: 1120px; margin: 0 auto; padding: 96px 32px 32px; transform-origin: 50% 100%; will-change: transform; }
+  .fd[data-effet="montee"] .fd__inner { transform: translate3d(0, calc((1 - var(--fd-p)) * 96px), 0); }
+  .fd[data-effet="echelle"] .fd__inner { transform: scale(calc(.92 + var(--fd-p) * .08)); }
+
+  .fd__top { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 32px; padding-bottom: 64px; border-bottom: 1px solid var(--border); }
+  .fd__title { max-width: 14ch; color: var(--text-strong); font-size: clamp(2.25rem, 1rem + 3.6vw, 4.25rem); line-height: 1.02; font-weight: 600; letter-spacing: -.04em; text-wrap: balance; }
+  .fd__cta { display: grid; justify-items: end; gap: 12px; }
+  .fd__cta p { color: var(--text-muted); font-size: var(--t-sm); }
+
+  .fd__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.3fr); gap: 32px; padding: 48px 0; }
+  .fd__col summary { display: block; margin-bottom: 16px; color: var(--text-muted); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; list-style: none; pointer-events: none; }
+  .fd__col summary::-webkit-details-marker { display: none; }
+  .fd__col ul { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+  .fd__col a { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; color: var(--text); font-size: var(--t-sm); transition: color var(--motion-base); }
+  .fd__col a:hover { color: var(--text-strong); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .fd__count { padding: 2px 8px; border-radius: var(--radius-pill); background: var(--accent-subtle); color: var(--text-strong); font-size: var(--t-xs); line-height: var(--t-xs-lh); }
+  .fd__contact { display: grid; align-content: start; gap: 8px; }
+  .fd__phone { color: var(--text-strong); font-size: clamp(1.5rem, 1.2rem + .8vw, 2rem); font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .fd__contact p:last-child { color: var(--text-muted); font-size: var(--t-sm); line-height: var(--t-sm-lh); }
+
+  .fd__legal { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: var(--t-sm); }
+  .fd__status { display: inline-flex; align-items: center; gap: 8px; }
+  .fd__status span { width: 8px; height: 8px; border-radius: 50%; background: var(--up); }
+  .fd__legal nav { display: flex; gap: 24px; margin-left: auto; }
+  .fd__legal nav a:hover { color: var(--text-strong); }
+  .fd__copy { flex-basis: 100%; color: var(--text-muted); font-size: var(--t-xs); }
+
+  @media (max-width: 760px) {
+    .fd__bar { gap: 16px; height: 56px; padding: 0 16px; }
+    .fd__nav { display: none; }
+    .fd .fd__btn--sm { margin-left: auto; height: 44px; }
+    .fd__hero { padding: 64px 16px 56px; }
+    .fd__lead { font-size: var(--t-base); }
+    .fd__ctas { flex-direction: column; }
+    .fd__facts { padding: 0 16px 56px; }
+    .fd__facts dl { grid-template-columns: 1fr; }
+    .fd__facts dl > div { grid-template-columns: 1fr auto; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .fd__facts dd { font-size: 28px; }
+    .fd__steps { padding: 0 16px 56px; }
+    .fd__steps ol { grid-template-columns: 1fr; }
+    .fd__steps h3 { margin-top: 12px; }
+    .fd__quote { padding: 16px 16px 96px; }
+
+    .fd__inner { padding: 48px 16px calc(24px + var(--safe-bottom)); }
+    .fd[data-effet="montee"] .fd__inner { transform: translate3d(0, calc((1 - var(--fd-p)) * 48px), 0); }
+    .fd__top { grid-template-columns: 1fr; gap: 24px; padding-bottom: 32px; }
+    .fd__cta { justify-items: stretch; } .fd__cta p { text-align: center; }
+    .fd__cols { grid-template-columns: 1fr; gap: 0; padding: 8px 0 24px; }
+    /* Mobile : les groupes de liens deviennent des tiroirs natifs, le footer reste court et se dévoile en entier. */
+    .fd__col { border-bottom: 1px solid var(--border); }
+    .fd__col summary { display: flex; align-items: center; justify-content: space-between; min-height: 52px; margin: 0; color: var(--text-strong); font: 500 var(--t-base) / 1 var(--font-sans); letter-spacing: 0; text-transform: none; cursor: pointer; pointer-events: auto; }
+    .fd__col summary::after { content: ""; width: 8px; height: 8px; margin-right: 4px; border-right: 1.5px solid var(--text-muted); border-bottom: 1.5px solid var(--text-muted); transform: translateY(-2px) rotate(45deg); transition: transform var(--motion-base) var(--ease-out); }
+    .fd__col[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+    .fd__col ul { padding-bottom: 12px; }
+    .fd__col a { min-height: 44px; font-size: var(--t-base); }
+    .fd__contact { padding-top: 24px; }
+    .fd__legal { gap: 12px 24px; }
+    .fd__status { order: -1; flex-basis: 100%; }
+    .fd__legal nav { margin-left: 0; flex-wrap: wrap; gap: 4px 20px; }
+    .fd__legal nav a { display: inline-flex; align-items: center; min-height: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fd .fd__inner { transform: none !important; }
+    .fd .fd__btn { transition: none; }
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  function init(root) {
+    if (root._fd) return root._fd;
+    var page = root.querySelector('.fd__page'), foot = root.querySelector('.fd__foot');
+    var cols = [].slice.call(root.querySelectorAll('.fd__col'));
+    var wide = matchMedia('(min-width: 761px)'), raf = 0;
+
+    /* Progression du dévoilement : 0 tant que la page couvre le footer, 1 quand il est entièrement découvert. */
+    function measure() {
+      raf = 0;
+      var h = foot.offsetHeight || 1, shown = innerHeight - page.getBoundingClientRect().bottom;
+      root.style.setProperty('--fd-p', Math.max(0, Math.min(1, shown / h)).toFixed(4));
+    }
+    function onScroll() { if (!raf) raf = requestAnimationFrame(measure); }
+
+    /* Footer plus haut que l'écran : on renonce au dévoilement plutôt que de cacher son haut. */
+    function layout() {
+      root.style.setProperty('--fd-r', (+root.dataset.rayon || 0) + 'px');
+      root.dataset.static = String(foot.offsetHeight > innerHeight - 48);
+      measure();
+    }
+    /* Bureau : groupes toujours ouverts, titres hors du parcours clavier. Mobile : tiroirs natifs, fermés. */
+    function syncCols() {
+      cols.forEach(function (d) {
+        var s = d.querySelector('summary');
+        d.open = wide.matches;
+        if (wide.matches) { s.setAttribute('tabindex', '-1'); s.setAttribute('role', 'heading'); s.setAttribute('aria-level', '3'); }
+        else { s.removeAttribute('tabindex'); s.removeAttribute('role'); s.removeAttribute('aria-level'); }
+      });
+      layout();
+    }
+    cols.forEach(function (d) { d.addEventListener('toggle', layout); d.querySelector('summary').addEventListener('click', function (e) { if (wide.matches) e.preventDefault(); }); });
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', layout);
+    (wide.addEventListener ? wide.addEventListener('change', syncCols) : wide.addListener(syncCols));
+    if (window.ResizeObserver) new ResizeObserver(layout).observe(foot);
+    syncCols();
+
+    root._fd = { update: function (o) { Object.keys(o || {}).forEach(function (k) { if (o[k] != null) root.dataset[k] = o[k]; }); layout(); }, measure: measure };
+    return root._fd;
+  }
+  document.querySelectorAll('[data-footer-devoile]').forEach(init);
+  window.FooterDevoile = { init: init };
+})();
+</script>

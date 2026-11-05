@@ -1,0 +1,57 @@
+{
+  "id": "logotype-geant",
+  "nom": "Logotype géant",
+  "categorie": "footer",
+  "niveau": "premium",
+  "description": "Le nom de la marque occupe toute la largeur du footer, calé au pixel. Sous le pointeur, les lettres prennent de la graisse, se soulèvent et s’étirent, chacune sur son propre ressort ; au repos, une vague traverse le mot. La largeur de chaque lettre est compensée à chaque image grâce à la police variable : le mot ne déborde jamais et rien ne saute autour.",
+  "tags": ["Police variable", "Pointeur", "Ressort", "Tactile", "E-commerce", "Mode", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 42,
+  "palette": "corail",
+  "logo_exemple": { "nom": "Ressac", "secteur": "Maillots de bain et surf (e-commerce)", "fichier": "logo.svg", "palette": "corail", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, accent, Geist (police variable, axe wght 100 à 900)" },
+    { "nom": "≈ 3 ko de JS", "note": "Vanilla : mesure des glyphes au canvas, un rAF actif seulement pendant le mouvement, IntersectionObserver" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, sans bibliothèque d’animation (styles écrits hors rendu React)" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "texte", "label": "Nom de la marque", "type": "text", "default": "ressac",
+      "hint": "Un mot court (4 à 10 lettres) : il est calé sur toute la largeur.",
+      "code": { "html": "aria-label=\"{v}\">{v}</p>", "react": "word = '{v}'" } },
+    { "name": "effet", "label": "Effet", "type": "select", "default": "elastique",
+      "options": [ { "value": "elastique", "label": "Élastique" }, { "value": "soulevement", "label": "Soulèvement" }, { "value": "graisse", "label": "Graisse" } ],
+      "hint": "Élastique : graisse, levée et étirement. Soulèvement : graisse et levée. Graisse : seule la graisse change.",
+      "code": { "html": "data-effet=\"{v}\"", "react": "effect = '{v}'" } },
+    { "name": "rayon", "label": "Rayon d’influence", "type": "number", "default": 260, "min": 80, "max": 600, "step": 20, "unit": "px",
+      "code": { "html": "data-rayon=\"{v}\"", "react": "radius = {v}" } },
+    { "name": "min", "label": "Graisse au repos", "type": "number", "default": 300, "min": 100, "max": 700, "step": 50,
+      "code": { "html": "data-min=\"{v}\"", "react": "minWeight = {v}" } },
+    { "name": "max", "label": "Graisse sous le pointeur", "type": "number", "default": 900, "min": 400, "max": 900, "step": 50,
+      "code": { "html": "data-max=\"{v}\"", "react": "maxWeight = {v}" } },
+    { "name": "raideur", "label": "Raideur du ressort", "type": "number", "default": 180, "min": 60, "max": 400, "step": 10,
+      "code": { "html": "data-raideur=\"{v}\"", "react": "stiffness = {v}" } },
+    { "name": "amortissement", "label": "Amortissement", "type": "number", "default": 13, "min": 6, "max": 40, "step": 1,
+      "hint": "Bas : les lettres rebondissent et dépassent. Haut : elles suivent sans élan.",
+      "code": { "html": "data-amortissement=\"{v}\"", "react": "damping = {v}" } },
+    { "name": "vague", "label": "Vague au repos", "type": "boolean", "default": true,
+      "hint": "Toutes les 7 s, une vague traverse le mot tant que personne ne le touche (arrêtée hors écran).",
+      "code": { "html": "data-vague=\"{v}\"", "react": "idleWave = {v}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/LogotypeGeant.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour signer la fin d’une page de marque (mode, studio, produit grand public) : le nom devient le dernier visuel. Un seul logotype géant par page.",
+    "Nécessite une police variable avec un axe de graisse (Geist, Inter, Mona Sans…) : c’est elle qui permet de compenser la largeur de chaque lettre sans à-coup.",
+    "Un mot court et sans espace se cale le mieux. Pour un nom long, réduisez le rayon d’influence pour que seules deux ou trois lettres réagissent à la fois."
+  ],
+  "accessibilite": [
+    "Le mot est un role=\"img\" avec son aria-label : il est lu une fois, en entier ; les lettres sont aria-hidden et non sélectionnables.",
+    "Au toucher, le mot réagit au glissé horizontal du doigt ; le défilement vertical reste libre (touch-action: pan-y). Les liens du footer font 44 px sur mobile et le champ e-mail 16 px.",
+    "Avec « réduire les animations », le mot est posé à graisse 600, sans vague ni ressort. Rien ne tourne hors écran : boucle et vague s’arrêtent dès que le mot sort de la vue."
+  ]
+}

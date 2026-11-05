@@ -1,0 +1,426 @@
+<!-- Liste d’attente vivante — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css.
+     Marque fictive : Lucarne (télescope connecté). Chiffres, dates et inscriptions simulés.
+     Réglages : data-inscrits, data-vague (places par vague), data-gain (places par parrainage), data-direct, data-simuler, data-reseau (ok | erreur). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="la" data-waitlist data-inscrits="12530" data-vague="2500" data-gain="50" data-direct="true" data-simuler="true" data-reseau="ok" aria-labelledby="la-title">
+  <div class="la__pitch">
+    <a class="la__brand" href="#accueil" aria-label="Lucarne, accueil"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" class="la__lg-bg"/><path d="M30 76V48a20 20 0 0 1 40 0v28z" class="la__lg-ln" stroke-width="6"/><path d="M53 41a9 9 0 1 0 8 12 7 7 0 1 1-8-12z" class="la__lg-fg"/><circle cx="41" cy="62" r="3.5" class="la__lg-fg"/></svg>Lucarne</a>
+    <p class="la__soon">Précommandes au printemps</p>
+    <h2 class="la__title" id="la-title">Le ciel profond, depuis votre balcon.</h2>
+    <p class="la__lead">Un télescope de 11 cm qui se pointe tout seul, même en ville. Il empile les poses et vous envoie la nébuleuse sur votre téléphone, sans réglage.</p>
+    <dl class="la__specs">
+      <div><dt>Ouverture</dt><dd>114 mm</dd></div>
+      <div><dt>Poids</dt><dd>3,2 kg</dd></div>
+      <div><dt>Catalogue</dt><dd>5 400 objets</dd></div>
+    </dl>
+  </div>
+
+  <div class="la__card">
+    <div class="la__sky"><svg viewBox="0 0 220 152" aria-hidden="true"><path d="M30 152V110a80 80 0 0 1 160 0v42z" class="la__win"/><circle cx="81.8" cy="48.1" r="0.8" class="la__star la__star--a la__tw"/><circle cx="41.6" cy="94.3" r="1.2" class="la__star"/><circle cx="123.2" cy="139.2" r="1" class="la__star"/><circle cx="97.9" cy="129.2" r="0.8" class="la__star"/><circle cx="181.6" cy="105.7" r="0.8" class="la__star la__tw"/><circle cx="122.3" cy="77.6" r="1" class="la__star"/><circle cx="37.5" cy="133.0" r="1.2" class="la__star"/><circle cx="97.1" cy="94.9" r="1.2" class="la__star la__star--a la__tw"/><circle cx="119.6" cy="111.8" r="0.8" class="la__star"/><circle cx="123.1" cy="106.7" r="1.2" class="la__star"/><circle cx="45.6" cy="115.5" r="0.8" class="la__star la__tw"/><circle cx="129.0" cy="89.6" r="1.6" class="la__star"/><circle cx="154.4" cy="85.9" r="1.6" class="la__star"/><circle cx="87.9" cy="59.8" r="1" class="la__star la__tw"/><circle cx="141.8" cy="59.3" r="1.2" class="la__star"/><circle cx="114.0" cy="135.0" r="1.6" class="la__star"/><circle cx="76.1" cy="147.6" r="0.8" class="la__star la__star--a la__tw"/><circle cx="111.9" cy="49.8" r="1.2" class="la__star"/><circle cx="54.3" cy="88.7" r="0.8" class="la__star"/><circle cx="119.3" cy="124.7" r="1.2" class="la__star"/><circle cx="84.4" cy="72.0" r="1.6" class="la__star"/><circle cx="122.8" cy="84.7" r="0.8" class="la__star la__tw"/><path d="M139 58a14 14 0 1 0 12 19 11 11 0 1 1-12-19z" class="la__moon"/><path d="M70 50l-22 14" class="la__shoot"/></svg></div>
+    <div class="la__body">
+      <p class="la__count"><span class="la__faces" aria-hidden="true"><span>CL</span><span>AB</span><span>NM</span></span>
+        <span class="la__count-t"><strong><span class="la__num" data-counter></span></strong> personnes attendent déjà</span></p>
+      <div class="la__screens">
+        <div data-screen="form">
+          <div class="la__alert" role="alert" hidden><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 2.5 16.5h15z"/><path d="M10 8.5v3.5M10 14.5v.01"/></svg><div><b>La connexion a échoué.</b>Votre adresse n’a pas été enregistrée. <button type="button" data-retry style="all:unset;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-weight:600">Réessayer</button></div></div>
+          <form class="la__form" novalidate>
+            <label class="la__label" for="la-mail">Recevez votre place dans la file</label>
+            <div class="la__row">
+              <input class="la__input" id="la-mail" type="email" inputmode="email" autocomplete="email" placeholder="vous@exemple.fr" aria-describedby="la-msg" required>
+              <button class="la__btn" type="submit"><span class="la__btn-l">Rejoindre la liste</span><span class="la__spin" aria-hidden="true"></span></button>
+            </div>
+            <p class="la__msg" id="la-msg" aria-live="polite"></p>
+          </form>
+          <p class="la__fine">Un seul e-mail le jour de votre précommande. Aucun acompte, désinscription en un clic.</p>
+        </div>
+
+        <div data-screen="done" hidden>
+          <p class="la__ok"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 10.5 3.2 3.2L15 7"/></svg>Vous êtes sur la liste</p>
+          <h3 class="la__place-l" tabindex="-1">Votre place</h3>
+          <p class="la__place"><small>n°</small><span class="la__num" data-place></span><span class="la__delta" aria-hidden="true"></span></p>
+          <div class="la__waves">
+            <p class="la__wave-t"><b data-wave>Vague 6</b><span data-wave-date>livraison septembre 2027</span></p>
+            <div class="la__bar" aria-hidden="true"><span class="la__pin"></span></div>
+            <p class="la__ticks" aria-hidden="true"></p>
+          </div>
+          <div class="la__ref">
+            <p>Passez devant : <b>chaque ami inscrit avec votre lien vous fait gagner des places.</b></p>
+            <div class="la__link"><label class="la__sr" for="la-link">Votre lien de parrainage</label><input id="la-link" type="text" readonly value="lucarne.fr/r/k8f2q"><button class="la__copy" type="button" data-done="false"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="2"/><path d="M10.5 5.5V4a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 4v5A1.5 1.5 0 0 0 4 10.5h1.5"/></svg><span>Copier</span></button></div>
+          </div>
+          <p class="la__toast" role="status" hidden><span aria-hidden="true">IN</span><span></span></p>
+          <p class="la__fine">Confirmation envoyée à <span data-sent></span>. <button class="la__restart" type="button">Ce n’est pas vous ?</button></p>
+        </div>
+      </div>
+      <p class="la__sr" role="status" aria-live="polite" data-live></p>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  /* Liste d'attente vivante — couleurs : variables de tokens.css uniquement. */
+  .la { --la-spring: cubic-bezier(.34, 1.36, .64, 1); --la-ease: cubic-bezier(.32, .72, 0, 1);
+    position: relative; max-width: 1184px; margin: 0 auto; padding: 96px 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 480px); gap: 72px; align-items: center;
+    color: var(--text); font-family: var(--font-sans); }
+  .la *, .la *::before, .la *::after { box-sizing: border-box; }
+  .la :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .la button, .la input { font: inherit; }
+  .la__sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Pitch */
+  .la__brand { display: flex; width: fit-content; align-items: center; gap: 10px; margin-bottom: 28px; color: var(--text-strong); font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
+  .la__brand svg { width: 28px; height: 28px; }
+  .la__lg-bg { fill: var(--accent); }
+  .la__lg-fg { fill: var(--accent-fg); }
+  .la__lg-ln { fill: none; stroke: var(--accent-fg); stroke-linecap: round; stroke-linejoin: round; }
+  .la__soon { display: flex; width: fit-content; align-items: center; gap: 8px; margin: 0 0 16px; color: var(--accent); font: 500 0.8125rem/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .la__soon::before { content: ""; width: 6px; height: 6px; border-radius: 999px; background: currentColor; }
+  .la__title { margin: 0; color: var(--text-strong); font-size: clamp(2.25rem, 1.2rem + 3.2vw, 3.75rem); line-height: 1.02; font-weight: 600; letter-spacing: -0.04em; text-wrap: balance; }
+  .la__lead { margin: 20px 0 0; max-width: 46ch; color: var(--text-muted); font-size: 1.0625rem; line-height: 1.6; text-wrap: pretty; }
+  .la__specs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 40px 0 0; padding: 24px 0 0; border-top: 1px solid var(--border); }
+  .la__specs dt { color: var(--text-muted); font-size: 0.8125rem; }
+  .la__specs dd { margin: 4px 0 0; color: var(--text-strong); font-size: 1.125rem; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+
+  /* Carte */
+  .la__card { position: relative; overflow: hidden; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+  .la__sky { position: relative; height: 168px; border-bottom: 1px solid var(--border); background: var(--raised); overflow: hidden; }
+  .la__sky svg { position: absolute; left: 50%; bottom: -1px; width: 220px; height: 152px; transform: translateX(-50%); }
+  .la__win { fill: var(--bg); stroke: var(--border-control); stroke-width: 1.5; }
+  .la__star { fill: var(--text-muted); }
+  .la__star--a { fill: var(--accent); }
+  .la__moon { fill: var(--text-strong); }
+  .la__tw { animation: la-tw 3.2s ease-in-out infinite; }
+  .la__tw:nth-of-type(2n) { animation-duration: 4.4s; animation-delay: -1.2s; }
+  .la__tw:nth-of-type(3n) { animation-duration: 2.6s; animation-delay: -2s; }
+  @keyframes la-tw { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+  .la.is-off .la__tw { animation-play-state: paused; }
+  .la__shoot { stroke: var(--text-strong); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 0 40; opacity: 0; }
+  .la.is-done .la__shoot { animation: la-shoot 1.2s var(--la-ease) .2s both; }
+  @keyframes la-shoot { 0% { stroke-dasharray: 0 40; stroke-dashoffset: 0; opacity: 0; } 30% { opacity: 1; } 100% { stroke-dasharray: 18 40; stroke-dashoffset: -30; opacity: 0; } }
+  .la__body { padding: 28px; }
+  .la__count { display: flex; align-items: center; gap: 12px; margin: 0 0 20px; }
+  .la__faces { display: flex; flex: none; }
+  .la__faces span { display: grid; place-items: center; width: 32px; height: 32px; margin-left: -8px; border: 2px solid var(--surface); border-radius: 999px; background: var(--raised); color: var(--text-strong); font-size: 0.6875rem; font-weight: 600; }
+  .la__faces span:first-child { margin-left: 0; }
+  .la__faces .la__face-new { background: var(--accent-subtle); color: var(--accent); animation: la-face 620ms var(--la-spring) both; }
+  @keyframes la-face { from { transform: scale(.4); opacity: 0; } }
+  .la__count-t { color: var(--text-muted); font-size: 0.9375rem; line-height: 1.4; }
+  .la__count-t strong { color: var(--text-strong); font-weight: 600; }
+
+  /* Chiffres qui roulent */
+  .la__num { display: inline-flex; font-variant-numeric: tabular-nums; line-height: 1; vertical-align: bottom; }
+  .la__d { position: relative; display: inline-block; height: 1em; overflow: hidden; }
+  .la__d > span { display: flex; flex-direction: column; transition: transform 900ms var(--la-spring); }
+  .la__d > span > i { display: block; height: 1em; font-style: normal; text-align: center; }
+  .la__sep { display: inline-block; width: .22em; }
+
+  .la__form { display: grid; gap: 8px; }
+  .la__label { color: var(--text-strong); font-size: 0.875rem; font-weight: 500; }
+  .la__row { display: flex; gap: 8px; }
+  .la__input { flex: 1; min-width: 0; height: 48px; padding: 0 16px; border: 1px solid var(--border-control); border-radius: 12px; background: var(--bg); color: var(--text-strong); font-size: var(--t-input); transition: border-color var(--motion-base), box-shadow var(--motion-base); }
+  .la__input::placeholder { color: var(--text-muted); }
+  .la__input:focus { outline: none; border-color: var(--focus-ring); box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .la__input[aria-invalid="true"] { border-color: var(--down); }
+  .la__input[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px var(--tint-red-bg); }
+  .la__btn { position: relative; display: inline-grid; place-items: center; height: 48px; min-width: 48px; padding: 0 20px; flex: none; border: 0; border-radius: 12px; background: var(--accent); color: var(--accent-fg); font-size: 0.9375rem; font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color var(--motion-base), width 420ms var(--la-ease), padding 420ms var(--la-ease), border-radius 420ms var(--la-ease), transform 260ms var(--la-spring); }
+  .la__btn:hover { background: var(--accent-hover); }
+  .la__btn:active { transform: scale(.97); }
+  .la__btn-l { transition: opacity 160ms, transform 300ms var(--la-ease); }
+  .la__spin { position: absolute; width: 20px; height: 20px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 999px; opacity: 0; transform: scale(.6); transition: opacity 200ms, transform 300ms var(--la-spring); }
+  .la.is-loading .la__btn { padding: 0; width: 48px; border-radius: 999px; pointer-events: none; }
+  .la.is-loading .la__btn-l { opacity: 0; transform: scale(.8); }
+  .la.is-loading .la__spin { opacity: 1; transform: none; animation: la-rot .7s linear infinite; }
+  @keyframes la-rot { to { transform: rotate(1turn); } }
+  .la__msg { min-height: 20px; margin: 0; color: var(--text-muted); font-size: 0.8125rem; line-height: 1.5; }
+  .la__msg.is-error { color: var(--down); }
+  .la__msg button { padding: 0; border: 0; background: none; color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .la__shake { animation: la-shake 420ms var(--la-ease); }
+  @keyframes la-shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  .la__fine { margin: 16px 0 0; color: var(--text-muted); font-size: 0.75rem; line-height: 1.5; }
+  .la__alert { display: flex; gap: 12px; align-items: flex-start; margin: 0 0 16px; padding: 12px 14px; border: 1px solid var(--tint-red-border); border-radius: 12px; background: var(--tint-red-bg); color: var(--tint-red-fg); font-size: 0.875rem; line-height: 1.45; animation: la-in 420ms var(--la-ease) both; }
+  .la__alert[hidden] { display: none; }
+  .la__alert svg { width: 18px; height: 18px; flex: none; margin-top: 1px; }
+  .la__alert b { display: block; font-weight: 600; }
+
+  /* Écrans : formulaire → place dans la file */
+  .la__screens { position: relative; transition: height 520ms var(--la-ease); }
+  .la__screen { transition: opacity 320ms var(--la-ease), transform 520ms var(--la-ease), filter 320ms; }
+  .la__screen[hidden] { display: none; }
+  .la__screen.is-leaving { position: absolute; inset: 0 0 auto; opacity: 0; transform: translateY(-8px) scale(.98); filter: blur(2px); pointer-events: none; }
+  .la__screen.is-entering { opacity: 0; transform: translateY(12px); }
+  @keyframes la-in { from { opacity: 0; transform: translateY(6px); } }
+
+  .la__ok { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 16px; color: var(--up); font-size: 0.875rem; font-weight: 600; }
+  .la__ok svg { width: 20px; height: 20px; }
+  .la__ok path { stroke-dasharray: 24; stroke-dashoffset: 24; }
+  .la.is-done .la__ok path { animation: la-draw 520ms var(--la-ease) .15s forwards; }
+  @keyframes la-draw { to { stroke-dashoffset: 0; } }
+  .la__place-l:focus { outline: none; }
+  .la__place-l { margin: 0; font-weight: 400; color: var(--text-muted); font-size: 0.875rem; }
+  .la__place { display: flex; align-items: baseline; gap: 6px; margin: 6px 0 0; color: var(--text-strong); font-size: clamp(3rem, 2.4rem + 2vw, 4rem); font-weight: 600; letter-spacing: -0.04em; }
+  .la__place small { color: var(--text-muted); font-size: 0.4em; font-weight: 500; letter-spacing: -0.01em; }
+  .la__delta { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; margin-left: 4px; border-radius: 999px; background: var(--tint-green-bg); color: var(--tint-green-fg); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0; align-self: center; opacity: 0; transform: translateY(6px) scale(.9); transition: opacity 300ms, transform 520ms var(--la-spring); }
+  .la__delta.is-on { opacity: 1; transform: none; }
+
+  .la__waves { margin: 24px 0 0; }
+  .la__wave-t { display: flex; justify-content: space-between; gap: 12px; margin: 0 0 10px; font-size: 0.875rem; }
+  .la__wave-t b { color: var(--text-strong); font-weight: 600; }
+  .la__wave-t span { color: var(--text-muted); }
+  .la__bar { position: relative; display: grid; grid-template-columns: repeat(var(--la-n, 6), 1fr); gap: 4px; height: 8px; }
+  .la__bar i { border-radius: 999px; background: var(--raised); box-shadow: inset 0 0 0 1px var(--border); transition: background-color 400ms; }
+  .la__bar i.is-past { background: var(--accent-subtle); box-shadow: inset 0 0 0 1px var(--accent-subtle-border); }
+  .la__bar i.is-mine { background: var(--accent); box-shadow: none; }
+  .la__pin { position: absolute; top: 50%; left: 0; width: 16px; height: 16px; margin: -8px 0 0 -8px; border: 3px solid var(--surface); border-radius: 999px; background: var(--text-strong); transition: left 1000ms var(--la-spring); }
+  .la__ticks { display: flex; justify-content: space-between; margin: 8px 0 0; color: var(--text-muted); font: 500 0.6875rem/1 var(--font-mono); }
+
+  .la__ref { margin: 24px 0 0; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--raised); }
+  .la__ref p { margin: 0 0 12px; color: var(--text); font-size: 0.875rem; line-height: 1.5; }
+  .la__ref p b { color: var(--text-strong); }
+  .la__link { display: flex; gap: 8px; }
+  .la__link input { flex: 1; min-width: 0; height: 44px; padding: 0 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text-strong); font: 500 0.875rem var(--font-mono); }
+  .la__copy { display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 14px; border: 1px solid var(--border-control); border-radius: 10px; background: var(--surface); color: var(--text-strong); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background-color var(--motion-fast), transform 200ms var(--la-spring); }
+  .la__copy:hover { background: var(--state-hover); }
+  .la__copy:active { transform: scale(.96); }
+  .la__copy svg { width: 16px; height: 16px; }
+  .la__copy[data-done="true"] { border-color: var(--accent-subtle-border); background: var(--accent-subtle); color: var(--accent); }
+  .la__toast { display: flex; align-items: center; gap: 10px; margin: 16px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--text-strong); color: var(--bg); font-size: 0.8125rem; line-height: 1.4; animation: la-pop 520ms var(--la-spring) both; }
+  .la__toast[hidden] { display: none; }
+  .la__toast span:first-child { display: grid; place-items: center; width: 24px; height: 24px; flex: none; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font-size: 0.625rem; font-weight: 700; }
+  @keyframes la-pop { from { opacity: 0; transform: translateY(8px) scale(.96); } }
+  .la__restart { margin: 16px 0 0; padding: 0; border: 0; background: none; color: var(--text-muted); font-size: 0.8125rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+  @media (max-width: 899px) {
+    .la { grid-template-columns: minmax(0, 1fr); gap: 32px; padding: 48px 16px; }
+    .la__brand { margin-bottom: 20px; }
+    .la__title { font-size: 2.25rem; }
+    .la__lead { font-size: 1rem; }
+    .la__specs { margin-top: 28px; padding-top: 20px; }
+    .la__specs dd { font-size: 1rem; }
+    .la__sky { height: 136px; }
+    .la__sky svg { width: 180px; height: 124px; }
+    .la__body { padding: 20px; }
+    .la__row { flex-direction: column; }
+    .la__btn { width: 100%; height: 52px; }
+    .la.is-loading .la__btn { width: 52px; align-self: center; }
+    .la__input { flex: none; height: 52px; }
+    .la__place { font-size: 3rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .la__tw, .la.is-done .la__shoot, .la__shake, .la__alert, .la__toast, .la__faces .la__face-new, .la.is-loading .la__spin { animation: none; }
+    .la__d > span, .la__pin, .la__screens, .la__screen, .la__btn, .la__delta { transition: none; }
+    .la.is-done .la__ok path { animation: none; stroke-dashoffset: 0; }
+  }
+  .la__faces .la__face-me { font-size: 0.625rem; }
+</style>
+
+<script>
+(function () {
+  /* Liste d'attente vivante : compteur d'inscrits qui roule chiffre par chiffre, validation de l'e-mail avec
+     suggestion de domaine, bouton qui devient chargement, puis la place dans la file, la vague de livraison
+     et le parrainage (chaque ami fait gagner des places, le repère avance sur un ressort).
+     Réglages : data-inscrits, data-vague, data-gain, data-direct, data-simuler, data-reseau sur [data-waitlist]. */
+  var RM = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var NB = '\u202f';
+  var DOMAINS = ['gmail.com', 'hotmail.fr', 'hotmail.com', 'yahoo.fr', 'yahoo.com', 'outlook.fr', 'outlook.com', 'orange.fr', 'free.fr', 'icloud.com', 'laposte.net', 'sfr.fr', 'wanadoo.fr', 'proton.me'];
+  var WAVES = ['mars 2027', 'avril 2027', 'mai 2027', 'juin 2027', 'juillet 2027', 'septembre 2027', 'octobre 2027', 'novembre 2027'];
+  var FRIENDS = ['Inès', 'Malo', 'Yasmine', 'Théo', 'Lou'];
+  function fr(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, NB); }
+  function lev(a, b) {
+    var m = [], i, j; for (i = 0; i <= b.length; i++) m[i] = [i];
+    for (j = 0; j <= a.length; j++) m[0][j] = j;
+    for (i = 1; i <= b.length; i++) for (j = 1; j <= a.length; j++) m[i][j] = Math.min(m[i - 1][j] + 1, m[i][j - 1] + 1, m[i - 1][j - 1] + (b[i - 1] === a[j - 1] ? 0 : 1));
+    return m[b.length][a.length];
+  }
+  function check(v) {
+    v = v.trim();
+    if (!v) return { err: 'Indiquez votre adresse e-mail.' };
+    if (v.indexOf('@') < 0) return { err: 'Il manque le @ dans l’adresse.' };
+    var p = v.split('@'); if (p.length > 2 || !p[0]) return { err: 'Cette adresse ne semble pas valide.' };
+    var d = p[1].toLowerCase();
+    if (!/^[^\s@]+\.[a-z]{2,}$/i.test(d)) return { err: 'Il manque l’extension du domaine (.fr, .com…).' };
+    if (DOMAINS.indexOf(d) < 0) { var best = null, bd = 3; DOMAINS.forEach(function (x) { var k = lev(d, x); if (k < bd) { bd = k; best = x; } }); if (best && bd <= 2) return { ok: true, sugg: p[0] + '@' + best }; }
+    return { ok: true };
+  }
+  function mask(v) { var p = v.split('@'); return p[0].slice(0, 1) + '•••@' + p[1]; }
+
+  /* Nombre qui roule : une colonne 0-9 par chiffre, décalage des colonnes de droite à gauche. */
+  function Roller(el) {
+    var cols = [], val = null;
+    function build(str) {
+      el.innerHTML = ''; cols = [];
+      for (var i = 0; i < str.length; i++) {
+        var ch = str[i];
+        if (!/\d/.test(ch)) { var s = document.createElement('span'); s.className = 'la__sep'; el.appendChild(s); continue; }
+        var d = document.createElement('span'); d.className = 'la__d'; var strip = document.createElement('span');
+        for (var k = 0; k < 10; k++) { var it = document.createElement('i'); it.textContent = k; strip.appendChild(it); }
+        d.appendChild(strip); el.appendChild(d); cols.push(strip);
+      }
+    }
+    return {
+      set: function (n, instant) {
+        var str = fr(n);
+        if (val === null || fr(val).length !== str.length) { build(str); instant = true; }
+        var digits = str.replace(/\D/g, '');
+        cols.forEach(function (c, i) {
+          var from = cols.length - 1 - i;
+          c.style.transitionDelay = instant || RM.matches ? '0ms' : (from * 45) + 'ms';
+          if (instant) { c.style.transition = 'none'; }
+          c.style.transform = 'translateY(' + (-digits[i] * 10) + '%)';
+          if (instant) { void c.offsetWidth; c.style.transition = ''; }
+        });
+        el.setAttribute('aria-label', str); val = n;
+      },
+    };
+  }
+
+  function setup(root) {
+    if (root._waitlist) return root._waitlist;
+    var $ = function (s) { return root.querySelector(s); };
+    var form = $('.la__form'), input = $('.la__input'), msg = $('.la__msg'), alert = $('.la__alert');
+    var screens = $('.la__screens'), sForm = $('[data-screen="form"]'), sDone = $('[data-screen="done"]');
+    var counter = Roller($('[data-counter]')), place = Roller($('[data-place]'));
+    var faces = $('.la__faces'), bar = $('.la__bar'), pin = $('.la__pin'), waveT = $('[data-wave]'), waveD = $('[data-wave-date]'), ticks = $('.la__ticks');
+    var delta = $('.la__delta'), toast = $('.la__toast'), copy = $('.la__copy'), link = $('.la__link input'), sent = $('[data-sent]'), live = $('[data-live]');
+    var cfg = {}, total = 0, mine = 0, visible = true, tickT = 0, simT = 0, friend = 0, lastEmail = '';
+    function read() {
+      cfg.inscrits = parseInt(root.dataset.inscrits, 10) || 12530;
+      cfg.vague = parseInt(root.dataset.vague, 10) || 2500;
+      cfg.gain = parseInt(root.dataset.gain, 10) || 50;
+      cfg.direct = root.dataset.direct !== 'false';
+      cfg.simuler = root.dataset.simuler !== 'false';
+      cfg.reseau = root.dataset.reseau || 'ok';
+    }
+
+    /* ---------- Compteur en direct (simulé), suspendu hors écran ---------- */
+    function schedule() {
+      clearTimeout(tickT);
+      if (!cfg.direct || !visible || document.hidden || RM.matches) return;
+      tickT = setTimeout(function () {
+        total += 1 + Math.floor(Math.random() * 3); counter.set(total);
+        if (Math.random() < 0.5) addFace();
+        schedule();
+      }, 2200 + Math.random() * 3200);
+    }
+    var INIT = ['CL', 'AB', 'NM', 'JR', 'SK', 'EV', 'PO', 'TD'];
+    function addFace(txt) {
+      var s = document.createElement('span'); s.className = 'la__face-new'; s.textContent = txt || INIT[Math.floor(Math.random() * INIT.length)];
+      faces.insertBefore(s, faces.firstChild);
+      while (faces.children.length > 4) faces.removeChild(faces.lastChild);
+    }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; root.classList.toggle('is-off', !visible); schedule(); }, { threshold: 0.1 }).observe(root);
+    document.addEventListener('visibilitychange', schedule);
+
+    /* ---------- Vagues de livraison ---------- */
+    function waves(pos) {
+      var n = Math.max(6, Math.ceil((total + cfg.vague) / cfg.vague));
+      n = Math.min(n, WAVES.length);
+      var w = Math.min(n, Math.ceil(pos / cfg.vague));
+      if (bar.children.length - 1 !== n) {
+        [].slice.call(bar.querySelectorAll('i')).forEach(function (i) { i.remove(); });
+        for (var k = 0; k < n; k++) bar.insertBefore(document.createElement('i'), pin);
+        bar.style.setProperty('--la-n', n);
+        ticks.innerHTML = '<span>Vague 1</span><span>Vague ' + n + '</span>';
+      }
+      [].forEach.call(bar.querySelectorAll('i'), function (el, k) { el.className = k + 1 < w ? 'is-past' : k + 1 === w ? 'is-mine' : ''; });
+      pin.style.left = Math.min(100, (pos / (n * cfg.vague)) * 100).toFixed(2) + '%';
+      waveT.textContent = 'Vague ' + w; waveD.textContent = 'livraison ' + WAVES[w - 1];
+      return w;
+    }
+
+    /* ---------- Écrans ---------- */
+    function swap(to) {
+      var from = to === sDone ? sForm : sDone;
+      if (from.hidden) { to.hidden = false; return; }
+      if (RM.matches) { from.hidden = true; to.hidden = false; return; }
+      var h0 = screens.offsetHeight; screens.style.height = h0 + 'px';
+      from.classList.add('is-leaving');
+      to.hidden = false; to.classList.add('is-entering');
+      var h1 = to.offsetHeight;
+      requestAnimationFrame(function () { screens.style.height = h1 + 'px'; to.classList.remove('is-entering'); });
+      setTimeout(function () { from.hidden = true; from.classList.remove('is-leaving'); screens.style.height = ''; }, 540);
+    }
+    function setMsg(text, err, sugg) {
+      msg.classList.toggle('is-error', !!err);
+      msg.innerHTML = '';
+      if (sugg) { msg.append('Vouliez-vous dire '); var b = document.createElement('button'); b.type = 'button'; b.textContent = sugg; b.addEventListener('click', function () { input.value = sugg; setMsg('Parfait.', false); input.focus(); }); msg.append(b, NB + '?'); }
+      else msg.textContent = text || '';
+    }
+    function shake(el) { if (RM.matches) return; el.classList.remove('la__shake'); void el.offsetWidth; el.classList.add('la__shake'); }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (root.classList.contains('is-loading')) return;
+      var r = check(input.value);
+      alert.hidden = true;
+      if (!r.ok) { input.setAttribute('aria-invalid', 'true'); setMsg(r.err, true); shake($('.la__row')); input.focus(); return; }
+      input.removeAttribute('aria-invalid');
+      if (r.sugg && input.dataset.suggested !== input.value) { input.dataset.suggested = input.value; setMsg('', false, r.sugg); return; }
+      lastEmail = input.value.trim();
+      root.classList.add('is-loading'); setMsg('Inscription en cours…', false);
+      setTimeout(function () {
+        root.classList.remove('is-loading');
+        if (cfg.reseau === 'erreur') { alert.hidden = false; setMsg('', false); live.textContent = 'La connexion a échoué. Votre adresse n’a pas été enregistrée.'; return; }
+        join(lastEmail);
+      }, RM.matches ? 200 : 1100);
+    });
+    input.addEventListener('input', function () { if (input.getAttribute('aria-invalid')) { input.removeAttribute('aria-invalid'); setMsg(''); } });
+    $('[data-retry]').addEventListener('click', function () { cfg.reseau = 'ok'; root.dataset.reseau = 'ok'; form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit')); });
+
+    function join(email, instant) {
+      total += 1; mine = total; counter.set(total, instant);
+      addFace('Moi'); faces.firstChild.classList.add('la__face-me');
+      sent.textContent = mask(email);
+      link.value = 'lucarne.fr/r/' + Math.random().toString(36).slice(2, 7);
+      root.classList.add('is-done');
+      swap(sDone);
+      place.set(Math.max(1, mine - 37), true);
+      setTimeout(function () { place.set(mine); }, instant ? 0 : 120);
+      var w = waves(mine);
+      live.textContent = 'Vous êtes sur la liste, à la place ' + fr(mine) + ', vague ' + w + '.';
+      setTimeout(function () { var h = sDone.querySelector('h3'); if (h) h.focus({ preventScroll: true }); }, instant ? 0 : 560);
+      clearTimeout(simT);
+      if (cfg.simuler && !RM.matches) simT = setTimeout(referral, 3600);
+    }
+    function referral() {
+      if (!root.classList.contains('is-done')) return;
+      var before = Math.ceil(mine / cfg.vague);
+      mine = Math.max(1, mine - cfg.gain); place.set(mine);
+      var w = waves(mine), name = FRIENDS[friend++ % FRIENDS.length];
+      delta.textContent = '−' + cfg.gain; delta.classList.add('is-on');
+      setTimeout(function () { delta.classList.remove('is-on'); }, 2600);
+      toast.hidden = false; toast.style.animation = 'none'; void toast.offsetWidth; toast.style.animation = '';
+      toast.querySelector('span:first-child').textContent = name.slice(0, 2).toUpperCase();
+      toast.querySelector('span:last-child').textContent = name + ' s’est inscrit avec votre lien' + (w < before ? NB + ': vous passez en vague ' + w + '.' : NB + ': ' + cfg.gain + ' places gagnées.');
+      live.textContent = toast.querySelector('span:last-child').textContent;
+      if (cfg.simuler && friend < 3) simT = setTimeout(referral, 5200);
+    }
+    copy.addEventListener('click', function () {
+      var done = function () { copy.dataset.done = 'true'; copy.querySelector('span').textContent = 'Copié'; setTimeout(function () { copy.dataset.done = 'false'; copy.querySelector('span').textContent = 'Copier'; }, 1800); };
+      link.select();
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText('https://' + link.value).then(done, done); else done();
+    });
+    $('.la__restart').addEventListener('click', function () { reset(); input.focus(); });
+
+    function reset() {
+      clearTimeout(simT); friend = 0; root.classList.remove('is-done', 'is-loading');
+      if (mine) { total -= 1; mine = 0; counter.set(total, true); }
+      input.value = ''; input.removeAttribute('aria-invalid'); delete input.dataset.suggested; setMsg(''); alert.hidden = true; toast.hidden = true;
+      sDone.hidden = true; sForm.hidden = false; sForm.classList.remove('is-leaving', 'is-entering'); screens.style.height = '';
+    }
+
+    read(); total = cfg.inscrits; counter.set(total, true); schedule();
+    root._waitlist = {
+      update: function () { var old = cfg.inscrits; read(); if (cfg.inscrits !== old && !mine) { total = cfg.inscrits; counter.set(total); } if (mine) waves(mine); schedule(); },
+      reset: reset,
+      join: function (email, instant) { reset(); input.value = email || 'camille@gmail.com'; join(input.value, instant); },
+      referral: referral,
+      demo: function (bad) { reset(); input.value = bad || 'camille@gmail.con'; form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit')); },
+    };
+    return root._waitlist;
+  }
+  window.Waitlist = { init: function (scope) { [].forEach.call((scope || document).querySelectorAll('[data-waitlist]'), setup); } };
+  window.Waitlist.init(document);
+})();
+</script>

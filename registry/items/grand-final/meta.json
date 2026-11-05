@@ -1,0 +1,56 @@
+{
+  "id": "grand-final",
+  "nom": "Grand final",
+  "categorie": "cta",
+  "niveau": "premium",
+  "palette": "peche",
+  "description": "Le dernier écran d’une page, raconté au défilement : le titre grandit autour de son point final, le point devient un aplat qui envahit l’écran avec un message, puis l’aplat se resserre jusqu’à devenir le bouton. Un rail de progression accompagne la scène ; aucune boucle quand rien ne bouge.",
+  "tags": ["Scroll", "Sticky", "clip-path", "Zoom", "Morphing", "Fin de page", "Une action"],
+  "date": "2026-11-05",
+  "ordre": 23,
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "technique": "Échelle et clip-path liés au défilement (sticky) · lissage par ressort",
+  "difficulte": 2,
+  "dependances": [
+    { "nom": "tokens.css", "note": "--accent et --accent-fg (aplat, bouton, texte sur l’aplat), surfaces et textes du thème" },
+    { "nom": "JavaScript", "note": "≈ 3 ko minifié, sans bibliothèque ; sans script, la scène finale s’affiche directement" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement (variantes group-[.is-flood]/gf)" }
+  ],
+  "props": [
+    { "name": "titre", "label": "Titre qui grandit", "type": "text", "default": "Partez lentement, arrivez ailleurs",
+      "code": { "html": "<p class=\"gf__title\">{v}<span class=\"gf__dot\"></span></p>", "react": "title=\"{v}\"" }, "hint": "Sans point final : le disque d’accent le remplace." },
+    { "name": "bouton", "label": "Bouton", "type": "text", "default": "Réserver mon trajet",
+      "code": { "html": "<span class=\"gf__btn-l\">{v}", "react": "cta=\"{v}\"" } },
+    { "name": "distance", "label": "Longueur du défilement", "type": "number", "default": 260, "min": 140, "max": 420, "step": 20, "unit": "vh",
+      "code": { "html": "data-distance=\"{v}\"", "react": "distance={{v}}" }, "hint": "Hauteur parcourue pendant que la scène est épinglée. 200 à 280 : rythme confortable." },
+    { "name": "echelle", "label": "Agrandissement du titre", "type": "number", "default": 7, "min": 2, "max": 14, "step": 1, "unit": "×",
+      "code": { "html": "data-echelle=\"{v}\"", "react": "scale={{v}}" } },
+    { "name": "rebond", "label": "Rebond sur le bouton", "type": "boolean", "default": true,
+      "code": { "html": "data-rebond=\"{v}\"", "react": "overshoot={{v}}" }, "hint": "L’aplat dépasse légèrement la taille du bouton avant de s’y poser." },
+    { "name": "rail", "label": "Rail de progression", "type": "boolean", "default": true,
+      "code": { "html": "data-rail=\"{v}\"", "react": "rail={{v}}" } },
+    { "name": "lissage", "label": "Lissage du défilement", "type": "boolean", "default": true,
+      "code": { "html": "data-lissage=\"{v}\"", "react": "smooth={{v}}" }, "hint": "Suit la molette avec un léger ressort ; désactivé : collé au défilement." }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/GrandFinal.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "En toute dernière section d’une page de marque ou de lancement, juste avant le footer : c’est une conclusion, pas un en-tête.",
+    "Titre court qui se termine par un point (le disque d’accent) ; le message de l’aplat tient en une phrase et trois repères au plus.",
+    "Une seule action : le bouton naît de l’aplat, n’ajoutez pas de second bouton à côté.",
+    "Évitez-le sur une page déjà longue en effets de défilement : un seul moment épinglé par page garde l’effet fort.",
+    "API vanilla : el._grandfinal.set(0.4) fige un instant (vignette, capture), set(null) rend la main au défilement."
+  ],
+  "accessibilite": [
+    "Les actes 1 et 2 sont décoratifs (aria-hidden) ; le titre de section, le bouton et le texte final sont du HTML ordinaire, présents dès le départ.",
+    "Clavier : si le bouton reçoit le focus avant la fin, la page saute à la scène finale, bouton visible et actif.",
+    "« Réduire les animations » : plus d’épinglage ni de zoom, la scène finale s’affiche seule, à hauteur d’écran.",
+    "Aucune boucle continue : le rendu ne tourne que pendant le défilement et le lissage.",
+    "Texte sur l’aplat en --accent-fg sur --accent (contraste AA des palettes) ; bouton de 56 px de haut sur mobile."
+  ],
+  "logo_exemple": { "nom": "Portulan", "secteur": "Voyages en train de nuit", "fichier": "logo.svg", "palette": "peche", "typo": "Geist SemiBold" }
+}

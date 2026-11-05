@@ -1,0 +1,265 @@
+<!-- Barre « non enregistré » — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Dès qu'un champ diffère de sa valeur enregistrée, une barre flottante monte sur un ressort et compte les modifications
+     (un vrai écart à l'état enregistré : remettre l'ancienne valeur fait baisser le compteur). Tenter de quitter la page
+     la fait trembler et met le focus sur « Enregistrer » ; beforeunload protège l'onglet. ⌘S / Ctrl S enregistre.
+     Usage : <div data-unsaved data-position="flottante" data-delai="900" data-echec="false" data-secousse="true" data-raccourci="true"> <form data-unsaved-form>…</form> … <div class="un__bar">…</div> </div> -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="un" data-unsaved data-position="flottante" data-delai="900" data-echec="false" data-secousse="true" data-raccourci="true">
+  <aside class="un__side" aria-label="Réglages">
+    <a href="#" class="un__brand" aria-label="Pelage, accueil"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="un__lg-bg"/><g class="un__lg-fg"><ellipse cx="30" cy="44" rx="7" ry="9"/><ellipse cx="43" cy="31" rx="7" ry="9.5"/><ellipse cx="57" cy="31" rx="7" ry="9.5"/><ellipse cx="70" cy="44" rx="7" ry="9"/><path d="M50 50c-10 0-19 10-19 19 0 6 5 9 10 8 4-1 6-3 9-3s5 2 9 3c5 1 10-2 10-8 0-9-9-19-19-19Z"/></g></svg><span>pelage</span></a>
+    <nav class="un__nav" aria-label="Sections des réglages">
+      <a href="#" data-leave>Général</a>
+      <a href="#" data-leave aria-current="page">Clinique</a>
+      <a href="#" data-leave>Agenda en ligne</a>
+      <a href="#" data-leave>Rappels</a>
+      <a href="#" data-leave>Facturation</a>
+      <a href="#" data-leave>Équipe</a>
+    </nav>
+  </aside>
+
+  <main class="un__main">
+    <header class="un__head">
+      <p class="un__crumb">Réglages · Clinique</p>
+      <h1>Profil de la clinique</h1>
+      <p>Ces informations apparaissent sur les rappels envoyés aux propriétaires et sur votre page de prise de rendez-vous.</p>
+    </header>
+
+    <form class="un__form" data-unsaved-form novalidate>
+      <fieldset class="un__group">
+        <legend>Identité</legend>
+        <div class="un__field"><label for="un-nom">Nom de la clinique</label><input id="un-nom" name="nom" value="Clinique vétérinaire des Tanneurs" autocomplete="organization"></div>
+        <div class="un__row">
+          <div class="un__field"><label for="un-tel">Téléphone</label><input id="un-tel" name="tel" type="tel" value="04 78 42 18 90" autocomplete="tel"></div>
+          <div class="un__field"><label for="un-mail">E-mail de contact</label><input id="un-mail" name="mail" type="email" value="accueil@tanneurs-veto.fr" autocomplete="email"></div>
+        </div>
+        <div class="un__field"><label for="un-adr">Adresse</label><input id="un-adr" name="adresse" value="4 rue des Tanneurs, 69002 Lyon" autocomplete="street-address"></div>
+      </fieldset>
+
+      <fieldset class="un__group">
+        <legend>Agenda</legend>
+        <div class="un__field"><label for="un-duree">Durée d’une consultation</label>
+          <span class="un__sel"><select id="un-duree" name="duree"><option value="15">15 minutes</option><option value="20" selected>20 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option></select></span></div>
+        <div class="un__switch"><span id="un-sam-l">Ouvert le samedi matin<small>De 9 h à 12 h 30, réservable en ligne</small></span><button type="button" role="switch" aria-checked="true" aria-labelledby="un-sam-l" name="samedi"><span></span></button></div>
+        <div class="un__switch"><span id="un-urg-l">Accepter les urgences en ligne<small>Les créneaux d’urgence restent visibles jusqu’à 19 h</small></span><button type="button" role="switch" aria-checked="false" aria-labelledby="un-urg-l" name="urgences"><span></span></button></div>
+      </fieldset>
+
+      <fieldset class="un__group">
+        <legend>Rappels</legend>
+        <div class="un__switch"><span id="un-sms-l">Rappel de vaccin par SMS<small>Envoyé au propriétaire avant l’échéance</small></span><button type="button" role="switch" aria-checked="true" aria-labelledby="un-sms-l" name="sms"><span></span></button></div>
+        <div class="un__field"><label for="un-delai">Délai du rappel</label>
+          <span class="un__sel"><select id="un-delai" name="delai"><option value="7">7 jours avant</option><option value="14" selected>14 jours avant</option><option value="30">30 jours avant</option></select></span></div>
+        <div class="un__field"><label for="un-sig">Signature des messages</label><textarea id="un-sig" name="signature" rows="3">L’équipe des Tanneurs. Pour toute question, répondez simplement à ce message.</textarea></div>
+      </fieldset>
+    </form>
+  </main>
+
+  <div class="un__bar" role="region" aria-label="Modifications non enregistrées" aria-hidden="true" inert>
+    <p class="un__msg"><span class="un__dot" aria-hidden="true"></span><span data-msg>Modifications non enregistrées</span></p>
+    <div class="un__acts">
+      <button type="button" class="un__btn un__btn--ghost" data-cancel>Annuler</button>
+      <button type="button" class="un__btn" data-save><span class="un__spin" aria-hidden="true"></span><span data-save-l>Enregistrer</span><kbd class="un__kbd" aria-hidden="true">⌘S</kbd></button>
+    </div>
+  </div>
+  <p class="un__live" role="status" aria-live="polite"></p>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .un { display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: 100vh; color: var(--text); font-family: var(--font-sans); }
+  .un :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .un h1, .un p { margin: 0; }
+  .un a { color: inherit; text-decoration: none; }
+
+  .un__side { position: sticky; top: 0; align-self: start; display: grid; align-content: start; gap: 24px; height: 100vh; padding: 24px 16px; border-right: 1px solid var(--border); background: var(--surface); }
+  .un__brand { display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 8px; color: var(--text-strong); font-weight: 600; font-size: 18px; letter-spacing: -.03em; }
+  .un__brand svg { width: 28px; height: 28px; }
+  .un__lg-bg { fill: var(--accent); } .un__lg-fg { fill: var(--accent-fg); }
+  .un__nav { display: grid; align-content: start; gap: 2px; }
+  .un__nav a { display: flex; align-items: center; height: 36px; padding: 0 12px; border-radius: var(--radius-ctl); color: var(--text-muted); font-size: var(--t-sm); transition: background var(--motion-fast), color var(--motion-fast); }
+  .un__nav a:hover { background: var(--state-hover); color: var(--text-strong); }
+  .un__nav a[aria-current="page"] { background: var(--accent-subtle); color: var(--text-strong); font-weight: 500; }
+
+  .un__main { width: 100%; max-width: 808px; margin: 0 auto; padding: 48px 48px 160px; }
+  .un__crumb { color: var(--text-muted); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .un__head h1 { margin-top: 8px; color: var(--text-strong); font-size: var(--t-page); line-height: var(--t-page-lh); font-weight: 600; letter-spacing: var(--track-tight); }
+  .un__head p:last-child { max-width: 60ch; margin-top: 8px; color: var(--text-muted); font-size: var(--t-sm); line-height: var(--t-sm-lh); }
+
+  .un__form { display: grid; gap: 24px; margin-top: 32px; }
+  .un__group { display: grid; gap: 20px; margin: 0; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); }
+  .un__group legend { float: left; width: 100%; margin-bottom: 4px; padding: 0; color: var(--text-strong); font-size: var(--t-base); font-weight: 600; }
+  .un__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .un__field { display: grid; gap: 8px; }
+  .un__field label, .un__switch > span { display: flex; align-items: center; gap: 8px; color: var(--text-strong); font-size: var(--t-label); line-height: var(--t-label-lh); font-weight: 500; }
+  .un input, .un select, .un textarea { width: 100%; min-height: 40px; padding: 8px 12px; border: 1px solid var(--border-control); border-radius: var(--radius-ctl); background: var(--bg); color: var(--text-strong); font: 400 var(--t-sm) / 1.4 var(--font-sans); transition: border-color var(--motion-fast), box-shadow var(--motion-fast); }
+  .un textarea { resize: vertical; }
+  .un select { appearance: none; padding-right: 36px; cursor: pointer; }
+  .un__sel { position: relative; display: block; }
+  .un__sel::after { content: ""; position: absolute; top: 50%; right: 14px; width: 7px; height: 7px; border-right: 1.5px solid var(--text-muted); border-bottom: 1.5px solid var(--text-muted); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+  .un input:focus, .un select:focus, .un textarea:focus { outline: none; border-color: var(--focus-ring); box-shadow: 0 0 0 1px var(--focus-ring); }
+  /* Champ modifié : un point d'accent après le libellé. */
+  .un [data-changed] > label::after, .un [data-changed] > span::after { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); order: 2; }
+  .un__switch { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .un__switch > span { flex-wrap: wrap; }
+  .un__switch small { flex-basis: 100%; order: 3; color: var(--text-muted); font-size: var(--t-xs); line-height: var(--t-xs-lh); font-weight: 400; }
+  .un [role="switch"] { position: relative; flex: none; width: 44px; height: 26px; padding: 0; border: 0; border-radius: var(--radius-pill); background: var(--border-strong); cursor: pointer; transition: background var(--motion-base); }
+  .un [role="switch"] span { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--surface); transition: transform 320ms cubic-bezier(.3, 1.4, .5, 1); }
+  .un [role="switch"][aria-checked="true"] { background: var(--accent); }
+  .un [role="switch"][aria-checked="true"] span { transform: translateX(18px); }
+
+  /* La barre : cachée sous le bord, elle monte sur un ressort (cubic-bezier à dépassement). */
+  .un__bar { position: fixed; z-index: var(--z-toast); left: calc(50% + 120px); bottom: calc(24px + var(--safe-bottom)); display: flex; align-items: center; gap: 24px; width: max-content; max-width: calc(100% - 288px); padding: 8px 8px 8px 20px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface); box-shadow: var(--shadow-popover); transform: translate(-50%, calc(100% + 48px)) scale(.96); opacity: 0; transition: transform 520ms cubic-bezier(.22, 1.35, .4, 1), opacity 200ms var(--ease-out), border-color var(--motion-base), box-shadow var(--motion-base); }
+  .un.is-dirty .un__bar, .un.is-saved .un__bar { transform: translate(-50%, 0) scale(1); opacity: 1; }
+  .un[data-position="pleine"] .un__bar { left: 240px; right: 0; bottom: 0; width: auto; max-width: none; justify-content: space-between; padding: 12px 24px calc(12px + var(--safe-bottom)); border-width: 1px 0 0; border-radius: 0; box-shadow: none; transform: translateY(100%); }
+  .un[data-position="pleine"].is-dirty .un__bar, .un[data-position="pleine"].is-saved .un__bar { transform: none; }
+  .un__msg { display: flex; align-items: center; gap: 10px; color: var(--text-strong); font-size: var(--t-sm); font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .un__dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-subtle); }
+  .un.is-saved .un__dot { background: var(--up); box-shadow: none; }
+  .un.is-error .un__dot { background: var(--down); box-shadow: none; }
+  .un__acts { display: flex; gap: 8px; }
+  .un__btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 0 16px; border: 1px solid transparent; border-radius: var(--radius-pill); background: var(--accent); color: var(--accent-fg); font: 500 var(--t-sm) / 1 var(--font-sans); white-space: nowrap; cursor: pointer; transition: background var(--motion-fast), transform var(--motion-fast) var(--ease-out); }
+  .un__btn:hover { background: var(--accent-hover); }
+  .un__btn:active { transform: scale(.97); }
+  .un__btn--ghost { border-color: var(--border-control); background: transparent; color: var(--text-strong); }
+  .un__btn--ghost:hover { background: var(--state-hover); }
+  .un__btn[aria-busy="true"] { pointer-events: none; }
+  .un__kbd { padding: 1px 5px; border: 1px solid color-mix(in srgb, var(--accent-fg) 35%, transparent); border-radius: 4px; font: 500 11px / 16px var(--font-mono); opacity: .85; }
+  .un[data-raccourci="false"] .un__kbd { display: none; }
+  .un__spin { display: none; width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: un-spin .7s linear infinite; }
+  .un__btn[aria-busy="true"] .un__spin { display: inline-block; }
+  .un__btn[aria-busy="true"] .un__kbd { display: none; }
+  @keyframes un-spin { to { transform: rotate(1turn); } }
+  /* Secousse : oscillation amortie quand on tente de partir. */
+  .un.is-nudge .un__bar { border-color: var(--accent); box-shadow: var(--shadow-popover), 0 0 0 3px var(--accent-subtle); }
+  .un.is-shake .un__bar { animation: un-shake 520ms cubic-bezier(.36, .07, .19, .97); }
+  .un[data-position="pleine"].is-shake .un__bar { animation-name: un-shake-full; }
+  @keyframes un-shake { 0%, 100% { transform: translate(-50%, 0); } 15% { transform: translate(calc(-50% - 10px), 0); } 30% { transform: translate(calc(-50% + 8px), 0); } 45% { transform: translate(calc(-50% - 6px), 0); } 60% { transform: translate(calc(-50% + 4px), 0); } 75% { transform: translate(calc(-50% - 2px), 0); } }
+  @keyframes un-shake-full { 0%, 100% { transform: none; } 15% { transform: translateX(-10px); } 30% { transform: translateX(8px); } 45% { transform: translateX(-6px); } 60% { transform: translateX(4px); } 75% { transform: translateX(-2px); } }
+  .un__live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+  @media (max-width: 760px) {
+    .un { grid-template-columns: minmax(0, 1fr); }
+    .un__side { position: sticky; top: 0; z-index: var(--z-sticky); height: auto; gap: 8px; padding: 8px 0 0; border-right: 0; border-bottom: 1px solid var(--border); }
+    .un__brand { height: 44px; margin: 0 8px; }
+    /* Mobile : la navigation devient une rangée défilante d'onglets. */
+    .un__nav { display: flex; gap: 4px; overflow-x: auto; padding: 0 16px 8px; scrollbar-width: none; }
+    .un__nav::-webkit-scrollbar { display: none; }
+    .un__nav a { flex: none; height: 40px; }
+    .un__main { padding: 24px 16px 160px; }
+    .un__group { padding: 16px; }
+    .un__row { grid-template-columns: 1fr; }
+    .un input, .un select, .un textarea { min-height: 44px; font-size: var(--t-input); }
+    .un__switch > span { font-size: var(--t-base); }
+    .un__switch small { font-size: var(--t-sm); line-height: var(--t-sm-lh); }
+    .un__bar, .un[data-position="pleine"] .un__bar { left: 8px; right: 8px; bottom: calc(8px + var(--safe-bottom)); width: auto; max-width: none; gap: 12px; padding: 8px 8px 8px 16px; border-width: 1px; border-radius: var(--radius-sheet); box-shadow: var(--shadow-popover); transform: translateY(calc(100% + 24px)); }
+    .un.is-dirty .un__bar, .un.is-saved .un__bar, .un[data-position="pleine"].is-dirty .un__bar, .un[data-position="pleine"].is-saved .un__bar { transform: none; }
+    .un.is-shake .un__bar, .un[data-position="pleine"].is-shake .un__bar { animation-name: un-shake-full; }
+    .un__msg { min-width: 0; white-space: normal; line-height: 1.3; }
+    .un__btn { height: 44px; padding: 0 16px; }
+    .un__kbd { display: none; }
+    .un__long { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .un__bar { transition: opacity 120ms linear !important; }
+    .un.is-shake .un__bar { animation: none !important; }
+    .un [role="switch"] span { transition: none; }
+    .un__spin { animation-duration: 2s; }
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  function init(root) {
+    if (root._un) return root._un;
+    var form = root.querySelector('[data-unsaved-form]'), bar = root.querySelector('.un__bar'), msg = bar.querySelector('[data-msg]');
+    var save = bar.querySelector('[data-save]'), saveL = save.querySelector('[data-save-l]'), cancel = bar.querySelector('[data-cancel]'), live = root.querySelector('.un__live');
+    var mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+    bar.querySelector('.un__kbd').textContent = mac ? '⌘S' : 'Ctrl S';
+    var saved = {}, state = 'clean', hideT = 0, nudgeT = 0;
+
+    /* Valeur courante de chaque contrôle (champ, liste, interrupteur), lue par son nom. */
+    function controls() { return [].slice.call(form.querySelectorAll('input[name], select[name], textarea[name], [role=switch][name]')); }
+    function value(el) { return el.getAttribute('role') === 'switch' ? el.getAttribute('aria-checked') : el.value; }
+    function key(el) { return el.getAttribute('name'); }
+    function snapshot() { saved = {}; controls().forEach(function (el) { saved[key(el)] = value(el); }); }
+    function changed() { return controls().filter(function (el) { return value(el) !== saved[key(el)]; }); }
+
+    /* « 3 modifications non enregistrées » ; la fin est masquée sur mobile, la barre reste sur deux lignes au plus. */
+    function plural(n) { var x = n > 1 ? 's' : ''; return n + ' modification' + x + '<span class="un__long"> non enregistrée' + x + '</span>'; }
+    function show(on) { root.classList.toggle('is-dirty', on); bar.setAttribute('aria-hidden', String(!on && state !== 'saved')); if (on || state === 'saved') bar.removeAttribute('inert'); else bar.setAttribute('inert', ''); }
+    function refresh() {
+      if (state === 'saving') return;
+      var ch = changed();
+      controls().forEach(function (el) { var w = el.closest('.un__field, .un__switch'); if (w) { if (ch.indexOf(el) >= 0) w.setAttribute('data-changed', ''); else w.removeAttribute('data-changed'); } });
+      var was = root.classList.contains('is-dirty');
+      if (ch.length) {
+        clearTimeout(hideT); root.classList.remove('is-saved', 'is-error'); state = 'dirty';
+        msg.innerHTML = plural(ch.length); saveL.textContent = 'Enregistrer';
+        if (!was) { show(true); live.textContent = 'Modifications non enregistrées.'; }
+      } else if (state !== 'saved') { state = 'clean'; show(false); if (was) live.textContent = 'Plus aucune modification en attente.'; }
+    }
+
+    form.addEventListener('input', refresh);
+    form.addEventListener('change', refresh);
+    form.addEventListener('click', function (e) { var s = e.target.closest('[role=switch]'); if (s) { s.setAttribute('aria-checked', String(s.getAttribute('aria-checked') !== 'true')); refresh(); } });
+    form.addEventListener('submit', function (e) { e.preventDefault(); doSave(); });
+
+    function doSave() {
+      if (state !== 'dirty' && state !== 'error') return;
+      state = 'saving'; root.classList.remove('is-error');
+      save.setAttribute('aria-busy', 'true'); saveL.textContent = 'Enregistrement…'; cancel.disabled = true;
+      setTimeout(function () {
+        save.removeAttribute('aria-busy'); cancel.disabled = false;
+        if (root.dataset.echec === 'true') {
+          state = 'error'; root.classList.add('is-error'); msg.textContent = 'Échec de l’enregistrement, rien n’a été perdu'; saveL.textContent = 'Réessayer';
+          live.textContent = 'Échec de l’enregistrement. Vos modifications sont toujours là.'; return;
+        }
+        snapshot(); state = 'saved';
+        root.classList.add('is-saved'); root.classList.remove('is-dirty');
+        controls().forEach(function (el) { var w = el.closest('[data-changed]'); if (w) w.removeAttribute('data-changed'); });
+        msg.textContent = 'Modifications enregistrées'; saveL.textContent = 'Enregistré';
+        live.textContent = 'Modifications enregistrées.';
+        hideT = setTimeout(function () { state = 'clean'; root.classList.remove('is-saved'); show(false); refresh(); }, 1400);
+      }, +root.dataset.delai || 900);
+    }
+    function doCancel() {
+      controls().forEach(function (el) {
+        var v = saved[key(el)];
+        if (el.getAttribute('role') === 'switch') el.setAttribute('aria-checked', v); else el.value = v;
+      });
+      state = 'clean'; root.classList.remove('is-error'); refresh(); live.textContent = 'Modifications annulées.';
+    }
+    save.addEventListener('click', doSave);
+    cancel.addEventListener('click', doCancel);
+
+    /* Tentative de départ : la barre tremble, s'entoure d'accent et prend le focus. */
+    function nudge() {
+      if (root.dataset.secousse !== 'false') { root.classList.remove('is-shake'); bar.offsetWidth; root.classList.add('is-shake'); }
+      root.classList.add('is-nudge'); msg.textContent = 'Enregistrez ou annulez avant de quitter';
+      live.textContent = 'Modifications non enregistrées : enregistrez ou annulez avant de quitter cette page.';
+      save.focus({ preventScroll: true });
+      clearTimeout(nudgeT); nudgeT = setTimeout(function () { root.classList.remove('is-nudge', 'is-shake'); if (state === 'dirty') msg.innerHTML = plural(changed().length); }, 2400);
+    }
+    root.addEventListener('click', function (e) { var a = e.target.closest('[data-leave]'); if (!a) return; e.preventDefault(); if (state === 'dirty' || state === 'error' || state === 'saving') nudge(); });
+    addEventListener('beforeunload', function (e) { if (state === 'dirty' || state === 'error') { e.preventDefault(); e.returnValue = ''; } });
+    addEventListener('keydown', function (e) {
+      if (root.dataset.raccourci === 'false') return;
+      if ((e.metaKey || e.ctrlKey) && (e.key === 's' || e.key === 'S')) { e.preventDefault(); doSave(); }
+    });
+
+    snapshot();
+    root._un = {
+      update: function (o) { Object.keys(o || {}).forEach(function (k) { if (o[k] != null) root.dataset[k] = o[k]; }); },
+      nudge: function () { if (state === 'dirty') nudge(); },
+      /* Démo : modifie deux champs comme le ferait quelqu'un. */
+      demo: function () { var n = form.querySelector('[name=nom]'); n.value = 'Clinique vétérinaire des Tanneurs et de la Saône'; form.querySelector('[name=urgences]').setAttribute('aria-checked', 'true'); refresh(); },
+      reset: doCancel
+    };
+    return root._un;
+  }
+  document.querySelectorAll('[data-unsaved]').forEach(init);
+  window.BarreNonEnregistre = { init: init };
+})();
+</script>

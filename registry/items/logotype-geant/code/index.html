@@ -1,0 +1,218 @@
+<!-- Logotype géant — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system, police variable Geist).
+     Le nom de la marque occupe toute la largeur du footer. Les lettres réagissent au pointeur : sous le curseur elles
+     prennent de la graisse, se soulèvent et s'étirent, chacune sur son propre ressort. Au repos, une vague traverse le mot.
+     La largeur de chaque lettre est compensée à chaque image : le mot garde exactement la largeur du footer, rien ne saute.
+     Usage : <div data-logotype-geant data-effet="elastique" data-rayon="260" data-min="300" data-max="900" data-vague="true"> … <p class="lg__word" data-word>ressac</p> … </div> -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<footer class="lg" data-logotype-geant data-effet="elastique" data-rayon="260" data-min="300" data-max="900" data-raideur="180" data-amortissement="13" data-vague="true" aria-labelledby="lg-news-t">
+  <div class="lg__top">
+    <form class="lg__news" onsubmit="event.preventDefault(); this.classList.add('is-done'); this.querySelector('[role=status]').textContent = 'Merci ! Première marée le 1er décembre.';">
+      <h2 id="lg-news-t">La marée du mois</h2>
+      <p>Un e-mail par mois : les prévisions de houle, une nouvelle pièce de l’atelier et les fins de série avant tout le monde.</p>
+      <div class="lg__field">
+        <label class="lg__sr" for="lg-mail">Adresse e-mail</label>
+        <input id="lg-mail" type="email" required autocomplete="email" placeholder="vous@exemple.fr">
+        <button type="submit">S’inscrire</button>
+      </div>
+      <p class="lg__ok" role="status" aria-live="polite"></p>
+    </form>
+
+    <nav class="lg__cols" aria-label="Plan du site">
+      <div><h3>Boutique</h3><ul role="list"><li><a href="#">Maillots femme</a></li><li><a href="#">Maillots homme</a></li><li><a href="#">Combinaisons</a></li><li><a href="#">Ponchos et serviettes</a></li></ul></div>
+      <div><h3>Ressac</h3><ul role="list"><li><a href="#">L’atelier d’Hossegor</a></li><li><a href="#">Matières recyclées</a></li><li><a href="#">Journal</a></li></ul></div>
+      <div><h3>Aide</h3><ul role="list"><li><a href="#">Livraison et retours</a></li><li><a href="#">Guide des tailles</a></li><li><a href="#">Nous écrire</a></li></ul></div>
+    </nav>
+  </div>
+
+  <div class="lg__meta">
+    <p><span class="lg__dot" aria-hidden="true"></span>Expédié sous 48 h depuis Hossegor · Retours gratuits 30 jours</p>
+    <p class="lg__legal"><span>© 2026 Ressac (marque fictive)</span><a href="#">Mentions légales</a><a href="#">CGV</a></p>
+  </div>
+
+  <div class="lg__stage">
+    <p class="lg__word" data-word role="img" aria-label="ressac">ressac</p>
+  </div>
+</footer>
+<!-- /SECTION -->
+
+<style>
+  .lg { --lg-fs: 20vw; position: relative; overflow: hidden; padding: 64px 32px 0; background: var(--surface); border-top: 1px solid var(--border); color: var(--text); font-family: var(--font-sans); }
+  .lg a { color: inherit; text-decoration: none; }
+  .lg :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .lg h2, .lg h3, .lg p, .lg ul { margin: 0; }
+  .lg__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  .lg__top { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; }
+  .lg__news h2 { color: var(--text-strong); font-size: var(--t-page); line-height: var(--t-page-lh); font-weight: 600; letter-spacing: var(--track-tight); }
+  .lg__news > p { max-width: 44ch; margin-top: 12px; color: var(--text-muted); font-size: var(--t-sm); line-height: var(--t-sm-lh); }
+  .lg__field { display: flex; gap: 8px; max-width: 440px; margin-top: 24px; padding: 4px; border: 1px solid var(--border-control); border-radius: var(--radius-pill); background: var(--bg); transition: border-color var(--motion-base); }
+  .lg__field:focus-within { border-color: var(--focus-ring); }
+  .lg__field input { flex: 1; min-width: 0; height: 40px; padding: 0 16px; border: 0; background: none; color: var(--text-strong); font: 400 var(--t-input) / 1 var(--font-sans); outline: none; }
+  .lg__field input::placeholder { color: var(--text-muted); }
+  .lg__field button { flex: none; height: 40px; padding: 0 20px; border: 0; border-radius: var(--radius-pill); background: var(--accent); color: var(--accent-fg); font: 500 var(--t-sm) / 1 var(--font-sans); cursor: pointer; transition: background var(--motion-base), transform var(--motion-fast) var(--ease-out); }
+  .lg__field button:hover { background: var(--accent-hover); }
+  .lg__field button:active { transform: scale(.97); }
+  .lg__ok { min-height: 22px; margin-top: 8px; color: var(--text-strong); font-size: var(--t-sm); }
+  .lg__news.is-done .lg__field { opacity: .5; pointer-events: none; }
+
+  .lg__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .lg__cols h3 { margin-bottom: 16px; color: var(--text-muted); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .lg__cols ul { display: grid; gap: 4px; padding: 0; list-style: none; }
+  .lg__cols a { display: inline-flex; align-items: center; min-height: 32px; font-size: var(--t-sm); transition: color var(--motion-base); }
+  .lg__cols a:hover { color: var(--text-strong); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+  .lg__meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; margin-top: 64px; padding: 20px 0; border-top: 1px solid var(--border); color: var(--text-muted); font-size: var(--t-xs); line-height: var(--t-xs-lh); }
+  .lg__meta a:hover { color: var(--text-strong); }
+  .lg__legal { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  .lg__dot { display: inline-block; width: 6px; height: 6px; margin-right: 8px; border-radius: 50%; background: var(--up); vertical-align: 2px; }
+
+  /* Le mot : chaque lettre a une case de largeur fixe ; la lettre est compensée en scaleX quand sa graisse change. */
+  .lg__stage { position: relative; margin: calc(var(--lg-fs) * -.06) -32px 0; padding: 0 32px; touch-action: pan-y; -webkit-user-select: none; user-select: none; cursor: default; }
+  .lg__word { display: flex; justify-content: space-between; margin: 0; padding-bottom: .05em; color: var(--text-strong); font-size: var(--lg-fs); line-height: .76; font-weight: 300; letter-spacing: 0; white-space: nowrap; }
+  .lg__l { position: relative; display: block; flex: none; text-align: center; }
+  .lg__g { display: block; transform-origin: 50% 100%; will-change: transform, font-variation-settings; }
+  .lg[data-pret="false"] .lg__word { visibility: hidden; }
+
+  @media (max-width: 760px) {
+    .lg { padding: 48px 16px 0; }
+    .lg__top { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .lg__news > p { font-size: var(--t-base); line-height: var(--t-base-lh); }
+    .lg__field { max-width: none; }
+    .lg__field input { height: 44px; }
+    .lg__field button { height: 44px; }
+    .lg__cols { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+    .lg__cols div:first-child { grid-column: 1 / -1; }
+    .lg__cols div:first-child ul { grid-template-columns: 1fr 1fr; column-gap: 16px; }
+    .lg__cols a { min-height: 44px; font-size: var(--t-base); }
+    .lg__meta { flex-direction: column; margin-top: 40px; font-size: var(--t-sm); line-height: var(--t-sm-lh); }
+    .lg__meta a { display: inline-flex; align-items: center; min-height: 44px; }
+    .lg__stage { margin-left: -16px; margin-right: -16px; padding: 0 16px; }
+    .lg__legal span { flex-basis: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { .lg__word { font-weight: 600; } .lg__g { will-change: auto; } }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  var reduced = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches; };
+  var STEPS = [100, 200, 300, 400, 500, 600, 700, 800, 900];
+
+  function init(root) {
+    if (root._lg) return root._lg;
+    var word = root.querySelector('[data-word]'), stage = word.parentNode;
+    var ctx = document.createElement('canvas').getContext('2d');
+    var L = [], fs = 100, raf = 0, visible = true, pointer = null, wave = null, waveTimer = 0, last = 0;
+    var cfg = {};
+    function read() {
+      var d = root.dataset;
+      cfg = { effet: d.effet || 'elastique', rayon: +d.rayon || 260, min: +d.min || 300, max: +d.max || 900,
+        k: +d.raideur || 180, c: +d.amortissement || 13, vague: d.vague !== 'false' };
+    }
+
+    /* Largeur de chaque lettre à chaque graisse (canvas, 100 px) : sert au calage et à la compensation. */
+    function build() {
+      var text = (word.dataset.text || word.textContent).trim() || 'ressac'; word.dataset.text = text; word.setAttribute('aria-label', text);
+      word.textContent = '';
+      var fam = getComputedStyle(word).fontFamily;
+      L = text.split('').map(function (ch) {
+        var w = STEPS.map(function (s) { ctx.font = s + ' 100px ' + fam; return ctx.measureText(ch).width; });
+        var slot = document.createElement('span'), g = document.createElement('span');
+        slot.className = 'lg__l'; g.className = 'lg__g'; g.textContent = ch; slot.setAttribute('aria-hidden', 'true');
+        slot.appendChild(g); word.appendChild(slot);
+        return { el: slot, g: g, w: w, s: 0, v: 0, x: 0 };
+      });
+      fit();
+    }
+    function widthAt(l, wt) { var t = (Math.max(100, Math.min(900, wt)) - 100) / 100, i = Math.min(7, Math.floor(t)); return l.w[i] + (l.w[i + 1] - l.w[i]) * (t - i); }
+    /* Calage : le mot, à sa graisse de repos, remplit exactement la largeur disponible. */
+    function fit() {
+      if (!L.length) return;
+      var avail = word.clientWidth, base = reduced() ? 600 : cfg.min, sum = 0;
+      L.forEach(function (l) { sum += widthAt(l, base); });
+      fs = avail / sum * 100 * .995;
+      root.style.setProperty('--lg-fs', fs.toFixed(2) + 'px');
+      var r = word.getBoundingClientRect(), acc = 0;
+      L.forEach(function (l) { var w = widthAt(l, base) * fs / 100; l.slot = w; l.el.style.width = w.toFixed(2) + 'px'; l.cx = acc + w / 2; acc += w; });
+      L.forEach(function (l) { l.cx += r.left; });
+      paint();
+      root.dataset.pret = 'true';
+    }
+    function paint() {
+      var lift = cfg.effet === 'graisse' ? 0 : fs * .07, stretch = cfg.effet === 'elastique' ? .1 : 0;
+      var base = reduced() ? 600 : cfg.min;
+      L.forEach(function (l) {
+        var s = Math.max(-.25, Math.min(1.25, l.s)), wt = Math.max(100, Math.min(900, base + (cfg.max - base) * s));
+        var sx = l.slot / (widthAt(l, wt) * fs / 100);
+        l.g.style.fontVariationSettings = '"wght" ' + wt.toFixed(0);
+        l.g.style.fontWeight = wt.toFixed(0);
+        l.g.style.transform = 'translate3d(0,' + (-lift * s).toFixed(2) + 'px,0) scale(' + sx.toFixed(4) + ',' + (1 + stretch * s).toFixed(4) + ')';
+        l.g.style.color = s > .02 ? 'color-mix(in oklab, var(--text-strong), var(--accent) ' + Math.round(Math.min(1, s) * 100) + '%)' : '';
+      });
+    }
+
+    /* Influence : cloche gaussienne autour du pointeur (ou de la crête de la vague). */
+    function influence(l, x) { var d = (l.cx - x) / cfg.rayon; return Math.exp(-d * d * 1.6); }
+    function tick(now) {
+      raf = 0;
+      var dt = Math.min(.034, (now - (last || now)) / 1000) || .016; last = now;
+      var crest = null;
+      if (wave) {
+        var p = (now - wave.t0) / wave.d;
+        if (p >= 1) { wave = null; schedule(); }
+        else { var r = word.getBoundingClientRect(); crest = r.left - cfg.rayon + p * (r.width + cfg.rayon * 2); }
+      }
+      var moving = false;
+      L.forEach(function (l) {
+        var t = 0;
+        if (pointer) t = influence(l, pointer.x) * pointer.a;
+        if (crest != null) t = Math.max(t, influence(l, crest) * .85);
+        var a = -cfg.k * (l.s - t) - cfg.c * l.v; l.v += a * dt; l.s += l.v * dt;
+        if (Math.abs(l.s - t) > .001 || Math.abs(l.v) > .001) moving = true;
+      });
+      paint();
+      if ((moving || pointer || wave) && visible) raf = requestAnimationFrame(tick);
+      else last = 0;
+    }
+    function wake() { if (!raf && visible && !reduced()) { last = 0; raf = requestAnimationFrame(tick); } }
+
+    /* Vague au repos : toutes les 7 s quand personne ne touche le mot et qu'il est à l'écran. */
+    function schedule() { clearTimeout(waveTimer); if (cfg.vague && visible && !reduced()) waveTimer = setTimeout(function () { if (!pointer) startWave(); else schedule(); }, 7000); }
+    function startWave() { if (reduced()) return; wave = { t0: performance.now(), d: 1500 }; wake(); }
+
+    /* Pointeur : souris au survol de tout le footer ; doigt en glissant sur le mot (le défilement vertical reste libre). */
+    root.addEventListener('pointermove', function (e) { if (e.pointerType === 'touch' && !stage.contains(e.target)) return; pointer = { x: e.clientX, a: 1 }; wake(); });
+    root.addEventListener('pointerleave', function () { pointer = null; wake(); schedule(); });
+    stage.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') { pointer = { x: e.clientX, a: 1 }; wake(); } });
+    ['pointerup', 'pointercancel'].forEach(function (ev) { stage.addEventListener(ev, function (e) { if (e.pointerType !== 'mouse') { pointer = null; wake(); schedule(); } }); });
+
+    if (window.IntersectionObserver) new IntersectionObserver(function (es) {
+      visible = es[0].isIntersecting;
+      if (visible) { schedule(); if (cfg.vague && !reduced()) setTimeout(startWave, 400); } else { clearTimeout(waveTimer); cancelAnimationFrame(raf); raf = 0; }
+    }).observe(stage);
+    var ro = window.ResizeObserver ? new ResizeObserver(function () { fit(); }) : null;
+    if (ro) ro.observe(word); else addEventListener('resize', fit);
+    addEventListener('scroll', function () { if (L.length) { var r = word.getBoundingClientRect(), acc = r.left; L.forEach(function (l) { l.cx = acc + l.slot / 2; acc += l.slot; }); } }, { passive: true });
+
+    read(); root.dataset.pret = 'false';
+    (document.fonts && document.fonts.load ? Promise.all([document.fonts.load('300 100px ' + getComputedStyle(word).fontFamily), document.fonts.ready]) : Promise.resolve()).then(build, build);
+
+    root._lg = {
+      update: function (o) {
+        Object.keys(o || {}).forEach(function (k) { if (o[k] != null) root.dataset[k] = o[k]; });
+        read();
+        if (o && o.texte != null) { word.dataset.text = o.texte; build(); } else fit();
+        schedule();
+      },
+      wave: startWave,
+      /* Pose un état figé (vignette, captures) : graisse au point x, 0 à 1 de la largeur. */
+      pose: function (fx) { var r = word.getBoundingClientRect(); L.forEach(function (l) { l.s = influence(l, r.left + fx * r.width); l.v = 0; }); paint(); }
+    };
+    return root._lg;
+  }
+  document.querySelectorAll('[data-logotype-geant]').forEach(init);
+  window.LogotypeGeant = { init: init };
+})();
+</script>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Footer dévoilé — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .hint { position: fixed; z-index: 30; right: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid var(--border-control); border-radius: var(--radius-pill); background: var(--surface); color: var(--text-strong); font: 500 14px / 1 var(--font-sans); box-shadow: var(--shadow-popover); cursor: pointer; transition: opacity var(--motion-base), transform var(--motion-base) var(--ease-out); }
+  .hint svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .hint[hidden] { display: inline-flex; opacity: 0; transform: translateY(8px); pointer-events: none; }
+  .is-thumb .hint { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<button type="button" class="hint" id="hint"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg><span>Aller au footer</span></button>
+<script>
+  var props = Socle.props({ titre: 'Votre logement, couvert dès ce soir.', effet: 'montee', rayon: 24, voile: true });
+  var root = null, api = null;
+  function opts(p) { return { effet: p.effet, rayon: String(p.rayon), voile: String(!!p.voile) }; }
+  function render(p) { if (!api) return; root.querySelector('#fd-foot-t').textContent = p.titre || ' '; api.update(opts(p)); }
+  /* Rejouer : remonte d'un écran puis redescend en douceur, pour revoir le dévoilement. */
+  function glide() {
+    var el = document.scrollingElement, end = el.scrollHeight - innerHeight;
+    if (Socle.reducedMotion()) { el.scrollTop = end; return; }
+    el.scrollTop = Math.max(0, end - innerHeight * 1.1);
+    requestAnimationFrame(function () { window.scrollTo({ top: end, behavior: 'smooth' }); });
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-footer-devoile]');
+    var o = opts(props); Object.keys(o).forEach(function (k) { root.dataset[k] = o[k]; });
+    root.querySelector('#fd-foot-t').textContent = props.titre;
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    api = root._fd;
+    /* Vignette : le footer presque entièrement découvert, le bord arrondi de la page encore visible. */
+    if (Socle.thumb) { var el = document.scrollingElement; el.scrollTop = el.scrollHeight - innerHeight - root.querySelector('.fd__foot').offsetHeight * .14; api.measure(); }
+  });
+  var hint = document.getElementById('hint');
+  hint.addEventListener('click', glide);
+  addEventListener('scroll', function () { hint.hidden = scrollY > document.scrollingElement.scrollHeight - innerHeight * 2.2; }, { passive: true });
+  Socle.onChange(render);
+  Socle.onReplay(glide);
+</script>
+</body>
+</html>

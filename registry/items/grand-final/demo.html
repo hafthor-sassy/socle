@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grand final — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .gf-after { display: grid; place-items: center; min-height: 40vh; padding: 48px 24px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.875rem; }
+  .is-thumb .gf__hint { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<footer class="gf-after"><p>© 2026 Portulan · Fin de la page</p></footer>
+<script>
+  var props = Socle.props({ titre: 'Partez lentement, arrivez ailleurs', bouton: 'Réserver mon trajet', distance: 260, echelle: 7, rebond: true, rail: true, lissage: true });
+  var KEYS = ['distance', 'echelle', 'rebond', 'rail', 'lissage'];
+  var el = null;
+  function apply(p) {
+    if (!el) return;
+    KEYS.forEach(function (k) { el.dataset[k] = String(p[k]); });
+    el.querySelector('.gf__title').firstChild.nodeValue = p.titre;
+    el.querySelector('.gf__btn-l').firstChild.nodeValue = p.bouton;
+    if (el._grandfinal) el._grandfinal.update();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    el = document.querySelector('[data-grandfinal]');
+    KEYS.forEach(function (k) { el.dataset[k] = String(props[k]); });
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    apply(props);
+    var q = new URLSearchParams(location.search);
+    if (el._grandfinal && Socle.thumb) el._grandfinal.set(0.36);
+    if (el._grandfinal && q.get('p')) el._grandfinal.set(parseFloat(q.get('p')));
+  });
+  Socle.onChange(apply);
+  /* Rejouer : remonte en haut de la section puis la parcourt en 4 s. */
+  Socle.onReplay(function () {
+    if (!el || !el._grandfinal || Socle.reducedMotion()) return;
+    var top = el.getBoundingClientRect().top + scrollY, span = el.offsetHeight - el.querySelector('.gf__stage').offsetHeight, t0 = null;
+    window.scrollTo(0, top);
+    function step(now) { if (t0 == null) t0 = now; var k = Math.min(1, (now - t0) / 4000); k = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; window.scrollTo(0, top + span * k); if (k < 1) requestAnimationFrame(step); }
+    setTimeout(function () { requestAnimationFrame(step); }, 300);
+  });
+</script>
+</body>
+</html>

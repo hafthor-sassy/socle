@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Footer ASCII — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  body { display: flex; flex-direction: column; min-height: 100vh; }
+  .ctx { flex: 1; display: grid; align-content: center; gap: 12px; padding: 56px 32px; }
+  .ctx p { color: var(--text-muted); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .ctx h1 { max-width: 22ch; font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem); line-height: 1.1; letter-spacing: -.03em; font-weight: 600; }
+  @media (max-width: 760px) { .ctx { padding: 40px 16px; } }
+  .is-thumb .ctx, .is-thumb .fa__top, .is-thumb .fa__legal { display: none; }
+  .is-thumb .fa__art { margin-top: 0; }
+  .is-thumb .fa { display: grid; align-content: center; min-height: 100vh; border-top: 0; }
+</style>
+</head>
+<body>
+<section class="ctx" aria-label="Fin de page">
+  <p>Journal de développement · n° 42</p>
+  <h1>Marée basse sort le 12 mars. Merci d’avoir joué à la démo.</h1>
+  <p>Survolez le logo, cliquez ou touchez-le</p>
+</section>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ taille: 9, jeu: 'classique', couleur: 'encre', rayon: 120, contour: true, scintille: true, trame: true, motif: 'logo' });
+  var root = null, api = null;
+  function opts(p) { return { taille: String(p.taille), jeu: p.jeu, couleur: p.couleur, rayon: String(p.rayon), contour: String(!!p.contour), scintille: String(!!p.scintille), trame: String(!!p.trame), motif: p.motif }; }
+  function render(p) { if (api) { api.update(opts(p)); api.wave(.3, .5); } }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-footer-ascii]');
+    var o = opts(props); Object.keys(o).forEach(function (k) { root.dataset[k] = o[k]; });
+    if (Socle.thumb) { root.dataset.scintille = 'false'; root.dataset.taille = '14'; }
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    api = root._fa;
+    /* Vignette : image figée, une zone brouillée sur la droite du mot. */
+    if (Socle.thumb) document.fonts.ready.then(function () { setTimeout(function () { api.pose(.62, .5); }, 120); });
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { api && api.wave(.12, .5); });
+</script>
+</body>
+</html>

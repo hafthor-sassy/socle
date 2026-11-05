@@ -1,0 +1,59 @@
+{
+  "id": "cta-fond-vivant",
+  "nom": "CTA à fond vivant",
+  "categorie": "cta",
+  "niveau": "essentiel",
+  "palette": "moutarde",
+  "description": "Le bloc final d’une page, avec une seule action. Sa trame de traits s’oriente vers le pointeur comme des aiguilles aimantées et s’allume à son approche ; sans pointeur, un faisceau de phare balaie la trame depuis le bouton et laisse une traîne. Canvas 2D léger, texte toujours lisible.",
+  "tags": ["Canvas 2D", "Pointeur", "Ressort", "Trame", "Fin de page", "Une action"],
+  "date": "2026-11-05",
+  "ordre": 22,
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "technique": "Canvas 2D · angle de chaque trait sur ressort · faisceau rotatif",
+  "difficulte": 1,
+  "dependances": [
+    { "nom": "tokens.css", "note": "--border-control pour la trame, --accent-vivid (ou --text-strong) pour les traits allumés ; relues à chaque changement de thème ou de palette" },
+    { "nom": "Canvas 2D", "note": "Natif, ≈ 3 ko minifié, aucun CDN" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "titre", "label": "Titre", "type": "text", "default": "Voyez chaque requête avant vos utilisateurs.",
+      "code": { "html": "<h2 class=\"fv__title\" id=\"fv-title\">{v}</h2>", "react": "title=\"{v}\"" } },
+    { "name": "bouton", "label": "Bouton", "type": "text", "default": "Démarrer gratuitement",
+      "code": { "html": "<a class=\"fv__btn\" href=\"#inscription\">{v}", "react": "cta=\"{v}\"" } },
+    { "name": "pas", "label": "Pas de la trame", "type": "number", "default": 24, "min": 16, "max": 40, "step": 4, "unit": "px",
+      "code": { "html": "data-pas=\"{v}\"", "react": "step={{v}}" } },
+    { "name": "longueur", "label": "Longueur des traits", "type": "number", "default": 10, "min": 4, "max": 20, "step": 1, "unit": "px",
+      "code": { "html": "data-longueur=\"{v}\"", "react": "length={{v}}" } },
+    { "name": "rayon", "label": "Rayon d’influence", "type": "number", "default": 200, "min": 80, "max": 360, "step": 20, "unit": "px",
+      "code": { "html": "data-rayon=\"{v}\"", "react": "radius={{v}}" } },
+    { "name": "ton", "label": "Couleur allumée", "type": "select", "default": "accent",
+      "options": [ { "value": "accent", "label": "Accent" }, { "value": "neutre", "label": "Neutre" } ],
+      "code": { "html": "data-ton=\"{v}\"", "react": "tone=\"{v}\"" } },
+    { "name": "phare", "label": "Faisceau au repos", "type": "boolean", "default": true,
+      "code": { "html": "data-phare=\"{v}\"", "react": "beacon={{v}}" }, "hint": "Sans pointeur depuis 2 s (et au tactile), un faisceau tourne autour du bouton." },
+    { "name": "fondu", "label": "Calme sous le texte", "type": "select", "default": "centre",
+      "options": [ { "value": "centre", "label": "Oui" }, { "value": "aucun", "label": "Non" } ],
+      "code": { "html": "data-fondu=\"{v}\"", "react": "fade=\"{v}\"" }, "hint": "La trame s’efface dans une ellipse calculée sur le contenu." }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/CtaFondVivant.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "En dernière section d’une page d’accueil ou d’offre, juste avant le footer : le mouvement attire l’œil vers la seule action proposée.",
+    "Une action, pas deux : gardez les arguments en micro-texte (sans carte, essai, hébergement) plutôt qu’en second bouton.",
+    "Pas de 20 à 28 px pour un fond discret ; « Neutre » si la page porte déjà beaucoup d’accent.",
+    "Le faisceau part toujours du bouton : déplacez le bouton, le phare suit."
+  ],
+  "accessibilite": [
+    "Canvas décoratif (aria-hidden) ; titre, texte et lien restent du HTML, utilisables au clavier et lus normalement.",
+    "Sous le texte, la trame descend à 10 % d’opacité et le faisceau y est plafonné : contrastes AA du thème conservés en clair et en sombre.",
+    "« Réduire les animations » : trame figée, sans faisceau ni ressort, redessinée seulement au changement de thème ou de taille.",
+    "Boucle suspendue hors écran (IntersectionObserver) et onglet masqué.",
+    "Mobile : bouton pleine largeur de 52 px, la trame réagit au doigt sans bloquer le défilement (touch-action: pan-y)."
+  ],
+  "logo_exemple": { "nom": "Fanal", "secteur": "Observabilité d’API (outil développeur)", "fichier": "logo.svg", "palette": "moutarde", "typo": "Geist SemiBold" }
+}

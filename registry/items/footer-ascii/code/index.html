@@ -1,0 +1,261 @@
+<!-- Footer ASCII — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system, Geist et Geist Mono).
+     Le logo de la marque est rendu en caractères dans un canvas 2D : la forme est échantillonnée cellule par cellule,
+     les bords prennent un caractère orienté (- / | \) et l'intérieur un caractère dense. Au survol, les caractères se
+     brouillent autour du pointeur puis se recomposent ; un clic ou un toucher envoie une onde. Rien ne tourne hors écran.
+     Usage : <footer data-footer-ascii data-taille="9" data-jeu="classique" data-couleur="encre" data-rayon="120"> … <div class="fa__art" data-art data-texte="glyphe"></div> … </footer> -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<footer class="fa" data-footer-ascii data-taille="9" data-jeu="classique" data-couleur="encre" data-rayon="120" data-contour="true" data-scintille="true" data-trame="true" data-motif="logo" aria-labelledby="fa-t">
+  <div class="fa__top">
+    <div class="fa__pitch">
+      <p class="fa__kicker">Studio indépendant · Nantes</p>
+      <h2 id="fa-t">Des jeux courts, faits main, qui tiennent dans une soirée.</h2>
+      <a href="#" class="fa__btn">Ajouter Marée basse à ma liste de souhaits</a>
+    </div>
+    <nav class="fa__cols" aria-label="Plan du site">
+      <div><h3>Jeux</h3><ul role="list"><li><a href="#">Marée basse <span class="fa__tag">2026</span></a></li><li><a href="#">Cartographe <span class="fa__tag">Accès anticipé</span></a></li><li><a href="#">Atlas des sons</a></li></ul></div>
+      <div><h3>Studio</h3><ul role="list"><li><a href="#">Manifeste</a></li><li><a href="#">Recrutement</a></li><li><a href="#">Dossier de presse</a></li></ul></div>
+      <div><h3>Communauté</h3><ul role="list"><li><a href="#">Serveur de discussion</a></li><li><a href="#">Lettre du studio</a></li><li><a href="#">Journal de développement</a></li></ul></div>
+    </nav>
+  </div>
+
+  <div class="fa__art" data-art data-texte="glyphe" role="img" aria-label="Glyphe, logo dessiné en caractères">
+    <canvas aria-hidden="true"></canvas>
+    <p class="fa__fallback" aria-hidden="true">glyphe</p>
+  </div>
+
+  <div class="fa__legal">
+    <p><span class="fa__cursor" aria-hidden="true"></span>Glyphe SARL (marque fictive) · 2019 — 2026</p>
+    <nav aria-label="Informations légales"><a href="#">Mentions légales</a><a href="#">Confidentialité</a><a href="#">Contact presse</a></nav>
+  </div>
+</footer>
+<!-- /SECTION -->
+
+<style>
+  .fa { position: relative; padding: 64px 32px 24px; overflow: hidden; background: var(--surface); border-top: 1px solid var(--border); color: var(--text); font-family: var(--font-sans); }
+  .fa a { color: inherit; text-decoration: none; }
+  .fa :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .fa h2, .fa h3, .fa p, .fa ul { margin: 0; }
+
+  .fa__top { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; }
+  .fa__kicker { color: var(--accent); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .fa__pitch h2 { max-width: 20ch; margin-top: 16px; color: var(--text-strong); font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem); line-height: 1.12; font-weight: 600; letter-spacing: -.03em; text-wrap: balance; }
+  .fa .fa__btn { display: inline-flex; align-items: center; min-height: 44px; margin-top: 24px; padding: 0 20px; border: 1px solid var(--border-control); border-radius: var(--radius-pill); color: var(--text-strong); font: 500 var(--t-sm) / 1.2 var(--font-sans); transition: background var(--motion-base), border-color var(--motion-base); }
+  .fa .fa__btn:hover { background: var(--accent-subtle); border-color: var(--accent); }
+  .fa__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .fa__cols h3 { margin-bottom: 16px; color: var(--text-muted); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .fa__cols ul { display: grid; gap: 4px; padding: 0; list-style: none; }
+  .fa__cols a { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-height: 32px; font-size: var(--t-sm); transition: color var(--motion-base); }
+  .fa__cols a:hover { color: var(--text-strong); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .fa__tag { padding: 0 6px; border: 1px solid var(--border); border-radius: var(--radius-ctl); color: var(--text-muted); font: 500 11px / 18px var(--font-mono); }
+
+  /* Le logo en caractères : canvas plein cadre, hauteur calculée d'après la forme. */
+  .fa__art { position: relative; margin: 56px -8px 0; touch-action: pan-y; cursor: crosshair; }
+  .fa__art canvas { display: block; width: 100%; height: var(--fa-h, 0px); }
+  .fa__fallback { color: var(--text-strong); font: 800 clamp(5rem, 2rem + 14vw, 16rem) / .9 var(--font-sans); letter-spacing: -.05em; }
+  .fa[data-pret="true"] .fa__fallback { display: none; }
+  .fa[data-pret="false"] .fa__art canvas { position: absolute; }
+
+  .fa__legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-muted); font: 400 var(--t-xs) / var(--t-xs-lh) var(--font-mono); }
+  .fa__legal nav { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+  .fa__legal a:hover { color: var(--text-strong); }
+  .fa__cursor { display: inline-block; width: .6em; height: 1em; margin-right: 8px; background: var(--accent); vertical-align: -2px; animation: fa-blink 1.1s steps(1) infinite; }
+  @keyframes fa-blink { 50% { opacity: 0; } }
+
+  @media (max-width: 760px) {
+    .fa { padding: 48px 16px calc(16px + var(--safe-bottom)); }
+    .fa__top { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+    .fa .fa__btn { width: 100%; justify-content: center; min-height: 48px; text-align: center; }
+    .fa__cols { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+    .fa__cols div:first-child { grid-column: 1 / -1; }
+    .fa__cols a { min-height: 44px; font-size: var(--t-base); }
+    .fa__art { margin: 40px -4px 0; }
+    .fa__legal { flex-direction: column; font-size: var(--t-sm); line-height: var(--t-sm-lh); }
+    .fa__legal a { display: inline-flex; align-items: center; min-height: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fa__cursor { animation: none; } }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  var SETS = {
+    classique: { ramp: ' .:-=+*#%@', scramble: '!<>-_\\/[]{}=+*^?#%&$@' },
+    blocs: { ramp: ' ░▒▓█', scramble: '░▒▓█▚▞▙▟▛▜' },
+    binaire: { ramp: ' .01', scramble: '01' }
+  };
+  var reduced = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches; };
+
+  function init(root) {
+    if (root._fa) return root._fa;
+    var art = root.querySelector('[data-art]'), cv = art.querySelector('canvas'), g = cv.getContext('2d');
+    var base = document.createElement('canvas'), bg = base.getContext('2d');
+    var cfg, cols = 0, rows = 0, cw = 9, ch = 15, dpr = 1, W = 0, H = 0;
+    var cell = [], heat = null, hot = new Set(), colors = {}, raf = 0, last = 0, visible = true, frame = 0;
+    var pointer = null, waves = [], shimmerAt = 0, monoFam = '', sansFam = '';
+
+    function read() {
+      var d = root.dataset;
+      cfg = { taille: +d.taille || 9, jeu: SETS[d.jeu] ? d.jeu : 'classique', couleur: d.couleur || 'encre', rayon: +d.rayon || 120,
+        contour: d.contour !== 'false', scintille: d.scintille !== 'false', trame: d.trame !== 'false', motif: d.motif || 'logo' };
+    }
+    /* Couleurs relues dans les variables de tokens (palette et thème suivis). */
+    function readColors() {
+      var cs = getComputedStyle(root);
+      var v = function (n) { return cs.getPropertyValue(n).trim(); };
+      var ink = v('--text-strong'), acc = v('--accent'), mut = v('--text-muted');
+      colors = { trame: v('--border'), faint: mut,
+        shape: cfg.couleur === 'accent' ? acc : ink,
+        edge: cfg.couleur === 'encre' ? acc : cfg.couleur === 'accent' ? acc : ink,
+        hot: cfg.couleur === 'accent' ? ink : cfg.couleur === 'mono' ? mut : acc };
+    }
+
+    /* Échantillonnage : la forme (pictogramme pixel + mot) est dessinée dans un masque, puis moyennée par cellule. */
+    function sample() {
+      var text = art.dataset.texte || 'glyphe', S = 4, mw = cols * S, cellH = ch / cw * S;
+      var m = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+      m.font = '800 100px ' + sansFam;
+      var mt = m.measureText(text), asc = mt.actualBoundingBoxAscent || 74, desc = mt.actualBoundingBoxDescent || 22;
+      var logo = cfg.motif === 'logo', icon = logo ? (asc + desc) * .92 : 0, gap = logo ? 26 : 0;
+      var unitW = icon + gap + mt.width, F = (mw * .94) / unitW;
+      var contentH = (asc + desc) * F, mh = Math.ceil(contentH / cellH + 2) * cellH;
+      rows = Math.round(mh / cellH);
+      m.canvas.width = mw; m.canvas.height = Math.ceil(mh);
+      m.fillStyle = colors.shape; /* masque interne, jamais affiché : seule sa couverture (alpha) compte */
+      var x0 = mw * .03, top = (mh - contentH) / 2;
+      if (logo) {
+        var px = [[0,1],[0,2],[0,3],[0,4],[1,0],[2,0],[2,3],[2,4],[3,0],[3,4],[4,1],[4,2],[4,3],[4,4]], u = icon * F / 5.4;
+        px.forEach(function (p) { m.beginPath(); (m.roundRect || m.rect).call(m, x0 + (p[1] * 1.1 + .1) * u, top + (p[0] * 1.1 + .1) * u, u, u, u * .18); m.fill(); });
+      }
+      m.font = '800 ' + (100 * F) + 'px ' + sansFam; m.textBaseline = 'alphabetic';
+      m.fillText(text, x0 + (icon + gap) * F, top + asc * F);
+      var data = m.getImageData(0, 0, m.canvas.width, m.canvas.height).data, cov = new Float32Array(cols * rows);
+      for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++) {
+        var y0 = Math.floor(r * cellH), y1 = Math.min(m.canvas.height, Math.floor((r + 1) * cellH)), sum = 0, n = 0;
+        for (var y = y0; y < y1; y++) for (var x = c * S; x < c * S + S; x++) { sum += data[(y * mw + x) * 4 + 3]; n++; }
+        cov[r * cols + c] = n ? sum / n / 255 : 0;
+      }
+      /* Caractère de chaque cellule : orienté sur les bords (gradient), dense à l'intérieur, trame au fond. */
+      var ramp = SETS[cfg.jeu].ramp, at = function (c, r) { return c < 0 || r < 0 || c >= cols || r >= rows ? 0 : cov[r * cols + c]; };
+      cell = new Array(cols * rows);
+      for (r = 0; r < rows; r++) for (c = 0; c < cols; c++) {
+        var k = cov[r * cols + c], ch0 = ' ', kind = 0;
+        var gx = (at(c + 1, r) - at(c - 1, r)) / cw, gy = (at(c, r + 1) - at(c, r - 1)) / ch, mag = Math.hypot(gx, gy) * cw;
+        if (k > .06) {
+          /* Ombrage d'après la forme : la couverture moyenne du voisinage (5 × 3 cellules) creuse les zones proches des bords. */
+          var sum5 = 0; for (var dy = -1; dy <= 1; dy++) for (var dx = -2; dx <= 2; dx++) sum5 += at(c + dx, r + dy);
+          var q = k * (.55 + .45 * Math.pow(sum5 / 15, 1.3));
+          kind = 1; ch0 = ramp[Math.min(ramp.length - 1, 1 + Math.floor(q * (ramp.length - 1)))];
+          if (cfg.contour && cfg.jeu === 'classique' && mag > .32 && k < .9) {
+            var a = (Math.atan2(gy, gx) * 180 / Math.PI + 90 + 360) % 180; /* direction du bord */
+            ch0 = a < 22.5 || a >= 157.5 ? '-' : a < 67.5 ? '\\' : a < 112.5 ? '|' : '/'; kind = 2;
+          }
+        } else if (cfg.trame && (r + c) % 2 === 0 && r % 2 === 0) { ch0 = '·'; kind = 3; }
+        cell[r * cols + c] = { ch: ch0, kind: kind };
+      }
+      heat = new Float32Array(cols * rows); hot.clear();
+    }
+
+    function layout() {
+      read(); readColors();
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = art.clientWidth; if (!W) return;
+      cw = Math.max(5, cfg.taille * (W < 600 ? .72 : 1)); ch = cw * 1.72;
+      cols = Math.floor(W / cw);
+      sample();
+      H = Math.round(rows * ch);
+      root.style.setProperty('--fa-h', H + 'px');
+      [cv, base].forEach(function (c) { c.width = Math.round(W * dpr); c.height = Math.round(H * dpr); });
+      paintBase(); draw();
+      root.dataset.pret = 'true';
+    }
+    function setFont(ctx) { ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.font = '500 ' + (cw * 1.5).toFixed(1) + 'px ' + monoFam; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; }
+    /* Image de base : tous les caractères au repos, dessinés une seule fois. */
+    function paintBase() {
+      bg.setTransform(1, 0, 0, 1, 0, 0); bg.clearRect(0, 0, base.width, base.height); setFont(bg);
+      var ox = (W - cols * cw) / 2;
+      for (var i = 0; i < cell.length; i++) {
+        var c = cell[i]; if (!c.kind) continue;
+        bg.fillStyle = c.kind === 3 ? colors.trame : c.kind === 2 ? colors.edge : colors.shape;
+        bg.fillText(c.ch, ox + (i % cols + .5) * cw, (Math.floor(i / cols) + .5) * ch);
+      }
+    }
+    /* Image courante : la base, puis seulement les cellules « chaudes », brouillées. */
+    function draw() {
+      g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, cv.width, cv.height); g.drawImage(base, 0, 0);
+      if (!hot.size) return;
+      setFont(g);
+      var sc = SETS[cfg.jeu].scramble, ox = (W - cols * cw) / 2;
+      hot.forEach(function (i) {
+        var h = heat[i], c = cell[i], x = ox + (i % cols + .5) * cw, y = (Math.floor(i / cols) + .5) * ch;
+        g.clearRect(x - cw / 2, y - ch / 2, cw, ch);
+        if (!c.kind && h < .35) return;
+        var settle = h < .18 && c.kind; /* sous ce seuil, la cellule a retrouvé son caractère */
+        var glyph = settle ? c.ch : sc[(i * 7 + (frame >> 2) * 13 + (i % 5) * 3) % sc.length];
+        g.globalAlpha = c.kind ? 1 : Math.min(1, h * 1.2) * .7;
+        g.fillStyle = settle ? (c.kind === 2 ? colors.edge : c.kind === 3 ? colors.trame : colors.shape) : (c.kind ? colors.hot : colors.faint);
+        g.fillText(glyph, x, y);
+      });
+      g.globalAlpha = 1;
+    }
+
+    function heatAt(px, py, R, amount, ring) {
+      var ox = (W - cols * cw) / 2, c0 = Math.max(0, Math.floor((px - ox - R) / cw)), c1 = Math.min(cols - 1, Math.ceil((px - ox + R) / cw));
+      var r0 = Math.max(0, Math.floor((py - R) / ch)), r1 = Math.min(rows - 1, Math.ceil((py + R) / ch));
+      for (var r = r0; r <= r1; r++) for (var c = c0; c <= c1; c++) {
+        var dx = ox + (c + .5) * cw - px, dy = (r + .5) * ch - py, d = Math.sqrt(dx * dx + dy * dy), t;
+        if (ring != null) { t = 1 - Math.abs(d - ring) / (cw * 3); } else t = 1 - d / R;
+        if (t <= 0) continue;
+        var i = r * cols + c, v = Math.min(1, t * amount);
+        if (v > heat[i]) { heat[i] = v; hot.add(i); }
+      }
+    }
+    function tick(now) {
+      raf = 0; frame++;
+      var dt = Math.min(.05, (now - (last || now)) / 1000) || .016; last = now;
+      if (pointer) heatAt(pointer.x, pointer.y, cfg.rayon, 1.6);
+      waves = waves.filter(function (w) {
+        var rad = (now - w.t0) / 1000 * 900; if (rad > W * 1.2) return false;
+        heatAt(w.x, w.y, rad + cw * 3, 1, rad); return true;
+      });
+      if (cfg.scintille && now > shimmerAt) {
+        shimmerAt = now + 90;
+        for (var s = 0; s < 3; s++) { var j = Math.floor(Math.random() * cell.length); if (cell[j] && cell[j].kind === 1 || cell[j] && cell[j].kind === 2) { heat[j] = Math.max(heat[j], .55); hot.add(j); } }
+      }
+      var k = Math.exp(-dt * 2.6);
+      hot.forEach(function (i) { heat[i] *= k; if (heat[i] < .01) { heat[i] = 0; hot.delete(i); } });
+      draw();
+      if (visible && (hot.size || pointer || waves.length || cfg.scintille)) raf = requestAnimationFrame(tick); else last = 0;
+    }
+    function wake() { if (!raf && visible && !reduced() && cols) { last = 0; raf = requestAnimationFrame(tick); } }
+
+    function local(e) { var r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+    art.addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse') { pointer = local(e); wake(); } });
+    art.addEventListener('pointerleave', function () { pointer = null; });
+    art.addEventListener('pointerdown', function (e) { var p = local(e); waves.push({ x: p.x, y: p.y, t0: performance.now() }); if (e.pointerType !== 'mouse') pointer = p; wake(); });
+    ['pointerup', 'pointercancel'].forEach(function (ev) { art.addEventListener(ev, function (e) { if (e.pointerType !== 'mouse') pointer = null; }); });
+
+    if (window.IntersectionObserver) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) wake(); else { cancelAnimationFrame(raf); raf = 0; } }).observe(art);
+    if (window.ResizeObserver) { var lw = 0; new ResizeObserver(function () { if (art.clientWidth !== lw) { lw = art.clientWidth; layout(); } }).observe(art); }
+    /* Palette ou thème changés sur <html> : on relit les couleurs et on redessine. */
+    new MutationObserver(function () { readColors(); paintBase(); draw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'style', 'data-accent'] });
+
+    root.dataset.pret = 'false';
+    var cs = getComputedStyle(root); sansFam = cs.getPropertyValue('--font-sans').trim() || 'sans-serif'; monoFam = cs.getPropertyValue('--font-mono').trim() || 'monospace';
+    var fl = document.fonts && document.fonts.load ? Promise.all([document.fonts.load('800 100px ' + sansFam), document.fonts.load('500 16px ' + monoFam)]) : Promise.resolve();
+    fl.then(start, start);
+    function start() { layout(); wake(); }
+
+    root._fa = {
+      update: function (o) { Object.keys(o || {}).forEach(function (k) { if (o[k] != null) root.dataset[k] = o[k]; }); layout(); wake(); },
+      wave: function (fx, fy) { if (reduced() || !cols) return; waves.push({ x: W * (fx == null ? .5 : fx), y: H * (fy == null ? .5 : fy), t0: performance.now() }); wake(); },
+      /* État figé pour une vignette ou une capture : une zone brouillée autour du point (fx, fy). */
+      pose: function (fx, fy) { if (!cols) return; heatAt(W * fx, H * fy, cfg.rayon, 1.6); frame = 9; draw(); }
+    };
+    return root._fa;
+  }
+  document.querySelectorAll('[data-footer-ascii]').forEach(init);
+  window.FooterAscii = { init: init };
+})();
+</script>

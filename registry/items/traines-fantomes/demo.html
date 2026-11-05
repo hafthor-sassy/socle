@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Traînées fantômes — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .auto { position: fixed; z-index: 10; right: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border: 1px solid var(--border-control); border-radius: 999px; background: var(--surface); color: var(--text-strong); font: 500 14px / 1 var(--font-sans); box-shadow: var(--shadow-popover); cursor: pointer; }
+  .auto svg { width: 16px; height: 16px; fill: currentColor; }
+  .auto[aria-pressed="true"] { background: var(--accent-subtle); border-color: var(--accent); }
+  .is-thumb .auto { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<button type="button" class="auto" aria-pressed="false" id="auto"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg><span>Défilement auto</span></button>
+<script>
+  var props = Socle.props({ titre: 'Nocturne 27', copies: 5, ecart: 1.4, intensite: 0.7, remplissage: 'solid', inclinaison: true, flou: false, raideur: 170, amortissement: 16 });
+  var root = null, api = null, autoOn = false;
+  function opts(p) { return { copies: p.copies, gap: p.ecart, intensity: p.intensite, fill: p.remplissage, skew: String(!!p.inclinaison), blur: String(!!p.flou), stiffness: p.raideur, damping: p.amortissement }; }
+  function render(p) { if (!api) return; root.querySelector('#gt-title').firstChild.nodeValue = p.titre || 'Titre'; api.update(opts(p)); api.pulse(1); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-ghost-trails]');
+    var o = opts(props); Object.keys(o).forEach(function (k) { root.dataset[k] = o[k]; });
+    root.querySelector('#gt-title').textContent = props.titre;
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = root._ghostTrails;
+    /* Vignette : défilement automatique, arrêté hors écran. */
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      new IntersectionObserver(function (e) { api.autoplay(e[0].isIntersecting); }).observe(document.body);
+    }
+  });
+  var btn = document.getElementById('auto');
+  btn.addEventListener('click', function () { autoOn = !autoOn; btn.setAttribute('aria-pressed', autoOn); btn.querySelector('span').textContent = autoOn ? 'Arrêter' : 'Défilement auto'; api && api.autoplay(autoOn); });
+  ['wheel', 'touchstart', 'keydown'].forEach(function (ev) { window.addEventListener(ev, function (e) { if (autoOn && !(ev === 'keydown' && e.target === btn)) { autoOn = false; btn.setAttribute('aria-pressed', 'false'); btn.querySelector('span').textContent = 'Défilement auto'; api && api.autoplay(false); } }, { passive: true }); });
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (api) api.pulse(1.2); });
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Logotype géant — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  body { display: flex; flex-direction: column; min-height: 100vh; }
+  .ctx { flex: 1; display: grid; align-content: center; gap: 16px; padding: 64px 32px; }
+  .ctx p:first-child { color: var(--text-muted); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .ctx h1 { max-width: 18ch; font-size: clamp(2rem, 1.2rem + 2.6vw, 3.5rem); line-height: 1.05; letter-spacing: -.035em; font-weight: 600; }
+  .ctx p:last-child { color: var(--text-muted); font-size: var(--t-sm); }
+  @media (max-width: 760px) { .ctx { padding: 48px 16px; } }
+  .is-thumb .ctx { display: none; }
+</style>
+</head>
+<body>
+<section class="ctx" aria-label="Fin de page">
+  <p>Collection été 2027</p>
+  <h1>Des maillots taillés pour la vague, cousus à Hossegor.</h1>
+  <p>Passez le pointeur ou le doigt sur le nom en bas de page.</p>
+</section>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ texte: 'ressac', effet: 'elastique', rayon: 260, min: 300, max: 900, raideur: 180, amortissement: 13, vague: true });
+  var root = null, api = null;
+  function opts(p) { return { effet: p.effet, rayon: String(p.rayon), min: String(p.min), max: String(p.max), raideur: String(p.raideur), amortissement: String(p.amortissement), vague: String(!!p.vague) }; }
+  var lastText = props.texte;
+  function render(p) {
+    if (!api) return;
+    var o = opts(p);
+    if (p.texte !== lastText) { o.texte = (p.texte || 'ressac').replace(/\s+/g, '').slice(0, 14) || 'ressac'; lastText = p.texte; }
+    api.update(o); api.wave();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-logotype-geant]');
+    var o = opts(props); Object.keys(o).forEach(function (k) { root.dataset[k] = o[k]; });
+    if (Socle.thumb) root.dataset.vague = 'false';
+    var w = root.querySelector('[data-word]');
+    if (props.texte && props.texte !== 'ressac') { w.textContent = props.texte; }
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    api = root._lg;
+    /* Vignette : un état figé, la graisse posée au tiers du mot. */
+    if (Socle.thumb) document.fonts.ready.then(function () { setTimeout(function () { api.pose(.38); }, 60); });
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { api && api.wave(); });
+</script>
+</body>
+</html>

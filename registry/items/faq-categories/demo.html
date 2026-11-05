@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ à catégories collantes — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .is-thumb .fc { padding-top: 56px; }
+  .is-thumb .fc__end { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ disposition: 'gauche', indicateur: 'pastille', compteurs: true, recherche: true, multiple: false, premiere: true, decalage: 0, defilement: 'doux' });
+  var KEYS = ['disposition', 'indicateur', 'compteurs', 'recherche', 'multiple', 'premiere', 'decalage', 'defilement'];
+  var el = null, lastFirst = props.premiere;
+  function apply(p) {
+    if (!el) return;
+    KEYS.forEach(function (k) { el.dataset[k] = String(p[k]); });
+    if (el._faqcat) {
+      el._faqcat.update();
+      if (p.premiere !== lastFirst) { lastFirst = p.premiere; el._faqcat.first(!!p.premiere); }
+    }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    el = document.querySelector('[data-faqcat]');
+    KEYS.forEach(function (k) { el.dataset[k] = String(props[k]); });
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    apply(props);
+    var q = new URLSearchParams(location.search);
+    if (q.get('q') && el._faqcat) el._faqcat.search(q.get('q'));
+    if (q.get('go') && el._faqcat) setTimeout(function () { el._faqcat.go(+q.get('go')); }, 200);
+  });
+  Socle.onChange(apply);
+  /* Rejouer : retour en haut, puis parcours automatique des rubriques. */
+  Socle.onReplay(function () {
+    var f = el && el._faqcat; if (!f) return;
+    f.search(''); window.scrollTo(0, 0);
+    [1, 2, 3].forEach(function (i, k) { setTimeout(function () { f.go(i); }, 500 + k * 1100); });
+    setTimeout(function () { f.go(0); }, 500 + 3 * 1100);
+  });
+</script>
+</body>
+</html>

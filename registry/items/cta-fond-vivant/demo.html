@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CTA à fond vivant — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  body { display: grid; align-items: center; }
+  .is-thumb .fv { padding: 40px; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ titre: 'Voyez chaque requête avant vos utilisateurs.', bouton: 'Démarrer gratuitement', pas: 24, longueur: 10, rayon: 200, ton: 'accent', phare: true, fondu: 'centre' });
+  var KEYS = ['pas', 'longueur', 'rayon', 'ton', 'phare', 'fondu'];
+  var el = null, panel = null;
+  function apply(p) {
+    if (!el) return;
+    KEYS.forEach(function (k) { el.dataset[k] = String(p[k]); });
+    el.querySelector('.fv__title').textContent = p.titre;
+    el.querySelector('.fv__btn').firstChild.nodeValue = p.bouton;
+    if (panel && panel._fondvivant) panel._fondvivant.update();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    el = document.querySelector('[data-fondvivant]'); panel = el.querySelector('.fv__panel');
+    KEYS.forEach(function (k) { el.dataset[k] = String(props[k]); });
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    apply(props);
+    var g = panel._fondvivant, r = panel.getBoundingClientRect(), q = new URLSearchParams(location.search);
+    if (g && Socle.thumb) { g.beam(-2.4); g.settle(90); }
+    if (g && q.get('sim')) { g.hover(r.width * 0.78, r.height * 0.32); g.settle(60); }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { var g = panel && panel._fondvivant; if (!g) return; g.release(); g.beam(-Math.PI); });
+</script>
+</body>
+</html>

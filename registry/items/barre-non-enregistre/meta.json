@@ -1,0 +1,50 @@
+{
+  "id": "barre-non-enregistre",
+  "nom": "Barre « non enregistré »",
+  "categorie": "reglages",
+  "niveau": "essentiel",
+  "description": "Une barre flottante monte sur un ressort dès qu’un réglage diffère de sa valeur enregistrée et compte les modifications au plus juste : remettre l’ancienne valeur fait baisser le compteur, jusqu’à faire disparaître la barre. Tenter de quitter la page la fait trembler et met le focus sur « Enregistrer » ; l’onglet est protégé par beforeunload ; ⌘S ou Ctrl S enregistre. États enregistrement, réussite et échec inclus, champs modifiés marqués d’un point.",
+  "tags": ["Formulaire", "Réglages", "État", "Ressort", "Raccourci clavier", "Santé animale", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 45,
+  "palette": "violet",
+  "logo_exemple": { "nom": "Pelage", "secteur": "Logiciel pour cliniques vétérinaires", "fichier": "logo.svg", "palette": "violet", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, accent, statuts (--up, --down), ombre de popover, Geist" },
+    { "nom": "≈ 3 ko de JS", "note": "Vanilla : comparaison à un instantané des valeurs enregistrées, aucune boucle d’animation (transitions CSS)" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement : hook useUnsaved réutilisable + composant de barre" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "position", "label": "Position", "type": "select", "default": "flottante",
+      "options": [ { "value": "flottante", "label": "Flottante" }, { "value": "pleine", "label": "Pleine largeur" } ],
+      "hint": "Flottante : pilule centrée au-dessus du contenu. Pleine largeur : barre posée sur le bas de la zone de contenu. Sur mobile, toujours une feuille en bas d’écran.",
+      "code": { "html": "data-position=\"{v}\"", "react": "position = '{v}'" } },
+    { "name": "delai", "label": "Durée d’enregistrement simulée", "type": "number", "default": 900, "min": 200, "max": 3000, "step": 100, "unit": "ms",
+      "code": { "html": "data-delai=\"{v}\"", "react": "delay = {v}" } },
+    { "name": "echec", "label": "Simuler un échec", "type": "boolean", "default": false,
+      "hint": "L’enregistrement échoue : message, bouton « Réessayer », rien n’est perdu.",
+      "code": { "html": "data-echec=\"{v}\"", "react": "simulateError = {v}" } },
+    { "name": "secousse", "label": "Secousse au départ", "type": "boolean", "default": true,
+      "hint": "Cliquez un lien du menu avec des modifications en cours.",
+      "code": { "html": "data-secousse=\"{v}\"", "react": "shake = {v}" } },
+    { "name": "raccourci", "label": "Raccourci ⌘S / Ctrl S", "type": "boolean", "default": true,
+      "code": { "html": "data-raccourci=\"{v}\"", "react": "shortcut = {v}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/BarreNonEnregistre.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour une page de réglages ou un formulaire long enregistré en une fois. Si chaque champ s’enregistre seul (enregistrement automatique), préférez un simple « Enregistré » discret près du champ.",
+    "Tous les contrôles portent un name : la barre compare leur valeur à l’instantané pris au chargement et après chaque enregistrement. Branchez votre appel réseau à la place du setTimeout de doSave (HTML) ou de la prop onSave (React).",
+    "Les liens marqués data-leave (ou la fonction guard en React) déclenchent la secousse au lieu de quitter ; pour une application monopage, appelez la même garde dans votre routeur."
+  ],
+  "accessibilite": [
+    "La barre est une région nommée, hors du parcours clavier tant qu’elle est cachée (inert, aria-hidden). Son apparition, l’enregistrement, l’échec et l’annulation sont annoncés une fois (aria-live polite), sans répéter le compteur à chaque frappe.",
+    "Tentative de départ : le focus va sur « Enregistrer », le message dit quoi faire ; le bouton annonce son état occupé (aria-busy). Interrupteurs en role=\"switch\", libellés reliés.",
+    "Avec « réduire les animations », la barre apparaît en fondu et ne tremble pas. Sur mobile : champs en 16 px, boutons de 44 px, barre en feuille au-dessus de la zone de sécurité."
+  ]
+}

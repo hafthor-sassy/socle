@@ -1,0 +1,48 @@
+{
+  "id": "footer-devoile",
+  "nom": "Footer dévoilé",
+  "categorie": "footer",
+  "niveau": "essentiel",
+  "description": "À la fin du défilement, la page se soulève par le bas comme une feuille et découvre le footer posé dessous. Le contenu du footer monte doucement au rythme du dévoilement et un voile s’efface : un effet de profondeur sans ombre ni WebGL, 1 ko de JS. Sur mobile, les groupes de liens deviennent des tiroirs natifs pour que le footer tienne dans l’écran ; s’il le dépasse, il repasse seul en footer classique.",
+  "tags": ["Défilement", "Sticky", "Profondeur", "Assurance", "Mobile", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 41,
+  "palette": "argile",
+  "logo_exemple": { "nom": "Abri", "secteur": "Assurance habitation en ligne", "fichier": "logo.svg", "palette": "argile", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, accent, statut (--up), Geist et Geist Mono" },
+    { "nom": "≈ 1 ko de JS", "note": "Vanilla : une mesure par image pendant le défilement (rAF), ResizeObserver ; sans JS, le footer se dévoile quand même, sans montée" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "titre", "label": "Titre du footer", "type": "text", "default": "Votre logement, couvert dès ce soir.",
+      "code": { "html": "id=\"fd-foot-t\">{v}</h2>", "react": "title = '{v}'" } },
+    { "name": "effet", "label": "Effet du contenu", "type": "select", "default": "montee",
+      "options": [ { "value": "montee", "label": "Montée" }, { "value": "echelle", "label": "Échelle" }, { "value": "aucun", "label": "Aucun" } ],
+      "hint": "Montée : le contenu remonte en parallaxe. Échelle : le footer grandit de 92 à 100 %. Aucun : dévoilement seul.",
+      "code": { "html": "data-effet=\"{v}\"", "react": "effect = '{v}'" } },
+    { "name": "rayon", "label": "Arrondi du bas de page", "type": "number", "default": 24, "min": 0, "max": 32, "step": 8, "unit": "px",
+      "hint": "La page se détache comme une feuille ; 0 pour une coupe nette.",
+      "code": { "html": "data-rayon=\"{v}\"", "react": "radius = {v}" } },
+    { "name": "voile", "label": "Voile de profondeur", "type": "boolean", "default": true,
+      "hint": "Un voile couleur de fond s’efface pendant le dévoilement : le footer semble sortir de l’ombre.",
+      "code": { "html": "data-voile=\"{v}\"", "react": "veil = {v}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/FooterDevoile.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour finir une page marketing ou une landing sur une dernière invitation : le dévoilement marque la fin du parcours et met l’appel à l’action en scène.",
+    "Le footer doit tenir dans l’écran pour se dévoiler en entier : gardez-le compact (titre, trois ou quatre groupes de liens, mentions). Au-delà, il redevient un footer classique automatiquement.",
+    "La page au-dessus doit avoir un fond opaque (var(--bg)) : c’est elle qui recouvre le footer. Évitez un autre élément sticky en bas d’écran (bandeau cookies, barre d’action) qui se superposerait."
+  ],
+  "accessibilite": [
+    "Ordre du DOM inchangé : le footer suit la page, un vrai <footer> titré, joignable au clavier et lu après le contenu ; le dévoilement est purement visuel.",
+    "Sur mobile, les groupes sont des <details> natifs (cibles de 52 px, état ouvert / fermé annoncé) ; sur bureau ils restent ouverts et leurs titres sortent du parcours de tabulation.",
+    "Avec « réduire les animations », le contenu ne se déplace pas : seul le dévoilement, lié au défilement, demeure. Textes AA en clair et en sombre, statut indiqué par le texte et pas seulement par la pastille."
+  ]
+}

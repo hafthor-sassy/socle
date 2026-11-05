@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Barre « non enregistré » — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ position: 'flottante', delai: 900, echec: false, secousse: true, raccourci: true });
+  var root = null, api = null;
+  function opts(p) { return { position: p.position, delai: String(p.delai), echec: String(!!p.echec), secousse: String(!!p.secousse), raccourci: String(!!p.raccourci) }; }
+  /* Démo : deux champs sont modifiés à l'ouverture, pour voir la barre monter ; Rejouer recommence. */
+  function play() { if (!api) return; api.reset(); setTimeout(function () { api.demo(); }, Socle.thumb ? 0 : 500); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-unsaved]');
+    var o = opts(props); Object.keys(o).forEach(function (k) { root.dataset[k] = o[k]; });
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    api = root._un;
+    play();
+  });
+  Socle.onChange(function (p) { api && api.update(opts(p)); });
+  Socle.onReplay(play);
+</script>
+</body>
+</html>

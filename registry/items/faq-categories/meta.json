@@ -1,0 +1,62 @@
+{
+  "id": "faq-categories",
+  "nom": "FAQ à catégories collantes",
+  "categorie": "faq",
+  "niveau": "essentiel",
+  "palette": "encre",
+  "description": "Une FAQ longue rangée par rubriques : le sommaire collant suit la lecture avec un indicateur à ressort, la recherche filtre et surligne sans tenir compte des accents, et chaque réponse s’ouvre en hauteur animée. Sur mobile, le sommaire devient une barre de puces qui défile toute seule.",
+  "tags": ["Scrollspy", "Sticky", "Recherche", "Accordéon", "details natif", "Centre d’aide"],
+  "date": "2026-11-05",
+  "ordre": 20,
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "technique": "position: sticky · scrollspy rAF · Web Animations sur details",
+  "difficulte": 1,
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, textes, bordures, --accent et --accent-subtle (indicateur, réponse ouverte, surlignage)" },
+    { "nom": "JavaScript", "note": "≈ 4 ko minifié, sans bibliothèque ; sans JS, les details natifs et les ancres fonctionnent toujours" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "disposition", "label": "Sommaire", "type": "select", "default": "gauche",
+      "options": [ { "value": "gauche", "label": "À gauche" }, { "value": "droite", "label": "À droite" } ],
+      "code": { "html": "data-disposition=\"{v}\"", "react": "side=\"{v}\"" }, "hint": "Bureau seulement : sur mobile, le sommaire devient une barre de puces en haut." },
+    { "name": "indicateur", "label": "Indicateur", "type": "select", "default": "pastille",
+      "options": [ { "value": "pastille", "label": "Pastille" }, { "value": "barre", "label": "Barre" } ],
+      "code": { "html": "data-indicateur=\"{v}\"", "react": "indicator=\"{v}\"" } },
+    { "name": "compteurs", "label": "Compteurs", "type": "boolean", "default": true,
+      "code": { "html": "data-compteurs=\"{v}\"", "react": "counts={{v}}" }, "hint": "Nombre de questions par rubrique, recalculé pendant la recherche." },
+    { "name": "recherche", "label": "Recherche", "type": "boolean", "default": true,
+      "code": { "html": "data-recherche=\"{v}\"", "react": "searchable={{v}}" }, "hint": "Raccourci / au clavier. Insensible aux accents et à la casse." },
+    { "name": "multiple", "label": "Plusieurs réponses ouvertes", "type": "boolean", "default": false,
+      "code": { "html": "data-multiple=\"{v}\"", "react": "multiple={{v}}" } },
+    { "name": "premiere", "label": "Première réponse ouverte", "type": "boolean", "default": true,
+      "code": { "html": "data-premiere=\"{v}\"", "react": "openFirst={{v}}" } },
+    { "name": "decalage", "label": "Décalage en haut", "type": "number", "default": 0, "min": 0, "max": 96, "step": 8, "unit": "px",
+      "code": { "html": "data-decalage=\"{v}\"", "react": "offset={{v}}" }, "hint": "Hauteur d’un en-tête de site fixe : le sommaire colle juste dessous." },
+    { "name": "defilement", "label": "Défilement", "type": "select", "default": "doux",
+      "options": [ { "value": "doux", "label": "Doux" }, { "value": "instantane", "label": "Instantané" } ],
+      "code": { "html": "data-defilement=\"{v}\"", "react": "scroll=\"{v}\"" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/FaqCategories.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour une FAQ de plus de dix questions ou un centre d’aide : au-delà, un accordéon seul devient une liste interminable.",
+    "Quatre à sept rubriques au nom court (deux ou trois mots) : la barre de puces mobile reste lisible sans trop défiler.",
+    "Avec un en-tête de site fixe, réglez « Décalage en haut » à sa hauteur : le sommaire et les ancres s’arrêtent juste dessous.",
+    "Chaque question a un id : #cartes-perte ouvre directement la bonne réponse, et « Copier le lien » le fournit au support.",
+    "Remplacez le contenu d’exemple (Tamis, banque fictive) par le vôtre : rubriques et questions sont du HTML statique, indexable."
+  ],
+  "accessibilite": [
+    "Sommaire en <nav> avec aria-current sur la rubrique lue ; un clic place le focus sur le titre de la rubrique, sans saut.",
+    "Réponses en <details>/<summary> natifs (aria-expanded tenu à jour) : sans JavaScript, tout s’ouvre et se lit.",
+    "Recherche annoncée par une zone role=\"status\" (« 3 réponses pour “tva” ») ; Échap efface, / place le focus dans le champ.",
+    "Contrastes AA en clair et en sombre (texte secondaire --text-muted ≥ 4,5:1, surlignage --accent-subtle sous --text-strong).",
+    "« Réduire les animations » : défilement instantané, réponses ouvertes sans animation, indicateur sans ressort.",
+    "Mobile : puces et boutons de 44 px de haut, champ en 16 px (pas de zoom iOS), barre de puces défilable au doigt."
+  ],
+  "logo_exemple": { "nom": "Tamis", "secteur": "Banque en ligne pour indépendants", "fichier": "logo.svg", "palette": "encre", "typo": "Geist SemiBold" }
+}

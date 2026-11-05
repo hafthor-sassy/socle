@@ -1,0 +1,59 @@
+{
+  "id": "liste-attente",
+  "nom": "Liste d’attente vivante",
+  "categorie": "cta",
+  "niveau": "premium",
+  "palette": "minuit",
+  "description": "Une liste d’attente qui donne envie d’attendre : le compteur d’inscrits roule chiffre par chiffre, l’e-mail est vérifié avec suggestion de domaine (gmail.con → gmail.com), le bouton devient chargement, puis vous voyez votre place, votre vague de livraison et le parrainage qui vous fait remonter la file sur un ressort. États vide, erreur, chargement et succès.",
+  "tags": ["Waitlist", "AnimateNumber", "Formulaire", "Validation", "Parrainage", "Ressort", "Lancement"],
+  "date": "2026-11-05",
+  "ordre": 24,
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "technique": "Chiffres en colonnes sur ressort CSS · machine à états · IntersectionObserver",
+  "difficulte": 2,
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, textes, --accent (bouton, vague en cours), --down et --tint-red-* (erreurs), --up et --tint-green-* (succès)" },
+    { "nom": "JavaScript", "note": "≈ 5 ko minifié, sans bibliothèque ; inscription simulée à remplacer par votre appel API" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement (prop onJoin asynchrone)" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "etat", "label": "État affiché", "type": "select", "default": "formulaire",
+      "options": [ { "value": "formulaire", "label": "Formulaire" }, { "value": "succes", "label": "Inscrit" }, { "value": "erreur", "label": "Erreur réseau" } ],
+      "hint": "Aperçu seulement : dans le code, l’état suit l’inscription." },
+    { "name": "inscrits", "label": "Inscrits au départ", "type": "number", "default": 12530, "min": 0, "max": 99000, "step": 10,
+      "code": { "html": "data-inscrits=\"{v}\"", "react": "initialCount={{v}}" } },
+    { "name": "vague", "label": "Places par vague", "type": "number", "default": 2500, "min": 500, "max": 10000, "step": 500,
+      "code": { "html": "data-vague=\"{v}\"", "react": "waveSize={{v}}" }, "hint": "Les livraisons partent par vagues ; la barre montre la vôtre." },
+    { "name": "gain", "label": "Places par parrainage", "type": "number", "default": 50, "min": 10, "max": 500, "step": 10,
+      "code": { "html": "data-gain=\"{v}\"", "react": "referralGain={{v}}" } },
+    { "name": "direct", "label": "Compteur en direct", "type": "boolean", "default": true,
+      "code": { "html": "data-direct=\"{v}\"", "react": "live={{v}}" }, "hint": "Simule des inscriptions toutes les 2 à 5 s (à brancher sur vos vraies données)." },
+    { "name": "simuler", "label": "Simuler des parrainages", "type": "boolean", "default": true,
+      "code": { "html": "data-simuler=\"{v}\"", "react": "simulate={{v}}" }, "hint": "Après l’inscription, deux ou trois amis rejoignent la liste avec votre lien." },
+    { "name": "reseau", "label": "Réponse du serveur", "type": "select", "default": "ok",
+      "options": [ { "value": "ok", "label": "Succès" }, { "value": "erreur", "label": "Échec" } ],
+      "code": { "html": "data-reseau=\"{v}\"" }, "hint": "Échec : bandeau d’erreur avec « Réessayer », l’adresse saisie est conservée." }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/ListeAttente.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour un lancement (matériel, app, SaaS en bêta) : la place dans la file et la vague de livraison rendent l’attente concrète, le parrainage la rend active.",
+    "Branchez le vrai compteur et la vraie position : data-direct et data-simuler sont là pour la démo. En React, onJoin(email) renvoie { position }.",
+    "Une seule information demandée (l’e-mail). Ajoutez un consentement explicite si vous envoyez autre chose que l’annonce de précommande.",
+    "Le lien de parrainage est fictif (lucarne.fr/r/…) : générez-le côté serveur.",
+    "API vanilla : el._waitlist.join(email), referral(), reset(), demo('adresse@gmail.con')."
+  ],
+  "accessibilite": [
+    "Champ e-mail étiqueté, type=\"email\", autocomplete, aria-invalid et message relié par aria-describedby ; la suggestion de domaine est un bouton.",
+    "Erreur réseau en role=\"alert\" avec « Réessayer » ; inscription et parrainages annoncés une fois (role=\"status\"), pas à chaque tic du compteur.",
+    "Après l’inscription, le focus passe au titre « Votre place » ; « Ce n’est pas vous ? » ramène au formulaire.",
+    "Chiffres qui roulent masqués aux lecteurs d’écran (le nombre entier est donné en aria-label).",
+    "« Réduire les animations » : chiffres posés sans rouler, pas de secousse ni de scintillement, pas de parrainage simulé.",
+    "Compteur et étoiles suspendus hors écran ; champ et bouton de 52 px sur mobile, champ en 16 px. Contrastes AA en clair et en sombre."
+  ],
+  "logo_exemple": { "nom": "Lucarne", "secteur": "Télescope connecté (astronomie amateur)", "fichier": "logo.svg", "palette": "minuit", "typo": "Geist SemiBold" }
+}

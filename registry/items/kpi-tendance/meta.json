@@ -1,0 +1,51 @@
+{
+  "id": "kpi-tendance",
+  "nom": "KPI à tendance",
+  "categorie": "tableau-de-bord",
+  "niveau": "essentiel",
+  "description": "Quatre cartes KPI pour un tableau de bord : le chiffre roule colonne par colonne quand la période change, la mini-courbe se redessine en morphing, et l’écart est donné avec flèche, signe et texte, jamais par la couleur seule. Une métrique où la baisse est une bonne nouvelle (annulations) passe en vert en descendant. Survol ou doigt sur la courbe pour lire chaque point ; états chargement et erreur fournis.",
+  "tags": ["KPI", "Chiffres", "Sparkline", "SVG", "Restauration", "SaaS", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 44,
+  "palette": "miel",
+  "logo_exemple": { "nom": "Comptoir", "secteur": "Logiciel de caisse pour restaurants", "fichier": "logo.svg", "palette": "miel", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Accent de la courbe, teintes vert / rouge / neutre des écarts, chiffres tabulaires Geist" },
+    { "nom": "≈ 4 ko de JS", "note": "Vanilla, SVG : chiffres roulants en CSS (transform), morphing de courbe en rAF seulement pendant la transition" },
+    { "nom": "Intl.NumberFormat", "note": "Natif : 31 640 avec espace fine, 26,06 avec virgule" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, sans bibliothèque de graphique" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "periode", "label": "Période", "type": "select", "default": "semaine",
+      "options": [ { "value": "jour", "label": "Jour" }, { "value": "semaine", "label": "7 jours" }, { "value": "mois", "label": "30 jours" } ],
+      "code": { "html": "data-periode=\"{v}\"", "react": "period = '{v}'" } },
+    { "name": "etat", "label": "État", "type": "select", "default": "normal",
+      "options": [ { "value": "normal", "label": "Données" }, { "value": "chargement", "label": "Chargement" }, { "value": "erreur", "label": "Erreur" } ],
+      "hint": "Chargement : squelette fidèle à la carte. Erreur : message et bouton Réessayer.",
+      "code": { "html": "data-etat=\"{v}\"", "react": "status = '{v}'" } },
+    { "name": "courbe", "label": "Courbe", "type": "select", "default": "lissee",
+      "options": [ { "value": "lissee", "label": "Lissée" }, { "value": "brute", "label": "Brute" } ],
+      "code": { "html": "data-courbe=\"{v}\"", "react": "curve = '{v}'" } },
+    { "name": "zone", "label": "Zone sous la courbe", "type": "boolean", "default": true,
+      "code": { "html": "data-zone=\"{v}\"", "react": "area = {v}" } },
+    { "name": "duree", "label": "Durée des transitions", "type": "number", "default": 900, "min": 300, "max": 1800, "step": 100, "unit": "ms",
+      "code": { "html": "data-duree=\"{v}\"", "react": "duration = {v}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/KpiTendance.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "En tête d’un tableau de bord : trois à cinq indicateurs, chacun comparé à la même période précédente. Les données d’exemple sont dans l’objet KPI (valeur, valeur précédente, série).",
+    "Indiquez data-sens=\"inverse\" (HTML) ou inverse: true (React) sur une métrique où baisser est bon (annulations, délai, taux d’erreur) : la flèche descend et l’écart passe en vert.",
+    "Un écart en points (pt) pour un taux, en pourcentage pour un volume : ne mélangez pas les deux sur la même métrique."
+  ],
+  "accessibilite": [
+    "Chaque carte donne une phrase complète aux lecteurs d’écran (valeur, sens, écart, période, bonne tendance ou à surveiller) ; les chiffres qui roulent et la courbe sont masqués. Le changement de période est annoncé une fois (aria-live polite).",
+    "Le segmenté est un radiogroup : flèches gauche / droite, un seul arrêt de tabulation. L’écart porte toujours une flèche et un signe (+ / −) en plus de la couleur.",
+    "Avec « réduire les animations », les chiffres et la courbe changent sans mouvement, le squelette ne pulse pas. Teintes des écarts AA en clair et en sombre ; sur mobile, cartes en liste et valeurs en 28 px."
+  ]
+}

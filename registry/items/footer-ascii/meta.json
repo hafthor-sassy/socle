@@ -1,0 +1,60 @@
+{
+  "id": "footer-ascii",
+  "nom": "Footer ASCII",
+  "categorie": "footer",
+  "niveau": "premium",
+  "description": "Le logo de la marque, pictogramme et nom, rendu en caractères dans un canvas : la forme est échantillonnée cellule par cellule, les bords prennent un caractère orienté (- / | \\) et l’intérieur un caractère dont la densité suit la forme. Au survol, les caractères se brouillent autour du pointeur puis se recomposent ; un clic ou un toucher envoie une onde à travers le logo. Image de base dessinée une fois, seules les cellules actives sont redessinées.",
+  "tags": ["Canvas", "ASCII", "Pointeur", "Tactile", "Jeu vidéo", "Rétro", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 43,
+  "palette": "lichen",
+  "logo_exemple": { "nom": "Glyphe", "secteur": "Studio de jeux vidéo indépendant", "fichier": "logo.svg", "palette": "lichen", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Couleurs relues dans les variables (texte, accent, bordure), Geist ExtraBold pour la forme, Geist Mono pour les caractères" },
+    { "nom": "≈ 5 ko de JS", "note": "Vanilla, Canvas 2D : échantillonnage une fois par taille, rAF actif seulement à l’écran et pendant l’animation" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, même moteur dans un useEffect" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "taille", "label": "Taille des cellules", "type": "number", "default": 9, "min": 6, "max": 16, "step": 1, "unit": "px",
+      "hint": "Largeur d’un caractère. Petit : plus de détail, plus de cellules à dessiner. Réduite de 28 % sur mobile.",
+      "code": { "html": "data-taille=\"{v}\"", "react": "cell = {v}" } },
+    { "name": "jeu", "label": "Jeu de caractères", "type": "select", "default": "classique",
+      "options": [ { "value": "classique", "label": "Classique" }, { "value": "blocs", "label": "Blocs" }, { "value": "binaire", "label": "Binaire" } ],
+      "hint": "Classique : rampe .:-=+*#%@ et bords orientés. Blocs : ░▒▓█. Binaire : 0 et 1.",
+      "code": { "html": "data-jeu=\"{v}\"", "react": "charset = '{v}'" } },
+    { "name": "couleur", "label": "Couleurs", "type": "select", "default": "encre",
+      "options": [ { "value": "encre", "label": "Encre" }, { "value": "accent", "label": "Accent" }, { "value": "mono", "label": "Mono" } ],
+      "hint": "Encre : forme en couleur de texte, bords et brouillage à l’accent. Accent : forme à l’accent. Mono : sans accent.",
+      "code": { "html": "data-couleur=\"{v}\"", "react": "color = '{v}'" } },
+    { "name": "rayon", "label": "Rayon du brouillage", "type": "number", "default": 120, "min": 40, "max": 280, "step": 10, "unit": "px",
+      "code": { "html": "data-rayon=\"{v}\"", "react": "radius = {v}" } },
+    { "name": "motif", "label": "Motif", "type": "select", "default": "logo",
+      "options": [ { "value": "logo", "label": "Pictogramme + nom" }, { "value": "nom", "label": "Nom seul" } ],
+      "code": { "html": "data-motif=\"{v}\"", "react": "motif = '{v}'" } },
+    { "name": "contour", "label": "Bords orientés", "type": "boolean", "default": true,
+      "hint": "Choisit - / | \\ selon la pente du bord (jeu Classique).",
+      "code": { "html": "data-contour=\"{v}\"", "react": "edges = {v}" } },
+    { "name": "scintille", "label": "Scintillement au repos", "type": "boolean", "default": true,
+      "hint": "Quelques caractères se brouillent au hasard, en continu tant que le logo est à l’écran.",
+      "code": { "html": "data-scintille=\"{v}\"", "react": "shimmer = {v}" } },
+    { "name": "trame", "label": "Trame de fond", "type": "boolean", "default": true,
+      "code": { "html": "data-trame=\"{v}\"", "react": "grid = {v}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/FooterAscii.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour une marque au ton technique, rétro ou ludique (studio de jeu, outil pour développeurs, label musical, média) : le logo devient une matière vivante en bas de page.",
+    "Le motif est dessiné à partir du texte data-texte et d’un pictogramme en pixels : remplacez-les par votre nom et votre forme (fonction sample). Un mot court donne des lettres assez grandes pour être lues en caractères.",
+    "Gardez des cellules de 8 à 12 px sur bureau : en dessous, la forme se lit mieux mais le brouillage devient un bruit ; au-dessus, les courbes se pixellisent."
+  ],
+  "accessibilite": [
+    "Le canvas est décoratif (aria-hidden) ; son conteneur porte role=\"img\" et le nom de la marque. Sans JavaScript, le nom s’affiche en texte à la place.",
+    "Avec « réduire les animations », le logo est dessiné une fois, sans brouillage, sans scintillement ni curseur clignotant.",
+    "Pause complète hors écran (IntersectionObserver). Les couleurs viennent des variables : la palette et le thème sont suivis en direct (MutationObserver), contraste AA du texte et des liens, cibles de 44 px sur mobile."
+  ]
+}

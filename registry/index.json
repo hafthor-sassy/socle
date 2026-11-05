@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "total": 83,
+  "total": 94,
   "items": [
     {
       "id": "bouton-magnetique",
@@ -1201,6 +1201,34 @@
       }
     },
     {
+      "id": "faq-categories",
+      "nom": "FAQ à catégories collantes",
+      "categorie": "faq",
+      "niveau": "essentiel",
+      "palette": "encre",
+      "description": "Une FAQ longue rangée par rubriques : le sommaire collant suit la lecture avec un indicateur à ressort, la recherche filtre et surligne sans tenir compte des accents, et chaque réponse s’ouvre en hauteur animée. Sur mobile, le sommaire devient une barre de puces qui défile toute seule.",
+      "tags": [
+        "Scrollspy",
+        "Sticky",
+        "Recherche",
+        "Accordéon",
+        "details natif",
+        "Centre d’aide"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 20,
+      "logo_exemple": {
+        "nom": "Tamis",
+        "secteur": "Banque en ligne pour indépendants",
+        "fichier": "registry/items/faq-categories/logo.svg",
+        "palette": "encre",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "logo-en-situation",
       "nom": "Logo en situation",
       "categorie": "logos",
@@ -1391,6 +1419,35 @@
       }
     },
     {
+      "id": "faq-conversationnelle",
+      "nom": "FAQ conversationnelle",
+      "categorie": "faq",
+      "niveau": "premium",
+      "palette": "menthe",
+      "description": "La FAQ devient une conversation : la question s’envole de la liste jusqu’au fil sur un ressort, l’assistant marque un temps de réflexion, puis la réponse s’écrit mot à mot au rythme de la phrase, avec sa source, un vote et des questions liées. Saisie libre avec suggestions, bouton stop pour tout afficher, pause hors écran.",
+      "tags": [
+        "Chat",
+        "Typewriter",
+        "Ressort",
+        "FLIP",
+        "Suggestions",
+        "Assistant",
+        "Combobox"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 21,
+      "logo_exemple": {
+        "nom": "Auvent",
+        "secteur": "Assurance habitation en ligne",
+        "fichier": "registry/items/faq-conversationnelle/logo.svg",
+        "palette": "menthe",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "zone-protection",
       "nom": "Zone de protection",
       "categorie": "logos",
@@ -1472,6 +1529,34 @@
       }
     },
     {
+      "id": "cta-fond-vivant",
+      "nom": "CTA à fond vivant",
+      "categorie": "cta",
+      "niveau": "essentiel",
+      "palette": "moutarde",
+      "description": "Le bloc final d’une page, avec une seule action. Sa trame de traits s’oriente vers le pointeur comme des aiguilles aimantées et s’allume à son approche ; sans pointeur, un faisceau de phare balaie la trame depuis le bouton et laisse une traîne. Canvas 2D léger, texte toujours lisible.",
+      "tags": [
+        "Canvas 2D",
+        "Pointeur",
+        "Ressort",
+        "Trame",
+        "Fin de page",
+        "Une action"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 22,
+      "logo_exemple": {
+        "nom": "Fanal",
+        "secteur": "Observabilité d’API (outil développeur)",
+        "fichier": "registry/items/cta-fond-vivant/logo.svg",
+        "palette": "moutarde",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "revelation-marque",
       "nom": "Révélation de marque",
       "categorie": "logos",
@@ -1526,6 +1611,35 @@
       }
     },
     {
+      "id": "grand-final",
+      "nom": "Grand final",
+      "categorie": "cta",
+      "niveau": "premium",
+      "palette": "peche",
+      "description": "Le dernier écran d’une page, raconté au défilement : le titre grandit autour de son point final, le point devient un aplat qui envahit l’écran avec un message, puis l’aplat se resserre jusqu’à devenir le bouton. Un rail de progression accompagne la scène ; aucune boucle quand rien ne bouge.",
+      "tags": [
+        "Scroll",
+        "Sticky",
+        "clip-path",
+        "Zoom",
+        "Morphing",
+        "Fin de page",
+        "Une action"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 23,
+      "logo_exemple": {
+        "nom": "Portulan",
+        "secteur": "Voyages en train de nuit",
+        "fichier": "registry/items/grand-final/logo.svg",
+        "palette": "peche",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "compteur-roulant",
       "nom": "Compteur qui roule",
       "categorie": "badges",
@@ -1550,6 +1664,35 @@
         "secteur": "Prêt-à-porter en ligne",
         "fichier": "registry/items/compteur-roulant/logo.svg",
         "palette": "framboise",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "liste-attente",
+      "nom": "Liste d’attente vivante",
+      "categorie": "cta",
+      "niveau": "premium",
+      "palette": "minuit",
+      "description": "Une liste d’attente qui donne envie d’attendre : le compteur d’inscrits roule chiffre par chiffre, l’e-mail est vérifié avec suggestion de domaine (gmail.con → gmail.com), le bouton devient chargement, puis vous voyez votre place, votre vague de livraison et le parrainage qui vous fait remonter la file sur un ressort. États vide, erreur, chargement et succès.",
+      "tags": [
+        "Waitlist",
+        "AnimateNumber",
+        "Formulaire",
+        "Validation",
+        "Parrainage",
+        "Ressort",
+        "Lancement"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 24,
+      "logo_exemple": {
+        "nom": "Lucarne",
+        "secteur": "Télescope connecté (astronomie amateur)",
+        "fichier": "registry/items/liste-attente/logo.svg",
+        "palette": "minuit",
         "typo": "Geist SemiBold"
       }
     },
@@ -1899,6 +2042,179 @@
         "secteur": "Back-office e-commerce",
         "fichier": "registry/items/notifications-groupees/logo.svg",
         "palette": "ambre",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "traines-fantomes",
+      "nom": "Traînées fantômes",
+      "categorie": "texte-anime",
+      "niveau": "premium",
+      "palette": "neon-rose",
+      "description": "Les grands titres laissent une rémanence proportionnelle à la vitesse de défilement : des copies s’écartent derrière la lettre quand on fait défiler vite, la ligne s’incline légèrement, puis tout revient se fondre dans le texte sur un vrai ressort quand on s’arrête. Un seul rAF qui ne tourne que pendant le mouvement et écrit deux variables CSS pour toute la page.",
+      "tags": [
+        "Défilement",
+        "Vitesse",
+        "Ressort",
+        "Typographie",
+        "Événementiel",
+        "Musique",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 40,
+      "logo_exemple": {
+        "nom": "Nocturne",
+        "secteur": "Festival de musiques électroniques",
+        "fichier": "registry/items/traines-fantomes/logo.svg",
+        "palette": "neon-rose",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "footer-devoile",
+      "nom": "Footer dévoilé",
+      "categorie": "footer",
+      "niveau": "essentiel",
+      "palette": "argile",
+      "description": "À la fin du défilement, la page se soulève par le bas comme une feuille et découvre le footer posé dessous. Le contenu du footer monte doucement au rythme du dévoilement et un voile s’efface : un effet de profondeur sans ombre ni WebGL, 1 ko de JS. Sur mobile, les groupes de liens deviennent des tiroirs natifs pour que le footer tienne dans l’écran ; s’il le dépasse, il repasse seul en footer classique.",
+      "tags": [
+        "Défilement",
+        "Sticky",
+        "Profondeur",
+        "Assurance",
+        "Mobile",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 41,
+      "logo_exemple": {
+        "nom": "Abri",
+        "secteur": "Assurance habitation en ligne",
+        "fichier": "registry/items/footer-devoile/logo.svg",
+        "palette": "argile",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "logotype-geant",
+      "nom": "Logotype géant",
+      "categorie": "footer",
+      "niveau": "premium",
+      "palette": "corail",
+      "description": "Le nom de la marque occupe toute la largeur du footer, calé au pixel. Sous le pointeur, les lettres prennent de la graisse, se soulèvent et s’étirent, chacune sur son propre ressort ; au repos, une vague traverse le mot. La largeur de chaque lettre est compensée à chaque image grâce à la police variable : le mot ne déborde jamais et rien ne saute autour.",
+      "tags": [
+        "Police variable",
+        "Pointeur",
+        "Ressort",
+        "Tactile",
+        "E-commerce",
+        "Mode",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 42,
+      "logo_exemple": {
+        "nom": "Ressac",
+        "secteur": "Maillots de bain et surf (e-commerce)",
+        "fichier": "registry/items/logotype-geant/logo.svg",
+        "palette": "corail",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "footer-ascii",
+      "nom": "Footer ASCII",
+      "categorie": "footer",
+      "niveau": "premium",
+      "palette": "lichen",
+      "description": "Le logo de la marque, pictogramme et nom, rendu en caractères dans un canvas : la forme est échantillonnée cellule par cellule, les bords prennent un caractère orienté (- / | \\) et l’intérieur un caractère dont la densité suit la forme. Au survol, les caractères se brouillent autour du pointeur puis se recomposent ; un clic ou un toucher envoie une onde à travers le logo. Image de base dessinée une fois, seules les cellules actives sont redessinées.",
+      "tags": [
+        "Canvas",
+        "ASCII",
+        "Pointeur",
+        "Tactile",
+        "Jeu vidéo",
+        "Rétro",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 43,
+      "logo_exemple": {
+        "nom": "Glyphe",
+        "secteur": "Studio de jeux vidéo indépendant",
+        "fichier": "registry/items/footer-ascii/logo.svg",
+        "palette": "lichen",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "kpi-tendance",
+      "nom": "KPI à tendance",
+      "categorie": "tableau-de-bord",
+      "niveau": "essentiel",
+      "palette": "miel",
+      "description": "Quatre cartes KPI pour un tableau de bord : le chiffre roule colonne par colonne quand la période change, la mini-courbe se redessine en morphing, et l’écart est donné avec flèche, signe et texte, jamais par la couleur seule. Une métrique où la baisse est une bonne nouvelle (annulations) passe en vert en descendant. Survol ou doigt sur la courbe pour lire chaque point ; états chargement et erreur fournis.",
+      "tags": [
+        "KPI",
+        "Chiffres",
+        "Sparkline",
+        "SVG",
+        "Restauration",
+        "SaaS",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 44,
+      "logo_exemple": {
+        "nom": "Comptoir",
+        "secteur": "Logiciel de caisse pour restaurants",
+        "fichier": "registry/items/kpi-tendance/logo.svg",
+        "palette": "miel",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "barre-non-enregistre",
+      "nom": "Barre « non enregistré »",
+      "categorie": "reglages",
+      "niveau": "essentiel",
+      "palette": "violet",
+      "description": "Une barre flottante monte sur un ressort dès qu’un réglage diffère de sa valeur enregistrée et compte les modifications au plus juste : remettre l’ancienne valeur fait baisser le compteur, jusqu’à faire disparaître la barre. Tenter de quitter la page la fait trembler et met le focus sur « Enregistrer » ; l’onglet est protégé par beforeunload ; ⌘S ou Ctrl S enregistre. États enregistrement, réussite et échec inclus, champs modifiés marqués d’un point.",
+      "tags": [
+        "Formulaire",
+        "Réglages",
+        "État",
+        "Ressort",
+        "Raccourci clavier",
+        "Santé animale",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 45,
+      "logo_exemple": {
+        "nom": "Pelage",
+        "secteur": "Logiciel pour cliniques vétérinaires",
+        "fichier": "registry/items/barre-non-enregistre/logo.svg",
+        "palette": "violet",
         "typo": "Geist SemiBold"
       }
     },

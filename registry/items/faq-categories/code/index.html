@@ -1,0 +1,544 @@
+<!-- FAQ à catégories collantes — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css.
+     Marque fictive : Tamis (compte pro pour indépendants). Contenu d’exemple fictif.
+     Réglages : attributs data-* de [data-faqcat] (disposition, indicateur, compteurs, recherche, multiple, premiere, decalage, defilement). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="fc" data-faqcat data-disposition="gauche" data-indicateur="pastille" data-compteurs="true" data-recherche="true" data-multiple="false" data-premiere="true" data-decalage="0" data-defilement="doux" aria-labelledby="fc-title">
+  <header class="fc__head">
+    <div>
+      <a class="fc__brand" href="#accueil" aria-label="Tamis, centre d’aide"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="fc__logo-bg"/><path d="M22 36h56a28 28 0 0 1-56 0z" class="fc__logo-fg"/><path d="M16 36h68" class="fc__logo-ln" stroke-width="6"/><g class="fc__logo-bg"><circle cx="38" cy="46" r="3.2"/><circle cx="50" cy="46" r="3.2"/><circle cx="62" cy="46" r="3.2"/><circle cx="44" cy="55" r="3.2"/><circle cx="56" cy="55" r="3.2"/></g><g class="fc__logo-fg" opacity=".7"><circle cx="46" cy="75" r="3"/><circle cx="54" cy="82" r="3"/></g></svg><b>Tamis</b><span>Centre d’aide</span></a>
+      <h2 class="fc__title" id="fc-title">Vos questions, réponses claires.</h2>
+      <p class="fc__lead">Tout ce qu’il faut savoir sur votre compte pro : ouverture, cartes, virements, factures. Rangé par rubrique, à jour chaque semaine.</p>
+    </div>
+    <div>
+      <label class="fc__search"><span class="fc__sr">Rechercher dans l’aide</span>
+        <svg class="fc__search-ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.75"/><path d="m13.5 13.5 3.25 3.25"/></svg>
+        <input class="fc__input" type="search" placeholder="Plafond, TVA, IBAN…" autocomplete="off" spellcheck="false" aria-describedby="fc-status">
+        <kbd class="fc__kbd" aria-hidden="true">/</kbd>
+        <button class="fc__clear" type="button" aria-label="Effacer la recherche"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8"/></svg></button>
+      </label>
+      <p class="fc__status" id="fc-status" role="status" aria-live="polite"></p>
+    </div>
+  </header>
+
+  <div class="fc__body">
+    <nav class="fc__aside" aria-label="Rubriques de la FAQ">
+      <p class="fc__nav-t" aria-hidden="true">Rubriques</p>
+      <ul class="fc__list" role="list">
+        <li class="fc__ind" aria-hidden="true" role="presentation"></li>
+        <li><a class="fc__link" href="#fc-compte"><span class="fc__link-t">Ouverture du compte</span><span class="fc__n" aria-hidden="true">4</span></a></li>
+        <li><a class="fc__link" href="#fc-cartes"><span class="fc__link-t">Cartes et paiements</span><span class="fc__n" aria-hidden="true">3</span></a></li>
+        <li><a class="fc__link" href="#fc-virements"><span class="fc__link-t">Virements</span><span class="fc__n" aria-hidden="true">3</span></a></li>
+        <li><a class="fc__link" href="#fc-factures"><span class="fc__link-t">Factures et TVA</span><span class="fc__n" aria-hidden="true">3</span></a></li>
+        <li><a class="fc__link" href="#fc-securite"><span class="fc__link-t">Sécurité</span><span class="fc__n" aria-hidden="true">3</span></a></li>
+        <li><a class="fc__link" href="#fc-tarifs"><span class="fc__link-t">Offres et résiliation</span><span class="fc__n" aria-hidden="true">2</span></a></li>
+      </ul>
+      <div class="fc__help">
+        <p class="fc__help-s"><span class="fc__dot" aria-hidden="true"></span>Conseillers en ligne</p>
+        <p>Réponse en 4 minutes en moyenne, 7 j/7 de 8 h à 22 h.</p>
+        <a href="#contact">Ouvrir le chat<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </div>
+    </nav>
+
+    <div class="fc__main">
+      <section class="fc__sec" id="fc-compte" aria-labelledby="fc-compte-t">
+        <div class="fc__sec-h" tabindex="-1"><span class="fc__sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20v-1a6 6 0 0 1 6-6h1"/><circle cx="10" cy="7" r="4"/><path d="M17 15v6M14 18h6"/></svg></span><h3 class="fc__sec-t" id="fc-compte-t">Ouverture du compte</h3><span class="fc__sec-n">4 questions</span></div>
+        <ul class="fc__qs" role="list">
+          <li><details class="fc__q" id="ouverture-delai"><summary><span class="fc__q-t">Combien de temps faut-il pour ouvrir un compte Tamis ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Comptez <strong>8 minutes</strong> pour la demande en ligne. Nous vérifions votre identité et votre immatriculation sous 24 h ouvrées ; votre IBAN est actif dès la validation, et votre carte virtuelle aussitôt.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="ouverture-documents"><summary><span class="fc__q-t">Quels documents dois-je fournir ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Une pièce d’identité en cours de validité et un avis de situation SIRENE de moins de trois mois. Pour une société : les statuts signés et la liste des bénéficiaires effectifs.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="ouverture-micro"><summary><span class="fc__q-t">Puis-je ouvrir un compte en micro-entreprise ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Oui, c’est même le cas de deux tiers de nos clients. L’offre Solo est pensée pour les micro-entrepreneurs : un compte dédié, sans frais de tenue, avec le suivi du chiffre d’affaires par rapport aux plafonds.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="ouverture-iban"><summary><span class="fc__q-t">Mon IBAN est-il français ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Oui : un IBAN en FR76, accepté par l’URSSAF, les impôts et tous vos clients. Vous pouvez le télécharger en PDF depuis l’application.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+        </ul>
+      </section>
+      <section class="fc__sec" id="fc-cartes" aria-labelledby="fc-cartes-t">
+        <div class="fc__sec-h" tabindex="-1"><span class="fc__sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h3"/></svg></span><h3 class="fc__sec-t" id="fc-cartes-t">Cartes et paiements</h3><span class="fc__sec-n">3 questions</span></div>
+        <ul class="fc__qs" role="list">
+          <li><details class="fc__q" id="cartes-plafonds"><summary><span class="fc__q-t">Quels sont les plafonds de ma carte ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Par défaut, 3 000 € de paiements et 1 000 € de retraits sur 30 jours glissants. Vous pouvez les relever vous-même jusqu’à 25 000 € depuis l’application, sans appeler personne.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="cartes-virtuelles"><summary><span class="fc__q-t">Puis-je créer des cartes virtuelles ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Autant que vous voulez, une par abonnement par exemple. Chaque carte a son propre plafond et se met en pause en un geste.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="cartes-perte"><summary><span class="fc__q-t">Ma carte est perdue : que faire ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Bloquez-la depuis l’application : c’est immédiat et réversible. Une carte virtuelle de remplacement est disponible tout de suite, la carte physique arrive sous 4 jours ouvrés.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+        </ul>
+      </section>
+      <section class="fc__sec" id="fc-virements" aria-labelledby="fc-virements-t">
+        <div class="fc__sec-h" tabindex="-1"><span class="fc__sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg></span><h3 class="fc__sec-t" id="fc-virements-t">Virements</h3><span class="fc__sec-n">3 questions</span></div>
+        <ul class="fc__qs" role="list">
+          <li><details class="fc__q" id="virements-instantanes"><summary><span class="fc__q-t">Les virements instantanés sont-ils inclus ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Oui, dans toutes les offres et sans frais : l’argent arrive en moins de 10 secondes, 7 j/7, vers toute banque de la zone SEPA.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="virements-recurrents"><summary><span class="fc__q-t">Comment programmer un virement récurrent ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Depuis un bénéficiaire, choisissez « Programmer » puis la fréquence : chaque semaine, chaque mois ou à date fixe. Vous recevez un rappel la veille de chaque envoi.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="virements-international"><summary><span class="fc__q-t">Combien de temps prend un virement international ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Hors zone SEPA, comptez un à trois jours ouvrés selon la devise. Le taux de change est affiché avant validation, sans marge cachée.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+        </ul>
+      </section>
+      <section class="fc__sec" id="fc-factures" aria-labelledby="fc-factures-t">
+        <div class="fc__sec-h" tabindex="-1"><span class="fc__sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span><h3 class="fc__sec-t" id="fc-factures-t">Factures et TVA</h3><span class="fc__sec-n">3 questions</span></div>
+        <ul class="fc__qs" role="list">
+          <li><details class="fc__q" id="factures-emettre"><summary><span class="fc__q-t">Puis-je émettre mes factures depuis Tamis ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Oui. Créez un devis, transformez-le en facture, envoyez-la : elle est au format électronique exigé par la réforme, et le paiement reçu est rapproché tout seul.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="factures-justificatifs"><summary><span class="fc__q-t">Comment rapprocher mes justificatifs ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Photographiez le ticket ou transférez la facture par e-mail : Tamis lit le montant, la date et la TVA, puis l’associe à la bonne dépense. Il ne vous reste qu’à vérifier.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="factures-tva"><summary><span class="fc__q-t">Comment préparer ma déclaration de TVA ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>L’onglet TVA calcule la taxe collectée et déductible de la période. Exportez le récapitulatif pour votre comptable, ou partagez-lui un accès en lecture.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+        </ul>
+      </section>
+      <section class="fc__sec" id="fc-securite" aria-labelledby="fc-securite-t">
+        <div class="fc__sec-h" tabindex="-1"><span class="fc__sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 8.5 7 10 4-1.5 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg></span><h3 class="fc__sec-t" id="fc-securite-t">Sécurité</h3><span class="fc__sec-n">3 questions</span></div>
+        <ul class="fc__qs" role="list">
+          <li><details class="fc__q" id="securite-fonds"><summary><span class="fc__q-t">Où sont conservés mes fonds ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Chez notre banque partenaire, agréée par l’ACPR. Vos dépôts sont couverts par le Fonds de garantie des dépôts jusqu’à 100 000 €.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="securite-2fa"><summary><span class="fc__q-t">Comment activer la double authentification ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Elle est active dès l’ouverture : chaque opération sensible est validée dans l’application, par Face ID ou par votre code. Vous pouvez ajouter une clé de sécurité physique.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="securite-suspect"><summary><span class="fc__q-t">Que faire si je reçois un message suspect ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Ne cliquez sur aucun lien. Tamis ne vous demandera jamais votre code par SMS ni par téléphone. Transférez le message à notre équipe sécurité depuis l’application.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+        </ul>
+      </section>
+      <section class="fc__sec" id="fc-tarifs" aria-labelledby="fc-tarifs-t">
+        <div class="fc__sec-h" tabindex="-1"><span class="fc__sec-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg></span><h3 class="fc__sec-t" id="fc-tarifs-t">Offres et résiliation</h3><span class="fc__sec-n">2 questions</span></div>
+        <ul class="fc__qs" role="list">
+          <li><details class="fc__q" id="tarifs-changer"><summary><span class="fc__q-t">Puis-je changer d’offre à tout moment ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Oui, en deux clics depuis les réglages. Le changement vaut au prochain mois, et la différence est calculée au jour près.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+          <li><details class="fc__q" id="tarifs-cloturer"><summary><span class="fc__q-t">Comment clôturer mon compte ?</span><span class="fc__pm" aria-hidden="true"></span></summary>
+            <div class="fc__a"><div class="fc__a-in"><p>Depuis les réglages, sans justification ni frais. Nous virons le solde sur le compte de votre choix et vous gardez l’accès à vos relevés pendant dix ans.</p>
+              <div class="fc__tools"><span class="fc__vote"><span class="fc__vote-l">Utile ?</span><button class="fc__tb" type="button" data-v="oui" aria-label="Oui, cette réponse m’a aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H18a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 16.8 20H7"/></svg>Oui</button><button class="fc__tb" type="button" data-v="non" aria-label="Non, cette réponse ne m’a pas aidé"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 13V4h3v9zM17 13l-4 7c-1.5 0-2.5-1-2.2-2.6l.6-3.4H6a2 2 0 0 1-2-2.3l1.2-6A2 2 0 0 1 7.2 4H17"/></svg>Non</button></span><button class="fc__tb fc__link-copy" type="button" data-copy aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien</span></button></div>
+            </div></div></details></li>
+        </ul>
+      </section>
+      <div class="fc__empty" role="status">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="21" cy="21" r="12"/><path d="m30 30 9 9M16.5 21h9"/></svg>
+        <h3>Aucune réponse pour « <span data-empty-q></span> »</h3>
+        <p>Essayez un mot plus court, ou l’une de ces recherches fréquentes.</p>
+        <div class="fc__sugg"><button class="fc__tb" type="button" data-suggest="plafond">plafond</button><button class="fc__tb" type="button" data-suggest="TVA">TVA</button><button class="fc__tb" type="button" data-suggest="carte perdue">carte perdue</button></div>
+      </div>
+      <aside class="fc__end" aria-label="Contacter le support">
+        <div class="fc__avatars" aria-hidden="true"><span>IM</span><span>KB</span><span>LS</span></div>
+        <div class="fc__end-t"><h3>Vous n’avez pas trouvé votre réponse ?</h3><p>Une conseillère vous répond par écrit, sans robot ni file d’attente.</p></div>
+        <a class="fc__btn" href="#contact">Écrire au support<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </aside>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  /* FAQ à catégories collantes — couleurs : variables de tokens.css uniquement. */
+  .fc {
+    --fc-offset: 0px;          /* hauteur d'une barre fixe au-dessus (en-tête de site) */
+    --fc-ease: cubic-bezier(.32, .72, 0, 1);
+    --fc-spring: cubic-bezier(.34, 1.36, .64, 1);
+    position: relative; max-width: 1184px; margin: 0 auto; padding: 96px 32px 112px;
+    color: var(--text); font-family: var(--font-sans);
+  }
+  .fc *, .fc *::before, .fc *::after { box-sizing: border-box; }
+  .fc :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); border-radius: 8px; }
+
+  /* En-tête */
+  .fc__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 32px 64px; align-items: end; margin-bottom: 64px; }
+  .fc__brand { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px 0 4px; margin-bottom: 24px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-strong); font-size: 0.8125rem; font-weight: 500; text-decoration: none; }
+  .fc__brand svg { width: 24px; height: 24px; flex: none; }
+  .fc__brand b { font-weight: 600; letter-spacing: -0.01em; }
+  .fc__brand span { color: var(--text-muted); }
+  .fc__logo-bg { fill: var(--accent); }
+  .fc__logo-fg { fill: var(--accent-fg); }
+  .fc__logo-ln { fill: none; stroke: var(--accent-fg); stroke-linecap: round; }
+  .fc__title { margin: 0; color: var(--text-strong); font-size: clamp(2rem, 1.25rem + 2.6vw, 3.25rem); line-height: 1.04; font-weight: 600; letter-spacing: -0.035em; text-wrap: balance; }
+  .fc__lead { margin: 16px 0 0; max-width: 46ch; color: var(--text-muted); font-size: 1.0625rem; line-height: 1.6; text-wrap: pretty; }
+
+  .fc__search { position: relative; display: block; }
+  .fc__search-ic { position: absolute; left: 16px; top: 50%; width: 20px; height: 20px; margin-top: -10px; color: var(--text-muted); pointer-events: none; }
+  .fc__input { width: 100%; height: 48px; padding: 0 56px 0 48px; border: 1px solid var(--border-control); border-radius: 12px; background: var(--surface); color: var(--text-strong); font: inherit; font-size: var(--t-input); -webkit-appearance: none; appearance: none; transition: border-color var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out); }
+  .fc__input::placeholder { color: var(--text-muted); }
+  .fc__input::-webkit-search-cancel-button { display: none; }
+  .fc__input:focus { outline: none; border-color: var(--focus-ring); box-shadow: 0 0 0 3px var(--accent-subtle); }
+  .fc__kbd, .fc__clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); }
+  .fc__kbd { display: grid; place-items: center; min-width: 24px; height: 24px; padding: 0 6px; margin-right: 4px; border: 1px solid var(--border); border-radius: 6px; background: var(--raised); color: var(--text-muted); font: 500 0.75rem/1 var(--font-mono); }
+  .fc__clear { display: none; width: 36px; height: 36px; border: 0; border-radius: 8px; background: transparent; color: var(--text-muted); cursor: pointer; }
+  .fc__clear:hover { background: var(--state-hover); color: var(--text-strong); }
+  .fc__clear svg { width: 16px; height: 16px; }
+  .fc.has-query .fc__clear { display: grid; place-items: center; }
+  .fc.has-query .fc__kbd { display: none; }
+  .fc__status { min-height: 20px; margin: 8px 0 0 4px; color: var(--text-muted); font-size: 0.8125rem; }
+  .fc[data-recherche="false"] .fc__search, .fc[data-recherche="false"] .fc__status { display: none; }
+
+  /* Corps */
+  .fc__body { display: grid; grid-template-columns: 248px minmax(0, 1fr); gap: 72px; align-items: start; }
+  .fc[data-disposition="droite"] .fc__body { grid-template-columns: minmax(0, 1fr) 248px; }
+  .fc[data-disposition="droite"] .fc__aside { order: 2; }
+
+  .fc__aside { position: sticky; top: calc(var(--fc-offset) + 32px); z-index: 2; }
+  .fc__nav-t { margin: 0 0 12px 12px; color: var(--text-muted); font: 500 0.75rem/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .fc__list { position: relative; margin: 0; padding: 0; list-style: none; }
+  .fc__ind { position: absolute; left: 0; top: 0; width: 100%; height: 40px; border-radius: 8px; pointer-events: none; transform: translate3d(0, 0, 0); transition: transform 460ms var(--fc-spring), height 460ms var(--fc-ease), width 460ms var(--fc-ease), opacity var(--motion-base); }
+  .fc[data-indicateur="pastille"] .fc__ind { background: var(--surface); border: 1px solid var(--border); }
+  .fc[data-indicateur="pastille"] .fc__ind::before { content: ""; position: absolute; left: 11px; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 999px; background: var(--accent); }
+  .fc[data-indicateur="barre"] .fc__list::before { content: ""; position: absolute; left: 0; top: 4px; bottom: 4px; width: 1px; background: var(--border); }
+  .fc[data-indicateur="barre"] .fc__ind::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; border-radius: 2px; background: var(--accent); }
+  .fc__link { position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; min-height: 40px; padding: 8px 12px 8px 28px; border-radius: 8px; color: var(--text-muted); font-size: 0.9375rem; line-height: 1.3; text-decoration: none; transition: color var(--motion-base) var(--ease-out); }
+  .fc[data-indicateur="barre"] .fc__link { padding-left: 20px; }
+  .fc__link:hover { color: var(--text-strong); }
+  .fc__link[aria-current="true"] { color: var(--text-strong); font-weight: 500; }
+  .fc__link-t { flex: 1; min-width: 0; }
+  .fc__n { flex: none; color: var(--text-muted); font: 500 0.75rem/1 var(--font-mono); font-variant-numeric: tabular-nums; transition: opacity var(--motion-base); }
+  .fc[data-compteurs="false"] .fc__n { display: none; }
+  .fc__link.is-empty { opacity: .45; pointer-events: none; }
+
+  .fc__help { margin-top: 32px; padding: 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+  .fc__help-s { display: flex; align-items: center; gap: 8px; color: var(--text-strong); font-size: 0.875rem; font-weight: 500; }
+  .fc__dot { position: relative; width: 8px; height: 8px; border-radius: 999px; background: var(--up); }
+  .fc__dot::after { content: ""; position: absolute; inset: -4px; border-radius: inherit; border: 1px solid var(--up); opacity: 0; animation: fc-ping 2.4s var(--ease-out) infinite; }
+  @keyframes fc-ping { 0% { transform: scale(.6); opacity: .7; } 70%, 100% { transform: scale(1.5); opacity: 0; } }
+  .fc__help p { margin: 6px 0 12px; color: var(--text-muted); font-size: 0.8125rem; line-height: 1.5; }
+  .fc__help a { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-size: 0.875rem; font-weight: 500; text-decoration: none; }
+  .fc__help a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .fc__help svg { width: 14px; height: 14px; }
+
+  /* Rubriques */
+  .fc__sec { scroll-margin-top: calc(var(--fc-offset) + 32px); }
+  .fc__sec + .fc__sec { margin-top: 56px; }
+  .fc__sec[hidden] { display: none; }
+  .fc__sec-h { display: flex; align-items: center; gap: 12px; margin: 0 0 8px; outline: none; }
+  .fc__sec-ic { display: grid; place-items: center; width: 36px; height: 36px; flex: none; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text-strong); }
+  .fc__sec-ic svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .fc__sec-t { margin: 0; color: var(--text-strong); font-size: var(--t-section); line-height: 1.3; font-weight: 600; letter-spacing: -0.015em; }
+  .fc__sec-n { margin-left: auto; color: var(--text-muted); font: 500 0.75rem/1 var(--font-mono); }
+  .fc[data-compteurs="false"] .fc__sec-n { display: none; }
+
+  .fc__qs { margin: 0; padding: 0; list-style: none; }
+  .fc__qs > li { border-bottom: 1px solid var(--border); }
+  .fc__qs > li[hidden] { display: none; }
+  .fc__q > summary { display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 16px 0; color: var(--text-strong); font-size: 1.0625rem; line-height: 1.45; font-weight: 500; letter-spacing: -0.01em; cursor: pointer; list-style: none; -webkit-tap-highlight-color: transparent; }
+  .fc__q > summary::-webkit-details-marker { display: none; }
+  .fc__q > summary:focus-visible { outline-offset: 4px; }
+  .fc__q-t { flex: 1; min-width: 0; }
+  .fc__q-hint { display: inline-block; margin-left: 8px; padding: 2px 6px; border-radius: 6px; background: var(--tint-neutral-bg); color: var(--text-muted); font: 500 0.6875rem/1.3 var(--font-mono); vertical-align: 2px; white-space: nowrap; }
+  .fc__pm { position: relative; width: 32px; height: 32px; flex: none; border: 1px solid var(--border); border-radius: 999px; color: var(--text-muted); transition: background-color 320ms var(--fc-ease), border-color 320ms var(--fc-ease), color 320ms var(--fc-ease), transform 520ms var(--fc-spring); }
+  .fc__pm::before, .fc__pm::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 1.5px; margin: -0.75px 0 0 -6px; border-radius: 2px; background: currentColor; transition: transform 520ms var(--fc-spring); }
+  .fc__pm::after { transform: rotate(90deg); }
+  .fc__q > summary:hover .fc__pm { border-color: var(--border-control); color: var(--text-strong); }
+  .fc__q.is-open .fc__pm { background: var(--accent-subtle); border-color: var(--accent-subtle-border); color: var(--accent); transform: rotate(180deg); }
+  .fc__q.is-open .fc__pm::after { transform: rotate(0deg); }
+  .fc__a { overflow: hidden; }
+  .fc__a-in { padding: 0 48px 24px 0; }
+  .fc__a-in p { margin: 0; max-width: 64ch; color: var(--text); font-size: 1rem; line-height: 1.65; }
+  .fc__a-in strong { color: var(--text-strong); font-weight: 600; }
+  .fc mark { padding: 0 2px; margin: 0 -2px; border-radius: 4px; background: var(--accent-subtle); color: var(--text-strong); box-shadow: inset 0 -1px 0 var(--accent-subtle-border); }
+  .fc__tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 16px; color: var(--text-muted); font-size: 0.8125rem; }
+  .fc__vote { display: inline-flex; align-items: center; gap: 4px; }
+  .fc__vote-l { margin-right: 4px; }
+  .fc__tb { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-muted); font: inherit; font-size: 0.8125rem; cursor: pointer; transition: color var(--motion-fast), border-color var(--motion-fast), background-color var(--motion-fast), transform 160ms var(--fc-ease); }
+  .fc__tb:hover { color: var(--text-strong); border-color: var(--border-control); }
+  .fc__tb:active { transform: scale(.96); }
+  .fc__tb svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .fc__tb[aria-pressed="true"] { background: var(--accent-subtle); border-color: var(--accent-subtle-border); color: var(--accent); }
+  .fc__thanks { color: var(--text-muted); animation: fc-in 360ms var(--fc-ease) both; }
+  @keyframes fc-in { from { opacity: 0; transform: translateY(4px); } }
+  .fc__link-copy { margin-left: auto; }
+
+  /* Aucun résultat */
+  .fc__empty { display: none; padding: 48px 24px; border: 1px dashed var(--border-control); border-radius: 16px; text-align: center; }
+  .fc.is-empty .fc__empty { display: block; animation: fc-in 360ms var(--fc-ease) both; }
+  .fc__empty svg { width: 48px; height: 48px; color: var(--text-muted); }
+  .fc__empty h3 { margin: 16px 0 4px; color: var(--text-strong); font-size: 1.0625rem; font-weight: 600; }
+  .fc__empty p { margin: 0 auto; max-width: 40ch; color: var(--text-muted); font-size: 0.9375rem; line-height: 1.55; }
+  .fc__sugg { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 20px; }
+  .fc__sugg .fc__tb { height: 36px; padding: 0 14px; }
+
+  /* Pied */
+  .fc__end { display: flex; align-items: center; gap: 24px; margin-top: 64px; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+  .fc__end-t { flex: 1; min-width: 0; }
+  .fc__end-t h3 { margin: 0; color: var(--text-strong); font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.01em; }
+  .fc__end-t p { margin: 4px 0 0; color: var(--text-muted); font-size: 0.9375rem; line-height: 1.5; }
+  .fc__avatars { display: flex; flex: none; }
+  .fc__avatars span { display: grid; place-items: center; width: 36px; height: 36px; margin-left: -8px; border: 2px solid var(--surface); border-radius: 999px; background: var(--raised); color: var(--text-strong); font-size: 0.75rem; font-weight: 600; }
+  .fc__avatars span:first-child { margin-left: 0; background: var(--accent-subtle); color: var(--accent); }
+  .fc__btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 18px; flex: none; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: inherit; font-size: 0.9375rem; font-weight: 500; text-decoration: none; cursor: pointer; transition: background-color var(--motion-base), transform 200ms var(--fc-ease); }
+  .fc__btn:hover { background: var(--accent-hover); }
+  .fc__btn:active { transform: scale(.97); }
+  .fc__btn svg { width: 16px; height: 16px; transition: transform 320ms var(--fc-spring); }
+  .fc__btn:hover svg { transform: translateX(3px); }
+  .fc__sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+  /* Tablette et mobile : les rubriques deviennent une barre de puces collante */
+  @media (max-width: 899px) {
+    .fc { padding: 56px 16px 72px; }
+    .fc__head { grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
+    .fc__brand { margin-bottom: 20px; }
+    .fc__lead { font-size: 1rem; }
+    .fc__kbd { display: none; }
+    .fc__body, .fc[data-disposition="droite"] .fc__body { display: block; }
+    .fc__aside { top: var(--fc-offset); margin: 0 -16px 24px; padding: 8px 0; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .fc__nav-t, .fc__help { display: none; }
+    .fc__list { display: flex; gap: 4px; padding: 0 16px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+    .fc__list::-webkit-scrollbar { display: none; }
+    .fc__list > li { flex: none; scroll-snap-align: center; }
+    .fc[data-indicateur] .fc__list::before { display: none; }
+    .fc__link, .fc[data-indicateur="barre"] .fc__link { min-height: 44px; padding: 0 14px; gap: 8px; white-space: nowrap; font-size: 0.9375rem; }
+    .fc__ind { top: 0; left: 0; height: 44px; }
+    .fc[data-indicateur="pastille"] .fc__ind::before { display: none; }
+    .fc[data-indicateur="pastille"] .fc__ind { border-radius: 999px; }
+    .fc[data-indicateur="barre"] .fc__ind::before { left: 14px; right: 14px; top: auto; bottom: 0; width: auto; height: 2px; }
+    .fc__sec { scroll-margin-top: calc(var(--fc-offset) + 84px); }
+    .fc__sec + .fc__sec { margin-top: 40px; }
+    .fc__q > summary { font-size: 1rem; min-height: 60px; gap: 12px; }
+    .fc__a-in { padding-right: 0; }
+    .fc__a-in p { font-size: 0.9375rem; }
+    .fc__tb { height: 36px; }
+    .fc__end { flex-direction: column; align-items: flex-start; gap: 16px; margin-top: 48px; padding: 20px; }
+    .fc__btn { width: 100%; height: 48px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fc__ind, .fc__pm, .fc__pm::before, .fc__pm::after, .fc__btn svg { transition: none; }
+    .fc__dot::after, .fc__thanks, .fc.is-empty .fc__empty { animation: none; }
+  }
+</style>
+
+<script>
+(function () {
+  /* FAQ à catégories collantes : scrollspy, indicateur à ressort, recherche sans accents, accordéon animé.
+     Réglages par attributs data-* sur [data-faqcat] ; el._faqcat.update() après un changement. */
+  var RM = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var MOBILE = window.matchMedia ? matchMedia('(max-width: 899px)') : { matches: false };
+  function fold(s) { var o = ''; for (var i = 0; i < s.length; i++) { var c = s[i], n = c.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); o += n.length === 1 ? n : c.toLowerCase().slice(0, 1) || ' '; } return o; }
+  function plural(n, one, many) { return n + ' ' + (n > 1 ? many : one); }
+
+  function setup(root) {
+    if (root._faqcat) return root._faqcat;
+    var list = root.querySelector('.fc__list');
+    var ind = root.querySelector('.fc__ind');
+    var links = [].slice.call(root.querySelectorAll('.fc__link'));
+    var secs = links.map(function (a) { return root.querySelector(a.getAttribute('href')); });
+    var qs = [].slice.call(root.querySelectorAll('.fc__q'));
+    var input = root.querySelector('.fc__input');
+    var status = root.querySelector('.fc__status');
+    var clear = root.querySelector('.fc__clear');
+    var active = -1, lock = 0, lockT = 0, ticking = false;
+    var cfg = {};
+
+    function read() {
+      cfg.multiple = root.dataset.multiple === 'true';
+      cfg.smooth = root.dataset.defilement !== 'instantane' && !RM.matches;
+      cfg.offset = parseFloat(root.dataset.decalage || '0') || 0;
+      root.style.setProperty('--fc-offset', cfg.offset + 'px');
+    }
+
+    /* ---------- Indicateur et barre de puces ---------- */
+    function place(instant) {
+      var a = links[active]; if (!a || !ind) return;
+      if (instant || RM.matches) { ind.style.transition = 'none'; }
+      if (MOBILE.matches) {
+        ind.style.width = a.offsetWidth + 'px'; ind.style.height = a.offsetHeight + 'px';
+        ind.style.transform = 'translate3d(' + a.parentNode.offsetLeft + 'px,0,0)';
+        var x = a.parentNode.offsetLeft - (list.clientWidth - a.offsetWidth) / 2;
+        list.scrollTo({ left: Math.max(0, x), behavior: instant || !cfg.smooth ? 'auto' : 'smooth' });
+      } else {
+        ind.style.width = ''; ind.style.height = a.offsetHeight + 'px';
+        ind.style.transform = 'translate3d(0,' + a.parentNode.offsetTop + 'px,0)';
+      }
+      if (instant || RM.matches) { void ind.offsetWidth; ind.style.transition = ''; }
+    }
+    function setActive(i, instant) {
+      if (i === active || i < 0) { if (instant) place(true); return; }
+      if (active >= 0) links[active].removeAttribute('aria-current');
+      active = i; links[i].setAttribute('aria-current', 'true');
+      place(instant);
+    }
+
+    /* ---------- Scrollspy : la dernière rubrique dont le titre a passé la ligne de lecture ---------- */
+    function spy() {
+      ticking = false;
+      if (lock) return;
+      var line = cfg.offset + (MOBILE.matches ? 96 : Math.min(200, innerHeight * 0.3));
+      var idx = -1;
+      for (var i = 0; i < secs.length; i++) {
+        if (!secs[i] || secs[i].hidden) continue;
+        if (idx < 0) idx = i;
+        if (secs[i].getBoundingClientRect().top - line <= 0) idx = i;
+      }
+      var r = root.getBoundingClientRect(), doc = document.documentElement;
+      if (r.bottom <= innerHeight + 2 && Math.ceil(innerHeight + scrollY) >= doc.scrollHeight - 2) {
+        for (var j = secs.length - 1; j >= 0; j--) if (secs[j] && !secs[j].hidden) { idx = j; break; }
+      }
+      setActive(idx);
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(spy); } }
+
+    function go(i) {
+      var s = secs[i]; if (!s) return;
+      var head = MOBILE.matches ? (root.querySelector('.fc__aside').offsetHeight + 16) : 32;
+      var y = s.getBoundingClientRect().top + scrollY - cfg.offset - head;
+      setActive(i);
+      lock = 1; clearTimeout(lockT);
+      window.scrollTo({ top: Math.max(0, y), behavior: cfg.smooth ? 'smooth' : 'auto' });
+      var end = function () { lock = 0; spy(); window.removeEventListener('scrollend', end); };
+      window.addEventListener('scrollend', end);
+      lockT = setTimeout(end, cfg.smooth ? 900 : 60);
+      var h = s.querySelector('.fc__sec-h'); if (h) h.focus({ preventScroll: true });
+    }
+    links.forEach(function (a, i) {
+      a.addEventListener('click', function (e) { e.preventDefault(); go(i); });
+    });
+
+    /* ---------- Accordéon animé (details natif) ---------- */
+    function anim(d, open, instant) {
+      var box = d.querySelector('.fc__a');
+      if (d._anim) { d._anim.cancel(); d._anim = null; }
+      if (open) { d.open = true; d.classList.add('is-open'); }
+      else d.classList.remove('is-open');
+      d.querySelector('summary').setAttribute('aria-expanded', String(open));
+      if (instant || RM.matches || !box.animate) { if (!open) d.open = false; return; }
+      var h = box.scrollHeight;
+      var from = open ? 0 : box.getBoundingClientRect().height;
+      d._anim = box.animate([{ height: from + 'px', opacity: open ? 0 : 1 }, { height: (open ? h : 0) + 'px', opacity: open ? 1 : 0 }],
+        { duration: open ? 420 : 300, easing: open ? 'cubic-bezier(.32,.72,0,1)' : 'cubic-bezier(.4,0,.2,1)' });
+      var inner = box.firstElementChild;
+      if (open && inner.animate) inner.animate([{ transform: 'translateY(-6px)' }, { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.32,.72,0,1)' });
+      d._anim.onfinish = function () { d._anim = null; if (!open) d.open = false; };
+    }
+    function toggle(d, open, instant) {
+      if (open === undefined) open = !d.classList.contains('is-open');
+      if (open && !cfg.multiple) qs.forEach(function (o) { if (o !== d && o.classList.contains('is-open')) anim(o, false, instant); });
+      anim(d, open, instant);
+    }
+    qs.forEach(function (d) {
+      var sm = d.querySelector('summary');
+      sm.setAttribute('aria-expanded', String(d.open));
+      if (d.open) d.classList.add('is-open');
+      sm.addEventListener('click', function (e) { e.preventDefault(); toggle(d); });
+      /* Vote « utile ? » et lien direct */
+      var vote = d.querySelector('.fc__vote');
+      if (vote) vote.addEventListener('click', function (e) {
+        var b = e.target.closest('button'); if (!b) return;
+        vote.innerHTML = '<span class="fc__thanks" role="status">' + (b.dataset.v === 'oui' ? 'Merci, c’est noté.' : 'Merci, nous allons la reformuler.') + '</span>';
+      });
+      var cp = d.querySelector('[data-copy]');
+      if (cp) cp.addEventListener('click', function () {
+        var url = location.href.split('#')[0] + '#' + d.id, lbl = cp.querySelector('span');
+        try { history.replaceState(null, '', '#' + d.id); } catch (e) {}
+        var done = function () { lbl.textContent = 'Lien copié'; cp.setAttribute('aria-pressed', 'true'); setTimeout(function () { lbl.textContent = 'Copier le lien'; cp.setAttribute('aria-pressed', 'false'); }, 1800); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, done); else done();
+      });
+    });
+
+    /* ---------- Recherche (insensible aux accents et à la casse) ---------- */
+    var store = qs.map(function (d) {
+      var t = d.querySelector('.fc__q-t'), a = d.querySelector('.fc__a-in');
+      return { d: d, li: d.parentNode, t: t, tHTML: t.innerHTML, a: a.querySelector('p'), aHTML: a.querySelector('p').innerHTML, qf: fold(t.textContent), af: fold(a.querySelector('p').textContent) };
+    });
+    function mark(el, terms) {
+      if (!terms.length) return;
+      var w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), nodes = [], n;
+      while ((n = w.nextNode())) nodes.push(n);
+      nodes.forEach(function (node) {
+        var txt = node.nodeValue, f = fold(txt), hits = [];
+        terms.forEach(function (t) { var k = 0; while ((k = f.indexOf(t, k)) > -1) { hits.push([k, k + t.length]); k += t.length; } });
+        if (!hits.length) return;
+        hits.sort(function (a, b) { return a[0] - b[0]; });
+        var frag = document.createDocumentFragment(), pos = 0;
+        hits.forEach(function (h) { if (h[0] < pos) return; frag.appendChild(document.createTextNode(txt.slice(pos, h[0]))); var m = document.createElement('mark'); m.textContent = txt.slice(h[0], h[1]); frag.appendChild(m); pos = h[1]; });
+        frag.appendChild(document.createTextNode(txt.slice(pos)));
+        node.parentNode.replaceChild(frag, node);
+      });
+    }
+    function search(q) {
+      var terms = fold(q.trim()).split(/\s+/).filter(function (t) { return t.length > 1; });
+      root.classList.toggle('has-query', q.length > 0);
+      var total = 0;
+      store.forEach(function (s) {
+        s.t.innerHTML = s.tHTML; s.a.innerHTML = s.aHTML;
+        var inQ = terms.every(function (t) { return s.qf.indexOf(t) > -1; });
+        var ok = !terms.length || terms.every(function (t) { return s.qf.indexOf(t) > -1 || s.af.indexOf(t) > -1; });
+        s.li.hidden = !ok; if (ok) total++;
+        if (ok && terms.length) { mark(s.t, terms); mark(s.a, terms); if (!inQ) { var h = document.createElement('span'); h.className = 'fc__q-hint'; h.textContent = 'dans la réponse'; s.t.appendChild(h); } }
+      });
+      secs.forEach(function (sec, i) {
+        var n = sec.querySelectorAll('.fc__qs > li:not([hidden])').length;
+        sec.hidden = n === 0;
+        links[i].classList.toggle('is-empty', n === 0);
+        if (n === 0) links[i].setAttribute('aria-disabled', 'true'); else links[i].removeAttribute('aria-disabled');
+        links[i].querySelector('.fc__n').textContent = n;
+        sec.querySelector('.fc__sec-n').textContent = plural(n, 'question', 'questions');
+      });
+      root.classList.toggle('is-empty', total === 0);
+      var eq = root.querySelector('[data-empty-q]'); if (eq) eq.textContent = q.trim();
+      if (status) status.textContent = terms.length ? (total ? plural(total, 'réponse', 'réponses') + ' pour « ' + q.trim() + ' »' : 'Aucune réponse pour « ' + q.trim() + ' »') : '';
+      active = -1; spy(); place(true);
+    }
+    if (input) {
+      input.addEventListener('input', function () { search(input.value); });
+      input.addEventListener('keydown', function (e) { if (e.key === 'Escape' && input.value) { e.stopPropagation(); input.value = ''; search(''); } });
+    }
+    if (clear) clear.addEventListener('click', function () { input.value = ''; search(''); input.focus(); });
+    root.addEventListener('click', function (e) {
+      var s = e.target.closest('[data-suggest]'); if (!s) return;
+      input.value = s.dataset.suggest; search(input.value); input.focus();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === '/' && input && root.dataset.recherche !== 'false' && !/input|textarea|select/i.test((document.activeElement || {}).tagName || '') && !document.activeElement.isContentEditable) { e.preventDefault(); input.focus(); }
+    });
+
+    /* ---------- Démarrage ---------- */
+    read();
+    if (root.dataset.premiere === 'true' && qs[0] && !qs.some(function (d) { return d.open; })) toggle(qs[0], true, true);
+    var hash = location.hash && root.querySelector(location.hash.replace(/[^#\w-]/g, ''));
+    if (hash && hash.classList.contains('fc__q')) { toggle(hash, true, true); setTimeout(function () { hash.scrollIntoView({ block: 'center' }); }, 0); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () { place(true); onScroll(); });
+    if (MOBILE.addEventListener) MOBILE.addEventListener('change', function () { place(true); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { place(true); });
+    spy(); place(true);
+
+    root._faqcat = {
+      update: function () { read(); if (!cfg.multiple) { var open = qs.filter(function (d) { return d.classList.contains('is-open'); }); open.slice(1).forEach(function (d) { anim(d, false, true); }); } place(true); spy(); },
+      open: function (id, v) { var d = root.querySelector('#' + id); if (d) toggle(d, v !== false); },
+      closeAll: function () { qs.forEach(function (d) { anim(d, false, true); }); },
+      first: function (v) { if (qs[0]) toggle(qs[0], v, true); },
+      search: function (q) { if (input) { input.value = q; } search(q); },
+      go: go,
+    };
+    return root._faqcat;
+  }
+  window.FaqCat = { init: function (scope) { [].forEach.call((scope || document).querySelectorAll('[data-faqcat]'), setup); } };
+  window.FaqCat.init(document);
+})();
+</script>

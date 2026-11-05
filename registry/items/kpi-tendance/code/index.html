@@ -1,0 +1,333 @@
+<!-- KPI à tendance — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Quatre cartes KPI : chiffre qui roule chiffre par chiffre, mini-courbe qui se redessine en morphing quand la période
+     change, écart signé avec flèche et texte (jamais la couleur seule), sens « une baisse est une bonne nouvelle » géré.
+     Survol ou doigt sur la courbe : repère et valeur du point. États chargement et erreur inclus.
+     Usage : <section data-kpi data-periode="semaine" data-etat="normal" data-courbe="lissee" data-zone="true" data-duree="900"> … </section> -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="kp" data-kpi data-periode="semaine" data-etat="normal" data-courbe="lissee" data-zone="true" data-duree="900" aria-labelledby="kp-t">
+  <header class="kp__head">
+    <div class="kp__title">
+      <a href="#" class="kp__brand" aria-label="Comptoir, accueil"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="kp__lg-bg"/><path d="M30 22h40v56l-6.67-5-6.67 5-6.66-5-6.67 5-6.66-5L30 78Z" class="kp__lg-fg"/><path d="M39 36h22M39 46h22M39 56h12" class="kp__lg-st"/></svg></a>
+      <div>
+        <h2 id="kp-t">Le Bistrot des Halles</h2>
+        <p class="kp__sub">Caisse et réservations · <span data-maj>mis à jour à 14&nbsp;h&nbsp;32</span></p>
+      </div>
+    </div>
+    <div class="kp__seg" role="radiogroup" aria-label="Période">
+      <button type="button" role="radio" data-p="jour" aria-checked="false">Aujourd’hui</button>
+      <button type="button" role="radio" data-p="semaine" aria-checked="true">7 jours</button>
+      <button type="button" role="radio" data-p="mois" aria-checked="false">30 jours</button>
+      <span class="kp__thumb" aria-hidden="true"></span>
+    </div>
+  </header>
+
+  <ul class="kp__grid" role="list">
+    <li class="kp__card" data-k="ca"></li>
+    <li class="kp__card" data-k="couverts"></li>
+    <li class="kp__card" data-k="ticket"></li>
+    <li class="kp__card" data-k="annul" data-sens="inverse"></li>
+  </ul>
+  <p class="kp__live" role="status" aria-live="polite"></p>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .kp { --kp-dur: 900ms; width: 100%; max-width: 1200px; margin: 0 auto; padding: 32px; color: var(--text); font-family: var(--font-sans); }
+  .kp :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .kp h2, .kp h3, .kp p { margin: 0; }
+  .kp__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; margin-bottom: 24px; }
+  .kp__title { display: flex; align-items: center; gap: 12px; }
+  .kp__brand { display: inline-flex; border-radius: 10px; }
+  .kp__brand svg { width: 40px; height: 40px; }
+  .kp__lg-bg { fill: var(--accent); } .kp__lg-fg { fill: var(--accent-fg); }
+  .kp__lg-st { fill: none; stroke: var(--accent); stroke-width: 6; stroke-linecap: round; }
+  .kp__title h2 { color: var(--text-strong); font-size: var(--t-section); line-height: var(--t-section-lh); font-weight: 600; letter-spacing: var(--track-snug); }
+  .kp__sub { color: var(--text-muted); font-size: var(--t-sm); line-height: var(--t-sm-lh); }
+
+  /* Segmenté à pastille glissante */
+  .kp__seg { position: relative; display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; padding: 4px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--raised); }
+  .kp__seg button { position: relative; z-index: 1; height: 32px; padding: 0 16px; border: 0; border-radius: var(--radius-pill); background: none; color: var(--text-muted); font: 500 var(--t-sm) / 1 var(--font-sans); white-space: nowrap; cursor: pointer; transition: color var(--motion-base); }
+  .kp__seg button[aria-checked="true"] { color: var(--text-strong); }
+  .kp__seg button:hover { color: var(--text-strong); }
+  .kp__thumb { position: absolute; top: 4px; bottom: 4px; left: 0; width: 0; border-radius: var(--radius-pill); background: var(--surface); box-shadow: var(--shadow-overlay); transition: transform 420ms cubic-bezier(.3, 1.3, .5, 1), width 420ms cubic-bezier(.3, 1.3, .5, 1); }
+
+  .kp__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+  .kp__card { position: relative; display: grid; grid-template-rows: auto auto auto 1fr; min-height: 232px; padding: 20px 20px 16px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); overflow: hidden; }
+  .kp__lab { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--text-muted); font-size: var(--t-sm); line-height: var(--t-sm-lh); }
+  .kp__val { display: flex; align-items: baseline; height: 1.1em; margin-top: 8px; color: var(--text-strong); font-size: clamp(1.75rem, 1.4rem + .9vw, 2.25rem); line-height: 1.1; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* Chiffres roulants : une colonne 0-9 par chiffre, translateY sur un ressort CSS. */
+  .kp__num { display: inline-flex; overflow: hidden; height: 1.1em; }
+  .kp__d { position: relative; display: inline-block; width: .62em; height: 1.1em; overflow: hidden; }
+  .kp__strip { position: absolute; left: 0; top: 0; display: flex; flex-direction: column; width: 100%; text-align: center; transition: transform var(--kp-dur) cubic-bezier(.25, 1.25, .45, 1); transition-delay: var(--kp-delay, 0ms); }
+  .kp__strip span { height: 1.1em; line-height: 1.1em; }
+  .kp__c { display: inline-block; height: 1.1em; line-height: 1.1em; }
+  .kp__c--sp { width: .22em; }
+  .kp__unit { margin-left: .12em; color: var(--text-muted); font-size: .55em; font-weight: 500; letter-spacing: 0; }
+
+  .kp__delta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 12px; font-size: var(--t-xs); line-height: var(--t-xs-lh); }
+  .kp__badge { display: inline-flex; align-items: center; gap: 2px; height: 24px; padding: 0 8px 0 6px; border: 1px solid; border-radius: var(--radius-pill); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .kp__badge svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--motion-slow) var(--ease-out); }
+  .kp__badge[data-ton="bon"] { color: var(--tint-green-fg); background: var(--tint-green-bg); border-color: var(--tint-green-border); }
+  .kp__badge[data-ton="mauvais"] { color: var(--tint-red-fg); background: var(--tint-red-bg); border-color: var(--tint-red-border); }
+  .kp__badge[data-ton="neutre"] { color: var(--tint-neutral-fg); background: var(--tint-neutral-bg); border-color: var(--tint-neutral-border); }
+  .kp__badge[data-dir="bas"] svg { transform: rotate(90deg); }
+  .kp__badge[data-dir="haut"] svg { transform: rotate(0deg); }
+  .kp__vs { flex-basis: 100%; color: var(--text-muted); }
+
+  .kp__spark { position: relative; align-self: end; margin: 16px -20px -16px; height: 88px; touch-action: pan-y; cursor: crosshair; }
+  .kp__spark svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .kp__line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .kp__area { fill: var(--accent-subtle); opacity: .9; }
+  .kp[data-zone="false"] .kp__area { display: none; }
+  .kp__base { stroke: var(--border); stroke-dasharray: 2 4; vector-effect: non-scaling-stroke; }
+  .kp__end, .kp__hp { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; pointer-events: none; }
+  .kp__end { left: 100%; margin-left: -6px; background: var(--surface); border: 2px solid var(--accent); }
+  .kp__x { stroke: var(--border-strong); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0; transition: opacity var(--motion-fast); }
+  .kp__hp { background: var(--accent); box-shadow: 0 0 0 3px var(--surface); opacity: 0; transition: opacity var(--motion-fast); }
+  .kp__tip { position: absolute; top: 0; left: 0; z-index: 2; padding: 6px 10px; border-radius: var(--radius-ctl); background: var(--text-strong); color: var(--bg); font-size: var(--t-xs); line-height: var(--t-xs-lh); white-space: nowrap; pointer-events: none; opacity: 0; transform: translate(-50%, calc(-100% + 4px)); transition: opacity var(--motion-fast), transform var(--motion-fast) var(--ease-out); font-variant-numeric: tabular-nums; }
+  .kp__tip b { font-weight: 600; }
+  .kp__spark.is-on .kp__x, .kp__spark.is-on .kp__hp { opacity: 1; }
+  .kp__spark.is-on .kp__tip { opacity: 1; transform: translate(-50%, -100%); }
+
+  .kp__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .kp__live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+  /* Chargement : squelette fidèle à la carte */
+  .kp__sk { display: block; border-radius: var(--radius-ctl); background: var(--raised); animation: kp-pulse 1.4s ease-in-out infinite; }
+  @keyframes kp-pulse { 50% { opacity: .55; } }
+  /* Erreur */
+  .kp__err { display: grid; align-content: center; justify-items: start; gap: 8px; }
+  .kp__err p { color: var(--text-muted); font-size: var(--t-sm); line-height: var(--t-sm-lh); }
+  .kp__err strong { color: var(--text-strong); font-size: var(--t-sm); font-weight: 600; }
+  .kp__retry { display: inline-flex; align-items: center; gap: 6px; height: 36px; margin-top: 4px; padding: 0 14px; border: 1px solid var(--border-control); border-radius: var(--radius-pill); background: none; color: var(--text-strong); font: 500 var(--t-sm) / 1 var(--font-sans); cursor: pointer; }
+  .kp__retry:hover { background: var(--state-hover); }
+  .kp__retry svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  @media (max-width: 960px) { .kp__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  /* Mobile : une liste, la courbe passe à droite du chiffre. */
+  @media (max-width: 640px) {
+    .kp { padding: 16px; }
+    .kp__head { flex-direction: column; align-items: stretch; }
+    .kp__seg { display: grid; }
+    .kp__seg button { height: 36px; padding: 0 8px; font-size: var(--t-sm); }
+    .kp__grid { grid-template-columns: 1fr; gap: 8px; }
+    .kp__card { grid-template-columns: minmax(0, 1fr) 112px; grid-template-rows: auto auto auto; column-gap: 12px; min-height: 0; padding: 16px; }
+    .kp__lab, .kp__val, .kp__delta { grid-column: 1; }
+    .kp__val { font-size: 28px; }
+    .kp__spark { grid-column: 2; grid-row: 1 / 4; align-self: center; margin: 0; height: 64px; }
+    .kp__err { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kp__strip, .kp__thumb, .kp__badge svg { transition: none !important; }
+    .kp__sk { animation: none; }
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  /* Données d'exemple (fictives) : valeur de la période, valeur précédente, série de la courbe. */
+  /* Série pseudo-aléatoire reproductible : tendance + cycle (service du midi et du soir, semaine) + bruit léger. */
+  function serie(n, base, amp, seed, trend) {
+    var s = seed, out = [], f = n === 12 ? Math.PI * 2 / 6 : n === 30 ? Math.PI * 2 / 7 : 1.3;
+    for (var i = 0; i < n; i++) { s = (s * 9301 + 49297) % 233280; var r = s / 233280; out.push(base * (1 + trend * i / n) + amp * (Math.sin(i * f + seed) * .7 + (r - .5) * .5)); }
+    return out;
+  }
+  var JOURS = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+  function labels(p) {
+    var n = p === 'jour' ? 12 : p === 'semaine' ? 7 : 30, out = [], end = new Date(2026, 10, 5);
+    for (var i = 0; i < n; i++) {
+      if (p === 'jour') out.push((11 + i) + ' h');
+      else { var d = new Date(end); d.setDate(end.getDate() - (n - 1 - i)); out.push((p === 'semaine' ? JOURS[d.getDay()] + ' ' : '') + d.getDate() + ' ' + ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'][d.getMonth()]); }
+    }
+    return out;
+  }
+  var KPI = {
+    ca: { label: 'Chiffre d’affaires', unit: '€', dec: 0, fmt: 'eur',
+      jour: [4812, 4282, serie(12, 380, 220, 3, .2)], semaine: [31640, 28150, serie(7, 4400, 900, 5, .25)], mois: [128900, 121300, serie(30, 4200, 800, 7, .12)] },
+    couverts: { label: 'Couverts servis', unit: '', dec: 0,
+      jour: [186, 171, serie(12, 15, 9, 11, .1)], semaine: [1214, 1144, serie(7, 170, 30, 13, .2)], mois: [4980, 4712, serie(30, 165, 28, 17, .1)] },
+    ticket: { label: 'Ticket moyen', unit: '€', dec: 2,
+      jour: [25.87, 25.04, serie(12, 25, 3, 19, .02)], semaine: [26.06, 26.54, serie(7, 26.4, 1.4, 23, -.05)], mois: [25.88, 25.75, serie(30, 25.8, 1.2, 29, .01)] },
+    annul: { label: 'Annulations de réservation', unit: '%', dec: 1, pt: true,
+      jour: [3.2, 4.1, serie(12, 3.8, 1.4, 31, -.3)], semaine: [4.1, 5.0, serie(7, 4.8, 1.1, 37, -.25)], mois: [3.8, 4.7, serie(30, 4.4, 1.2, 41, -.2)] }
+  };
+  var VS = { jour: 'vs jeudi dernier', semaine: 'vs les 7 jours précédents', mois: 'vs les 30 jours précédents' };
+  var ICON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 11 11 4M6 4h5v5"/></svg>';
+  var nf = function (v, dec) { return new Intl.NumberFormat('fr-FR', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(v); };
+  var reduced = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches; };
+
+  function init(root) {
+    if (root._kp) return root._kp;
+    var cards = [].slice.call(root.querySelectorAll('.kp__card')), seg = root.querySelector('.kp__seg');
+    var radios = [].slice.call(seg.querySelectorAll('[role=radio]')), thumb = seg.querySelector('.kp__thumb'), live = root.querySelector('.kp__live');
+    var state = {};
+
+    /* Pastille du segmenté : suit le bouton actif sur un ressort (cubic-bezier à dépassement). */
+    function moveThumb() {
+      var on = seg.querySelector('[aria-checked="true"]'); if (!on) return;
+      thumb.style.width = on.offsetWidth + 'px'; thumb.style.transform = 'translateX(' + on.offsetLeft + 'px)';
+    }
+    function select(p, focus) {
+      radios.forEach(function (r) { var on = r.dataset.p === p; r.setAttribute('aria-checked', on); r.tabIndex = on ? 0 : -1; if (on && focus) r.focus(); });
+      root.dataset.periode = p; moveThumb(); render(true);
+    }
+    radios.forEach(function (r, i) {
+      r.addEventListener('click', function () { select(r.dataset.p); });
+      r.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+        if (d) { e.preventDefault(); select(radios[(i + d + radios.length) % radios.length].dataset.p, true); }
+      });
+    });
+
+    /* Chiffre roulant : une colonne par chiffre ; la structure n'est refaite que si le format change. */
+    function setNumber(el, text, animate) {
+      var chars = text.split(''), sig = chars.map(function (c) { return /\d/.test(c) ? 'd' : c; }).join('');
+      if (el.dataset.sig !== sig) {
+        el.dataset.sig = sig; el.innerHTML = '';
+        chars.forEach(function (c) {
+          var s = document.createElement('span');
+          if (/\d/.test(c)) { s.className = 'kp__d'; var st = document.createElement('span'); st.className = 'kp__strip'; for (var k = 0; k <= 9; k++) { var n = document.createElement('span'); n.textContent = k; st.appendChild(n); } s.appendChild(st); }
+          else { s.className = 'kp__c' + (/\s/.test(c) ? ' kp__c--sp' : ''); s.textContent = c; }
+          el.appendChild(s);
+        });
+        animate = false;
+      }
+      var cols = [].slice.call(el.children), nd = 0;
+      for (var i = cols.length - 1; i >= 0; i--) {
+        var c = chars[i], st2 = cols[i].firstChild;
+        if (!/\d/.test(c) || !st2 || !st2.style) continue;
+        st2.style.setProperty('--kp-delay', (animate ? nd * 40 : 0) + 'ms');
+        if (!animate) { st2.style.transition = 'none'; st2.style.transform = 'translateY(' + (-c * 1.1) + 'em)'; st2.offsetWidth; st2.style.transition = ''; }
+        else st2.style.transform = 'translateY(' + (-c * 1.1) + 'em)';
+        nd++;
+      }
+    }
+
+    /* Courbe : points → chemin lissé (Catmull-Rom → Bézier) ou brut ; morphing entre deux périodes. */
+    function path(pts, smooth) {
+      if (!smooth) return 'M' + pts.map(function (p) { return p[0].toFixed(2) + ' ' + p[1].toFixed(2); }).join('L');
+      var d = 'M' + pts[0][0].toFixed(2) + ' ' + pts[0][1].toFixed(2);
+      for (var i = 0; i < pts.length - 1; i++) {
+        var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+        d += 'C' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(2) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(2) + ' ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(2) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(2) + ' ' + p2[0].toFixed(2) + ' ' + p2[1].toFixed(2);
+      }
+      return d;
+    }
+    /* Rééchantillonnage sur 96 points : spline de Catmull-Rom (lissée) ou interpolation linéaire (brute). Même nombre de points pour toutes les périodes : le morphing est un simple fondu point à point. */
+    function resample(vals, n, smooth) {
+      var out = [], L = vals.length, at = function (i) { return vals[Math.max(0, Math.min(L - 1, i))]; };
+      for (var i = 0; i < n; i++) {
+        var t = i / (n - 1) * (L - 1), a = Math.floor(t), u = t - a;
+        if (!smooth) { out.push(at(a) + (at(a + 1) - at(a)) * u); continue; }
+        var p0 = at(a - 1), p1 = at(a), p2 = at(a + 1), p3 = at(a + 2);
+        out.push(.5 * ((2 * p1) + (-p0 + p2) * u + (2 * p0 - 5 * p1 + 4 * p2 - p3) * u * u + (-p0 + 3 * p1 - 3 * p2 + p3) * u * u * u));
+      }
+      return out;
+    }
+    function norm(vals) { var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals), r = hi - lo || 1; return vals.map(function (v) { return 1 - (v - lo) / r; }); }
+
+    function sparkFor(card) {
+      var sp = card.querySelector('.kp__spark'); if (!sp) return null;
+      if (sp._s) return sp._s;
+      var svg = sp.querySelector('svg'), s = { el: sp, svg: svg, line: svg.querySelector('.kp__line'), area: svg.querySelector('.kp__area'), end: sp.querySelector('.kp__end'), x: svg.querySelector('.kp__x'), hp: sp.querySelector('.kp__hp'), tip: sp.querySelector('.kp__tip'), cur: null, raf: 0 };
+      function show(clientX) {
+        var r = sp.getBoundingClientRect(), vals = s.vals, n = vals.length, i = Math.max(0, Math.min(n - 1, Math.round((clientX - r.left) / r.width * (n - 1))));
+        var x = i / (n - 1) * 100;
+        s.x.setAttribute('x1', x); s.x.setAttribute('x2', x); var yy = resample(s.ny, 96, root.dataset.courbe !== 'brute')[Math.round(i / (n - 1) * 95)]; s.hp.style.left = x + '%'; s.hp.style.top = ((6 + yy * 70) / 88 * 100) + '%';
+        s.tip.innerHTML = s.labels[i] + ' · <b>' + s.fmt(vals[i]) + '</b>';
+        /* Bulle au-dessus du point, gardée dans la carte. */
+        var tw = s.tip.offsetWidth, cr = sp.parentNode.getBoundingClientRect(), px = x / 100 * r.width, minX = cr.left - r.left + tw / 2 + 8, maxX = cr.right - r.left - tw / 2 - 8;
+        s.tip.style.left = Math.max(minX, Math.min(maxX, px)) + 'px'; s.tip.style.top = ((6 + yy * 70) / 88 * r.height - 10) + 'px'; sp.classList.add('is-on');
+      }
+      sp.addEventListener('pointermove', function (e) { show(e.clientX); });
+      sp.addEventListener('pointerdown', function (e) { show(e.clientX); });
+      sp.addEventListener('pointerleave', function () { sp.classList.remove('is-on'); });
+      sp._s = s; return s;
+    }
+    function drawSpark(s, target, animate) {
+      var N = 96, smooth = root.dataset.courbe !== 'brute';
+      var to = resample(target, N, smooth), from = s.cur || to, t0 = performance.now(), dur = reduced() || !animate ? 0 : +root.dataset.duree || 900;
+      cancelAnimationFrame(s.raf);
+      function frame(now) {
+        var t = dur ? Math.min(1, (now - t0) / dur) : 1, e = 1 - Math.pow(1 - t, 4);
+        var cur = to.map(function (v, i) { return from[i] + (v - from[i]) * e; });
+        s.cur = cur;
+        var pts = cur.map(function (v, i) { return [i / (N - 1) * 100, 6 + v * 70]; }), d = path(pts, false);
+        s.line.setAttribute('d', d); s.area.setAttribute('d', d + 'L100 88L0 88Z');
+        s.end.style.top = (pts[N - 1][1] / 88 * 100) + '%';
+        if (t < 1) s.raf = requestAnimationFrame(frame);
+      }
+      s.raf = requestAnimationFrame(frame);
+    }
+
+    function cardHTML(key) {
+      var k = KPI[key];
+      return '<p class="kp__lab"><span>' + k.label + '</span></p>' +
+        '<p class="kp__val"><span class="kp__sr" data-sr></span><span class="kp__num" aria-hidden="true" data-num></span>' + (k.unit ? '<span class="kp__unit" aria-hidden="true">' + (k.unit === '%' ? '%' : k.unit) + '</span>' : '') + '</p>' +
+        '<p class="kp__delta"><span class="kp__badge" data-badge>' + ICON + '<span data-dv></span></span><span class="kp__vs" data-vs></span></p>' +
+        '<div class="kp__spark" aria-hidden="true"><svg viewBox="0 0 100 88" preserveAspectRatio="none"><line class="kp__base" x1="0" x2="100" y1="87.5" y2="87.5"/><path class="kp__area"/><path class="kp__line"/><line class="kp__x" y1="0" y2="88"/></svg><span class="kp__end"></span><span class="kp__hp"></span><span class="kp__tip"></span></div>';
+    }
+    function skeleton() { return '<span class="kp__sk" style="width:55%;height:16px"></span><span class="kp__sk" style="width:70%;height:32px;margin-top:12px"></span><span class="kp__sk" style="width:46%;height:20px;margin-top:14px"></span><span class="kp__sk" style="align-self:end;height:56px;margin-top:16px"></span>'; }
+    function errorHTML(key) { return '<p class="kp__lab"><span>' + KPI[key].label + '</span></p><div class="kp__err"><strong>Données indisponibles</strong><p>La caisse n’a pas répondu. Les ventes sont conservées et seront synchronisées.</p><button type="button" class="kp__retry" data-retry><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.5M13 2.5v3h-3"/></svg>Réessayer</button></div>'; }
+
+    var ready = false;
+    function render(animate, quiet) {
+      var p = root.dataset.periode || 'semaine', etat = root.dataset.etat || 'normal';
+      root.style.setProperty('--kp-dur', (+root.dataset.duree || 900) + 'ms');
+      root.setAttribute('aria-busy', etat === 'chargement');
+      var lab = labels(p), summary = [];
+      cards.forEach(function (card) {
+        var key = card.dataset.k, k = KPI[key], d = k[p];
+        if (card.dataset.mode !== etat) { card.dataset.mode = etat; card.innerHTML = etat === 'chargement' ? skeleton() : etat === 'erreur' ? errorHTML(key) : cardHTML(key); card.querySelector('.kp__spark') && (card.querySelector('.kp__spark')._s = null); animate = false; }
+        if (etat !== 'normal') return;
+        var val = d[0], prev = d[1], unitTxt = k.unit === '€' ? ' euros' : k.unit === '%' ? ' %' : '';
+        var diff = k.pt ? val - prev : (val - prev) / prev * 100, dir = diff > 0.05 ? 'haut' : diff < -0.05 ? 'bas' : 'stable';
+        var good = card.dataset.sens === 'inverse' ? diff < 0 : diff > 0;
+        var sign = diff > 0 ? '+' : diff < 0 ? '−' : '±';
+        var dv = sign + nf(Math.abs(diff), 1) + (k.pt ? ' pt' : ' %');
+        setNumber(card.querySelector('[data-num]'), nf(val, k.dec), animate && !reduced());
+        card.querySelector('[data-sr]').textContent = k.label + ' : ' + nf(val, k.dec) + unitTxt + ', ' + (dir === 'haut' ? 'en hausse de ' : dir === 'bas' ? 'en baisse de ' : 'stable, ') + nf(Math.abs(diff), 1) + (k.pt ? ' point' : ' %') + ' ' + VS[p] + (dir === 'stable' ? '' : good ? ' (bonne tendance)' : ' (à surveiller)') + '.';
+        var b = card.querySelector('[data-badge]');
+        b.dataset.dir = dir; b.dataset.ton = dir === 'stable' ? 'neutre' : good ? 'bon' : 'mauvais';
+        b.querySelector('[data-dv]').textContent = dv;
+        b.setAttribute('aria-hidden', 'true');
+        card.querySelector('[data-vs]').textContent = VS[p];
+        card.querySelector('[data-vs]').setAttribute('aria-hidden', 'true');
+        var s = sparkFor(card);
+        s.vals = d[2]; s.ny = norm(d[2]); s.labels = lab; s.fmt = function (v) { return nf(v, k.dec) + (k.unit ? '\u202f' + k.unit : ''); };
+        drawSpark(s, s.ny, animate);
+        summary.push(k.label + ' ' + nf(val, k.dec) + unitTxt);
+      });
+      if (ready && !quiet && animate && etat === 'normal') live.textContent = 'Période : ' + seg.querySelector('[aria-checked="true"]').textContent + '. ' + summary.join(', ') + '.';
+    }
+
+    root.addEventListener('click', function (e) {
+      if (e.target.closest('[data-retry]')) { root.dataset.etat = 'chargement'; render(false); setTimeout(function () { root.dataset.etat = 'normal'; render(true); }, 900); }
+    });
+    if (window.ResizeObserver) new ResizeObserver(moveThumb).observe(seg); else addEventListener('resize', moveThumb);
+    radios.forEach(function (r) { r.tabIndex = r.getAttribute('aria-checked') === 'true' ? 0 : -1; });
+    select(root.dataset.periode || 'semaine');
+    ready = true;
+
+    root._kp = {
+      update: function (o) { var p0 = root.dataset.periode; Object.keys(o || {}).forEach(function (k) { if (o[k] != null) root.dataset[k] = o[k]; }); if (root.dataset.periode !== p0) select(root.dataset.periode); else render(true); },
+      /* Rejouer : chiffres remis à zéro et courbes à plat, sans transition, puis tout repart. */
+      replay: function () {
+        if (reduced()) return;
+        [].forEach.call(root.querySelectorAll('.kp__strip'), function (st) { st.style.transition = 'none'; st.style.transform = 'translateY(0)'; });
+        cards.forEach(function (c) { var sp = c.querySelector('.kp__spark'); if (sp && sp._s && sp._s.cur) sp._s.cur = sp._s.cur.map(function () { return 1; }); });
+        root.offsetWidth;
+        [].forEach.call(root.querySelectorAll('.kp__strip'), function (st) { st.style.transition = ''; });
+        requestAnimationFrame(function () { render(true, true); });
+      }
+    };
+    return root._kp;
+  }
+  document.querySelectorAll('[data-kpi]').forEach(init);
+  window.KpiTendance = { init: init };
+})();
+</script>

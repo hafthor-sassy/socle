@@ -1,0 +1,251 @@
+<!-- Grand final — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css.
+     Marque fictive : Portulan (voyages en train de nuit). Horaires et prix fictifs.
+     Réglages : data-distance (vh de défilement), data-echelle, data-rebond, data-rail, data-lissage. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="gf" data-grandfinal data-distance="260" data-echelle="7" data-rebond="true" data-rail="true" data-lissage="true" aria-labelledby="gf-end-title">
+  <div class="gf__stage">
+    <div class="gf__bar">
+      <a class="gf__brand" href="#accueil" aria-label="Portulan, accueil"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="gf__lg-bg"/><path d="M50 18 56 44 82 50 56 56 50 82 44 56 18 50 44 44z" class="gf__lg-fg"/><path d="M27 27l46 46M73 27 27 73" class="gf__lg-ln" stroke-width="3" opacity=".55"/><circle cx="50" cy="50" r="5" class="gf__lg-bg"/></svg>Portulan</a>
+      <span class="gf__tag" aria-hidden="true">Trains de nuit · Europe</span>
+    </div>
+
+    <div class="gf__intro" aria-hidden="true">
+      <p class="gf__eyebrow">Dernier arrêt avant le départ</p>
+      <p class="gf__title">Partez lentement, arrivez ailleurs<span class="gf__dot"></span></p>
+      <p class="gf__sub">312 trajets de nuit vers 64 villes d’Europe. Vous dormez, le paysage change.</p>
+    </div>
+    <p class="gf__hint" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M4 9l4 4 4-4"/></svg>Faites défiler</p>
+
+    <div class="gf__flood" aria-hidden="true">
+      <div>
+        <p class="gf__big">Paris → Vienne, en une seule nuit.</p>
+        <ul class="gf__meta"><li>Départ <b>19 h 12</b></li><li>Arrivée <b>9 h 47</b></li><li>Couchette dès <b>79 €</b></li></ul>
+      </div>
+    </div>
+
+    <div class="gf__end">
+      <p class="gf__end-k">Prochain départ ce soir, 19 h 12</p>
+      <h2 class="gf__end-t" id="gf-end-title">Votre couchette vous attend.</h2>
+      <a class="gf__btn" href="#reserver"><span class="gf__btn-l">Réserver mon trajet<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+      <p class="gf__micro">Billets échangeables jusqu’au départ · Paiement en trois fois</p>
+    </div>
+
+    <div class="gf__rail" aria-hidden="true"><span>Paris</span><span class="gf__track"><span class="gf__fill"></span><span class="gf__train"></span></span><span>Vienne</span></div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  /* Grand final — couleurs : variables de tokens.css uniquement. */
+  .gf { --gf-distance: 260; position: relative; height: calc(100vh + var(--gf-distance) * 1vh); height: calc(100svh + var(--gf-distance) * 1svh); font-family: var(--font-sans); color: var(--text); }
+  .gf *, .gf *::before, .gf *::after { box-sizing: border-box; }
+  .gf__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; isolation: isolate; }
+  .gf__bar { position: absolute; z-index: 3; left: 0; right: 0; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px 32px; pointer-events: none; }
+  .gf__brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text-strong); font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; pointer-events: auto; text-decoration: none; transition: color 200ms; }
+  .gf__brand svg { width: 28px; height: 28px; }
+  .gf__lg-bg { fill: var(--accent); transition: fill 200ms; }
+  .gf__lg-fg { fill: var(--accent-fg); transition: fill 200ms; }
+  .gf__lg-ln { fill: none; stroke: var(--accent-fg); stroke-linecap: round; transition: stroke 200ms; }
+  .gf__tag { color: var(--text-muted); font: 500 0.75rem/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; transition: color 200ms; }
+  .gf.is-flood .gf__brand { color: var(--accent-fg); }
+  .gf.is-flood .gf__lg-bg { fill: var(--accent-fg); }
+  .gf.is-flood .gf__lg-fg { fill: var(--accent); }
+  .gf.is-flood .gf__lg-ln { stroke: var(--accent); }
+  .gf.is-flood .gf__tag { color: var(--accent-fg); }
+
+  /* Acte 1 : le titre, dont le point final est un disque */
+  .gf__intro { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; padding: 96px 32px; text-align: center; }
+  .gf__eyebrow { margin: 0 0 24px; color: var(--text-muted); font: 500 0.8125rem/1 var(--font-mono); letter-spacing: 0.04em; }
+  .gf__title { margin: 0; max-width: 14ch; color: var(--text-strong); font-size: clamp(2.5rem, 1rem + 5.4vw, 5.5rem); line-height: 0.98; font-weight: 600; letter-spacing: -0.045em; text-wrap: balance; transform-origin: var(--gf-ox, 50%) var(--gf-oy, 50%); }
+  .gf__dot { display: inline-block; width: 0.2em; height: 0.2em; margin-left: 0.04em; border-radius: 999px; background: var(--accent); vertical-align: 0.02em; }
+  .gf__sub { margin: 28px 0 0; max-width: 44ch; color: var(--text-muted); font-size: 1.0625rem; line-height: 1.6; }
+  .gf__hint { position: absolute; left: 50%; bottom: 96px; display: inline-flex; align-items: center; gap: 8px; transform: translateX(-50%); color: var(--text-muted); font-size: 0.8125rem; }
+  .gf__hint svg { width: 16px; height: 16px; animation: gf-nudge 1.8s cubic-bezier(.32, .72, 0, 1) infinite; }
+  @keyframes gf-nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+
+  /* Acte 2 : l'aplat qui part du point et envahit l'écran */
+  .gf__flood { position: absolute; inset: 0; z-index: 2; display: grid; place-content: center; justify-items: center; padding: 96px 32px; background: var(--accent); color: var(--accent-fg); text-align: center; clip-path: circle(0 at 50% 50%); pointer-events: none; }
+  .gf__big { margin: 0; max-width: 16ch; font-size: clamp(2.25rem, 1rem + 5vw, 5rem); line-height: 1; font-weight: 600; letter-spacing: -0.045em; text-wrap: balance; }
+  .gf__meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px; margin: 28px 0 0; padding: 0; list-style: none; font: 500 0.875rem/1.4 var(--font-mono); }
+  .gf__meta li { opacity: .86; }
+  .gf__meta b { font-weight: 600; opacity: 1; }
+
+  /* Acte 3 : tout se resserre sur le bouton */
+  .gf__end { position: absolute; inset: 0; z-index: 1; display: grid; place-content: center; justify-items: center; padding: 96px 32px; text-align: center; }
+  .gf__end-k { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 16px; color: var(--text-muted); font: 500 0.8125rem/1 var(--font-mono); letter-spacing: 0.02em; }
+  .gf__end-k::before { content: ""; width: 6px; height: 6px; border-radius: 999px; background: var(--up); }
+  .gf__end-t { margin: 0 0 32px; max-width: 18ch; color: var(--text-strong); font-size: clamp(1.75rem, 1.1rem + 2.2vw, 2.75rem); line-height: 1.08; font-weight: 600; letter-spacing: -0.035em; text-wrap: balance; }
+  .gf__btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 60px; padding: 0 32px; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: inherit; font-size: 1.0625rem; font-weight: 500; letter-spacing: -0.01em; text-decoration: none; cursor: pointer; transition: background-color var(--motion-base), transform 300ms cubic-bezier(.34, 1.4, .64, 1); }
+  .gf__btn:hover { background: var(--accent-hover); }
+  .gf__btn:active { transform: scale(.97); }
+  .gf__btn:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 4px; }
+  .gf__btn-l { display: inline-flex; align-items: center; gap: 10px; }
+  .gf__btn svg { width: 18px; height: 18px; transition: transform 360ms cubic-bezier(.34, 1.4, .64, 1); }
+  .gf__btn:hover svg { transform: translateX(3px); }
+  .gf__micro { margin: 20px 0 0; color: var(--text-muted); font-size: 0.875rem; }
+
+  /* Rail de progression : un train sur sa ligne */
+  .gf__rail { position: absolute; z-index: 3; left: 50%; bottom: 32px; display: flex; align-items: center; gap: 12px; width: min(420px, calc(100% - 48px)); transform: translateX(-50%); color: var(--text-muted); font: 500 0.6875rem/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; pointer-events: none; transition: color 200ms; }
+  .gf[data-rail="false"] .gf__rail { display: none; }
+  .gf__track { position: relative; flex: 1; height: 2px; border-radius: 2px; background: var(--border); transition: background-color 200ms; }
+  .gf__fill { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; border-radius: inherit; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); transition: background-color 200ms; }
+  .gf__train { position: absolute; top: 50%; left: 0; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 4px var(--bg); transition: background-color 200ms, box-shadow 200ms; }
+  .gf.is-flood .gf__rail { color: var(--accent-fg); }
+  .gf.is-flood .gf__track { background: color-mix(in srgb, var(--accent-fg) 30%, transparent); }
+  .gf.is-flood .gf__fill, .gf.is-flood .gf__train { background: var(--accent-fg); }
+  .gf.is-flood .gf__train { box-shadow: 0 0 0 4px var(--accent); }
+
+  /* États pilotés par le script (le repli sans script montre la scène finale) */
+  .gf.is-js .gf__end > :not(.gf__btn) { opacity: 0; transform: translateY(12px); transition: opacity 420ms cubic-bezier(.32, .72, 0, 1), transform 520ms cubic-bezier(.32, .72, 0, 1); }
+  .gf.is-js .gf__btn { opacity: 0; }
+  .gf.is-js .gf__btn-l { opacity: 0; transform: translateY(6px); transition: opacity 320ms cubic-bezier(.32, .72, 0, 1), transform 420ms cubic-bezier(.34, 1.4, .64, 1); }
+  .gf.is-js.is-done .gf__end > :not(.gf__btn) { opacity: 1; transform: none; }
+  .gf.is-js.is-done .gf__end > .gf__micro { transition-delay: 90ms; }
+  .gf.is-js.is-done .gf__btn { opacity: 1; }
+  .gf.is-js.is-done .gf__btn-l { opacity: 1; transform: none; transition-delay: 60ms; }
+  .gf.is-js.is-done .gf__flood { visibility: hidden; }
+  .gf:not(.is-js) .gf__intro, .gf:not(.is-js) .gf__flood, .gf:not(.is-js) .gf__hint { display: none; }
+
+  @media (max-width: 719px) {
+    .gf__bar { padding: 16px 20px; }
+    .gf__tag { display: none; }
+    .gf__intro, .gf__flood, .gf__end { padding: 80px 20px; }
+    .gf__title { font-size: 2.75rem; }
+    .gf__sub { font-size: 1rem; }
+    .gf__big { font-size: 2.5rem; }
+    .gf__meta { flex-direction: column; gap: 6px; font-size: 0.875rem; }
+    .gf__end-t { font-size: 2rem; }
+    .gf__btn { height: 56px; padding: 0 28px; }
+    .gf__hint { bottom: 88px; }
+    .gf__rail { bottom: 24px; }
+  }
+
+  /* Réduire les animations : la scène finale, sans défilement long */
+  @media (prefers-reduced-motion: reduce) {
+    .gf { height: auto; }
+    .gf__stage { position: relative; height: auto; min-height: 100vh; }
+    .gf__intro, .gf__flood, .gf__hint, .gf__rail { display: none; }
+    .gf__end { position: relative; min-height: 100vh; }
+    .gf.is-js .gf__end > :not(.gf__btn), .gf.is-js .gf__btn, .gf.is-js .gf__btn-l { opacity: 1; transform: none; transition: none; }
+    .gf__hint svg { animation: none; }
+  }
+</style>
+
+<script>
+(function () {
+  /* Grand final : le titre grandit autour de son point final, le point devient un aplat qui remplit l'écran,
+     puis l'aplat se resserre jusqu'à devenir le bouton. Tout est lié au défilement (position: sticky),
+     lissé par un ressort ; aucune boucle quand rien ne bouge. Réglages : data-distance, data-echelle,
+     data-rebond, data-rail, data-lissage sur [data-grandfinal] ; el._grandfinal.update(). */
+  var RM = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function seg(p, a, b) { return clamp((p - a) / (b - a), 0, 1); }
+  function inCubic(t) { return t * t * t; }
+  function outCubic(t) { return 1 - Math.pow(1 - t, 3); }
+  function inOut(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function outBack(t) { var c = 1.4, d = c + 1; return 1 + d * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); }
+
+  function setup(root) {
+    if (root._grandfinal) return root._grandfinal;
+    var stage = root.querySelector('.gf__stage');
+    var title = root.querySelector('.gf__title'), dot = root.querySelector('.gf__dot');
+    var intro = root.querySelector('.gf__intro'), hint = root.querySelector('.gf__hint'), aside = root.querySelectorAll('.gf__eyebrow, .gf__sub');
+    var flood = root.querySelector('.gf__flood'), floodIn = flood.firstElementChild;
+    var btn = root.querySelector('.gf__btn'), fill = root.querySelector('.gf__fill'), train = root.querySelector('.gf__train');
+    var cfg = {}, geo = null, cur = 0, target = 0, raf = 0, forced = null, done = false;
+    root.classList.add('is-js');
+
+    function read() {
+      cfg.distance = parseFloat(root.dataset.distance) || 260;
+      cfg.scale = parseFloat(root.dataset.echelle) || 7;
+      cfg.back = root.dataset.rebond !== 'false';
+      cfg.smooth = root.dataset.lissage !== 'false';
+      root.style.setProperty('--gf-distance', cfg.distance);
+    }
+    /* Géométrie mesurée sans transformation : centre du point, rectangle du bouton. */
+    function measure() {
+      var keepT = title.style.transform; title.style.transform = 'none';
+      var s = stage.getBoundingClientRect(), d = dot.getBoundingClientRect(), b = btn.getBoundingClientRect(), t = title.getBoundingClientRect();
+      title.style.transform = keepT;
+      var cx = d.left - s.left + d.width / 2, cy = d.top - s.top + d.height / 2;
+      title.style.setProperty('--gf-ox', (d.left - t.left + d.width / 2) + 'px');
+      title.style.setProperty('--gf-oy', (d.top - t.top + d.height / 2) + 'px');
+      geo = { W: s.width, H: s.height, cx: cx, cy: cy, r0: d.width / 2, R: Math.hypot(Math.max(cx, s.width - cx), Math.max(cy, s.height - cy)) + 2,
+        bt: b.top - s.top, bl: b.left - s.left, bw: b.width, bh: b.height };
+    }
+    function progress() {
+      var r = root.getBoundingClientRect(), span = r.height - stage.offsetHeight;
+      return span > 0 ? clamp(-r.top / span, 0, 1) : 1;
+    }
+
+    /* Une image de la scène pour un avancement p (0 → 1). */
+    function render(p) {
+      if (!geo) measure();
+      var g = geo;
+      /* Acte 1 — le titre grandit autour de son point et s'efface */
+      var a = seg(p, 0.06, 0.46), sA = 1 + (cfg.scale - 1) * inCubic(a);
+      title.style.transform = a > 0 ? 'scale(' + sA.toFixed(4) + ')' : '';
+      title.style.opacity = String(1 - seg(p, 0.3, 0.46));
+      var fa = 1 - seg(p, 0.04, 0.16);
+      for (var i = 0; i < aside.length; i++) { aside[i].style.opacity = String(fa); aside[i].style.transform = 'translateY(' + ((i ? 1 : -1) * 16 * (1 - fa)).toFixed(1) + 'px)'; }
+      if (hint) hint.style.opacity = String(1 - seg(p, 0, 0.06));
+      /* Acte 2 — l'aplat part du point (disque qui grandit avec le titre) jusqu'à couvrir l'écran */
+      var f = seg(p, 0.1, 0.5), r = g.r0 * sA + (g.R - g.r0 * sA) * inCubic(f);
+      var c = seg(p, 0.64, 0.86), k = cfg.back ? outBack(c) : outCubic(c);
+      if (c <= 0) flood.style.clipPath = 'circle(' + Math.max(0, r).toFixed(1) + 'px at ' + g.cx.toFixed(1) + 'px ' + g.cy.toFixed(1) + 'px)';
+      else {
+        /* Acte 3 — l'aplat se resserre sur le rectangle du bouton */
+        var top = g.bt * k, left = g.bl * k, right = (g.W - g.bl - g.bw) * k, bottom = (g.H - g.bt - g.bh) * k, rad = (g.bh / 2) * Math.min(1, k * 1.15);
+        flood.style.clipPath = 'inset(' + top.toFixed(1) + 'px ' + right.toFixed(1) + 'px ' + bottom.toFixed(1) + 'px ' + left.toFixed(1) + 'px round ' + rad.toFixed(1) + 'px)';
+      }
+      var flooded = f >= 1 && c < 0.55;
+      root.classList.toggle('is-flood', flooded);
+      floodIn.style.opacity = String(seg(p, 0.5, 0.56) * (1 - seg(p, 0.6, 0.66)));
+      floodIn.style.transform = 'scale(' + (0.94 + 0.06 * outCubic(seg(p, 0.48, 0.58)) + 0.04 * seg(p, 0.6, 0.66)).toFixed(4) + ')';
+      var end = c >= 1;
+      if (end !== done) { done = end; root.classList.toggle('is-done', end); }
+      /* Rail */
+      if (fill) fill.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+      if (train) train.style.left = (p * 100).toFixed(2) + '%';
+    }
+
+    function tick() {
+      raf = 0;
+      var t = forced != null ? forced : target;
+      if (!cfg.smooth || forced != null) cur = t; else cur += (t - cur) * 0.16;
+      if (Math.abs(t - cur) < 0.0004) cur = t;
+      render(cur);
+      if (cur !== t) raf = requestAnimationFrame(tick);
+    }
+    function onScroll() { target = progress(); if (!raf) raf = requestAnimationFrame(tick); }
+
+    /* Clavier : si le bouton reçoit le focus avant la fin, on saute à la scène finale. */
+    btn.addEventListener('focus', function () {
+      if (done || RM.matches) return;
+      var r = root.getBoundingClientRect(), y = r.top + scrollY + r.height - stage.offsetHeight;
+      window.scrollTo({ top: y, behavior: 'auto' }); target = 1; cur = 1; render(1);
+    });
+
+    function relayout() { title.style.transform = ''; measure(); onScroll(); }
+    read();
+    if (RM.matches) { root.classList.add('is-done'); }
+    else {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', relayout);
+      if ('ResizeObserver' in window) new ResizeObserver(relayout).observe(stage);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+      measure(); target = cur = progress(); render(cur);
+    }
+    root._grandfinal = {
+      update: function () { read(); relayout(); },
+      set: function (p) { forced = p == null ? null : clamp(p, 0, 1); if (forced == null) onScroll(); else { cur = forced; render(cur); } },
+      progress: function () { return cur; },
+    };
+    return root._grandfinal;
+  }
+  window.GrandFinal = { init: function (scope) { [].forEach.call((scope || document).querySelectorAll('[data-grandfinal]'), setup); } };
+  window.GrandFinal.init(document);
+})();
+</script>

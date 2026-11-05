@@ -1,0 +1,57 @@
+{
+  "id": "faq-conversationnelle",
+  "nom": "FAQ conversationnelle",
+  "categorie": "faq",
+  "niveau": "premium",
+  "palette": "menthe",
+  "description": "La FAQ devient une conversation : la question s’envole de la liste jusqu’au fil sur un ressort, l’assistant marque un temps de réflexion, puis la réponse s’écrit mot à mot au rythme de la phrase, avec sa source, un vote et des questions liées. Saisie libre avec suggestions, bouton stop pour tout afficher, pause hors écran.",
+  "tags": ["Chat", "Typewriter", "Ressort", "FLIP", "Suggestions", "Assistant", "Combobox"],
+  "date": "2026-11-05",
+  "ordre": 21,
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "technique": "Écriture rythmée (ponctuation, aléa) · ressort WAAPI · combobox ARIA",
+  "difficulte": 2,
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, textes, --accent / --accent-fg (bulles, curseur), --accent-subtle (focus) ; halo en color-mix sur --accent" },
+    { "nom": "JavaScript", "note": "≈ 6 ko minifié, sans bibliothèque ; contenu dans un bloc JSON éditable" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "rythme", "label": "Rythme d’écriture", "type": "number", "default": 48, "min": 16, "max": 140, "step": 4, "unit": "ms/mot",
+      "code": { "html": "data-rythme=\"{v}\"", "react": "speed={{v}}" }, "hint": "Délai moyen entre deux mots. 40 à 60 : naturel ; 20 : très vif." },
+    { "name": "naturel", "label": "Rythme naturel", "type": "boolean", "default": true,
+      "code": { "html": "data-naturel=\"{v}\"", "react": "natural={{v}}" }, "hint": "Pauses après les virgules et les points, légère irrégularité, mots longs un peu plus lents." },
+    { "name": "reflexion", "label": "Temps de réflexion", "type": "number", "default": 700, "min": 0, "max": 1400, "step": 100, "unit": "ms",
+      "code": { "html": "data-reflexion=\"{v}\"", "react": "thinking={{v}}" }, "hint": "Durée de l’indicateur « … » avant la réponse. 0 : pas d’indicateur." },
+    { "name": "curseur", "label": "Curseur d’écriture", "type": "boolean", "default": true,
+      "code": { "html": "data-curseur=\"{v}\"", "react": "caret={{v}}" } },
+    { "name": "liees", "label": "Questions liées", "type": "boolean", "default": true,
+      "code": { "html": "data-liees=\"{v}\"", "react": "related={{v}}" } },
+    { "name": "source", "label": "Source citée", "type": "boolean", "default": true,
+      "code": { "html": "data-source=\"{v}\"", "react": "source={{v}}" }, "hint": "Article ou document d’où vient la réponse : la confiance tient beaucoup à ce détail." },
+    { "name": "auto", "label": "Première question jouée", "type": "boolean", "default": true,
+      "code": { "html": "data-auto=\"{v}\"", "react": "autoplay={{v}}" }, "hint": "Pose la première question à l’arrivée, pour montrer le principe." }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/FaqConversationnelle.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour une FAQ courte et rassurante (assurance, santé, banque, SaaS) : le format conversation rend chaque réponse plus humaine qu’un accordéon.",
+    "Les réponses sont écrites à l’avance (bloc JSON) : aucune IA n’est appelée. Branchez un vrai assistant en remplaçant ask() si besoin, l’animation reste la même.",
+    "Gardez des réponses de deux ou trois phrases : au-delà, l’écriture mot à mot fait attendre. Le bouton stop (ou Échap) affiche tout d’un coup.",
+    "« kw » liste des mots-clés par question pour la saisie libre ; une question inconnue reçoit une réponse honnête et un lien vers une conseillère.",
+    "API vanilla : el._faqconv.ask(id), play([ids]), skip(), reset(), prefill([ids]) pour une vignette statique."
+  ],
+  "accessibilite": [
+    "Le fil est un role=\"log\" ; le texte écrit mot à mot est masqué aux lecteurs d’écran, qui reçoivent la réponse entière une seule fois, une fois complète (role=\"status\").",
+    "Saisie en combobox ARIA (aria-expanded, aria-activedescendant) : flèches pour choisir une suggestion, Entrée pour l’envoyer, Échap pour fermer ou tout afficher.",
+    "Toutes les questions sont des boutons (liste, puces mobiles, questions liées), avec aria-pressed pour celles déjà posées.",
+    "« Réduire les animations » : réponse affichée d’un bloc, sans envol, sans indicateur ni curseur clignotant.",
+    "Écriture suspendue hors écran et onglet masqué (IntersectionObserver, visibilitychange), reprise au même mot.",
+    "Mobile : questions en puces de 44 px au-dessus du champ, champ en 16 px, bouton d’envoi de 40 px dans une zone de 52 px. Contrastes AA en clair et en sombre."
+  ],
+  "logo_exemple": { "nom": "Auvent", "secteur": "Assurance habitation en ligne", "fichier": "logo.svg", "palette": "menthe", "typo": "Geist SemiBold" }
+}

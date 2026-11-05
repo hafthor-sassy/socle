@@ -1,0 +1,209 @@
+<!-- Traînées fantômes — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Les grands titres laissent une rémanence proportionnelle à la vitesse de défilement : des copies s'écartent
+     derrière le texte quand on fait défiler, puis reviennent se fondre dans la lettre sur un ressort quand on s'arrête.
+     Une seule variable CSS écrite par image (--gt-v) anime tous les titres ; la boucle s'arrête dès que le ressort est posé.
+     Usage : <div data-ghost-trails data-copies="5" data-gap="1.4" data-intensity="0.7" data-fill="solid"> … <h2 data-ghost>Titre</h2> … </div> -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="gt" data-ghost-trails data-copies="5" data-gap="1.4" data-intensity="0.7" data-fill="solid" data-skew="true" data-blur="false" data-stiffness="170" data-damping="16">
+  <header class="gt__bar">
+    <a class="gt__brand" href="#" aria-label="Nocturne, accueil">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="gt__logo-bg"/><path d="M60 22a28 28 0 1 0 18 46 23 23 0 0 1-18-46Z" class="gt__logo-fg"/><path d="M24 40h14M20 52h12M24 64h10" class="gt__logo-st"/></svg>
+      <span>nocturne</span>
+    </a>
+    <nav class="gt__nav" aria-label="Festival"><a href="#gt-prog">Programme</a><a href="#">Lieux</a><a href="#">Infos pratiques</a></nav>
+    <a href="#" class="gt__buy">Billetterie</a>
+  </header>
+
+  <section class="gt__hero" aria-labelledby="gt-title">
+    <p class="gt__eyebrow">Festival de musiques électroniques · 11 — 14 juin 2027 · Marseille</p>
+    <h1 class="gt__title" id="gt-title" data-ghost>Nocturne 27</h1>
+    <p class="gt__lead">Quatre nuits, trois scènes, quarante-deux artistes, du coucher du soleil à l’aube sur les toits de la Friche.</p>
+    <div class="gt__ctas"><a href="#" class="gt__cta">Pass 4 nuits · 129 €</a><a href="#gt-prog" class="gt__ghostbtn">Voir le programme</a></div>
+    <p class="gt__scroll" aria-hidden="true"><span></span>Faites défiler, vite ou lentement</p>
+  </section>
+
+  <section class="gt__prog" id="gt-prog" aria-labelledby="gt-prog-t">
+    <h2 class="gt__sr" id="gt-prog-t">Programme</h2>
+    <div class="gt__day">
+      <p class="gt__dayt"><b>Jeudi 11 juin</b><span>Grand Plateau · ouverture 19 h</span></p>
+      <ul class="gt__list" role="list">
+        <li><h3 class="gt__name" data-ghost>Mélodie Noire</h3><span class="gt__meta">23 h 30 · Grand Plateau</span></li>
+        <li><h3 class="gt__name" data-ghost>Kaito</h3><span class="gt__meta">01 h 00 · Toit-terrasse</span></li>
+        <li><h3 class="gt__name" data-ghost>La Fréquence</h3><span class="gt__meta">02 h 30 · Grand Plateau</span></li>
+      </ul>
+    </div>
+    <div class="gt__day">
+      <p class="gt__dayt"><b>Vendredi 12 juin</b><span>Trois scènes · ouverture 18 h</span></p>
+      <ul class="gt__list" role="list">
+        <li><h3 class="gt__name" data-ghost>Ostra</h3><span class="gt__meta">22 h 00 · La Cartonnerie</span></li>
+        <li><h3 class="gt__name" data-ghost>Solène Vaux</h3><span class="gt__meta">00 h 15 · Grand Plateau</span></li>
+        <li><h3 class="gt__name" data-ghost>Baptiste R.</h3><span class="gt__meta">03 h 00 · Toit-terrasse</span></li>
+      </ul>
+    </div>
+    <div class="gt__day">
+      <p class="gt__dayt"><b>Samedi 13 juin</b><span>Nuit blanche · jusqu’à 7 h</span></p>
+      <ul class="gt__list" role="list">
+        <li><h3 class="gt__name" data-ghost>Ultramarine</h3><span class="gt__meta">23 h 00 · Grand Plateau</span></li>
+        <li><h3 class="gt__name" data-ghost>Nadja K</h3><span class="gt__meta">02 h 00 · La Cartonnerie</span></li>
+        <li><h3 class="gt__name" data-ghost>Aube</h3><span class="gt__meta">05 h 30 · Toit-terrasse</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="gt__end">
+    <p class="gt__end-t" data-ghost>À la nuit.</p>
+    <a href="#" class="gt__cta">Réserver mon pass</a>
+  </footer>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .gt { --gt-v: 0; --gt-m: 0; position: relative; width: 100%; color: var(--text); font-family: var(--font-sans); overflow-x: clip; }
+  .gt a { color: inherit; text-decoration: none; }
+  .gt :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .gt__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+  .gt__bar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 32px; height: 64px; padding: 0 32px; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .gt__brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text-strong); font-weight: 600; font-size: 18px; letter-spacing: -.03em; }
+  .gt__brand svg { width: 28px; height: 28px; }
+  .gt__logo-bg { fill: var(--accent); }
+  .gt__logo-fg { fill: var(--accent-fg); }
+  .gt__logo-st { fill: none; stroke: var(--accent-fg); stroke-width: 6; stroke-linecap: round; }
+  .gt__nav { display: flex; gap: 24px; margin-left: auto; font-size: var(--t-sm); }
+  .gt__nav a { color: var(--text-muted); transition: color var(--motion-base); }
+  .gt__nav a:hover { color: var(--text-strong); }
+  .gt .gt__buy { display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: var(--radius-pill); background: var(--accent); color: var(--accent-fg); font-size: var(--t-sm); font-weight: 500; }
+
+  .gt__hero { display: grid; align-content: center; min-height: calc(100vh - 64px); padding: 64px 32px 48px; }
+  .gt__eyebrow { margin: 0 0 24px; color: var(--text-muted); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .gt__title { margin: 0; color: var(--text-strong); font-size: clamp(4rem, 1rem + 13vw, 13rem); line-height: .86; font-weight: 700; letter-spacing: -.055em; text-transform: uppercase; }
+  .gt__lead { max-width: 46ch; margin: 32px 0 0; color: var(--text-muted); font-size: var(--t-base); line-height: 1.6; }
+  .gt__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .gt .gt__cta { display: inline-flex; align-items: center; height: 48px; padding: 0 24px; border-radius: var(--radius-pill); background: var(--accent); color: var(--accent-fg); font-weight: 500; transition: background var(--motion-base); }
+  .gt .gt__cta:hover { background: var(--accent-hover); }
+  .gt .gt__ghostbtn { display: inline-flex; align-items: center; height: 48px; padding: 0 24px; border: 1px solid var(--border-control); border-radius: var(--radius-pill); color: var(--text-strong); font-weight: 500; }
+  .gt__scroll { display: flex; align-items: center; gap: 12px; margin: 64px 0 0; color: var(--text-muted); font: 500 var(--t-xs) / 1 var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .gt__scroll span { position: relative; width: 1px; height: 40px; background: var(--border-strong); overflow: hidden; }
+  .gt__scroll span::after { content: ""; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: var(--accent); animation: gt-drop 1.6s var(--ease-in) infinite; }
+  @keyframes gt-drop { to { top: 100%; } }
+
+  .gt__prog { padding: 32px 32px 96px; }
+  .gt__day { padding: 48px 0 24px; border-top: 1px solid var(--border); }
+  .gt__dayt { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin: 0 0 24px; font-size: var(--t-sm); }
+  .gt__dayt b { color: var(--accent); font: 600 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .gt__dayt span { color: var(--text-muted); }
+  .gt__list { margin: 0; padding: 0; list-style: none; }
+  .gt__list li { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; padding: 4px 0; }
+  .gt__name { margin: 0; color: var(--text-strong); font-size: clamp(3rem, .8rem + 8.4vw, 9rem); line-height: .95; font-weight: 700; letter-spacing: -.05em; text-transform: uppercase; }
+  .gt__meta { flex: none; color: var(--text-muted); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: .02em; text-align: right; }
+
+  .gt__end { display: grid; justify-items: start; gap: 32px; padding: 96px 32px 160px; border-top: 1px solid var(--border); }
+  .gt__end-t { margin: 0; color: var(--text-strong); font-size: clamp(3.5rem, 1rem + 10vw, 11rem); line-height: .9; font-weight: 700; letter-spacing: -.055em; text-transform: uppercase; }
+
+  /* Moteur : copies derrière la lettre, décalées par la vitesse (une variable par image) */
+  [data-ghost] { position: relative; isolation: isolate; transform: skewY(calc(var(--gt-v) * var(--gt-skew, .9) * -1deg)); transform-origin: 0 50%; will-change: transform; }
+  .gt[data-skew="false"] [data-ghost] { transform: none; }
+  .gt-g { position: absolute; z-index: -1; inset: 0; color: var(--accent); pointer-events: none; user-select: none; -webkit-user-select: none; white-space: inherit;
+    transform: translate3d(0, calc(var(--gt-v) * var(--gk) * var(--gt-gap, 1) * 1em), 0);
+    opacity: calc(var(--gt-m) * var(--gt-int, .7) * (1 - var(--gk) / (var(--gt-n, 5) + 1))); will-change: transform, opacity; }
+  .gt[data-fill="outline"] .gt-g { color: transparent; -webkit-text-stroke: 1.5px var(--accent); }
+  .gt[data-fill="mono"] .gt-g { color: var(--text-strong); }
+  .gt[data-blur="true"] .gt-g { filter: blur(calc(var(--gk) * var(--gt-m) * 1.2px)); }
+
+  @media (max-width: 760px) {
+    .gt__bar { gap: 16px; height: 56px; padding: 0 16px; }
+    .gt__nav { display: none; }
+    .gt .gt__buy { margin-left: auto; height: 44px; }
+    .gt__hero { min-height: 88svh; align-content: end; padding: 64px 16px 40px; }
+    .gt__title { font-size: clamp(3.5rem, .5rem + 15vw, 6rem); }
+    .gt__ctas { flex-direction: column; }
+    .gt .gt__cta, .gt .gt__ghostbtn { justify-content: center; }
+    .gt__prog { padding: 16px 16px 64px; }
+    .gt__day { padding: 32px 0 16px; }
+    .gt__list li { flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 0; }
+    .gt__name { font-size: clamp(2.75rem, .5rem + 11vw, 4.5rem); }
+    .gt__meta { font-size: var(--t-xs); text-align: left; }
+    .gt__end { padding: 64px 16px 120px; }
+    .gt__scroll { margin-top: 40px; }
+    .gt__end-t { font-size: clamp(3rem, .5rem + 13vw, 5rem); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-ghost] { transform: none !important; }
+    .gt-g { display: none; }
+    .gt__scroll span::after { animation: none; }
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  var reduced = function () { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; };
+
+  function init(root) {
+    if (root._ghostTrails) return root._ghostTrails;
+    var titles = [].slice.call(root.querySelectorAll('[data-ghost]'));
+    var scroller = root.dataset.scroller ? document.querySelector(root.dataset.scroller) : window;
+    var getY = function () { return scroller === window ? window.scrollY : scroller.scrollTop; };
+    var raf = 0, lastY = getY(), lastT = performance.now(), target = 0, x = 0, vel = 0, running = false, synth = null;
+
+    /* Copies : texte identique, aria-hidden, derrière la lettre. */
+    function build() {
+      var n = Math.max(1, Math.min(10, +root.dataset.copies || 5));
+      root.style.setProperty('--gt-n', n);
+      titles.forEach(function (t) {
+        t.querySelectorAll('.gt-g').forEach(function (g) { g.remove(); });
+        var text = t.textContent;
+        for (var k = 1; k <= n; k++) { var g = document.createElement('span'); g.className = 'gt-g'; g.setAttribute('aria-hidden', 'true'); g.textContent = text; g.style.setProperty('--gk', k); t.appendChild(g); }
+      });
+    }
+    function settings() {
+      root.style.setProperty('--gt-gap', (+root.dataset.gap || 1) * .06);
+      root.style.setProperty('--gt-int', root.dataset.intensity != null ? +root.dataset.intensity : .7);
+    }
+
+    /* Vitesse de défilement → ressort amorti → --gt-v (signé, en « em par copie ») et --gt-m (0 à 1). */
+    function tick(now) {
+      var dt = Math.min(.05, Math.max(.001, (now - lastT) / 1000)), y = getY();
+      var raw = (y - lastY) / dt / 1000; /* px par ms */
+      lastY = y; lastT = now;
+      if (synth) { var u = (now - synth.t0) / synth.d; if (u >= 1) synth = null; else raw += synth.s * Math.sin(Math.PI * u) * Math.pow(1 - u, .6); }
+      target += (raw - target) * Math.min(1, dt * 18);  /* lissage de la mesure */
+      var k = +root.dataset.stiffness || 170, c = +root.dataset.damping || 16;
+      var a = -k * (x - target) - c * vel; vel += a * dt; x += vel * dt;
+      var v = Math.max(-1.6, Math.min(1.6, x)), m = Math.min(1, Math.abs(v) / .9);
+      root.style.setProperty('--gt-v', v.toFixed(4));
+      root.style.setProperty('--gt-m', m.toFixed(4));
+      if (!synth && Math.abs(x) < .0015 && Math.abs(vel) < .002 && Math.abs(raw) < .001 && Math.abs(target) < .001) { running = false; x = 0; vel = 0; target = 0; root.style.setProperty('--gt-v', 0); root.style.setProperty('--gt-m', 0); return; }
+      raf = requestAnimationFrame(tick);
+    }
+    function wake() { if (running || reduced()) return; running = true; lastY = getY(); lastT = performance.now(); raf = requestAnimationFrame(tick); }
+    (scroller === window ? window : scroller).addEventListener('scroll', wake, { passive: true });
+
+    /* Démonstration : un défilement automatique aller-retour (bouton, vignette). */
+    var auto = 0;
+    function autoplay(on) {
+      cancelAnimationFrame(auto); if (!on) return;
+      var el = scroller === window ? document.scrollingElement : scroller, max = el.scrollHeight - el.clientHeight, t0 = performance.now(), period = 5200;
+      (function step(now) {
+        var p = ((now - t0) % period) / period, s = p < .5 ? p * 2 : 2 - p * 2, e = s < .5 ? 4 * s * s * s : 1 - Math.pow(-2 * s + 2, 3) / 2;
+        el.scrollTop = e * max; auto = requestAnimationFrame(step);
+      })(t0);
+    }
+    /* Une rafale de vitesse simulée, sans défiler : la traînée s'ouvre puis le ressort la referme (bouton Rejouer). */
+    function pulse(strength) { if (reduced()) return; synth = { t0: performance.now(), d: 900, s: (strength || 1) * 2.6 }; if (!running) { running = true; lastY = getY(); lastT = performance.now(); raf = requestAnimationFrame(tick); } }
+
+    var api = {
+      update: function (o) { Object.keys(o || {}).forEach(function (kk) { if (o[kk] != null) root.dataset[kk] = o[kk]; }); build(); settings(); },
+      pulse: pulse, autoplay: autoplay,
+      refresh: function () { titles = [].slice.call(root.querySelectorAll('[data-ghost]')); build(); }
+    };
+    root._ghostTrails = api;
+    build(); settings();
+    return api;
+  }
+  document.querySelectorAll('[data-ghost-trails]').forEach(init);
+  window.GhostTrails = { init: init };
+})();
+</script>

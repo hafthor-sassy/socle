@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KPI à tendance — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 32px 0; }
+  @media (max-width: 640px) { .stage { align-content: start; padding: 8px 0 32px; } }
+  .is-thumb .stage { padding: 8px 0; }
+</style>
+</head>
+<body>
+<main class="stage"><div id="mount" style="display:contents"></div></main>
+<script>
+  var props = Socle.props({ periode: 'semaine', etat: 'normal', courbe: 'lissee', zone: true, duree: 900 });
+  var root = null, api = null;
+  function opts(p) { return { periode: p.periode, etat: p.etat, courbe: p.courbe, zone: String(!!p.zone), duree: String(p.duree) }; }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-kpi]');
+    var o = opts(props); Object.keys(o).forEach(function (k) { root.dataset[k] = o[k]; });
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    api = root._kp;
+    if (!Socle.thumb) setTimeout(function () { api.replay(); }, 250);
+  });
+  Socle.onChange(function (p) { api && api.update(opts(p)); });
+  Socle.onReplay(function () { api && api.replay(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "id": "traines-fantomes",
+  "nom": "Traînées fantômes",
+  "categorie": "texte-anime",
+  "niveau": "premium",
+  "description": "Les grands titres laissent une rémanence proportionnelle à la vitesse de défilement : des copies s’écartent derrière la lettre quand on fait défiler vite, la ligne s’incline légèrement, puis tout revient se fondre dans le texte sur un vrai ressort quand on s’arrête. Un seul rAF qui ne tourne que pendant le mouvement et écrit deux variables CSS pour toute la page.",
+  "tags": ["Défilement", "Vitesse", "Ressort", "Typographie", "Événementiel", "Musique", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 40,
+  "palette": "neon-rose",
+  "logo_exemple": { "nom": "Nocturne", "secteur": "Festival de musiques électroniques", "fichier": "logo.svg", "palette": "neon-rose", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Accent des copies, surfaces, Geist et Geist Mono" },
+    { "nom": "≈ 2 ko de JS", "note": "Vanilla, sans dépendance : écouteur de défilement passif, un rAF actif seulement pendant le mouvement" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, sans bibliothèque d’animation (aucun rendu React par image)" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "titre", "label": "Titre du hero", "type": "text", "default": "Nocturne 27",
+      "code": { "html": "data-ghost>{v}</h1>", "react": ">{v}</Ghost>" } },
+    { "name": "copies", "label": "Copies fantômes", "type": "number", "default": 5, "min": 1, "max": 10, "step": 1,
+      "hint": "Nombre de copies derrière chaque titre. 3 à 6 : traînée lisible sans alourdir la page.",
+      "code": { "html": "data-copies=\"{v}\"", "react": "copies={{v}}" } },
+    { "name": "ecart", "label": "Écart entre copies", "type": "number", "default": 1.4, "min": 0.4, "max": 3, "step": 0.1,
+      "code": { "html": "data-gap=\"{v}\"", "react": "gap={{v}}" } },
+    { "name": "intensite", "label": "Intensité", "type": "number", "default": 0.7, "min": 0.2, "max": 1, "step": 0.05,
+      "hint": "Opacité de la première copie ; les suivantes s’effacent en dégressif.",
+      "code": { "html": "data-intensity=\"{v}\"", "react": "intensity={{v}}" } },
+    { "name": "remplissage", "label": "Remplissage des copies", "type": "select", "default": "solid",
+      "options": [ { "value": "solid", "label": "Plein" }, { "value": "outline", "label": "Contour" }, { "value": "mono", "label": "Mono" } ],
+      "hint": "Plein et Contour suivent l’accent de la palette ; Mono reprend la couleur du texte.",
+      "code": { "html": "data-fill=\"{v}\"", "react": "fill=\"{v}\"" } },
+    { "name": "inclinaison", "label": "Inclinaison à la vitesse", "type": "boolean", "default": true,
+      "code": { "html": "data-skew=\"{v}\"", "react": "skew={{v}}" } },
+    { "name": "flou", "label": "Flou de mouvement", "type": "boolean", "default": false,
+      "hint": "Floute les copies lointaines. Plus coûteux en rendu : à réserver à une ou deux lignes.",
+      "code": { "html": "data-blur=\"{v}\"", "react": "blur={{v}}" } },
+    { "name": "raideur", "label": "Raideur du ressort", "type": "number", "default": 170, "min": 60, "max": 400, "step": 10,
+      "code": { "html": "data-stiffness=\"{v}\"", "react": "stiffness={{v}}" } },
+    { "name": "amortissement", "label": "Amortissement", "type": "number", "default": 16, "min": 6, "max": 40, "step": 1,
+      "hint": "Bas : les copies dépassent la lettre et rebondissent à l’arrêt. Haut : retour sec.",
+      "code": { "html": "data-damping=\"{v}\"", "react": "damping={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/GhostTrails.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour une page éditoriale ou événementielle très typographique : programme, line-up, manifeste, portfolio. Sur des titres de 48 px et plus ; en dessous, la traînée se lit comme un défaut d’affichage.",
+    "Ajoutez data-ghost sur chaque titre concerné (HTML) ou enveloppez-le dans <Ghost> (React) : une seule racine data-ghost-trails / <GhostTrails> pilote toute la page.",
+    "Le bouton « Défilement auto » de la démo fait un aller-retour pour montrer l’effet sans souris ; « Rejouer » envoie une rafale de vitesse sur place. Pour un conteneur qui défile lui-même, passez data-scroller (HTML) ou scroller (React)."
+  ],
+  "accessibilite": [
+    "Le titre est lu une seule fois : les copies sont des span aria-hidden, non sélectionnables, sans pointeur.",
+    "Avec « réduire les animations », les copies ne sont pas affichées, aucune inclinaison, et la boucle ne démarre jamais : titres statiques.",
+    "Rien ne tourne à l’arrêt ni hors écran : la boucle se réveille au défilement et s’arrête dès que le ressort est posé. Texte et accent AA en clair et en sombre ; cibles de 44 px sur mobile."
+  ]
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liste d’attente vivante — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>body { display: grid; align-items: center; } .is-thumb .la { padding: 56px 40px; }</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ etat: 'formulaire', inscrits: 12530, vague: 2500, gain: 50, direct: true, simuler: true, reseau: 'ok' });
+  var KEYS = ['inscrits', 'vague', 'gain', 'direct', 'simuler', 'reseau'];
+  var el = null, lastEtat = null;
+  function showState(p) {
+    var w = el && el._waitlist; if (!w) return;
+    if (p.etat === 'succes') w.join('camille@gmail.com', true);
+    else if (p.etat === 'erreur') { w.reset(); el.dataset.reseau = 'erreur'; w.update(); w.demo('camille@gmail.com'); }
+    else w.reset();
+    lastEtat = p.etat;
+  }
+  function apply(p) {
+    if (!el) return;
+    KEYS.forEach(function (k) { el.dataset[k] = String(p[k]); });
+    if (el._waitlist) el._waitlist.update();
+    if (p.etat !== lastEtat) showState(p);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    el = document.querySelector('[data-waitlist]');
+    KEYS.forEach(function (k) { el.dataset[k] = String(props[k]); });
+    if (Socle.thumb) el.dataset.simuler = 'false';
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    lastEtat = 'formulaire';
+    if (Socle.thumb) el._waitlist.join('camille@gmail.com', true);
+    else if (props.etat !== 'formulaire') showState(props);
+    var q = new URLSearchParams(location.search);
+    if (q.get('typo')) el._waitlist.demo(q.get('typo'));
+  });
+  Socle.onChange(apply);
+  /* Rejouer : une faute de frappe corrigée, l’inscription, puis un parrainage. */
+  Socle.onReplay(function () {
+    var w = el && el._waitlist; if (!w) return;
+    w.demo('camille@gmail.con');
+    setTimeout(function () { var i = el.querySelector('.la__input'); i.value = 'camille@gmail.com'; el.querySelector('.la__form').requestSubmit(); }, 1400);
+  });
+</script>
+</body>
+</html>
