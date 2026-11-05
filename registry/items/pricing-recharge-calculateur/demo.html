@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pricing par recharge · calculateur — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  html.bg-grid section[data-recharge] { background: transparent; }
+  .is-thumb section[data-recharge] { padding-top: 40px; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  /* Props → attributs data-* et textes de la section, puis le script du composant est relancé. */
+  var props = Socle.props({ title: 'Combien vont coûter vos appels ?', cta: 'Recharger', currency: 'EUR', rate: 0.09, tiers: '10, 25, 50, 100, 250', bonus: '0, 5, 10, 15, 25', calls: 40, duration: 3, days: 22 });
+  var src = null;
+  var mount = document.getElementById('mount');
+  var MAP = { currency: 'currency', rate: 'rate', tiers: 'tiers', bonus: 'bonus', auto: 'auto', calls: 'calls', duration: 'duration', days: 'days' };
+  function render(p) {
+    if (!src) return;
+    var y = window.scrollY;
+    mount.innerHTML = src.markup;
+    var root = mount.querySelector('[data-recharge]');
+    Object.keys(MAP).forEach(function (k) { if (k in p) root.dataset[MAP[k]] = p[k]; });
+    if (p.title) { var h = root.querySelector('h2'); if (h) h.textContent = p.title; }
+    if (p.cta) { var c = root.querySelector('[data-cta-label]'); if (c) c.textContent = p.cta; }
+    
+    try { new Function(src.script)(); } catch (e) { console.error(e); }
+    window.scrollTo(0, y);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props);
+  });
+  Socle.onChange(render);
+  Socle.onReplay(render);
+</script>
+</body>
+</html>

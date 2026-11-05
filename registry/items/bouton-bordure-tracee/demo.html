@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bouton à bordure tracée — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; align-content: center; gap: 28px; padding: 48px 24px; text-align: center; }
+  .hint { font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .is-thumb .hint { display: none; }
+  .is-thumb #live { scale: 1.8; }
+</style>
+</head>
+<body>
+<main class="stage">
+  <div id="live"></div>
+  <p class="hint" id="hint">Le trait parcourt le contour · accélère au survol</p>
+</main>
+<script>
+  var props = Socle.props({ label: 'Réserver une démo', trigger: 'loop', shape: 'ctl', speed: 3.2, length: 24, width: 1.5 });
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function render(p) {
+    var live = document.getElementById('live');
+    live.innerHTML = '<button class="trace" type="button" data-trace><svg class="trace__svg" aria-hidden="true"><rect class="trace__track" pathLength="100"/><rect class="trace__glow" pathLength="100"/><rect class="trace__line" pathLength="100"/></svg><span class="trace__label">' + esc(p.label || 'Bouton') + '</span></button>';
+    var b = live.firstChild;
+    b.dataset.trigger = p.trigger;
+    b.dataset.shape = p.shape;
+    b.style.setProperty('--trace-speed', p.speed + 's');
+    b.style.setProperty('--trace-length', p.length);
+    b.style.setProperty('--trace-width', p.width + 'px');
+    document.getElementById('hint').textContent = p.trigger === 'hover' ? 'Survolez : le trait dessine le contour' : 'Le trait parcourt le contour · accélère au survol';
+    if (window.Trace) Trace.attach(b);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var m = t.match(/<style>([\s\S]*?)<\/style>/);
+    if (m) document.getElementById('component-css').textContent = m[1];
+    var b = document.querySelector('.trace'); if (b && window.Trace) requestAnimationFrame(function () { Trace.fit(b); });
+  }).catch(function () {});
+  var s = document.createElement('script');
+  s.src = 'code/trace.js';
+  s.onload = function () { render(props); };
+  document.head.appendChild(s);
+  Socle.onChange(render);
+  Socle.onReplay(function () { render(props); });
+</script>
+</body>
+</html>

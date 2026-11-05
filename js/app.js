@@ -6,7 +6,7 @@ import { getCategory } from '../registry/categories.js';
 import { renderHome } from './pages/home.js';
 import { renderCategory } from './pages/category.js';
 import { renderItem } from './pages/item.js';
-import { renderBrands, renderBrand } from './pages/brands.js';
+import { renderBrands, renderBrand, renderLogoSheet } from './pages/brands.js';
 import { renderFoundation } from './pages/foundations.js';
 import { esc } from './lib/dom.js';
 
@@ -65,7 +65,7 @@ async function route() {
       cleanup = await withShell('', (view) => renderItem(view, parts[1], (catId) => setSideActive(catId)));
     } else if (parts[0] === 'marques') {
       setBarActive('marques');
-      cleanup = await withShell('logos', (view) => (parts[1] ? renderBrand(view, parts[1]) : renderBrands(view)));
+      cleanup = await withShell('logos', (view) => (parts[2] ? renderLogoSheet(view, parts[1], parts[2]) : parts[1] ? renderBrand(view, parts[1]) : renderBrands(view)));
     } else {
       setBarActive('');
       cleanup = await withShell('', (view) => notFound(view));

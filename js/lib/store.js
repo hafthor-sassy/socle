@@ -10,7 +10,7 @@ export function loadIndex() {
     indexPromise = fetch('registry/index.json', { cache: 'no-cache' })
       .then((r) => { if (!r.ok) throw new Error('index'); return r.json(); })
       .then((data) => {
-        const items = (data.items || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || '') || a.nom.localeCompare(b.nom, 'fr'));
+        const items = (data.items || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || '') || (a.ordre ?? 50) - (b.ordre ?? 50) || a.nom.localeCompare(b.nom, 'fr'));
         return { ...data, items };
       })
       .catch(() => ({ items: [] }));
@@ -57,7 +57,7 @@ export function currentTheme() {
 export function setTheme(t, persist = true) {
   document.documentElement.classList.toggle('dark', t === 'dark');
   if (persist) { try { localStorage.setItem('socle-theme', t); } catch (e) {} }
-  document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute('content', t === 'dark' ? '#0D0E10' : '#EFEFF2'));
+  document.querySelectorAll('meta[name="theme-color"]').forEach((m) => m.setAttribute('content', t === 'dark' ? '#060010' : '#EFEFF2'));
   window.dispatchEvent(new CustomEvent('socle:theme', { detail: t }));
 }
 

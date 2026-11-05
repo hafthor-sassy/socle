@@ -1,0 +1,48 @@
+{
+  "id": "bouton-bordure-tracee",
+  "nom": "Bouton à bordure tracée",
+  "categorie": "boutons",
+  "ordre": 4,
+  "description": "Un trait de lumière parcourt le contour du bouton, à vitesse constante quelle que soit sa forme, et accélère au survol. Variante « au survol » : le trait dessine le contour en une fois.",
+  "tags": ["SVG", "Boucle", "Accessible"],
+  "date": "2026-11-05",
+  "thumb": { "width": 640 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "--accent-vivid, --border-control, rayons" },
+    { "nom": "trace.js", "note": "Cale le tracé sur la taille du bouton (HTML seulement)" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Keyframe trace-run à déclarer" }
+  ],
+  "props": [
+    { "name": "label", "label": "Libellé", "type": "text", "default": "Réserver une démo",
+      "code": { "html": "<span class=\"trace__label\">{v}</span>", "react": "shape=\"ctl\">{v}</TraceButton>" } },
+    { "name": "trigger", "label": "Déclenchement", "type": "select", "default": "loop",
+      "options": [{ "value": "loop", "label": "En boucle" }, { "value": "hover", "label": "Au survol" }],
+      "code": { "html": "data-trigger=\"{v}\"", "react": "trigger=\"{v}\"" } },
+    { "name": "shape", "label": "Forme", "type": "select", "default": "ctl",
+      "options": [{ "value": "ctl", "label": "8 px" }, { "value": "card", "label": "12 px" }, { "value": "pill", "label": "Pilule" }],
+      "code": { "html": "data-shape=\"{v}\"", "react": "shape=\"{v}\"" } },
+    { "name": "speed", "label": "Durée d’un tour", "type": "number", "default": 3.2, "min": 1, "max": 8, "step": 0.2, "unit": "s",
+      "code": { "html": "--trace-speed: {v}s;", "react": "speed={{v}}" } },
+    { "name": "length", "label": "Longueur du trait", "type": "number", "default": 24, "min": 6, "max": 60, "step": 2, "unit": "%",
+      "code": { "html": "--trace-length: {v};", "react": "length={{v}}" } },
+    { "name": "width", "label": "Épaisseur", "type": "number", "default": 1.5, "min": 1, "max": 4, "step": 0.5, "unit": "px",
+      "code": { "html": "--trace-width: {v}px", "react": "width={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS", "file": "code/index.html", "lang": "html" },
+    { "id": "js", "label": "Vanilla JS", "file": "code/trace.js", "lang": "js" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/TraceButton.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Action secondaire mise en avant à côté d’un bouton principal, ou bouton unique d’une carte de prix.",
+    "pathLength = 100 : la longueur du trait est en pourcentage du contour, donc identique pour tout libellé.",
+    "En sombre, un léger halo flou suit le trait ; en clair, le trait seul suffit."
+  ],
+  "accessibilite": [
+    "Le trait est décoratif (aria-hidden) ; le bouton garde un contour neutre ≥ 3:1 en permanence.",
+    "Focus visible distinct du trait : anneau de 2 px décalé de 3 px.",
+    "Avec « réduire les animations », le contour devient un trait d’accent fixe, sans boucle."
+  ]
+}

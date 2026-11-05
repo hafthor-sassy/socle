@@ -10,8 +10,8 @@ export function renderBar() {
     <div class="bar__in">
       <button class="icon-btn icon-btn--touch menu-btn only-mobile" type="button" aria-label="Ouvrir la navigation" data-open-nav>${icon('menu')}</button>
       <a class="brand" href="#/" aria-label="Socle, accueil">
-        <img class="logo-light" src="assets/logo.svg" width="94" height="22" alt="Socle">
-        <img class="logo-dark" src="assets/logo-dark.svg" width="94" height="22" alt="Socle">
+        <img class="logo-light" src="assets/logo.svg" width="83" height="22" alt="Socle">
+        <img class="logo-dark" src="assets/logo-dark.svg" width="83" height="22" alt="Socle">
       </a>
       <nav class="bar__nav" aria-label="Principale">
         <a href="#/" data-nav="home">Bibliothèque</a>
@@ -149,7 +149,7 @@ async function openNavDrawer() {
   openDrawer({
     side: 'left',
     label: 'Navigation',
-    title: `<img src="assets/${currentTheme() === 'dark' ? 'logo-dark' : 'logo'}.svg" height="22" width="94" alt="Socle">`,
+    title: `<img src="assets/${currentTheme() === 'dark' ? 'logo-dark' : 'logo'}.svg" height="22" width="83" alt="Socle">`,
     body,
     onMount: (d) => {
       bindTree(d);

@@ -1,0 +1,59 @@
+<!-- Bouton à remplissage directionnel — HTML + CSS + dfill.js. Nécessite tokens.css. -->
+<link rel="stylesheet" href="tokens.css">
+
+<button class="dfill" type="button" data-dfill data-shape="edge" data-variant="accent" style="--dfill-duration: 420ms">
+  <span class="dfill__label">Rejoindre la liste</span>
+  <!-- Calque de remplissage : même libellé, couleurs inversées, découpé depuis le bord d'entrée -->
+  <span class="dfill__layer" aria-hidden="true"><span class="dfill__label">Rejoindre la liste</span></span>
+</button>
+
+<script src="dfill.js" defer></script>
+
+<style>
+  .dfill {
+    --dfill-duration: 420ms;
+    --dfill-ease: cubic-bezier(.22, 1, .36, 1);
+    --dfill-bg: var(--accent);
+    --dfill-fg: var(--accent-fg);
+    --clip-from: inset(0 100% 0 0);
+    position: relative;
+    display: inline-grid;
+    height: 48px;
+    padding: 0 24px;
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-ctl);
+    background: transparent;
+    color: var(--text-strong);
+    font: 500 15px/1 var(--font-sans);
+    white-space: nowrap;
+    cursor: pointer;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    transition: border-color var(--dfill-duration) var(--dfill-ease), scale var(--motion-base) cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .dfill[data-variant=ink] { --dfill-bg: var(--text-strong); --dfill-fg: var(--bg); }
+  .dfill[data-variant=pill] { border-radius: var(--radius-pill); }
+  .dfill { align-items: center; }
+  .dfill > .dfill__label, .dfill__layer { display: inline-flex; align-items: center; justify-content: center; }
+  .dfill__layer {
+    position: absolute;
+    inset: -1px;
+    padding: 0 24px;
+    background: var(--dfill-bg);
+    color: var(--dfill-fg);
+    clip-path: var(--clip-from);
+  }
+  /* dfill.js pose data-state="in" ou "out" et la forme de départ dans --clip-from */
+  .dfill[data-state=in] .dfill__layer { clip-path: inset(0 0 0 0 round 0); transition: clip-path var(--dfill-duration) var(--dfill-ease); }
+  .dfill[data-state=in][data-shape=circle] .dfill__layer { clip-path: circle(150% at var(--x, 50%) var(--y, 50%)); }
+  .dfill[data-state=out] .dfill__layer { clip-path: var(--clip-to); transition: clip-path calc(var(--dfill-duration) * 0.8) var(--dfill-ease); }
+  .dfill[data-state=in] { border-color: var(--dfill-bg); }
+
+  .dfill:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .dfill:active { scale: 0.97; transition-duration: 90ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dfill, .dfill[data-state] .dfill__layer { transition: none !important; }
+    .dfill:active { scale: 1; }
+  }
+</style>

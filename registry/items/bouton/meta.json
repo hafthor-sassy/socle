@@ -1,8 +1,8 @@
 {
   "id": "bouton",
-  "nom": "Bouton",
+  "nom": "Bouton de base",
   "categorie": "boutons",
-  "description": "Le bouton du design system : primaire, secondaire, fantôme et danger, trois tailles et tous les états, du survol au chargement.",
+  "description": "Le bouton standard du design system : primaire, secondaire, fantôme et danger, trois tailles et tous les états, du survol au chargement. La base sur laquelle s’appuient les boutons signature.",
   "tags": [
     "Formulaire",
     "États",
@@ -147,5 +147,6 @@
     "Focus visible au clavier uniquement (:focus-visible), anneau de 2 px décalé de 2 px.",
     "Chargement annoncé par aria-busy ; désactivé par l’attribut disabled natif.",
     "Cible tactile de 44 px minimum sur mobile, survol réservé à la souris."
-  ]
+  ],
+  "ordre": 99
 }

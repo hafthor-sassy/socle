@@ -1,0 +1,46 @@
+{
+  "id": "bouton-maintenir",
+  "nom": "Maintenir pour confirmer",
+  "categorie": "boutons",
+  "ordre": 3,
+  "description": "Pour les actions irréversibles : le bouton se remplit tant qu’on le maintient, le libellé s’inverse exactement au front du remplissage, puis passe en état validé. Relâché trop tôt, il se vide.",
+  "tags": ["Confirmation", "Danger", "Accessible"],
+  "date": "2026-11-05",
+  "thumb": { "width": 640 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "--down, --accent, rayons, focus" },
+    { "nom": "hold.js", "note": "Progression, clavier, annulation (HTML seulement)" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "label", "label": "Libellé", "type": "text", "default": "Maintenir pour supprimer",
+      "code": { "html": "<span class=\"hold__label\">{v}</span>", "react": "onConfirm={() => {}}>{v}</HoldButton>" } },
+    { "name": "done", "label": "Libellé validé", "type": "text", "default": "Projet supprimé",
+      "code": { "html": ["data-done=\"{v}\"", "<span class=\"hold__done\">{v}</span>"], "react": "doneLabel=\"{v}\" onConfirm" } },
+    { "name": "variant", "label": "Variante", "type": "select", "default": "danger",
+      "options": [{ "value": "danger", "label": "Danger" }, { "value": "primary", "label": "Accent" }],
+      "code": { "html": "data-variant=\"{v}\"", "react": "variant=\"{v}\" doneLabel" } },
+    { "name": "duration", "label": "Durée du maintien", "type": "number", "default": 1500, "min": 500, "max": 3000, "step": 100, "unit": "ms",
+      "code": { "html": "data-duration=\"{v}\"", "react": "duration={{v}}" } },
+    { "name": "reset", "label": "Retour à l’état initial", "type": "number", "default": 2400, "min": 0, "max": 6000, "step": 200, "unit": "ms",
+      "hint": "0 : le bouton reste validé.",
+      "code": { "html": "data-reset=\"{v}\"", "react": "resetAfter={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS", "file": "code/index.html", "lang": "html" },
+    { "id": "js", "label": "Vanilla JS", "file": "code/hold.js", "lang": "js" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/HoldButton.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Remplace la boîte de dialogue « Êtes-vous sûr ? » pour une suppression ou un envoi définitif.",
+    "1 à 2 s de maintien : assez pour éviter l’accident, assez court pour ne pas agacer.",
+    "Écoutez l’événement hold:confirm (HTML) ou onConfirm (React) pour lancer l’action."
+  ],
+  "accessibilite": [
+    "Au clavier : maintenir Espace ou Entrée ; relâcher annule. Consigne liée par aria-describedby.",
+    "La validation est annoncée par une région aria-live ; le bouton reste un bouton natif.",
+    "Le remplissage reste actif avec « réduire les animations » (c’est un retour d’état), sans rebond ni zoom."
+  ]
+}

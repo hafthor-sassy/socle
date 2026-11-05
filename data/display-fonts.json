@@ -1,0 +1,268 @@
+[
+ {
+  "id": "bricolage",
+  "nom": "Bricolage Grotesque",
+  "categorie": "Grotesque expressive",
+  "graisses": "200 800",
+  "graisses_txt": "ExtraLight à ExtraBold, axes largeur et taille optique",
+  "axes": [
+   "opsz",
+   "wght",
+   "wdth"
+  ],
+  "designer": "Mathieu Triay",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Bricolage+Grotesque",
+  "fichier": "assets/fonts/display/bricolage.woff2",
+  "ko": 148.6,
+  "association": "Geist pour le texte courant",
+  "echantillon": "Des interfaces qui ont du caractère"
+ },
+ {
+  "id": "dela",
+  "nom": "Dela Gothic One",
+  "categorie": "Display",
+  "graisses": "400",
+  "graisses_txt": "Regular",
+  "axes": [],
+  "designer": "artakana",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Dela+Gothic+One",
+  "fichier": "assets/fonts/display/dela.woff2",
+  "ko": 15.3,
+  "association": "Geist Medium en petit",
+  "echantillon": "Grand Ouvert"
+ },
+ {
+  "id": "climate",
+  "nom": "Climate Crisis",
+  "categorie": "Display",
+  "graisses": "400",
+  "graisses_txt": "Regular, axe « année » 1979 → 2050",
+  "axes": [
+   "YEAR"
+  ],
+  "designer": "Daniel Coull, Eino Korkala",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Climate+Crisis",
+  "fichier": "assets/fonts/display/climate.woff2",
+  "ko": 48.2,
+  "association": "Geist Mono pour les légendes",
+  "echantillon": "Fonte des glaces"
+ },
+ {
+  "id": "bagel",
+  "nom": "Bagel Fat One",
+  "categorie": "Display ronde",
+  "graisses": "400",
+  "graisses_txt": "Regular",
+  "axes": [],
+  "designer": "Kyungwon Kim, JAMO",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Bagel+Fat+One",
+  "fichier": "assets/fonts/display/bagel.woff2",
+  "ko": 15.9,
+  "association": "Geist SemiBold",
+  "echantillon": "Goûter du dimanche"
+ },
+ {
+  "id": "shrikhand",
+  "nom": "Shrikhand",
+  "categorie": "Script d’affiche",
+  "graisses": "400",
+  "graisses_txt": "Regular (italique)",
+  "axes": [],
+  "designer": "Jonny Pinhorn",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Shrikhand",
+  "fichier": "assets/fonts/display/shrikhand.woff2",
+  "ko": 15.1,
+  "association": "Instrument Sans, très sobre",
+  "echantillon": "Fête foraine"
+ },
+ {
+  "id": "caveat",
+  "nom": "Caveat",
+  "categorie": "Manuscrite",
+  "graisses": "400 700",
+  "graisses_txt": "Regular à Bold",
+  "axes": [
+   "wght"
+  ],
+  "designer": "Impallari Type",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Caveat",
+  "fichier": "assets/fonts/display/caveat.woff2",
+  "ko": 74.4,
+  "association": "Geist pour le reste de la page",
+  "echantillon": "Notes prises au vol"
+ },
+ {
+  "id": "bigshoulders",
+  "nom": "Big Shoulders Display",
+  "categorie": "Condensée",
+  "graisses": "100 900",
+  "graisses_txt": "Thin à Black",
+  "axes": [
+   "wght"
+  ],
+  "designer": "Patric King",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Big+Shoulders+Display",
+  "fichier": "assets/fonts/display/bigshoulders.woff2",
+  "ko": 44.6,
+  "association": "Geist en corps de texte",
+  "echantillon": "QUAI DES ENTREPÔTS"
+ },
+ {
+  "id": "unbounded",
+  "nom": "Unbounded",
+  "categorie": "Grotesque large",
+  "graisses": "200 900",
+  "graisses_txt": "ExtraLight à Black",
+  "axes": [
+   "wght"
+  ],
+  "designer": "NaN",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Unbounded",
+  "fichier": "assets/fonts/display/unbounded.woff2",
+  "ko": 62.6,
+  "association": "Geist Regular",
+  "echantillon": "Sans limites"
+ },
+ {
+  "id": "syne",
+  "nom": "Syne",
+  "categorie": "Grotesque expressive",
+  "graisses": "400 800",
+  "graisses_txt": "Regular à ExtraBold",
+  "axes": [
+   "wght"
+  ],
+  "designer": "Bonjour Monde, Lucas Descroix",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Syne",
+  "fichier": "assets/fonts/display/syne.woff2",
+  "ko": 36.5,
+  "association": "Instrument Serif en contrepoint",
+  "echantillon": "Art contemporain"
+ },
+ {
+  "id": "archivo",
+  "nom": "Archivo",
+  "categorie": "Grotesque variable",
+  "graisses": "100 900",
+  "graisses_txt": "Thin à Black, axe largeur 62 → 125",
+  "axes": [
+   "wght",
+   "wdth"
+  ],
+  "designer": "Omnibus-Type",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Archivo",
+  "fichier": "assets/fonts/display/archivo.woff2",
+  "ko": 90.3,
+  "association": "Geist Mono pour les chiffres",
+  "echantillon": "Archives ouvertes"
+ },
+ {
+  "id": "instrumentserif",
+  "nom": "Instrument Serif",
+  "categorie": "Serif condensée",
+  "graisses": "400",
+  "graisses_txt": "Regular",
+  "axes": [],
+  "designer": "Rodrigo Fuenzalida, Jordan Egstad",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Instrument+Serif",
+  "fichier": "assets/fonts/display/instrumentserif.woff2",
+  "ko": 13.6,
+  "association": "Instrument Sans ou Geist",
+  "echantillon": "L’élégance discrète"
+ },
+ {
+  "id": "playfair",
+  "nom": "Playfair Display",
+  "categorie": "Serif à contraste",
+  "graisses": "400 900",
+  "graisses_txt": "Regular à Black",
+  "axes": [
+   "wght"
+  ],
+  "designer": "Claus Eggers Sørensen",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Playfair+Display",
+  "fichier": "assets/fonts/display/playfair.woff2",
+  "ko": 49.8,
+  "association": "Geist Light pour les paragraphes",
+  "echantillon": "Maison d’édition"
+ },
+ {
+  "id": "fraunces",
+  "nom": "Fraunces",
+  "categorie": "Serif à caractère",
+  "graisses": "100 900",
+  "graisses_txt": "Thin à Black, axes douceur et « wonk »",
+  "axes": [
+   "opsz",
+   "wght",
+   "SOFT",
+   "WONK"
+  ],
+  "designer": "Undercase Type",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Fraunces",
+  "fichier": "assets/fonts/display/fraunces.woff2",
+  "ko": 122.1,
+  "association": "Geist pour l’interface",
+  "echantillon": "Le goût du détail"
+ },
+ {
+  "id": "youngserif",
+  "nom": "Young Serif",
+  "categorie": "Serif d’atelier",
+  "graisses": "400",
+  "graisses_txt": "Regular",
+  "axes": [],
+  "designer": "Bastien Sozeau",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Young+Serif",
+  "fichier": "assets/fonts/display/youngserif.woff2",
+  "ko": 17.7,
+  "association": "Geist Medium",
+  "echantillon": "Atelier de quartier"
+ },
+ {
+  "id": "majormono",
+  "nom": "Major Mono Display",
+  "categorie": "Mono d’affichage",
+  "graisses": "400",
+  "graisses_txt": "Regular",
+  "axes": [],
+  "designer": "Emre Parlak",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Major+Mono+Display",
+  "fichier": "assets/fonts/display/majormono.woff2",
+  "ko": 8.6,
+  "association": "Geist pour le texte",
+  "echantillon": "code source"
+ },
+ {
+  "id": "pixelify",
+  "nom": "Pixelify Sans",
+  "categorie": "Pixel",
+  "graisses": "400 700",
+  "graisses_txt": "Regular à Bold",
+  "axes": [
+   "wght"
+  ],
+  "designer": "Stefie Justprince",
+  "licence": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Pixelify+Sans",
+  "fichier": "assets/fonts/display/pixelify.woff2",
+  "ko": 11.6,
+  "association": "Geist Mono",
+  "echantillon": "Niveau terminé"
+ }
+]

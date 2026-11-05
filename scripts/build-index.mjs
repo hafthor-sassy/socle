@@ -38,6 +38,7 @@ for (const dir of dirs) {
     tags: meta.tags || [],
     date: meta.date,
     ...(meta.thumb ? { thumb: meta.thumb } : {}),
+    ...(meta.ordre != null ? { ordre: meta.ordre } : {}),
   });
 }
 
@@ -46,7 +47,7 @@ if (errors.length) {
   process.exit(1);
 }
 
-items.sort((a, b) => (b.date || '').localeCompare(a.date || '') || a.nom.localeCompare(b.nom, 'fr'));
+items.sort((a, b) => (b.date || '').localeCompare(a.date || '') || (a.ordre ?? 50) - (b.ordre ?? 50) || a.nom.localeCompare(b.nom, 'fr'));
 const out = { version: 1, total: items.length, items };
 await writeFile(path.join(root, 'registry', 'index.json'), JSON.stringify(out, null, 2) + '\n');
 console.log(`registry/index.json : ${items.length} design${items.length > 1 ? 's' : ''}.`);

@@ -1,0 +1,75 @@
+<!-- Bouton « maintenir pour confirmer » — HTML + CSS + hold.js. Nécessite tokens.css. -->
+<link rel="stylesheet" href="tokens.css">
+
+<div class="hold-field">
+  <button class="hold" type="button" data-hold data-variant="danger" data-duration="1500" data-reset="2400"
+    data-done="Projet supprimé" aria-describedby="hold-hint">
+    <span class="hold__base">
+      <svg class="hold__ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>
+      <span class="hold__label">Maintenir pour supprimer</span>
+    </span>
+    <!-- Copie du libellé dans le remplissage : le texte s'inverse exactement au front de progression -->
+    <span class="hold__fill" aria-hidden="true">
+      <svg class="hold__ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>
+      <span class="hold__label">Maintenir pour supprimer</span>
+    </span>
+    <span class="hold__ok" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+      <span class="hold__done">Projet supprimé</span>
+    </span>
+  </button>
+  <p class="hold-hint" id="hold-hint">Maintenez le clic ou la touche Espace 1,5&nbsp;s.</p>
+  <span class="hold-live" aria-live="polite"></span>
+</div>
+
+<script src="hold.js" defer></script>
+
+<style>
+  .hold {
+    --p: 0;                       /* progression 0 → 1, pilotée par hold.js */
+    --hold-tone: var(--down);
+    --hold-on: var(--surface);
+    position: relative;
+    display: inline-grid;
+    height: 48px;
+    padding: 0 20px;
+    border: 1px solid var(--hold-tone);
+    border-radius: var(--radius-ctl);
+    background: var(--surface);
+    color: var(--hold-tone);
+    font: 500 15px/1 var(--font-sans);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+    transition: scale var(--motion-slow) cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .hold[data-variant=primary] { --hold-tone: var(--accent); --hold-on: var(--accent-fg); }
+  .hold { align-items: center; }
+  .hold__base, .hold__fill, .hold__ok { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .hold__base { grid-area: 1 / 1; }
+  .hold__fill, .hold__ok { position: absolute; inset: -1px; background: var(--hold-tone); color: var(--hold-on); padding: 0 20px; }
+  .hold__fill { clip-path: inset(0 calc((1 - var(--p)) * 100%) 0 0); }
+  .hold__ok { opacity: 0; transform: translateY(40%); transition: opacity var(--motion-base) var(--ease-out), transform var(--motion-slow) cubic-bezier(.34, 1.56, .64, 1); }
+
+  .hold.is-holding { scale: 0.97; }
+  .hold[data-state=done] { scale: 1; }
+  .hold[data-state=done] .hold__ok { opacity: 1; transform: none; }
+  .hold[data-state=done] .hold__fill { clip-path: inset(0); }
+  .hold:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  @media (hover: hover) and (pointer: fine) { .hold:hover:not([data-state=done]) { background: color-mix(in srgb, var(--hold-tone) 8%, var(--surface)); } }
+
+  .hold-field { display: grid; justify-items: center; gap: 10px; }
+  .hold-hint { margin: 0; font-size: 13px; color: var(--text-muted); }
+  .hold-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hold, .hold__ok { transition: none; }
+    .hold.is-holding { scale: 1; }
+    .hold__ok { transform: none; }
+  }
+</style>

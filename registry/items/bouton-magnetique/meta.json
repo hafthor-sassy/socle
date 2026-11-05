@@ -1,0 +1,50 @@
+{
+  "id": "bouton-magnetique",
+  "nom": "Bouton magnétique",
+  "categorie": "boutons",
+  "ordre": 1,
+  "description": "Le bouton est attiré par le curseur dès qu’il entre dans sa zone, le libellé et la pastille suivent en parallaxe, puis un vrai ressort le ramène au relâchement.",
+  "tags": ["Curseur", "Ressort", "Accessible"],
+  "date": "2026-11-05",
+  "thumb": { "width": 640 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Accent, rayons, focus" },
+    { "nom": "magnetic.js", "note": "1,5 ko, sans dépendance (HTML seulement)" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "label", "label": "Libellé", "type": "text", "default": "Démarrer un projet",
+      "code": { "html": "<span class=\"mag__label\">{v}</span>", "react": "variant=\"solid\">{v}</MagneticButton>" } },
+    { "name": "variant", "label": "Variante", "type": "select", "default": "solid",
+      "options": [{ "value": "solid", "label": "Plein" }, { "value": "outline", "label": "Contour" }],
+      "code": { "html": "data-variant=\"{v}\"", "react": "variant=\"{v}\"" } },
+    { "name": "strength", "label": "Force", "type": "number", "default": 0.4, "min": 0.1, "max": 0.8, "step": 0.05,
+      "hint": "Part de la distance au curseur suivie par le bouton.",
+      "code": { "html": "--mag-strength: {v};", "react": "strength={{v}}" } },
+    { "name": "radius", "label": "Rayon de la zone", "type": "number", "default": 120, "min": 24, "max": 240, "step": 8, "unit": "px",
+      "code": { "html": "--mag-radius: {v}px;", "react": "radius={{v}}" } },
+    { "name": "stiffness", "label": "Raideur du ressort", "type": "number", "default": 220, "min": 60, "max": 600, "step": 10,
+      "code": { "html": "--mag-stiffness: {v};", "react": "stiffness={{v}}" } },
+    { "name": "damping", "label": "Amortissement", "type": "number", "default": 16, "min": 6, "max": 40, "step": 1,
+      "hint": "Bas : le bouton rebondit. Haut : retour sec.",
+      "code": { "html": "--mag-damping: {v}", "react": "damping={{v}}" } },
+    { "name": "zone", "label": "Afficher la zone", "type": "boolean", "default": false }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS", "file": "code/index.html", "lang": "html" },
+    { "id": "js", "label": "Vanilla JS", "file": "code/magnetic.js", "lang": "js" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/MagneticButton.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Réservé à l’action phare d’une page (hero, appel à l’action) : un seul bouton magnétique par écran.",
+    "Gardez une force modérée (0,3 à 0,5) : au-delà, le bouton fuit la souris et devient difficile à viser.",
+    "Le ressort se règle en raideur et amortissement : 220 / 16 donne un léger rebond, 300 / 30 un retour sec."
+  ],
+  "accessibilite": [
+    "Bouton natif : Entrée et Espace, focus visible à 3 px ; la flèche pivote aussi au focus clavier.",
+    "Aucun aimant au toucher : le doigt vise toujours le bouton à sa vraie place.",
+    "Avec « réduire les animations », le bouton reste immobile ; contraste du libellé ≥ 4,5:1 sur l’accent."
+  ]
+}

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bouton à remplissage directionnel — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; align-content: center; gap: 28px; padding: 48px 24px; text-align: center; }
+  .hint { font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .is-thumb .hint { display: none; }
+  .is-thumb #live { scale: 1.9; }
+</style>
+</head>
+<body>
+<main class="stage">
+  <div id="live"></div>
+  <p class="hint">Entrez par un bord, ressortez par un autre</p>
+</main>
+<script>
+  var props = Socle.props({ label: 'Rejoindre la liste', shape: 'edge', variant: 'accent', duration: 420 });
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var btn;
+  function render(p) {
+    var l = esc(p.label || 'Bouton');
+    var live = document.getElementById('live');
+    live.innerHTML = '<button class="dfill" type="button" data-dfill><span class="dfill__label">' + l + '</span><span class="dfill__layer" aria-hidden="true"><span class="dfill__label">' + l + '</span></span></button>';
+    btn = live.firstChild;
+    btn.dataset.shape = p.shape;
+    btn.dataset.variant = p.variant;
+    btn.style.setProperty('--dfill-duration', p.duration + 'ms');
+    if (window.DFill) DFill.attach(btn);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var m = t.match(/<style>([\s\S]*?)<\/style>/);
+    if (m) document.getElementById('component-css').textContent = m[1];
+  }).catch(function () {});
+  var s = document.createElement('script');
+  s.src = 'code/dfill.js';
+  s.onload = function () { render(props); if (Socle.thumb) loop(); };
+  document.head.appendChild(s);
+  Socle.onChange(render);
+  /* Rejouer et vignette : entrées simulées par chaque bord. */
+  function simulate(fromSide, toSide) {
+    if (!btn || !btn._dfill) return;
+    var r = btn.getBoundingClientRect();
+    var P = { left: [r.left + 1, r.top + r.height / 2], right: [r.right - 1, r.top + r.height / 2], top: [r.left + r.width * 0.3, r.top + 1], bottom: [r.left + r.width * 0.7, r.bottom - 1] };
+    btn._dfill.enter(P[fromSide][0], P[fromSide][1]);
+    setTimeout(function () { btn._dfill.leave(P[toSide][0], P[toSide][1]); }, 1100);
+  }
+  Socle.onReplay(function () { simulate('left', 'right'); });
+  function loop() {
+    if (Socle.reducedMotion()) return;
+    var seq = [['left', 'right'], ['top', 'bottom'], ['right', 'left'], ['bottom', 'top']], i = 0;
+    simulate.apply(null, seq[i++]);
+    setInterval(function () { simulate.apply(null, seq[i++ % seq.length]); }, 2000);
+  }
+</script>
+</body>
+</html>

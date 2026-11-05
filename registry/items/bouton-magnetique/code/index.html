@@ -1,0 +1,68 @@
+<!-- Bouton magnétique — HTML + CSS + magnetic.js. Nécessite tokens.css. -->
+<link rel="stylesheet" href="tokens.css">
+
+<button class="mag" type="button" data-magnetic data-variant="solid"
+  style="--mag-strength: 0.4; --mag-radius: 120px; --mag-stiffness: 220; --mag-damping: 16">
+  <span class="mag__label">Démarrer un projet</span>
+  <span class="mag__icon" aria-hidden="true">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </span>
+</button>
+
+<script src="magnetic.js" defer></script>
+
+<style>
+  .mag {
+    /* Réglages : force de l'attraction, rayon de la zone, raideur et amortissement du ressort */
+    --mag-strength: 0.4;
+    --mag-radius: 120px;
+    --mag-stiffness: 220;
+    --mag-damping: 16;
+    --mx: 0px;
+    --my: 0px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    height: 56px;
+    padding: 0 8px 0 24px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: var(--accent-fg);
+    font: 500 16px/1 var(--font-sans);
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transform: translate3d(var(--mx), var(--my), 0);
+    transition: scale var(--motion-base) cubic-bezier(.34, 1.56, .64, 1), background-color var(--motion-fast) var(--ease-out);
+  }
+  .mag[data-variant=outline] { background: var(--surface); color: var(--text-strong); border-color: var(--border-control); }
+
+  /* Parallaxe : le libellé et la pastille suivent un peu plus que le bouton */
+  .mag__label { transform: translate3d(calc(var(--mx) * 0.1), calc(var(--my) * 0.1), 0); }
+  .mag__icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent-fg);
+    color: var(--accent);
+    transform: translate3d(calc(var(--mx) * 0.12), calc(var(--my) * 0.12), 0);
+  }
+  .mag[data-variant=outline] .mag__icon { background: var(--accent); color: var(--accent-fg); }
+  .mag__icon svg { transition: rotate var(--motion-slow) cubic-bezier(.34, 1.56, .64, 1); }
+  .mag.is-near .mag__icon svg, .mag:focus-visible .mag__icon svg { rotate: -45deg; }
+
+  .mag:active { scale: 0.96; transition-duration: 90ms; }
+  .mag:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mag, .mag__label, .mag__icon { transform: none; }
+    .mag, .mag__icon svg { transition: none; }
+    .mag:active { scale: 1; }
+  }
+</style>

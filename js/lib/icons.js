@@ -36,6 +36,11 @@ const P = {
   accessibility: '<circle cx="12" cy="4.5" r="1.5"/><path d="M5 8l7 1.5L19 8M12 9.5V14l-3 6.5M12 14l3 6.5"/>',
   note: '<path d="M6 3h9l4 4v14H6z"/><path d="M9 11h6M9 15h4"/>',
   corner: '<path d="M4 20V4h16"/>',
+  palette: '<path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.8-.5-1.2 0-1 .8-1.8 1.8-1.8H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11.5" r="1"/><circle cx="10" cy="7.5" r="1"/><circle cx="15" cy="7.5" r="1"/>',
+  type: '<path d="M5 7V5h14v2M12 5v14M9 19h6"/>',
+  chevronUp: '<path d="M6 15l6-6 6 6"/>',
+  pause: '<path d="M9 5v14M15 5v14"/>',
+  play: '<path d="M7 5l12 7-12 7z"/>',
 };
 
 export function icon(name, { size = 20, cls = '', label = '' } = {}) {

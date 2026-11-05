@@ -51,7 +51,7 @@ export async function renderItem(view, id, onCat) {
   if (onCat) onCat(meta.categorie);
   document.title = `${meta.nom} — Socle`;
   const { items } = await loadIndex();
-  const siblings = items.filter((i) => i.categorie === meta.categorie).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const siblings = items.filter((i) => i.categorie === meta.categorie).sort((a, b) => (b.date || '').localeCompare(a.date || '') || (a.ordre ?? 50) - (b.ordre ?? 50));
   const idx = siblings.findIndex((s) => s.id === meta.id);
   const prev = idx > 0 ? siblings[idx - 1] : null;
   const next = idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : null;

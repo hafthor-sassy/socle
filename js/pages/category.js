@@ -74,7 +74,7 @@ export async function renderCategory(view, cat) {
 
   function apply() {
     let list = items.filter((i) => !state.tags.size || (i.tags || []).some((t) => state.tags.has(t)));
-    list = list.slice().sort(state.sort === 'nom' ? (a, b) => a.nom.localeCompare(b.nom, 'fr') : (a, b) => (b.date || '').localeCompare(a.date || ''));
+    list = list.slice().sort(state.sort === 'nom' ? (a, b) => a.nom.localeCompare(b.nom, 'fr') : (a, b) => (b.date || '').localeCompare(a.date || '') || (a.ordre ?? 50) - (b.ordre ?? 50));
     grid.innerHTML = list.length ? list.map(cardHTML).join('') : `<p class="muted">Aucun design avec ces tags.</p>`;
     countEl.textContent = plural(list.length, 'design', 'designs');
     view.querySelectorAll('.chip[data-tag]').forEach((c) => c.setAttribute('aria-pressed', String(state.tags.has(c.dataset.tag))));

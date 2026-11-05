@@ -1,0 +1,44 @@
+{
+  "id": "bouton-remplissage-directionnel",
+  "nom": "Remplissage directionnel",
+  "categorie": "boutons",
+  "ordre": 5,
+  "description": "Le fond entre par le bord où arrive le curseur et ressort par celui où il sort ; le libellé s’inverse exactement au front du remplissage. Variante cercle : le fond s’ouvre depuis le point d’entrée.",
+  "tags": ["Survol", "Curseur", "Accessible"],
+  "date": "2026-11-05",
+  "thumb": { "width": 640 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Accent, --border-control, rayons" },
+    { "nom": "dfill.js", "note": "Détection du bord d’entrée et de sortie (HTML seulement)" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "label", "label": "Libellé", "type": "text", "default": "Rejoindre la liste",
+      "code": { "html": "<span class=\"dfill__label\">{v}</span>", "react": "variant=\"accent\">{v}</DirectionalFillButton>" } },
+    { "name": "shape", "label": "Forme du remplissage", "type": "select", "default": "edge",
+      "options": [{ "value": "edge", "label": "Depuis le bord" }, { "value": "circle", "label": "Cercle" }],
+      "code": { "html": "data-shape=\"{v}\"", "react": "shape=\"{v}\"" } },
+    { "name": "variant", "label": "Variante", "type": "select", "default": "accent",
+      "options": [{ "value": "accent", "label": "Accent" }, { "value": "ink", "label": "Encre" }, { "value": "pill", "label": "Pilule" }],
+      "code": { "html": "data-variant=\"{v}\"", "react": "variant=\"{v}\"" } },
+    { "name": "duration", "label": "Durée", "type": "number", "default": 420, "min": 150, "max": 900, "step": 10, "unit": "ms",
+      "code": { "html": "--dfill-duration: {v}ms", "react": "duration={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS", "file": "code/index.html", "lang": "html" },
+    { "id": "js", "label": "Vanilla JS", "file": "code/dfill.js", "lang": "js" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/DirectionalFillButton.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Bouton secondaire qui devient primaire au survol : idéal dans une barre de navigation ou un pied de page.",
+    "Le bord le plus proche est calculé en proportion de la taille : un bouton large reçoit aussi des entrées par le haut et le bas.",
+    "Au toucher, le fond s’ouvre depuis le point de contact puis se retire."
+  ],
+  "accessibilite": [
+    "Calque de remplissage aria-hidden : le libellé n’est lu qu’une fois.",
+    "Au clavier, le fond entre par la gauche au focus et se retire à la perte de focus ; anneau de focus en plus.",
+    "Texte ≥ 4,5:1 dans les deux états ; avec « réduire les animations », le changement est instantané."
+  ]
+}

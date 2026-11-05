@@ -1,0 +1,175 @@
+<!-- Pricing par recharge · calculateur d'usage — HTML + CSS + JS intégré. Nécessite tokens.css. Marque et chiffres fictifs. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="rk" data-recharge="calc" data-currency="EUR" data-rate="0.09" data-tiers="10, 25, 50, 100, 250" data-bonus="0, 5, 10, 15, 25" data-calls="40" data-duration="3" data-days="22" aria-labelledby="rk-title">
+  <div class="rk__in">
+    <header class="rk__head">
+      <p class="rk__eyebrow">Estimez avant de recharger</p>
+      <h2 id="rk-title">Combien vont coûter vos appels ?</h2>
+      <p class="rk__lead">Réglez votre volume : nous calculons la recharge qui couvre votre mois au meilleur prix à la minute.</p>
+    </header>
+
+    <div class="rk__card">
+      <div class="rk__inputs">
+        <div class="rk__field">
+          <div class="rk__top"><label for="rk-calls">Appels par jour</label><output for="rk-calls" data-rk-calls-v>40</output></div>
+          <input id="rk-calls" type="range" min="1" max="300" step="1" value="40" data-rk-calls>
+        </div>
+        <div class="rk__field">
+          <div class="rk__top"><label for="rk-dur">Durée moyenne d’un appel</label><output for="rk-dur" data-rk-dur-v>3 min</output></div>
+          <input id="rk-dur" type="range" min="0.5" max="10" step="0.5" value="3" data-rk-dur>
+        </div>
+        <div class="rk__field">
+          <span class="rk__lbl" id="rk-days-l">Jours d’activité par mois</span>
+          <div class="rk__seg" role="radiogroup" aria-labelledby="rk-days-l" data-rk-days>
+            <button type="button" role="radio" data-v="22">Jours ouvrés · 22</button>
+            <button type="button" role="radio" data-v="30">Tous les jours · 30</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="rk__result" aria-live="polite">
+        <div class="rk__kpis">
+          <div><span>Minutes par mois</span><b data-rk-mins>2 640</b></div>
+          <div><span>Coût mensuel estimé</span><b data-rk-cost>211 €</b></div>
+        </div>
+        <div class="rk__reco">
+          <span class="rk__lbl">Recharge conseillée</span>
+          <p class="rk__recov"><b data-rk-reco>250 €</b><span data-rk-reco-note>+25 % offerts · 0,072 €/min</span></p>
+          <div class="rk__bar" role="img" data-rk-bar aria-label="">
+            <span class="rk__fill" data-rk-fill></span>
+            <span class="rk__week" style="left:25%"></span><span class="rk__week" style="left:50%"></span><span class="rk__week" style="left:75%"></span>
+          </div>
+          <p class="rk__cover" data-rk-cover>Couvre tout le mois</p>
+        </div>
+        <button class="rk__cta" type="button" data-rk-cta><span data-cta-label>Recharger</span> <span data-rk-cta-amount>250 €</span></button>
+      </div>
+    </div>
+
+    <div class="rk__tablewrap">
+      <table class="rk__table">
+        <caption>Plus la recharge est grande, plus la minute baisse</caption>
+        <thead><tr><th scope="col">Recharge</th><th scope="col">Bonus</th><th scope="col" class="r">Minutes</th><th scope="col" class="r">Prix / min</th><th scope="col" class="r">Couvre</th></tr></thead>
+        <tbody data-rk-rows></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .rk { background: var(--bg); color: var(--text); font-family: var(--font-sans); padding: 56px 16px 72px; }
+  .rk__in { max-width: 960px; margin: 0 auto; display: grid; gap: 28px; }
+  .rk__head { display: grid; gap: 12px; text-align: center; justify-items: center; }
+  .rk__eyebrow { margin: 0; font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .rk h2 { margin: 0; color: var(--text-strong); font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem); line-height: 1.12; letter-spacing: -0.02em; font-weight: 600; text-wrap: balance; }
+  .rk__lead { margin: 0; max-width: 50ch; color: var(--text-muted); font-size: 1.0625rem; line-height: 1.6; text-wrap: pretty; }
+
+  .rk__card { display: grid; border: 1px solid var(--border); border-radius: var(--radius-sheet); background: var(--surface); overflow: hidden; }
+  @media (min-width: 860px) { .rk__card { grid-template-columns: 1fr 1fr; } }
+  .rk__inputs { display: grid; align-content: start; gap: 24px; padding: 24px 20px; }
+  .rk__result { display: grid; align-content: start; gap: 20px; padding: 24px 20px; background: var(--raised); border-top: 1px solid var(--border); }
+  @media (min-width: 860px) { .rk__inputs, .rk__result { padding: 32px; } .rk__result { border-top: 0; border-left: 1px solid var(--border); } }
+  .rk__field { display: grid; gap: 8px; }
+  .rk__top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .rk__top label, .rk__lbl { font-size: 14px; font-weight: 500; color: var(--text-strong); }
+  .rk__top output { font: 600 1.25rem/1 var(--font-sans); color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .rk input[type=range] { --fill: 13%; -webkit-appearance: none; appearance: none; width: 100%; height: 44px; margin: 0; background: transparent; cursor: pointer; }
+  .rk input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(to right, var(--accent) var(--fill), var(--scale-track) var(--fill)); }
+  .rk input[type=range]::-moz-range-track { height: 6px; border-radius: 999px; background: var(--scale-track); }
+  .rk input[type=range]::-moz-range-progress { height: 6px; border-radius: 999px; background: var(--accent); }
+  .rk input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; margin-top: -9px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); box-shadow: var(--shadow-overlay); }
+  .rk input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--surface); border: 2px solid var(--accent); }
+  .rk input[type=range]:focus-visible { outline: none; }
+  .rk input[type=range]:focus-visible::-webkit-slider-thumb { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 2px; }
+  .rk input[type=range]:focus-visible::-moz-range-thumb { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 2px; }
+  .rk__seg { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; padding: 3px; border-radius: var(--radius-ctl); background: var(--raised); border: 1px solid var(--border); }
+  .rk__seg button { min-height: 44px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--text-muted); font: 500 14px/1.2 var(--font-sans); cursor: pointer; }
+  .rk__seg button[aria-checked=true] { background: var(--surface); color: var(--text-strong); box-shadow: var(--shadow-overlay); }
+  .rk__seg button:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 1px; }
+
+  .rk__kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .rk__kpis div { display: grid; gap: 4px; }
+  .rk__kpis span { font-size: 13px; color: var(--text-muted); }
+  .rk__kpis b { color: var(--text-strong); font-size: clamp(1.625rem, 1.4rem + 1vw, 2rem); line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .rk__reco { display: grid; gap: 8px; padding: 16px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--border); }
+  .rk__recov { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+  .rk__recov b { color: var(--accent); font-size: 2.25rem; line-height: 1; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .rk__recov span { font-size: 13px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .rk__bar { position: relative; height: 12px; border-radius: 999px; background: var(--scale-track); overflow: hidden; margin-top: 4px; }
+  .rk__fill { position: absolute; inset: 0 auto 0 0; width: 100%; border-radius: inherit; background: var(--accent-vivid); transform-origin: left; transition: transform var(--motion-slow) var(--ease-out); }
+  .rk__week { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--surface); }
+  .rk__cover { margin: 0; font-size: 13px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .rk__cta { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 52px; border: 0; border-radius: var(--radius-ctl); background: var(--accent); color: var(--accent-fg); font: 600 16px/1 var(--font-sans); cursor: pointer; transition: background-color var(--motion-fast) var(--ease-out), scale var(--motion-base) cubic-bezier(.34, 1.56, .64, 1); }
+  .rk__cta [data-rk-cta-amount] { font-variant-numeric: tabular-nums; }
+  @media (hover: hover) and (pointer: fine) { .rk__cta:hover { background: var(--accent-hover); } }
+  .rk__cta:active { scale: .98; }
+  .rk__cta:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+  .rk__tablewrap { overflow-x: auto; touch-action: pan-x pan-y; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); }
+  .rk__table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 14px; }
+  .rk__table caption { caption-side: top; text-align: left; padding: 14px 16px; font-weight: 600; color: var(--text-strong); border-bottom: 1px solid var(--border); }
+  .rk__table th, .rk__table td { height: 48px; padding: 0 16px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .rk__table th { height: 40px; font-size: 12px; font-weight: 500; color: var(--text-muted); background: var(--raised); }
+  .rk__table .r { text-align: right; }
+  .rk__table tr:last-child td { border-bottom: 0; }
+  .rk__table td:first-child { font-weight: 600; color: var(--text-strong); }
+  .rk__table tr[aria-current] td { background: var(--accent-subtle); }
+  .rk__table tr[aria-current] td:first-child { color: var(--accent); }
+  .rk__tag { display: inline-flex; align-items: center; height: 20px; margin-left: 8px; padding: 0 7px; border-radius: 999px; font-size: 11px; font-weight: 500; background: var(--accent); color: var(--accent-fg); vertical-align: 1px; }
+  .rk__b { color: var(--tint-green-fg); font-weight: 500; }
+  @media (prefers-reduced-motion: reduce) { .rk * { transition: none !important; } }
+</style>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-recharge="calc"]').forEach(function (root) {
+      var d = root.dataset, cur = d.currency || 'EUR', rate = parseFloat(d.rate) || 0.09;
+      var tiers = (d.tiers || '10,25,50,100').split(/[,;\s]+/).map(Number).filter(function (n) { return n > 0; }).sort(function (a, b) { return a - b; });
+      var bonus = (d.bonus || '').split(/[,;\s]+/).map(Number);
+      var money = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: cur, maximumFractionDigits: 0 });
+      var money3 = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: cur, minimumFractionDigits: 2, maximumFractionDigits: 3 });
+      var num = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 1 });
+      var int = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 });
+      var $ = function (s) { return root.querySelector(s); };
+      var calls = $('[data-rk-calls]'), dur = $('[data-rk-dur]');
+      calls.value = d.calls || 40; dur.value = d.duration || 3;
+      var days = +(d.days || 22);
+      var rows = tiers.map(function (t, i) { var b = bonus[i] || 0, m = Math.floor(t * (1 + b / 100) / rate); return { t: t, b: b, m: m, eff: t / m }; });
+      function fill(el) { el.style.setProperty('--fill', ((el.value - el.min) / (el.max - el.min) * 100) + '%'); }
+      function update() {
+        fill(calls); fill(dur);
+        var c = +calls.value, du = +dur.value, need = c * du * days, perDay = c * du;
+        $('[data-rk-calls-v]').textContent = int.format(c);
+        $('[data-rk-dur-v]').textContent = num.format(du) + '\u00A0min';
+        // Recharge conseillée : le plus petit palier qui couvre le mois, sinon n × le plus grand
+        var reco = rows.find(function (r) { return r.m >= need; }), times = 1;
+        if (!reco) { reco = rows[rows.length - 1]; times = Math.ceil(need / reco.m); }
+        var cost = need * reco.eff;
+        $('[data-rk-mins]').textContent = int.format(need);
+        $('[data-rk-cost]').textContent = money.format(Math.ceil(cost));
+        $('[data-rk-reco]').textContent = (times > 1 ? times + '\u00A0×\u00A0' : '') + money.format(reco.t);
+        $('[data-rk-reco-note]').textContent = (reco.b ? '+' + reco.b + '\u00A0% offerts · ' : '') + money3.format(reco.eff) + '/min';
+        var cover = Math.min(1, (reco.m * times) / need), coverDays = Math.floor((reco.m * times) / perDay);
+        $('[data-rk-fill]').style.transform = 'scaleX(' + cover.toFixed(3) + ')';
+        $('[data-rk-cover]').textContent = coverDays >= days ? 'Couvre tout le mois · ' + int.format(reco.m * times - need) + '\u00A0min de marge' : 'Couvre ' + coverDays + '\u00A0jours sur ' + days;
+        $('[data-rk-bar]').setAttribute('aria-label', 'Crédits : ' + Math.round(cover * 100) + '\u00A0% du mois couvert');
+        $('[data-rk-cta-amount]').textContent = (times > 1 ? times + '\u00A0×\u00A0' : '') + money.format(reco.t);
+        $('[data-rk-rows]').innerHTML = rows.map(function (r) {
+          var on = r === reco;
+          return '<tr' + (on ? ' aria-current="true"' : '') + '><td>' + money.format(r.t) + (on ? '<span class="rk__tag">Conseillée</span>' : '') + '</td><td>' + (r.b ? '<span class="rk__b">+' + r.b + '\u00A0%</span>' : '—') + '</td><td class="r">' + int.format(r.m) + '</td><td class="r">' + money3.format(r.eff) + '</td><td class="r">' + int.format(Math.floor(r.m / perDay)) + '\u00A0j</td></tr>';
+        }).join('');
+        root.querySelectorAll('[data-rk-days] [data-v]').forEach(function (b) { var on = +b.dataset.v === days; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+        root._reco = { amount: reco.t * times, currency: cur };
+      }
+      calls.addEventListener('input', update);
+      dur.addEventListener('input', update);
+      var seg = $('[data-rk-days]');
+      seg.addEventListener('click', function (e) { var b = e.target.closest('[data-v]'); if (b) { days = +b.dataset.v; update(); } });
+      seg.addEventListener('keydown', function (e) { if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].indexOf(e.key) < 0) return; e.preventDefault(); days = days === 22 ? 30 : 22; update(); seg.querySelector('[data-v="' + days + '"]').focus(); });
+      $('[data-rk-cta]').addEventListener('click', function () { root.dispatchEvent(new CustomEvent('recharge', { bubbles: true, detail: root._reco })); });
+      update();
+    });
+  })();
+</script>

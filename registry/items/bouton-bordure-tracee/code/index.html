@@ -1,0 +1,79 @@
+<!-- Bouton à bordure tracée — HTML + CSS + trace.js (cale le tracé sur la taille du bouton). Nécessite tokens.css. -->
+<link rel="stylesheet" href="tokens.css">
+
+<button class="trace" type="button" data-trace data-trigger="loop" data-shape="ctl"
+  style="--trace-speed: 3.2s; --trace-length: 24; --trace-width: 1.5px">
+  <svg class="trace__svg" aria-hidden="true">
+    <rect class="trace__track" pathLength="100" />
+    <rect class="trace__glow" pathLength="100" />
+    <rect class="trace__line" pathLength="100" />
+  </svg>
+  <span class="trace__label">Réserver une démo</span>
+</button>
+
+<script src="trace.js" defer></script>
+
+<style>
+  .trace {
+    --trace-speed: 3.2s;     /* durée d'un tour complet */
+    --trace-length: 24;      /* longueur du trait, en % du contour */
+    --trace-width: 1.5px;    /* épaisseur du trait */
+    --trace-color: var(--accent-vivid);
+    --r: var(--radius-ctl);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 48px;
+    padding: 0 24px;
+    border: 0;
+    border-radius: var(--r);
+    background: var(--surface);
+    color: var(--text-strong);
+    font: 500 15px/1 var(--font-sans);
+    white-space: nowrap;
+    cursor: pointer;
+    isolation: isolate;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color var(--motion-fast) var(--ease-out), scale var(--motion-base) cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .trace[data-shape=pill] { --r: var(--radius-pill); }
+  .trace[data-shape=card] { --r: var(--radius-card); }
+  .trace__svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: -1; }
+  .trace__svg rect { fill: none; vector-effect: non-scaling-stroke; }
+  .trace__track { stroke: var(--border-control); stroke-width: 1px; }
+  .trace__line, .trace__glow {
+    stroke: var(--trace-color);
+    stroke-width: var(--trace-width);
+    stroke-linecap: round;
+    stroke-dasharray: var(--trace-length) calc(100 - var(--trace-length));
+    animation: trace-run var(--trace-speed) linear infinite;
+  }
+  .trace__glow { stroke-width: calc(var(--trace-width) * 4); opacity: 0; filter: blur(4px); }
+  .dark .trace__glow, .trace__glow.is-on { opacity: .45; }
+  @keyframes trace-run { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -100; } }
+
+  /* Déclenchement au survol : le trait dessine tout le contour une fois */
+  .trace[data-trigger=hover] .trace__line, .trace[data-trigger=hover] .trace__glow {
+    animation: none;
+    stroke-dasharray: 100 100;
+    stroke-dashoffset: 100;
+    transition: stroke-dashoffset calc(var(--trace-speed) / 3) cubic-bezier(.65, 0, .35, 1);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .trace:hover { background: var(--raised); }
+    .trace[data-trigger=hover]:hover .trace__line, .trace[data-trigger=hover]:hover .trace__glow { stroke-dashoffset: 0; }
+    .trace[data-trigger=loop]:hover .trace__line, .trace[data-trigger=loop]:hover .trace__glow { animation-duration: calc(var(--trace-speed) / 2); }
+  }
+  .trace[data-trigger=hover]:focus-visible .trace__line { stroke-dashoffset: 0; }
+  .trace:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 3px; }
+  .trace:active { scale: 0.97; transition-duration: 90ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trace__line { animation: none; stroke-dasharray: none; }
+    .trace__glow { display: none; }
+    .trace[data-trigger=hover] .trace__line { stroke-dasharray: none; stroke-dashoffset: 0; transition: none; }
+    .trace { transition: none; }
+  }
+</style>

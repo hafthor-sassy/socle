@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bouton — démo</title>
+<title>Bouton de base — démo</title>
 <link rel="stylesheet" href="../../../css/tokens.css">
 <link rel="stylesheet" href="../../../demo-kit/demo.css">
 <script src="../../../demo-kit/demo.js"></script>
@@ -13,10 +13,12 @@
   .live { display: grid; place-items: center; padding: 48px 24px; }
   .states { border-top: 1px solid var(--border); background: var(--surface); padding: 24px; }
   .states h2 { font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-muted); letter-spacing: var(--track-caps); text-transform: uppercase; font-family: var(--font-mono); margin-bottom: 16px; }
-  .row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 16px; }
-  @media (min-width: 720px) { .row { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
-  .cell { display: grid; justify-items: start; gap: 10px; min-width: 0; }
-  .cell > span { font-size: 13px; color: var(--text-muted); }
+  /* Grille qui s'adapte à la taille du bouton : colonnes au moins aussi larges que le plus grand bouton,
+     écart proportionnel à la hauteur, retour à la ligne, étiquettes alignées sur une même ligne de base. */
+  .row { --g: 16px; --cell: 140px; --rowh: 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cell)), 1fr)); gap: calc(var(--g) * 1.5) var(--g); align-items: start; }
+  .cell { display: grid; grid-template-rows: var(--rowh) auto; align-items: center; justify-items: start; gap: 10px; min-width: 0; }
+  .cell > span { font-size: 13px; line-height: 18px; color: var(--text-muted); align-self: start; }
+  .cell > .btn { max-width: 100%; }
   .is-thumb .live { padding: 0; }
   .is-thumb .live .btn { transform: scale(1.6); }
   /* États forcés pour la planche (démo uniquement) */
@@ -58,10 +60,22 @@
       var e = s[1]; e.tab = true; if (e.disabled == null) e.disabled = false; if (e.busy == null) e.busy = false;
       return '<div class="cell">' + btn(p, e) + '<span>' + s[0] + '</span></div>';
     }).join('');
+    fitStates(p);
   }
+  function fitStates(p) {
+    var row = document.getElementById('states');
+    var g = { sm: 12, md: 16, lg: 24 }[p.size] || 16;
+    var w = 0, h = 0;
+    row.querySelectorAll('.btn').forEach(function (b) { w = Math.max(w, b.offsetWidth); h = Math.max(h, b.offsetHeight); });
+    row.style.setProperty('--g', g + 'px');
+    row.style.setProperty('--cell', Math.ceil(w + g) + 'px');
+    row.style.setProperty('--rowh', Math.max(h, 32) + 'px');
+  }
+  window.addEventListener('resize', function () { fitStates(props); });
   fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
     var m = t.match(/<style>([\s\S]*?)<\/style>/);
     if (m) document.getElementById('component-css').textContent = m[1];
+    requestAnimationFrame(function () { fitStates(props); });
   }).catch(function () {});
   render(props);
   Socle.onChange(render);

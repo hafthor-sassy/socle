@@ -1,0 +1,68 @@
+<!-- Bouton à texte qui roule — HTML + CSS + roll.js (découpe le libellé en lettres). Nécessite tokens.css. -->
+<link rel="stylesheet" href="tokens.css">
+
+<button class="roll" type="button" data-variant="solid" data-direction="up" aria-label="Voir les offres"
+  style="--roll-stagger: 18ms; --roll-duration: 520ms">
+  <span class="roll__text" data-roll aria-hidden="true">Voir les offres</span>
+  <span class="roll__icon" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </span>
+</button>
+
+<script src="roll.js" defer></script>
+
+<style>
+  .roll {
+    --roll-stagger: 18ms;     /* décalage entre deux lettres */
+    --roll-duration: 520ms;   /* durée du roulement d'une lettre */
+    --roll-ease: cubic-bezier(.76, 0, .24, 1);
+    --roll-lh: 1.25em;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 48px;
+    padding: 0 20px 0 22px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-ctl);
+    background: var(--accent);
+    color: var(--accent-fg);
+    font: 500 16px/1 var(--font-sans);
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color var(--motion-fast) var(--ease-out), scale var(--motion-base) cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .roll[data-variant=outline] { background: transparent; color: var(--text-strong); border-color: var(--border-control); }
+  .roll[data-variant=ink] { background: var(--text-strong); color: var(--bg); }
+
+  /* Une lettre = deux copies empilées dans une fenêtre d'une ligne */
+  .roll__text { display: inline-flex; height: var(--roll-lh); line-height: var(--roll-lh); overflow: hidden; }
+  .roll__c { display: inline-flex; flex-direction: column; transition: transform var(--roll-duration) var(--roll-ease); transition-delay: calc(var(--i) * var(--roll-stagger)); }
+  .roll__c > span { display: block; height: var(--roll-lh); white-space: pre; }
+  .roll[data-direction=down] .roll__c { flex-direction: column-reverse; transform: translateY(calc(var(--roll-lh) * -1)); }
+
+  .roll__icon { position: relative; display: inline-grid; width: 16px; height: 16px; overflow: hidden; }
+  .roll__icon svg { grid-area: 1 / 1; transition: transform var(--roll-duration) var(--roll-ease); transition-delay: calc(var(--n, 8) * var(--roll-stagger)); }
+  .roll__icon svg + svg { transform: translateX(-120%); }
+
+  @media (hover: hover) and (pointer: fine) {
+    .roll:hover .roll__c { transform: translateY(calc(var(--roll-lh) * -1)); }
+    .roll[data-direction=down]:hover .roll__c { transform: translateY(0); }
+    .roll:hover .roll__icon svg:first-child { transform: translateX(120%); }
+    .roll:hover .roll__icon svg + svg { transform: translateX(0); }
+    .roll[data-variant=outline]:hover { background: var(--state-hover); }
+  }
+  .roll:focus-visible .roll__c { transform: translateY(calc(var(--roll-lh) * -1)); }
+  .roll[data-direction=down]:focus-visible .roll__c { transform: translateY(0); }
+  .roll:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .roll:active { scale: 0.97; transition-duration: 90ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .roll__c, .roll__icon svg { transition: none; }
+    .roll:hover .roll__c, .roll:focus-visible .roll__c, .roll[data-direction=down] .roll__c { transform: none; }
+    .roll:hover .roll__icon svg:first-child { transform: none; }
+    .roll__icon svg + svg { display: none; }
+    .roll:hover { text-decoration: underline; text-underline-offset: 4px; }
+  }
+</style>

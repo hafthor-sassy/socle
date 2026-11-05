@@ -1,0 +1,190 @@
+{
+  "id": "pricing-recharge-calculateur",
+  "nom": "Calculateur de recharge",
+  "categorie": "pricing",
+  "ordre": 3,
+  "description": "L’utilisateur règle ses appels par jour et leur durée : minutes et coût mensuel estimés, recharge conseillée avec sa barre de crédits (jours couverts), et un tableau dégressif qui montre la baisse du prix à la minute.",
+  "tags": [
+    "Prépayé",
+    "Calculateur",
+    "Tableau",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 1100
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1120
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Neutres, accent, teintes de badge"
+    },
+    {
+      "nom": "Intl.NumberFormat",
+      "note": "Montants et minutes au format français"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "label": "Titre",
+      "type": "text",
+      "default": "Combien vont coûter vos appels ?",
+      "code": {
+        "html": "<h2 id=\"rk-title\">{v}</h2>",
+        "react": "title = '{v}'"
+      }
+    },
+    {
+      "name": "cta",
+      "label": "Libellé du bouton",
+      "type": "text",
+      "default": "Recharger",
+      "code": {
+        "html": "<span data-cta-label>{v}</span>",
+        "react": "cta=\"{v}\""
+      }
+    },
+    {
+      "name": "currency",
+      "label": "Devise",
+      "type": "select",
+      "default": "EUR",
+      "options": [
+        {
+          "value": "EUR",
+          "label": "€"
+        },
+        {
+          "value": "USD",
+          "label": "$"
+        },
+        {
+          "value": "GBP",
+          "label": "£"
+        }
+      ],
+      "code": {
+        "html": "data-currency=\"{v}\"",
+        "react": "currency=\"{v}\""
+      }
+    },
+    {
+      "name": "rate",
+      "label": "Prix de base / minute",
+      "type": "number",
+      "default": 0.09,
+      "min": 0.01,
+      "max": 0.5,
+      "step": 0.01,
+      "code": {
+        "html": "data-rate=\"{v}\"",
+        "react": "rate={{v}}"
+      }
+    },
+    {
+      "name": "tiers",
+      "label": "Paliers",
+      "type": "text",
+      "default": "10, 25, 50, 100, 250",
+      "hint": "Montants séparés par des virgules.",
+      "code": {
+        "html": "data-tiers=\"{v}\"",
+        "react": "tiers={[{v}]}"
+      }
+    },
+    {
+      "name": "bonus",
+      "label": "Bonus par palier (%)",
+      "type": "text",
+      "default": "0, 5, 10, 15, 25",
+      "hint": "Un pourcentage par palier, dans le même ordre.",
+      "code": {
+        "html": "data-bonus=\"{v}\"",
+        "react": "bonus={[{v}]}"
+      }
+    },
+    {
+      "name": "calls",
+      "label": "Appels par jour (départ)",
+      "type": "number",
+      "default": 40,
+      "min": 1,
+      "max": 300,
+      "step": 1,
+      "code": {
+        "html": "data-calls=\"{v}\"",
+        "react": "defaultCalls={{v}}"
+      }
+    },
+    {
+      "name": "duration",
+      "label": "Durée moyenne (départ)",
+      "type": "number",
+      "default": 3,
+      "min": 0.5,
+      "max": 10,
+      "step": 0.5,
+      "unit": "min",
+      "code": {
+        "html": "data-duration=\"{v}\"",
+        "react": "defaultDuration={{v}}"
+      }
+    },
+    {
+      "name": "days",
+      "label": "Jours par mois",
+      "type": "select",
+      "default": "22",
+      "options": [
+        {
+          "value": "22",
+          "label": "22"
+        },
+        {
+          "value": "30",
+          "label": "30"
+        }
+      ],
+      "code": {
+        "html": "data-days=\"{v}\""
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/RechargeCalculator.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour les clients qui pensent en volume (appels, minutes) plutôt qu’en euros.",
+    "La recommandation prend le plus petit palier qui couvre le mois ; au-delà, elle propose n × le plus grand.",
+    "Le tableau dégressif justifie la recommandation : la ligne conseillée est surlignée."
+  ],
+  "accessibilite": [
+    "Curseurs natifs avec libellé et valeur affichée (output) ; résultats annoncés par aria-live.",
+    "Barre de crédits role=img avec un libellé en pourcentage ; tableau avec légende et en-têtes de colonne.",
+    "Le tableau défile dans sa carte sur mobile ; chiffres tabulaires alignés à droite."
+  ]
+}

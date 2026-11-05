@@ -1,21 +1,137 @@
 {
   "version": 1,
-  "total": 5,
+  "total": 13,
   "items": [
     {
-      "id": "bouton",
-      "nom": "Bouton",
+      "id": "bouton-magnetique",
+      "nom": "Bouton magnétique",
       "categorie": "boutons",
-      "description": "Le bouton du design system : primaire, secondaire, fantôme et danger, trois tailles et tous les états, du survol au chargement.",
+      "description": "Le bouton est attiré par le curseur dès qu’il entre dans sa zone, le libellé et la pastille suivent en parallaxe, puis un vrai ressort le ramène au relâchement.",
       "tags": [
-        "Formulaire",
-        "États",
+        "Curseur",
+        "Ressort",
         "Accessible"
       ],
       "date": "2026-11-05",
       "thumb": {
+        "width": 640
+      },
+      "ordre": 1
+    },
+    {
+      "id": "pricing-recharge-curseur",
+      "nom": "Recharge au curseur",
+      "categorie": "pricing",
+      "description": "Une seule section de prix prépayé : un grand montant au centre piloté par un curseur et des paliers rapides, les minutes incluses, le prix effectif à la minute et le bonus des grosses recharges calculés en direct.",
+      "tags": [
+        "Prépayé",
+        "Curseur",
+        "SaaS",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
         "width": 900
-      }
+      },
+      "ordre": 1
+    },
+    {
+      "id": "bouton-texte-roulant",
+      "nom": "Bouton à texte qui roule",
+      "categorie": "boutons",
+      "description": "Au survol, chaque lettre défile d’une ligne, l’une après l’autre, et la flèche est remplacée par une nouvelle : un roulement de compteur mécanique, net et typographique.",
+      "tags": [
+        "Survol",
+        "Typographie",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 640
+      },
+      "ordre": 2
+    },
+    {
+      "id": "pricing-recharge-carte",
+      "nom": "Carte de recharge éditoriale",
+      "categorie": "pricing",
+      "description": "Une carte unique au ton éditorial : le prix à la minute en très grand, le montant en contrôle segmenté, ce qui est inclus en quatre lignes, l’estimation « ≈ X appels de 3 min » et la recharge automatique avec son seuil.",
+      "tags": [
+        "Prépayé",
+        "Éditorial",
+        "SaaS",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 2
+    },
+    {
+      "id": "pricing-recharge-calculateur",
+      "nom": "Calculateur de recharge",
+      "categorie": "pricing",
+      "description": "L’utilisateur règle ses appels par jour et leur durée : minutes et coût mensuel estimés, recharge conseillée avec sa barre de crédits (jours couverts), et un tableau dégressif qui montre la baisse du prix à la minute.",
+      "tags": [
+        "Prépayé",
+        "Calculateur",
+        "Tableau",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1100
+      },
+      "ordre": 3
+    },
+    {
+      "id": "bouton-maintenir",
+      "nom": "Maintenir pour confirmer",
+      "categorie": "boutons",
+      "description": "Pour les actions irréversibles : le bouton se remplit tant qu’on le maintient, le libellé s’inverse exactement au front du remplissage, puis passe en état validé. Relâché trop tôt, il se vide.",
+      "tags": [
+        "Confirmation",
+        "Danger",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 640
+      },
+      "ordre": 3
+    },
+    {
+      "id": "bouton-bordure-tracee",
+      "nom": "Bouton à bordure tracée",
+      "categorie": "boutons",
+      "description": "Un trait de lumière parcourt le contour du bouton, à vitesse constante quelle que soit sa forme, et accélère au survol. Variante « au survol » : le trait dessine le contour en une fois.",
+      "tags": [
+        "SVG",
+        "Boucle",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 640
+      },
+      "ordre": 4
+    },
+    {
+      "id": "bouton-remplissage-directionnel",
+      "nom": "Remplissage directionnel",
+      "categorie": "boutons",
+      "description": "Le fond entre par le bord où arrive le curseur et ressort par celui où il sort ; le libellé s’inverse exactement au front du remplissage. Variante cercle : le fond s’ouvre depuis le point d’entrée.",
+      "tags": [
+        "Survol",
+        "Curseur",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 640
+      },
+      "ordre": 5
     },
     {
       "id": "pricing-3-offres",
@@ -47,6 +163,22 @@
       "thumb": {
         "width": 1024
       }
+    },
+    {
+      "id": "bouton",
+      "nom": "Bouton de base",
+      "categorie": "boutons",
+      "description": "Le bouton standard du design system : primaire, secondaire, fantôme et danger, trois tailles et tous les états, du survol au chargement. La base sur laquelle s’appuient les boutons signature.",
+      "tags": [
+        "Formulaire",
+        "États",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 900
+      },
+      "ordre": 99
     },
     {
       "id": "grille-fine",

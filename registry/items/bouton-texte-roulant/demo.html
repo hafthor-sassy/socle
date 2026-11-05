@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bouton à texte qui roule — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; align-content: center; gap: 28px; padding: 48px 24px; text-align: center; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+  .hint { font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .is-thumb .hint { display: none; }
+  .is-thumb .row { scale: 1.8; }
+  /* Vignette : survol simulé */
+  .force .roll__c { transform: translateY(calc(var(--roll-lh) * -1)); }
+  .force[data-direction=down] .roll__c { transform: translateY(0); }
+  .force .roll__icon svg:first-child { transform: translateX(120%); }
+  .force .roll__icon svg + svg { transform: translateX(0); }
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="row" id="live"></div>
+  <p class="hint">Survolez ou tabulez jusqu’au bouton</p>
+</main>
+<script>
+  var props = Socle.props({ label: 'Voir les offres', variant: 'solid', direction: 'up', stagger: 18, duration: 520 });
+  var ARROW = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  function render(p) {
+    var live = document.getElementById('live');
+    live.innerHTML = '<button class="roll" type="button"><span class="roll__text" data-roll></span><span class="roll__icon" aria-hidden="true">' + ARROW + ARROW + '</span></button>';
+    var b = live.firstChild;
+    b.dataset.variant = p.variant;
+    b.dataset.direction = p.direction;
+    b.style.setProperty('--roll-stagger', p.stagger + 'ms');
+    b.style.setProperty('--roll-duration', p.duration + 'ms');
+    if (window.Roll) Roll.set(b.querySelector('[data-roll]'), p.label || 'Bouton');
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var m = t.match(/<style>([\s\S]*?)<\/style>/);
+    if (m) document.getElementById('component-css').textContent = m[1];
+  }).catch(function () {});
+  var s = document.createElement('script');
+  s.src = 'code/roll.js';
+  s.onload = function () { render(props); };
+  document.head.appendChild(s);
+  Socle.onChange(render);
+  function pulse() { var b = document.querySelector('.roll'); if (!b) return; b.classList.add('force'); setTimeout(function () { b.classList.remove('force'); }, 1300); }
+  Socle.onReplay(pulse);
+  if (Socle.thumb && !Socle.reducedMotion()) setInterval(pulse, 2600);
+</script>
+</body>
+</html>

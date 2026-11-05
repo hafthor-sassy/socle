@@ -1,0 +1,47 @@
+{
+  "id": "bouton-texte-roulant",
+  "nom": "Bouton à texte qui roule",
+  "categorie": "boutons",
+  "ordre": 2,
+  "description": "Au survol, chaque lettre défile d’une ligne, l’une après l’autre, et la flèche est remplacée par une nouvelle : un roulement de compteur mécanique, net et typographique.",
+  "tags": ["Survol", "Typographie", "Accessible"],
+  "date": "2026-11-05",
+  "thumb": { "width": 640 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Accent, rayons, focus" },
+    { "nom": "roll.js", "note": "Découpe le libellé en lettres (HTML seulement)" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "label", "label": "Libellé", "type": "text", "default": "Voir les offres",
+      "code": { "html": ["aria-label=\"{v}\"", "aria-hidden=\"true\">{v}</span>"], "react": "variant=\"solid\">{v}</RollButton>" } },
+    { "name": "variant", "label": "Variante", "type": "select", "default": "solid",
+      "options": [{ "value": "solid", "label": "Accent" }, { "value": "ink", "label": "Encre" }, { "value": "outline", "label": "Contour" }],
+      "code": { "html": "data-variant=\"{v}\"", "react": "variant=\"{v}\"" } },
+    { "name": "direction", "label": "Sens", "type": "select", "default": "up",
+      "options": [{ "value": "up", "label": "Vers le haut" }, { "value": "down", "label": "Vers le bas" }],
+      "code": { "html": "data-direction=\"{v}\"", "react": "direction=\"{v}\"" } },
+    { "name": "stagger", "label": "Décalage", "type": "number", "default": 18, "min": 0, "max": 60, "step": 2, "unit": "ms",
+      "hint": "Écart entre deux lettres : 0 fait rouler le mot d’un bloc.",
+      "code": { "html": "--roll-stagger: {v}ms;", "react": "stagger={{v}}" } },
+    { "name": "duration", "label": "Durée", "type": "number", "default": 520, "min": 200, "max": 1000, "step": 20, "unit": "ms",
+      "code": { "html": "--roll-duration: {v}ms", "react": "duration={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS", "file": "code/index.html", "lang": "html" },
+    { "id": "js", "label": "Vanilla JS", "file": "code/roll.js", "lang": "js" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/RollButton.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour un libellé court (2 à 4 mots) : au-delà, le roulement dure trop longtemps.",
+    "Décalage de 12 à 24 ms pour un effet vivant ; 0 ms pour un mot qui roule d’un bloc.",
+    "Fonctionne avec toute police : la fenêtre fait 1,25 em de haut, jambages compris."
+  ],
+  "accessibilite": [
+    "Le libellé est porté par aria-label ; les lettres découpées sont masquées aux lecteurs d’écran.",
+    "Le roulement se déclenche aussi au focus clavier (:focus-visible).",
+    "Avec « réduire les animations », pas de roulement : un simple soulignement au survol."
+  ]
+}

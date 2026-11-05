@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bouton maintenir pour confirmer — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; align-content: center; gap: 28px; padding: 48px 24px; text-align: center; }
+  .is-thumb .hold-hint { display: none; }
+  .is-thumb .hold-field { scale: 1.8; }
+</style>
+</head>
+<body>
+<main class="stage" id="live"></main>
+<script>
+  var props = Socle.props({ label: 'Maintenir pour supprimer', done: 'Projet supprimé', variant: 'danger', duration: 1500, reset: 2400 });
+  var TRASH = '<svg class="hold__ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>';
+  var CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var btn;
+  function render(p) {
+    var lbl = esc(p.label || 'Maintenir'), dn = esc(p.done || 'Confirmé');
+    var sec = (p.duration / 1000).toLocaleString('fr-FR');
+    document.getElementById('live').innerHTML =
+      '<div class="hold-field"><button class="hold" type="button" data-hold aria-describedby="hold-hint">' +
+      '<span class="hold__base">' + TRASH + '<span class="hold__label">' + lbl + '</span></span>' +
+      '<span class="hold__fill" aria-hidden="true">' + TRASH + '<span class="hold__label">' + lbl + '</span></span>' +
+      '<span class="hold__ok" aria-hidden="true">' + CHECK + '<span class="hold__done">' + dn + '</span></span></button>' +
+      '<p class="hold-hint" id="hold-hint">Maintenez le clic ou la touche Espace ' + sec + '\u00A0s.</p><span class="hold-live" aria-live="polite"></span></div>';
+    btn = document.querySelector('.hold');
+    btn.dataset.variant = p.variant;
+    btn.dataset.duration = p.duration;
+    btn.dataset.reset = p.reset;
+    btn.dataset.done = p.done;
+    if (window.Hold) Hold.attach(btn);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var m = t.match(/<style>([\s\S]*?)<\/style>/);
+    if (m) document.getElementById('component-css').textContent = m[1];
+  }).catch(function () {});
+  var s = document.createElement('script');
+  s.src = 'code/hold.js';
+  s.onload = function () { render(props); if (Socle.thumb) thumbLoop(); };
+  document.head.appendChild(s);
+  Socle.onChange(render);
+  Socle.onReplay(function () { render(props); });
+  /* Vignette : un maintien interrompu, puis un maintien complet. */
+  function thumbLoop() {
+    if (Socle.reducedMotion()) { btn._hold.set(0.6); return; }
+    function cycle() {
+      if (!btn || !btn._hold) return;
+      btn._hold.start(); setTimeout(function () { btn._hold.stop(); }, 700);
+      setTimeout(function () { btn._hold.start(); }, 1600);
+      setTimeout(function () { btn._hold.stop(); }, 1600 + props.duration + 100);
+    }
+    btn.dataset.reset = 1600; cycle(); setInterval(cycle, 6000);
+  }
+</script>
+</body>
+</html>

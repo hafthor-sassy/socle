@@ -12,11 +12,11 @@
   },
   "sombre": {
    "accent": "#F4F4F5",
-   "hover": "#FFFFFF",
+   "hover": "#F4F4F5",
    "vif": "#F4F4F5",
    "texte_sur_accent": "#111113",
-   "doux": "#26272C",
-   "doux_bord": "#34353C"
+   "doux": "#1B1722",
+   "doux_bord": "#2F293A"
   },
   "controle": {
    "acc_surface": 17.72,
@@ -24,10 +24,11 @@
    "fg_acc": 17.72,
    "vif_fond": 15.44,
    "acc_doux": 14.9,
-   "sombre_acc_surface": 14.28,
+   "sombre_acc_surface": 16.46,
    "sombre_fg_acc": 17.16,
-   "sombre_acc_doux": 13.56
+   "sombre_acc_doux": 16.02
   },
+  "categorie": "Classiques",
   "id": "graphite"
  },
  {
@@ -42,9 +43,9 @@
    "doux_bord": "#D2DEF7"
   },
   "sombre": {
-   "accent": "#85A0D9",
-   "hover": "#9CB2E0",
-   "vif": "#85A0D9",
+   "accent": "#7B95CE",
+   "hover": "#7B95CE",
+   "vif": "#7B95CE",
    "texte_sur_accent": "#0E1526",
    "doux": "#202634",
    "doux_bord": "#2F384B"
@@ -55,10 +56,11 @@
    "fg_acc": 5.42,
    "vif_fond": 3.23,
    "acc_doux": 4.75,
-   "sombre_acc_surface": 6.0,
-   "sombre_fg_acc": 6.96,
-   "sombre_acc_doux": 5.78
+   "sombre_acc_surface": 6.06,
+   "sombre_fg_acc": 6.09,
+   "sombre_acc_doux": 5.07
   },
+  "categorie": "Classiques",
   "id": "encre"
  },
  {
@@ -73,9 +75,9 @@
    "doux_bord": "#D4DCFF"
   },
   "sombre": {
-   "accent": "#8999FE",
-   "hover": "#A7B3FE",
-   "vif": "#8999FE",
+   "accent": "#7B8BFF",
+   "hover": "#7B8BFF",
+   "vif": "#7B8BFF",
    "texte_sur_accent": "#0F1231",
    "doux": "#1F243F",
    "doux_bord": "#2E345B"
@@ -86,10 +88,11 @@
    "fg_acc": 5.45,
    "vif_fond": 3.2,
    "acc_doux": 4.76,
-   "sombre_acc_surface": 6.02,
-   "sombre_fg_acc": 6.99,
-   "sombre_acc_doux": 5.82
+   "sombre_acc_surface": 6.01,
+   "sombre_fg_acc": 6.06,
+   "sombre_acc_doux": 5.05
   },
+  "categorie": "Classiques",
   "id": "indigo"
  },
  {
@@ -104,9 +107,9 @@
    "doux_bord": "#CDDFFF"
   },
   "sombre": {
-   "accent": "#6B9FFF",
-   "hover": "#8AB3FF",
-   "vif": "#6B9FFF",
+   "accent": "#5992FE",
+   "hover": "#5992FE",
+   "vif": "#5992FE",
    "texte_sur_accent": "#061431",
    "doux": "#19263F",
    "doux_bord": "#23375C"
@@ -118,9 +121,10 @@
    "vif_fond": 3.23,
    "acc_doux": 4.78,
    "sombre_acc_surface": 6.0,
-   "sombre_fg_acc": 6.97,
-   "sombre_acc_doux": 5.77
+   "sombre_fg_acc": 6.05,
+   "sombre_acc_doux": 5.01
   },
+  "categorie": "Classiques",
   "id": "cobalt"
  },
  {
@@ -135,9 +139,9 @@
    "doux_bord": "#BFE4FF"
   },
   "sombre": {
-   "accent": "#26A9F1",
-   "hover": "#43B4F3",
-   "vif": "#26A9F1",
+   "accent": "#0B9DE5",
+   "hover": "#0B9DE5",
+   "vif": "#0B9DE5",
    "texte_sur_accent": "#001829",
    "doux": "#0F293A",
    "doux_bord": "#163C54"
@@ -149,9 +153,10 @@
    "vif_fond": 3.21,
    "acc_doux": 4.79,
    "sombre_acc_surface": 6.0,
-   "sombre_fg_acc": 6.9,
-   "sombre_acc_doux": 5.74
+   "sombre_fg_acc": 5.99,
+   "sombre_acc_doux": 4.98
   },
+  "categorie": "Classiques",
   "id": "azur"
  },
  {
@@ -166,9 +171,9 @@
    "doux_bord": "#BBE7F2"
   },
   "sombre": {
-   "accent": "#17B0CC",
-   "hover": "#1CC6E5",
-   "vif": "#17B0CC",
+   "accent": "#02A3BE",
+   "hover": "#02A3BE",
+   "vif": "#02A3BE",
    "texte_sur_accent": "#011A20",
    "doux": "#0E2B31",
    "doux_bord": "#153E47"
@@ -179,10 +184,11 @@
    "fg_acc": 5.44,
    "vif_fond": 3.21,
    "acc_doux": 4.82,
-   "sombre_acc_surface": 6.07,
-   "sombre_fg_acc": 6.94,
-   "sombre_acc_doux": 5.76
+   "sombre_acc_surface": 6.02,
+   "sombre_fg_acc": 5.97,
+   "sombre_acc_doux": 4.96
   },
+  "categorie": "Classiques",
   "id": "lagon"
  },
  {
@@ -197,9 +203,9 @@
    "doux_bord": "#BEE8E4"
   },
   "sombre": {
-   "accent": "#2DB2AC",
-   "hover": "#33CAC4",
-   "vif": "#2DB2AC",
+   "accent": "#15A6A0",
+   "hover": "#15A6A0",
+   "vif": "#15A6A0",
    "texte_sur_accent": "#001B19",
    "doux": "#112C2A",
    "doux_bord": "#183F3D"
@@ -210,10 +216,11 @@
    "fg_acc": 5.4,
    "vif_fond": 3.2,
    "acc_doux": 4.8,
-   "sombre_acc_surface": 6.04,
-   "sombre_fg_acc": 6.9,
-   "sombre_acc_doux": 5.7
+   "sombre_acc_surface": 6.03,
+   "sombre_fg_acc": 5.97,
+   "sombre_acc_doux": 4.93
   },
+  "categorie": "Classiques",
   "id": "sarcelle"
  },
  {
@@ -228,9 +235,9 @@
    "doux_bord": "#BFEAD5"
   },
   "sombre": {
-   "accent": "#33B588",
-   "hover": "#3EC999",
-   "vif": "#33B588",
+   "accent": "#20A97C",
+   "hover": "#20A97C",
+   "vif": "#20A97C",
    "texte_sur_accent": "#001C11",
    "doux": "#122C22",
    "doux_bord": "#1A4031"
@@ -242,9 +249,10 @@
    "vif_fond": 3.24,
    "acc_doux": 4.82,
    "sombre_acc_surface": 6.06,
-   "sombre_fg_acc": 6.9,
-   "sombre_acc_doux": 5.75
+   "sombre_fg_acc": 5.99,
+   "sombre_acc_doux": 4.99
   },
+  "categorie": "Classiques",
   "id": "jade"
  },
  {
@@ -259,9 +267,9 @@
    "doux_bord": "#C8E8C8"
   },
   "sombre": {
-   "accent": "#5FB364",
-   "hover": "#74BD78",
-   "vif": "#5FB364",
+   "accent": "#53A758",
+   "hover": "#53A758",
+   "vif": "#53A758",
    "texte_sur_accent": "#031C05",
    "doux": "#192C19",
    "doux_bord": "#244025"
@@ -272,10 +280,11 @@
    "fg_acc": 5.39,
    "vif_fond": 3.23,
    "acc_doux": 4.79,
-   "sombre_acc_surface": 6.07,
-   "sombre_fg_acc": 6.93,
-   "sombre_acc_doux": 5.73
+   "sombre_acc_surface": 6.06,
+   "sombre_fg_acc": 6.0,
+   "sombre_acc_doux": 4.97
   },
+  "categorie": "Classiques",
   "id": "foret"
  },
  {
@@ -290,9 +299,9 @@
    "doux_bord": "#DAE3C3"
   },
   "sombre": {
-   "accent": "#96A856",
-   "hover": "#A3B36A",
-   "vif": "#96A856",
+   "accent": "#8A9D4B",
+   "hover": "#8A9D4B",
+   "vif": "#8A9D4B",
    "texte_sur_accent": "#141901",
    "doux": "#242916",
    "doux_bord": "#353B21"
@@ -303,10 +312,11 @@
    "fg_acc": 5.4,
    "vif_fond": 3.22,
    "acc_doux": 4.76,
-   "sombre_acc_surface": 6.0,
-   "sombre_fg_acc": 6.87,
-   "sombre_acc_doux": 5.72
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 5.99,
+   "sombre_acc_doux": 4.99
   },
+  "categorie": "Classiques",
   "id": "olive"
  },
  {
@@ -321,9 +331,9 @@
    "doux_bord": "#F6D9B2"
   },
   "sombre": {
-   "accent": "#D89201",
-   "hover": "#F6A701",
-   "vif": "#D89201",
+   "accent": "#C98803",
+   "hover": "#C98803",
+   "vif": "#C98803",
    "texte_sur_accent": "#211300",
    "doux": "#33230A",
    "doux_bord": "#4A330F"
@@ -334,10 +344,11 @@
    "fg_acc": 5.44,
    "vif_fond": 3.22,
    "acc_doux": 4.75,
-   "sombre_acc_surface": 6.0,
-   "sombre_fg_acc": 6.94,
-   "sombre_acc_doux": 5.8
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 6.05,
+   "sombre_acc_doux": 5.06
   },
+  "categorie": "Classiques",
   "id": "ambre"
  },
  {
@@ -352,9 +363,9 @@
    "doux_bord": "#EFDCB4"
   },
   "sombre": {
-   "accent": "#C99918",
-   "hover": "#E4AE1C",
-   "vif": "#C99918",
+   "accent": "#BC8E09",
+   "hover": "#BC8E09",
+   "vif": "#BC8E09",
    "texte_sur_accent": "#1E1400",
    "doux": "#30250C",
    "doux_bord": "#453512"
@@ -365,10 +376,11 @@
    "fg_acc": 5.47,
    "vif_fond": 3.24,
    "acc_doux": 4.8,
-   "sombre_acc_surface": 6.02,
-   "sombre_fg_acc": 6.97,
-   "sombre_acc_doux": 5.77
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 6.07,
+   "sombre_acc_doux": 5.02
   },
+  "categorie": "Classiques",
   "id": "miel"
  },
  {
@@ -383,9 +395,9 @@
    "doux_bord": "#FED4C1"
   },
   "sombre": {
-   "accent": "#FE7A35",
-   "hover": "#FE8E53",
-   "vif": "#FE7A35",
+   "accent": "#F66A15",
+   "hover": "#F66A15",
+   "vif": "#F66A15",
    "texte_sur_accent": "#2A0B00",
    "doux": "#3A1E11",
    "doux_bord": "#552B17"
@@ -397,9 +409,10 @@
    "vif_fond": 3.21,
    "acc_doux": 4.77,
    "sombre_acc_surface": 6.02,
-   "sombre_fg_acc": 7.02,
-   "sombre_acc_doux": 5.86
+   "sombre_fg_acc": 6.1,
+   "sombre_acc_doux": 5.09
   },
+  "categorie": "Classiques",
   "id": "braise"
  },
  {
@@ -414,9 +427,9 @@
    "doux_bord": "#FED3C6"
   },
   "sombre": {
-   "accent": "#E98667",
-   "hover": "#ED9B82",
-   "vif": "#E98667",
+   "accent": "#DC7A5B",
+   "hover": "#DC7A5B",
+   "vif": "#DC7A5B",
    "texte_sur_accent": "#290C04",
    "doux": "#372018",
    "doux_bord": "#4F2E24"
@@ -427,10 +440,11 @@
    "fg_acc": 5.43,
    "vif_fond": 3.21,
    "acc_doux": 4.73,
-   "sombre_acc_surface": 6.03,
-   "sombre_fg_acc": 7.03,
-   "sombre_acc_doux": 5.84
+   "sombre_acc_surface": 6.01,
+   "sombre_fg_acc": 6.08,
+   "sombre_acc_doux": 5.05
   },
+  "categorie": "Classiques",
   "id": "terracotta"
  },
  {
@@ -445,9 +459,9 @@
    "doux_bord": "#FED2CD"
   },
   "sombre": {
-   "accent": "#FE766F",
-   "hover": "#FE938D",
-   "vif": "#FE766F",
+   "accent": "#F76560",
+   "hover": "#F76560",
+   "vif": "#F76560",
    "texte_sur_accent": "#2C0807",
    "doux": "#3B1C1A",
    "doux_bord": "#572825"
@@ -458,10 +472,11 @@
    "fg_acc": 5.43,
    "vif_fond": 3.23,
    "acc_doux": 4.74,
-   "sombre_acc_surface": 6.01,
-   "sombre_fg_acc": 7.02,
-   "sombre_acc_doux": 5.88
+   "sombre_acc_surface": 6.02,
+   "sombre_fg_acc": 6.1,
+   "sombre_acc_doux": 5.11
   },
+  "categorie": "Classiques",
   "id": "corail"
  },
  {
@@ -476,9 +491,9 @@
    "doux_bord": "#FED2D0"
   },
   "sombre": {
-   "accent": "#FE757A",
-   "hover": "#FE9397",
-   "vif": "#FE757A",
+   "accent": "#FF5C67",
+   "hover": "#FF5C67",
+   "vif": "#FF5C67",
    "texte_sur_accent": "#2C070A",
    "doux": "#3B1C1C",
    "doux_bord": "#572729"
@@ -490,9 +505,10 @@
    "vif_fond": 3.22,
    "acc_doux": 4.71,
    "sombre_acc_surface": 6.01,
-   "sombre_fg_acc": 7.04,
-   "sombre_acc_doux": 5.87
+   "sombre_fg_acc": 6.11,
+   "sombre_acc_doux": 5.1
   },
+  "categorie": "Classiques",
   "id": "rubis"
  },
  {
@@ -507,9 +523,9 @@
    "doux_bord": "#FFCFDC"
   },
   "sombre": {
-   "accent": "#FE70A3",
-   "hover": "#FE8EB7",
-   "vif": "#FE70A3",
+   "accent": "#FA5B98",
+   "hover": "#FA5B98",
+   "vif": "#FA5B98",
    "texte_sur_accent": "#2A0715",
    "doux": "#3A1B25",
    "doux_bord": "#542736"
@@ -520,10 +536,11 @@
    "fg_acc": 5.44,
    "vif_fond": 3.21,
    "acc_doux": 4.73,
-   "sombre_acc_surface": 6.03,
-   "sombre_fg_acc": 7.07,
-   "sombre_acc_doux": 5.91
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 6.15,
+   "sombre_acc_doux": 5.14
   },
+  "categorie": "Classiques",
   "id": "framboise"
  },
  {
@@ -538,9 +555,9 @@
    "doux_bord": "#F6D0F1"
   },
   "sombre": {
-   "accent": "#E579DD",
-   "hover": "#EA93E4",
-   "vif": "#E579DD",
+   "accent": "#D86DD0",
+   "hover": "#D86DD0",
+   "vif": "#D86DD0",
    "texte_sur_accent": "#240A23",
    "doux": "#341D32",
    "doux_bord": "#4C2A49"
@@ -551,10 +568,11 @@
    "fg_acc": 5.43,
    "vif_fond": 3.21,
    "acc_doux": 4.7,
-   "sombre_acc_surface": 6.06,
-   "sombre_fg_acc": 7.1,
-   "sombre_acc_doux": 5.93
+   "sombre_acc_surface": 6.05,
+   "sombre_fg_acc": 6.14,
+   "sombre_acc_doux": 5.13
   },
+  "categorie": "Classiques",
   "id": "orchidee"
  },
  {
@@ -569,9 +587,9 @@
    "doux_bord": "#E3D6FE"
   },
   "sombre": {
-   "accent": "#B78AFE",
-   "hover": "#CAA8FE",
-   "vif": "#B78AFE",
+   "accent": "#AF7AFE",
+   "hover": "#AF7AFE",
+   "vif": "#AF7AFE",
    "texte_sur_accent": "#1B0E2D",
    "doux": "#2A203B",
    "doux_bord": "#3E2F57"
@@ -582,10 +600,11 @@
    "fg_acc": 5.4,
    "vif_fond": 3.2,
    "acc_doux": 4.71,
-   "sombre_acc_surface": 6.04,
-   "sombre_fg_acc": 7.04,
-   "sombre_acc_doux": 5.91
+   "sombre_acc_surface": 6.06,
+   "sombre_fg_acc": 6.13,
+   "sombre_acc_doux": 5.14
   },
+  "categorie": "Classiques",
   "id": "violet"
  },
  {
@@ -600,9 +619,9 @@
    "doux_bord": "#EBDACF"
   },
   "sombre": {
-   "accent": "#C0987E",
-   "hover": "#CAA893",
-   "vif": "#C0987E",
+   "accent": "#B38D73",
+   "hover": "#B38D73",
+   "vif": "#B38D73",
    "texte_sur_accent": "#1F130B",
    "doux": "#2E241E",
    "doux_bord": "#42352C"
@@ -614,9 +633,714 @@
    "vif_fond": 3.23,
    "acc_doux": 4.75,
    "sombre_acc_surface": 6.01,
-   "sombre_fg_acc": 6.95,
-   "sombre_acc_doux": 5.79
+   "sombre_fg_acc": 6.03,
+   "sombre_acc_doux": 5.03
   },
+  "categorie": "Classiques",
   "id": "moka"
+ },
+ {
+  "nom": "Argile",
+  "teinte": 48,
+  "clair": {
+   "accent": "#945C3F",
+   "hover": "#814B2E",
+   "vif": "#B67655",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FDECE4",
+   "doux_bord": "#F2D8CB"
+  },
+  "sombre": {
+   "accent": "#C38769",
+   "hover": "#C38769",
+   "vif": "#C38769",
+   "texte_sur_accent": "#221108",
+   "doux": "#31231C",
+   "doux_bord": "#473329"
+  },
+  "controle": {
+   "acc_surface": 5.44,
+   "acc_fond": 4.74,
+   "fg_acc": 5.44,
+   "vif_fond": 3.2,
+   "acc_doux": 4.74,
+   "sombre_acc_surface": 6.02,
+   "sombre_fg_acc": 6.07,
+   "sombre_acc_doux": 5.04
+  },
+  "categorie": "Terres",
+  "id": "argile"
+ },
+ {
+  "nom": "Ocre",
+  "teinte": 68,
+  "clair": {
+   "accent": "#975D01",
+   "hover": "#804E03",
+   "vif": "#BB7614",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FEEDDB",
+   "doux_bord": "#F4D9BD"
+  },
+  "sombre": {
+   "accent": "#C7883B",
+   "hover": "#C7883B",
+   "vif": "#C7883B",
+   "texte_sur_accent": "#231100",
+   "doux": "#322312",
+   "doux_bord": "#48331B"
+  },
+  "controle": {
+   "acc_surface": 5.41,
+   "acc_fond": 4.71,
+   "fg_acc": 5.41,
+   "vif_fond": 3.2,
+   "acc_doux": 4.73,
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 6.09,
+   "sombre_acc_doux": 5.06
+  },
+  "categorie": "Terres",
+  "id": "ocre"
+ },
+ {
+  "nom": "Lavande",
+  "teinte": 292,
+  "clair": {
+   "accent": "#6E5FA6",
+   "hover": "#5D4E93",
+   "vif": "#8A79CB",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#F0EEFE",
+   "doux_bord": "#DED9FA"
+  },
+  "sombre": {
+   "accent": "#998BD6",
+   "hover": "#998BD6",
+   "vif": "#998BD6",
+   "texte_sur_accent": "#171228",
+   "doux": "#272435",
+   "doux_bord": "#38344D"
+  },
+  "controle": {
+   "acc_surface": 5.45,
+   "acc_fond": 4.75,
+   "fg_acc": 5.45,
+   "vif_fond": 3.22,
+   "acc_doux": 4.77,
+   "sombre_acc_surface": 6.05,
+   "sombre_fg_acc": 6.08,
+   "sombre_acc_doux": 5.05
+  },
+  "categorie": "Pastels",
+  "id": "lavande"
+ },
+ {
+  "nom": "Menthe",
+  "teinte": 172,
+  "clair": {
+   "accent": "#257661",
+   "hover": "#096550",
+   "vif": "#3B947C",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#E3F5EE",
+   "doux_bord": "#C8E6DB"
+  },
+  "sombre": {
+   "accent": "#55A38C",
+   "hover": "#55A38C",
+   "vif": "#55A38C",
+   "texte_sur_accent": "#031B14",
+   "doux": "#192B25",
+   "doux_bord": "#253E36"
+  },
+  "controle": {
+   "acc_surface": 5.46,
+   "acc_fond": 4.76,
+   "fg_acc": 5.46,
+   "vif_fond": 3.2,
+   "acc_doux": 4.83,
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 5.98,
+   "sombre_acc_doux": 4.95
+  },
+  "categorie": "Pastels",
+  "id": "menthe"
+ },
+ {
+  "nom": "Pêche",
+  "teinte": 50,
+  "clair": {
+   "accent": "#9A5A33",
+   "hover": "#874821",
+   "vif": "#BD7348",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FFECE2",
+   "doux_bord": "#F5D7C7"
+  },
+  "sombre": {
+   "accent": "#C9855E",
+   "hover": "#C9855E",
+   "vif": "#C9855E",
+   "texte_sur_accent": "#241005",
+   "doux": "#332219",
+   "doux_bord": "#493225"
+  },
+  "controle": {
+   "acc_surface": 5.41,
+   "acc_fond": 4.71,
+   "fg_acc": 5.41,
+   "vif_fond": 3.2,
+   "acc_doux": 4.72,
+   "sombre_acc_surface": 6.03,
+   "sombre_fg_acc": 6.08,
+   "sombre_acc_doux": 5.06
+  },
+  "categorie": "Pastels",
+  "id": "peche"
+ },
+ {
+  "nom": "Néon rose",
+  "teinte": 350,
+  "clair": {
+   "accent": "#CB0086",
+   "hover": "#AE0272",
+   "vif": "#FB04A6",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FFE9F3",
+   "doux_bord": "#FECEE4"
+  },
+  "sombre": {
+   "accent": "#FF4FB2",
+   "hover": "#FF4FB2",
+   "vif": "#FF4FB2",
+   "texte_sur_accent": "#29081A",
+   "doux": "#381C2A",
+   "doux_bord": "#52273D"
+  },
+  "controle": {
+   "acc_surface": 5.41,
+   "acc_fond": 4.71,
+   "fg_acc": 5.41,
+   "vif_fond": 3.23,
+   "acc_doux": 4.69,
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 6.13,
+   "sombre_acc_doux": 5.13
+  },
+  "categorie": "Néons",
+  "id": "neon-rose"
+ },
+ {
+  "nom": "Néon lime",
+  "teinte": 132,
+  "clair": {
+   "accent": "#467600",
+   "hover": "#3A6303",
+   "vif": "#5A9405",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#E6F6DB",
+   "doux_bord": "#D0E7BE"
+  },
+  "sombre": {
+   "accent": "#65A600",
+   "hover": "#65A600",
+   "vif": "#65A600",
+   "texte_sur_accent": "#0C1B00",
+   "doux": "#1D2B10",
+   "doux_bord": "#2A3F16"
+  },
+  "controle": {
+   "acc_surface": 5.45,
+   "acc_fond": 4.75,
+   "fg_acc": 5.45,
+   "vif_fond": 3.23,
+   "acc_doux": 4.82,
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 5.98,
+   "sombre_acc_doux": 4.99
+  },
+  "categorie": "Néons",
+  "id": "neon-lime"
+ },
+ {
+  "nom": "Néon violet",
+  "teinte": 305,
+  "clair": {
+   "accent": "#9D19F4",
+   "hover": "#8802D6",
+   "vif": "#B158FF",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#F4ECFF",
+   "doux_bord": "#E7D5FF"
+  },
+  "sombre": {
+   "accent": "#BA74FE",
+   "hover": "#BA74FE",
+   "vif": "#BA74FE",
+   "texte_sur_accent": "#1C0D2B",
+   "doux": "#2C203A",
+   "doux_bord": "#402E55"
+  },
+  "controle": {
+   "acc_surface": 5.41,
+   "acc_fond": 4.72,
+   "fg_acc": 5.41,
+   "vif_fond": 3.21,
+   "acc_doux": 4.71,
+   "sombre_acc_surface": 6.05,
+   "sombre_fg_acc": 6.15,
+   "sombre_acc_doux": 5.1
+  },
+  "categorie": "Néons",
+  "id": "neon-violet"
+ },
+ {
+  "nom": "Ardoise",
+  "teinte": 250,
+  "clair": {
+   "accent": "#5F6B78",
+   "hover": "#4F5B67",
+   "vif": "#798795",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#EDF0F4",
+   "doux_bord": "#D9DFE5"
+  },
+  "sombre": {
+   "accent": "#8A97A4",
+   "hover": "#8A97A4",
+   "vif": "#8A97A4",
+   "texte_sur_accent": "#13161A",
+   "doux": "#24272A",
+   "doux_bord": "#34383D"
+  },
+  "controle": {
+   "acc_surface": 5.44,
+   "acc_fond": 4.74,
+   "fg_acc": 5.44,
+   "vif_fond": 3.2,
+   "acc_doux": 4.76,
+   "sombre_acc_surface": 6.07,
+   "sombre_fg_acc": 6.09,
+   "sombre_acc_doux": 5.04
+  },
+  "categorie": "Monochromes",
+  "id": "ardoise"
+ },
+ {
+  "nom": "Fumée",
+  "teinte": 290,
+  "clair": {
+   "accent": "#6A6875",
+   "hover": "#595764",
+   "vif": "#858492",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#F0F0F3",
+   "doux_bord": "#DEDDE3"
+  },
+  "sombre": {
+   "accent": "#9593A1",
+   "hover": "#9593A1",
+   "vif": "#9593A1",
+   "texte_sur_accent": "#161519",
+   "doux": "#262629",
+   "doux_bord": "#38373C"
+  },
+  "controle": {
+   "acc_surface": 5.45,
+   "acc_fond": 4.75,
+   "fg_acc": 5.45,
+   "vif_fond": 3.2,
+   "acc_doux": 4.8,
+   "sombre_acc_surface": 6.0,
+   "sombre_fg_acc": 6.03,
+   "sombre_acc_doux": 5.01
+  },
+  "categorie": "Monochromes",
+  "id": "fumee"
+ },
+ {
+  "nom": "Sable",
+  "teinte": 80,
+  "clair": {
+   "accent": "#736857",
+   "hover": "#625846",
+   "vif": "#90836F",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#F3F0EB",
+   "doux_bord": "#E2DDD5"
+  },
+  "sombre": {
+   "accent": "#9F9481",
+   "hover": "#9F9481",
+   "vif": "#9F9481",
+   "texte_sur_accent": "#191610",
+   "doux": "#292622",
+   "doux_bord": "#3B3731"
+  },
+  "controle": {
+   "acc_surface": 5.46,
+   "acc_fond": 4.76,
+   "fg_acc": 5.46,
+   "vif_fond": 3.23,
+   "acc_doux": 4.8,
+   "sombre_acc_surface": 6.06,
+   "sombre_fg_acc": 6.04,
+   "sombre_acc_doux": 5.04
+  },
+  "categorie": "Monochromes",
+  "id": "sable"
+ },
+ {
+  "nom": "Mousse",
+  "teinte": 135,
+  "clair": {
+   "accent": "#4E7437",
+   "hover": "#3D6325",
+   "vif": "#65914B",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#E9F4E4",
+   "doux_bord": "#D3E4CA"
+  },
+  "sombre": {
+   "accent": "#77A061",
+   "hover": "#77A061",
+   "vif": "#77A061",
+   "texte_sur_accent": "#0E1A07",
+   "doux": "#202A1B",
+   "doux_bord": "#2F3D28"
+  },
+  "controle": {
+   "acc_surface": 5.42,
+   "acc_fond": 4.72,
+   "fg_acc": 5.42,
+   "vif_fond": 3.21,
+   "acc_doux": 4.78,
+   "sombre_acc_surface": 6.02,
+   "sombre_fg_acc": 5.97,
+   "sombre_acc_doux": 4.96
+  },
+  "categorie": "Nature",
+  "id": "mousse"
+ },
+ {
+  "nom": "Sauge",
+  "teinte": 155,
+  "clair": {
+   "accent": "#4F725B",
+   "hover": "#3E614A",
+   "vif": "#668E73",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#E9F3EC",
+   "doux_bord": "#D3E3D8"
+  },
+  "sombre": {
+   "accent": "#799E85",
+   "hover": "#799E85",
+   "vif": "#799E85",
+   "texte_sur_accent": "#0E1912",
+   "doux": "#202923",
+   "doux_bord": "#2F3B33"
+  },
+  "controle": {
+   "acc_surface": 5.4,
+   "acc_fond": 4.7,
+   "fg_acc": 5.4,
+   "vif_fond": 3.22,
+   "acc_doux": 4.75,
+   "sombre_acc_surface": 6.07,
+   "sombre_fg_acc": 6.04,
+   "sombre_acc_doux": 5.02
+  },
+  "categorie": "Nature",
+  "id": "sauge"
+ },
+ {
+  "nom": "Lichen",
+  "teinte": 105,
+  "clair": {
+   "accent": "#706C31",
+   "hover": "#5F5B1F",
+   "vif": "#8C8745",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#F2F1E2",
+   "doux_bord": "#E1E0C8"
+  },
+  "sombre": {
+   "accent": "#9B975C",
+   "hover": "#9B975C",
+   "vif": "#9B975C",
+   "texte_sur_accent": "#181705",
+   "doux": "#282719",
+   "doux_bord": "#3A3925"
+  },
+  "controle": {
+   "acc_surface": 5.41,
+   "acc_fond": 4.72,
+   "fg_acc": 5.41,
+   "vif_fond": 3.23,
+   "acc_doux": 4.76,
+   "sombre_acc_surface": 6.01,
+   "sombre_fg_acc": 5.99,
+   "sombre_acc_doux": 5.0
+  },
+  "categorie": "Nature",
+  "id": "lichen"
+ },
+ {
+  "nom": "Minuit",
+  "teinte": 268,
+  "clair": {
+   "accent": "#4C66B7",
+   "hover": "#3C54A3",
+   "vif": "#6281DD",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#EAF0FF",
+   "doux_bord": "#D0DEFF"
+  },
+  "sombre": {
+   "accent": "#7492E6",
+   "hover": "#7492E6",
+   "vif": "#7492E6",
+   "texte_sur_accent": "#0C142D",
+   "doux": "#1E263A",
+   "doux_bord": "#2C3753"
+  },
+  "controle": {
+   "acc_surface": 5.4,
+   "acc_fond": 4.7,
+   "fg_acc": 5.4,
+   "vif_fond": 3.21,
+   "acc_doux": 4.73,
+   "sombre_acc_surface": 6.03,
+   "sombre_fg_acc": 6.07,
+   "sombre_acc_doux": 5.02
+  },
+  "categorie": "Nuit",
+  "id": "minuit"
+ },
+ {
+  "nom": "Aubergine",
+  "teinte": 318,
+  "clair": {
+   "accent": "#885897",
+   "hover": "#764785",
+   "vif": "#A770B8",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#F8EBFC",
+   "doux_bord": "#EBD5F1"
+  },
+  "sombre": {
+   "accent": "#B583C5",
+   "hover": "#B583C5",
+   "vif": "#B583C5",
+   "texte_sur_accent": "#1E0F23",
+   "doux": "#2D2131",
+   "doux_bord": "#423147"
+  },
+  "controle": {
+   "acc_surface": 5.4,
+   "acc_fond": 4.7,
+   "fg_acc": 5.4,
+   "vif_fond": 3.24,
+   "acc_doux": 4.7,
+   "sombre_acc_surface": 6.05,
+   "sombre_fg_acc": 6.11,
+   "sombre_acc_doux": 5.11
+  },
+  "categorie": "Nuit",
+  "id": "aubergine"
+ },
+ {
+  "nom": "Bordeaux",
+  "teinte": 12,
+  "clair": {
+   "accent": "#B14659",
+   "hover": "#9D3349",
+   "vif": "#D75D72",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FEEBEC",
+   "doux_bord": "#FFD1D5"
+  },
+  "sombre": {
+   "accent": "#E27283",
+   "hover": "#E27283",
+   "vif": "#E27283",
+   "texte_sur_accent": "#2A090F",
+   "doux": "#381D21",
+   "doux_bord": "#512B30"
+  },
+  "controle": {
+   "acc_surface": 5.4,
+   "acc_fond": 4.7,
+   "fg_acc": 5.4,
+   "vif_fond": 3.21,
+   "acc_doux": 4.71,
+   "sombre_acc_surface": 6.0,
+   "sombre_fg_acc": 6.09,
+   "sombre_acc_doux": 5.1
+  },
+  "categorie": "Luxe",
+  "id": "bordeaux"
+ },
+ {
+  "nom": "Or",
+  "teinte": 92,
+  "clair": {
+   "accent": "#806704",
+   "hover": "#6C5702",
+   "vif": "#A18202",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#F7F0DA",
+   "doux_bord": "#E9DEBB"
+  },
+  "sombre": {
+   "accent": "#AF922E",
+   "hover": "#AF922E",
+   "vif": "#AF922E",
+   "texte_sur_accent": "#1D1500",
+   "doux": "#2D2611",
+   "doux_bord": "#413719"
+  },
+  "controle": {
+   "acc_surface": 5.44,
+   "acc_fond": 4.74,
+   "fg_acc": 5.44,
+   "vif_fond": 3.21,
+   "acc_doux": 4.78,
+   "sombre_acc_surface": 6.01,
+   "sombre_fg_acc": 6.01,
+   "sombre_acc_doux": 4.99
+  },
+  "categorie": "Luxe",
+  "id": "or"
+ },
+ {
+  "nom": "Émeraude",
+  "teinte": 158,
+  "clair": {
+   "accent": "#047A4B",
+   "hover": "#03663E",
+   "vif": "#06985F",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#DFF7E8",
+   "doux_bord": "#C2E9D1"
+  },
+  "sombre": {
+   "accent": "#38A871",
+   "hover": "#38A871",
+   "vif": "#38A871",
+   "texte_sur_accent": "#001C0E",
+   "doux": "#152C1F",
+   "doux_bord": "#1E402D"
+  },
+  "controle": {
+   "acc_surface": 5.4,
+   "acc_fond": 4.7,
+   "fg_acc": 5.4,
+   "vif_fond": 3.23,
+   "acc_doux": 4.78,
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 5.98,
+   "sombre_acc_doux": 4.96
+  },
+  "categorie": "Luxe",
+  "id": "emeraude"
+ },
+ {
+  "nom": "Moutarde",
+  "teinte": 98,
+  "clair": {
+   "accent": "#7A6906",
+   "hover": "#675804",
+   "vif": "#998506",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#F6F1D7",
+   "doux_bord": "#E7DFB5"
+  },
+  "sombre": {
+   "accent": "#AB9400",
+   "hover": "#AB9400",
+   "vif": "#AB9400",
+   "texte_sur_accent": "#1B1600",
+   "doux": "#2C270C",
+   "doux_bord": "#403812"
+  },
+  "controle": {
+   "acc_surface": 5.45,
+   "acc_fond": 4.75,
+   "fg_acc": 5.45,
+   "vif_fond": 3.2,
+   "acc_doux": 4.8,
+   "sombre_acc_surface": 6.0,
+   "sombre_fg_acc": 6.0,
+   "sombre_acc_doux": 4.97
+  },
+  "categorie": "Rétro",
+  "id": "moutarde"
+ },
+ {
+  "nom": "Brique",
+  "teinte": 30,
+  "clair": {
+   "accent": "#B54436",
+   "hover": "#A13124",
+   "vif": "#DD5C4B",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FEEBE8",
+   "doux_bord": "#FFD2CA"
+  },
+  "sombre": {
+   "accent": "#E87260",
+   "hover": "#E87260",
+   "vif": "#E87260",
+   "texte_sur_accent": "#2C0805",
+   "doux": "#3A1E19",
+   "doux_bord": "#532B25"
+  },
+  "controle": {
+   "acc_surface": 5.46,
+   "acc_fond": 4.76,
+   "fg_acc": 5.46,
+   "vif_fond": 3.21,
+   "acc_doux": 4.75,
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 6.12,
+   "sombre_acc_doux": 5.08
+  },
+  "categorie": "Rétro",
+  "id": "brique"
+ },
+ {
+  "nom": "Pétrole",
+  "teinte": 208,
+  "clair": {
+   "accent": "#037582",
+   "hover": "#01636E",
+   "vif": "#1A92A1",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#E0F5F8",
+   "doux_bord": "#C4E5EA"
+  },
+  "sombre": {
+   "accent": "#43A2AF",
+   "hover": "#43A2AF",
+   "vif": "#43A2AF",
+   "texte_sur_accent": "#001A1E",
+   "doux": "#162A2D",
+   "doux_bord": "#203D42"
+  },
+  "controle": {
+   "acc_surface": 5.43,
+   "acc_fond": 4.73,
+   "fg_acc": 5.43,
+   "vif_fond": 3.23,
+   "acc_doux": 4.8,
+   "sombre_acc_surface": 6.05,
+   "sombre_fg_acc": 6.02,
+   "sombre_acc_doux": 5.01
+  },
+  "categorie": "Rétro",
+  "id": "petrole"
  }
 ]
