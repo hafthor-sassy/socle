@@ -7,6 +7,7 @@ import { thumbHTML, mountThumbs } from '../lib/frames.js';
 import { cardHTML } from './category.js';
 import { brandShowcase } from './brands.js';
 import { backdropHTML, mountBackdrops } from '../lib/backdrop.js';
+import { backdropHTML as legacyBackdropHTML, mountBackdrops as mountLegacyBackdrops } from '../lib/backdrop-legacy.js';
 import { mountCarousel } from '../lib/carousel.js';
 
 export async function renderHome(view) {
@@ -49,7 +50,7 @@ export async function renderHome(view) {
     </section>
 
     <section class="block block--bg" aria-labelledby="h-index">
-      ${backdropHTML({ cls: 'backdrop--index' })}
+      ${legacyBackdropHTML({ cls: 'backdrop--index' })}
       <div class="block__head"><div><h2 id="h-index" class="t-section">Toute la bibliothèque</h2><p class="muted t-sm">Six sections, des fondations aux pages complètes.</p></div></div>
       <div class="index">
         ${SECTIONS.map((s) => `
@@ -82,6 +83,7 @@ export async function renderHome(view) {
   const block = car && car.closest('.block');
   const stopCar = car ? mountCarousel(block, { speed: 26, onClone: (c) => mountThumbs(c) }) : () => {};
   mountThumbs(view);
-  const stopBg = mountBackdrops(view);
+  const stopBg0 = mountBackdrops(view), stopBg1 = mountLegacyBackdrops(view);
+  const stopBg = () => { stopBg0(); stopBg1(); };
   return () => { stopCar(); stopBg(); };
 }
