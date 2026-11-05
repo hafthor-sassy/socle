@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Socle a déménagé</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://socle-app.github.io/">
+<script>
+  // Ancienne adresse hafthor-sassy.github.io/socle/… → socle-app.github.io/…
+  var p = location.pathname.replace(/^\/socle\/?/, '').replace(/(^|\/)(index|404)\.html$/, '');
+  var h = location.hash.indexOf('#/') === 0 ? location.hash.slice(2) : '';
+  location.replace('https://socle-app.github.io/' + (h || (p + location.search)));
+</script>
+<meta http-equiv="refresh" content="0; url=https://socle-app.github.io/">
+</head><body><p>Socle a déménagé : <a href="https://socle-app.github.io/">socle-app.github.io</a></p></body></html>
