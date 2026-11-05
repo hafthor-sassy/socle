@@ -1,0 +1,94 @@
+<!-- Bouton — nécessite tokens.css (variables du design system). -->
+<link rel="stylesheet" href="tokens.css">
+
+<button class="btn" data-variant="primary" data-size="md" aria-busy="false" type="button">
+  <span class="btn__label">Continuer</span>
+  <svg class="btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  <span class="btn__spinner" aria-hidden="true"></span>
+</button>
+
+<style>
+  .btn {
+    --h: 40px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: var(--h);
+    padding: 0 16px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-ctl);
+    font: 500 14px/1 var(--font-sans);
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color var(--motion-fast) var(--ease-out),
+      border-color var(--motion-fast) var(--ease-out),
+      box-shadow var(--motion-fast) var(--ease-out),
+      transform var(--motion-fast) var(--ease-out);
+  }
+
+  /* Tailles : 32 / 40 / 48 px. La petite garde une cible tactile de 44 px. */
+  .btn[data-size=sm] { --h: 32px; padding: 0 12px; font-size: 13px; }
+  .btn[data-size=lg] { --h: 48px; padding: 0 20px; font-size: 16px; }
+  .btn[data-size=sm]::before { content: ""; position: absolute; inset: -6px 0; }
+  @media (max-width: 767px) { .btn[data-size=md] { --h: 44px; } }
+
+  /* Variantes */
+  .btn[data-variant=primary]   { background: var(--accent); color: var(--accent-fg); }
+  .btn[data-variant=secondary] { background: var(--surface); color: var(--text-strong); border-color: var(--border-control); }
+  .btn[data-variant=ghost]     { background: transparent; color: var(--text-strong); }
+  .btn[data-variant=danger]    { background: var(--down); color: var(--surface); }
+
+  /* Survol : souris seulement, pour éviter le survol « collé » au toucher */
+  @media (hover: hover) and (pointer: fine) {
+    .btn[data-variant=primary]:hover   { background: var(--accent-hover); }
+    .btn[data-variant=secondary]:hover { box-shadow: inset 0 0 0 999px var(--state-hover); }
+    .btn[data-variant=ghost]:hover     { background: var(--state-hover); }
+    .btn[data-variant=danger]:hover    { box-shadow: inset 0 0 0 999px var(--state-press); }
+  }
+
+  /* Appui */
+  .btn:active { transform: scale(0.98); }
+  .btn[data-variant=primary]:active   { background: var(--accent-hover); }
+  .btn[data-variant=secondary]:active { box-shadow: inset 0 0 0 999px var(--state-press); }
+  .btn[data-variant=ghost]:active     { background: var(--state-press); }
+
+  /* Focus clavier */
+  .btn:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+  /* Désactivé */
+  .btn:disabled {
+    background: var(--raised);
+    color: var(--text-disabled);
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
+    cursor: not-allowed;
+  }
+
+  /* Chargement : le libellé garde la largeur, l'indicateur prend sa place */
+  .btn__spinner { display: none; }
+  .btn[aria-busy=true] { cursor: progress; }
+  .btn[aria-busy=true] .btn__label,
+  .btn[aria-busy=true] .btn__icon { visibility: hidden; }
+  .btn[aria-busy=true] .btn__spinner {
+    display: block;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 700ms linear infinite;
+  }
+  @keyframes btn-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .btn { transition: none; }
+    .btn:active { transform: none; }
+    .btn[aria-busy=true] .btn__spinner { animation-duration: 1.6s; }
+  }
+</style>

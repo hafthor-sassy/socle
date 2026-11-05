@@ -1,0 +1,131 @@
+<!-- Bento 5 cases — grille asymétrique responsive. Nécessite tokens.css. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="bento-zone" aria-labelledby="bento-title">
+  <header class="bento-head">
+    <h2 id="bento-title">Tout ce qu’il faut, rien de trop</h2>
+    <p>Cinq raisons de travailler plus sereinement, réunies dans un seul espace.</p>
+  </header>
+
+  <div class="bento" style="--bento-gap: 16px; --bento-radius: 12px">
+    <!-- 1 · grande case -->
+    <article class="bento__cell bento__cell--a">
+      <div class="bento__text">
+        <h3>Tout votre travail au même endroit</h3>
+        <p>Projets, fichiers et décisions réunis dans une seule vue, à jour pour toute l’équipe.</p>
+      </div>
+      <div class="bento__art" aria-hidden="true">
+        <div class="mock-list">
+          <div class="mock-row"><i></i><b style="width: 46%"></b><s>Aujourd’hui</s></div>
+          <div class="mock-row is-active"><i></i><b style="width: 62%"></b><s>En cours</s></div>
+          <div class="mock-row"><i></i><b style="width: 38%"></b><s>Demain</s></div>
+          <div class="mock-row"><i></i><b style="width: 54%"></b><s>Lundi</s></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2 · large -->
+    <article class="bento__cell bento__cell--b">
+      <div class="bento__text">
+        <h3>Recherche instantanée</h3>
+        <p>Retrouvez n’importe quel élément en quelques lettres.</p>
+      </div>
+      <div class="bento__art" aria-hidden="true">
+        <div class="mock-search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><span>Rapport trimestriel</span><kbd>⌘K</kbd></div>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="bento__cell bento__cell--c">
+      <div class="bento__text">
+        <h3>Partage en un clic</h3>
+        <p>Invitez qui vous voulez, avec les bons droits.</p>
+      </div>
+      <div class="bento__art" aria-hidden="true">
+        <div class="mock-avatars"><span>AL</span><span>MK</span><span>JD</span><span>+4</span></div>
+      </div>
+    </article>
+
+    <!-- 4 · chiffre -->
+    <article class="bento__cell bento__cell--d">
+      <p class="bento__kpi">99,9&nbsp;%</p>
+      <div class="bento__text">
+        <h3>Disponibilité</h3>
+        <p>Mesurée sur les douze derniers mois.</p>
+      </div>
+    </article>
+
+    <!-- 5 · bandeau -->
+    <article class="bento__cell bento__cell--e">
+      <div class="bento__text">
+        <h3>Branché sur vos outils</h3>
+        <p>Agenda, messagerie, stockage : les intégrations se configurent en deux minutes.</p>
+      </div>
+      <div class="bento__art" aria-hidden="true">
+        <div class="mock-tiles"><span>Ag</span><span>Ms</span><span>St</span><span>Fx</span><span>Cr</span><span>+12</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .bento-zone { max-width: 1120px; margin: 0 auto; padding: 64px 16px; font-family: var(--font-sans); color: var(--text); }
+  .bento-head { display: grid; gap: 12px; margin-bottom: 32px; max-width: 40rem; }
+  .bento-head h2 { margin: 0; color: var(--text-strong); font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem); line-height: 1.12; letter-spacing: -0.02em; font-weight: 600; text-wrap: balance; }
+  .bento-head p { margin: 0; color: var(--text-muted); font-size: 1.0625rem; line-height: 1.6; }
+
+  /* Grille : 1 colonne → 2 colonnes (≥ 640 px) → 6 colonnes (≥ 1024 px) */
+  .bento { display: grid; gap: var(--bento-gap); grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 640px) {
+    .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bento__cell--a, .bento__cell--b, .bento__cell--e { grid-column: span 2; }
+  }
+  @media (min-width: 1024px) {
+    .bento { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: minmax(240px, auto) minmax(240px, auto) auto; }
+    .bento__cell--a { grid-column: 1 / 4; grid-row: 1 / 3; }
+    .bento__cell--b { grid-column: 4 / 7; grid-row: 1; }
+    .bento__cell--c { grid-column: 4 / 6; grid-row: 2; }
+    .bento__cell--d { grid-column: 6 / 7; grid-row: 2; }
+    .bento__cell--e { grid-column: 1 / 7; grid-row: 3; flex-direction: row; align-items: center; justify-content: space-between; }
+  }
+
+  /* Case : en-tête texte + visuel, bordure neutre, sans ombre */
+  .bento__cell {
+    container-type: inline-size;
+    display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
+    min-width: 0; padding: 24px;
+    border-radius: var(--bento-radius); background: var(--surface); border: 1px solid var(--border);
+    transition: border-color var(--motion-fast) var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) { .bento__cell:hover { border-color: var(--border-control); } }
+  .bento__text { display: grid; gap: 6px; max-width: 34rem; }
+  .bento__text h3 { margin: 0; color: var(--text-strong); font-size: 1.125rem; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
+  .bento__text p { margin: 0; color: var(--text-muted); font-size: 15px; line-height: 1.5; text-wrap: pretty; }
+  .bento__kpi { margin: 0; color: var(--text-strong); font-size: clamp(2.25rem, 1.8rem + 2vw, 3rem); line-height: 1; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  @container (max-width: 200px) { .bento__kpi { font-size: 2.25rem; } }
+
+  /* Visuels construits avec les tokens, sans image */
+  .bento__art { display: grid; }
+  .mock-list { display: grid; gap: 8px; padding: 12px; border-radius: calc(var(--bento-radius) - 4px); background: var(--raised); border: 1px solid var(--border); }
+  .mock-row { display: grid; grid-template-columns: 16px 1fr auto; align-items: center; gap: 12px; height: 44px; padding: 0 12px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); }
+  .mock-row i { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--border-control); }
+  .mock-row b { display: block; height: 8px; border-radius: 4px; background: var(--tint-neutral-bg); }
+  .mock-row s { text-decoration: none; font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .mock-row.is-active { background: var(--accent-subtle); border-color: var(--accent-subtle-border); }
+  .mock-row.is-active i { border-color: var(--accent); background: var(--accent); }
+  .mock-row.is-active b { background: var(--accent-subtle-border); }
+  .mock-row.is-active s { color: var(--accent); }
+  .mock-search { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 8px 0 14px; border-radius: var(--radius-ctl); background: var(--surface); border: 1px solid var(--border-control); color: var(--text-muted); font-size: 15px; }
+  .mock-search span { flex: 1; color: var(--text-strong); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mock-search kbd { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--raised); font: 12px/1 var(--font-mono); color: var(--text-muted); }
+  .mock-avatars { display: flex; }
+  .mock-avatars span { display: grid; place-items: center; width: 44px; height: 44px; margin-left: -8px; border-radius: 50%; background: var(--raised); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--border); font-size: 13px; font-weight: 600; color: var(--text-strong); }
+  .mock-avatars span:first-child { margin-left: 0; }
+  .mock-tiles { display: flex; flex-wrap: wrap; gap: 8px; }
+  .mock-tiles span { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 10px; background: var(--raised); border: 1px solid var(--border); font-size: 13px; font-weight: 600; color: var(--text-strong); }
+
+  @media (min-width: 768px) { .bento-zone { padding: 96px 32px; } .bento__cell { padding: 28px; } }
+  @media (prefers-reduced-motion: reduce) { .bento__cell { transition: none; } }
+</style>

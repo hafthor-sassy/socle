@@ -1,0 +1,45 @@
+<!-- Révélation de texte — HTML + CSS, sans JavaScript. Nécessite tokens.css. -->
+<link rel="stylesheet" href="tokens.css">
+
+<h1 class="reveal" aria-label="Des interfaces qui tiennent debout.">
+  <span class="reveal__w" style="--i: 0" aria-hidden="true"><span>Des</span></span>
+  <span class="reveal__w" style="--i: 1" aria-hidden="true"><span>interfaces</span></span>
+  <span class="reveal__w" style="--i: 2" aria-hidden="true"><span>qui</span></span>
+  <span class="reveal__w" style="--i: 3" aria-hidden="true"><span>tiennent</span></span>
+  <span class="reveal__w" style="--i: 4" aria-hidden="true"><span>debout.</span></span>
+</h1>
+
+<style>
+  .reveal {
+    --reveal-delay: 100ms;
+    --reveal-duration: 700ms;
+    --reveal-stagger: 60ms;
+    --reveal-ease: cubic-bezier(0.2, 0, 0, 1);
+    margin: 0;
+    color: var(--text-strong);
+    font: 600 clamp(2.25rem, 1.5rem + 3vw, 4rem) / 1.08 var(--font-sans);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  /* Chaque mot est un masque : il monte depuis sous sa ligne. */
+  .reveal__w {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: 0.08em;   /* garde les jambages (g, p, q) */
+    margin-bottom: -0.08em;
+  }
+  .reveal__w > span {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: reveal-up var(--reveal-duration) var(--reveal-ease) both;
+    animation-delay: calc(var(--reveal-delay) + var(--i) * var(--reveal-stagger));
+  }
+  @keyframes reveal-up { to { transform: translateY(0); } }
+
+  /* Réduire les animations : le texte apparaît en fondu, sans mouvement. */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal__w > span { transform: none; animation-name: reveal-fade; animation-duration: 1ms; }
+    @keyframes reveal-fade { from { opacity: 0; } to { opacity: 1; } }
+  }
+</style>

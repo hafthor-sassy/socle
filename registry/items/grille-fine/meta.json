@@ -1,0 +1,162 @@
+{
+  "id": "grille-fine",
+  "nom": "Grille fine",
+  "categorie": "backgrounds",
+  "description": "Une trame de points, de lignes ou de croix qui dérive lentement derrière le contenu. Motif SVG, animation CSS, aucune image.",
+  "tags": [
+    "Motif",
+    "SVG",
+    "Boucle"
+  ],
+  "date": "2026-11-04",
+  "thumb": {
+    "width": 640
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Couleur --text-muted, fond --bg"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement (useId)"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Keyframe grid-drift à déclarer"
+    }
+  ],
+  "props": [
+    {
+      "name": "pattern",
+      "label": "Motif",
+      "type": "select",
+      "default": "dots",
+      "options": [
+        {
+          "value": "dots",
+          "label": "Points"
+        },
+        {
+          "value": "lines",
+          "label": "Lignes"
+        },
+        {
+          "value": "cross",
+          "label": "Croix"
+        }
+      ],
+      "code": {
+        "react": "pattern=\"{v}\""
+      }
+    },
+    {
+      "name": "size",
+      "label": "Taille de case",
+      "type": "number",
+      "default": 24,
+      "min": 8,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "code": {
+        "html": [
+          "--grid-size: {v}px",
+          "width=\"{v}\" height=\"{v}\""
+        ],
+        "react": "size={{v}}"
+      }
+    },
+    {
+      "name": "opacity",
+      "label": "Opacité",
+      "type": "number",
+      "default": 0.35,
+      "min": 0.05,
+      "max": 1,
+      "step": 0.05,
+      "code": {
+        "html": "--grid-opacity: {v};",
+        "react": "opacity={{v}}"
+      }
+    },
+    {
+      "name": "thickness",
+      "label": "Épaisseur",
+      "type": "number",
+      "default": 1,
+      "min": 0.5,
+      "max": 3,
+      "step": 0.5,
+      "unit": "px",
+      "code": {
+        "react": "thickness={{v}}"
+      }
+    },
+    {
+      "name": "speed",
+      "label": "Vitesse",
+      "type": "number",
+      "default": 12,
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px/s",
+      "hint": "0 pour un fond immobile.",
+      "code": {
+        "react": "speed={{v}}"
+      }
+    },
+    {
+      "name": "direction",
+      "label": "Direction",
+      "type": "select",
+      "default": "diagonal",
+      "options": [
+        {
+          "value": "diagonal",
+          "label": "Diagonale"
+        },
+        {
+          "value": "right",
+          "label": "Droite"
+        },
+        {
+          "value": "down",
+          "label": "Bas"
+        }
+      ],
+      "code": {
+        "react": "direction=\"{v}\""
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/GridBackground.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Derrière un hero ou une section courte : sur une page entière, le mouvement distrait.",
+    "Restez sous 0,4 d’opacité et sous 20 px/s : la trame doit se sentir plus qu’elle ne se voit.",
+    "Le conteneur doit être en position relative avec isolation : isolate pour garder le fond derrière.",
+    "La taille du motif SVG et --grid-size doivent rester identiques pour une boucle sans saut."
+  ],
+  "accessibilite": [
+    "Purement décoratif : aria-hidden et pointer-events : none.",
+    "Animation coupée avec « réduire les animations ».",
+    "Le texte posé dessus garde son contraste : la trame reste sous 0,4 d’opacité par défaut."
+  ]
+}

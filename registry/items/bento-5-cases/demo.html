@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bento 5 cases — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .is-thumb .bento-zone { padding-top: 48px; }
+  .no-visuals .bento__art { display: none; }
+  .no-visuals .bento .bento__cell { justify-content: flex-end; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ gap: 16, radius: 12, showHeader: true, visuals: true });
+  var src = null;
+  var mount = document.getElementById('mount');
+  function render(p) {
+    if (!src) return;
+    mount.innerHTML = src;
+    var b = mount.querySelector('.bento');
+    b.style.setProperty('--bento-gap', p.gap + 'px');
+    b.style.setProperty('--bento-radius', p.radius + 'px');
+    var h = mount.querySelector('.bento-head');
+    if (h && (!p.showHeader || Socle.thumb)) h.remove();
+    mount.classList.toggle('no-visuals', !p.visuals);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = mk ? mk[1] : '';
+    render(props);
+  });
+  Socle.onChange(render);
+</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+{
+  "id": "pricing-3-offres",
+  "nom": "Pricing 3 offres",
+  "categorie": "pricing",
+  "description": "Trois offres de la moins à la plus engageante, bascule Mensuel / Annuel avec l’économie affichée, comparatif groupé et mini FAQ. Selon les bonnes pratiques des pages de prix.",
+  "tags": [
+    "SaaS",
+    "Tableau",
+    "Accordéon",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 1200
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Couleurs, rayons, mouvements du DS"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "period",
+      "label": "Période par défaut",
+      "type": "select",
+      "default": "monthly",
+      "options": [
+        {
+          "value": "monthly",
+          "label": "Mensuel"
+        },
+        {
+          "value": "yearly",
+          "label": "Annuel"
+        }
+      ],
+      "code": {
+        "html": "data-period=\"{v}\"",
+        "react": "defaultPeriod=\"{v}\""
+      }
+    },
+    {
+      "name": "discount",
+      "label": "Remise annuelle",
+      "type": "number",
+      "default": 20,
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "%",
+      "hint": "Les prix annuels sont arrondis à l’euro.",
+      "code": {
+        "html": [
+          "data-discount=\"{v}\"",
+          "−{v} %"
+        ],
+        "react": "discount={{v}}"
+      }
+    },
+    {
+      "name": "compare",
+      "label": "Comparatif",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "react": "showCompare={{v}}"
+      }
+    },
+    {
+      "name": "faq",
+      "label": "FAQ",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "react": "showFaq={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/PricingSection.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Titre orienté bénéfice, sous-titre qui lève l’objection principale (engagement, carte bancaire).",
+    "Offres classées de la moins à la plus engageante ; une seule mise en avant, au milieu, avec le seul bouton primaire.",
+    "Prix en nombres entiers, unité accolée (par utilisateur, par mois) ; l’économie annuelle reste visible sur la bascule.",
+    "4 à 6 avantages par offre, et « Tout ce qu’il y a dans X, plus » pour ne pas répéter.",
+    "Sur mobile, les cartes s’empilent et le comparatif devient un accordéon groupé."
+  ],
+  "accessibilite": [
+    "La bascule est un groupe radio : état annoncé (aria-checked), flèches gauche et droite.",
+    "Coches doublées d’un texte « Inclus » / « Non inclus » pour les lecteurs d’écran.",
+    "Accordéons natifs (details / summary) : clavier et lecteurs d’écran sans script.",
+    "Chiffres tabulaires et contraste AA en clair et en sombre."
+  ]
+}

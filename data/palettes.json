@@ -1,0 +1,622 @@
+[
+ {
+  "nom": "Graphite",
+  "teinte": 0,
+  "clair": {
+   "accent": "#18181B",
+   "hover": "#2E2E33",
+   "vif": "#18181B",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#EBEBEF",
+   "doux_bord": "#DCDCE2"
+  },
+  "sombre": {
+   "accent": "#F4F4F5",
+   "hover": "#FFFFFF",
+   "vif": "#F4F4F5",
+   "texte_sur_accent": "#111113",
+   "doux": "#26272C",
+   "doux_bord": "#34353C"
+  },
+  "controle": {
+   "acc_surface": 17.72,
+   "acc_fond": 15.44,
+   "fg_acc": 17.72,
+   "vif_fond": 15.44,
+   "acc_doux": 14.9,
+   "sombre_acc_surface": 14.28,
+   "sombre_fg_acc": 17.16,
+   "sombre_acc_doux": 13.56
+  },
+  "id": "graphite"
+ },
+ {
+  "nom": "Encre",
+  "teinte": 265,
+  "clair": {
+   "accent": "#51699F",
+   "hover": "#41588C",
+   "vif": "#6884C2",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#E9F0FF",
+   "doux_bord": "#D2DEF7"
+  },
+  "sombre": {
+   "accent": "#85A0D9",
+   "hover": "#9CB2E0",
+   "vif": "#85A0D9",
+   "texte_sur_accent": "#0E1526",
+   "doux": "#202634",
+   "doux_bord": "#2F384B"
+  },
+  "controle": {
+   "acc_surface": 5.42,
+   "acc_fond": 4.73,
+   "fg_acc": 5.42,
+   "vif_fond": 3.23,
+   "acc_doux": 4.75,
+   "sombre_acc_surface": 6.0,
+   "sombre_fg_acc": 6.96,
+   "sombre_acc_doux": 5.78
+  },
+  "id": "encre"
+ },
+ {
+  "nom": "Indigo",
+  "teinte": 275,
+  "clair": {
+   "accent": "#535ECD",
+   "hover": "#444BB9",
+   "vif": "#6B79F8",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#ECEFFE",
+   "doux_bord": "#D4DCFF"
+  },
+  "sombre": {
+   "accent": "#8999FE",
+   "hover": "#A7B3FE",
+   "vif": "#8999FE",
+   "texte_sur_accent": "#0F1231",
+   "doux": "#1F243F",
+   "doux_bord": "#2E345B"
+  },
+  "controle": {
+   "acc_surface": 5.45,
+   "acc_fond": 4.75,
+   "fg_acc": 5.45,
+   "vif_fond": 3.2,
+   "acc_doux": 4.76,
+   "sombre_acc_surface": 6.02,
+   "sombre_fg_acc": 6.99,
+   "sombre_acc_doux": 5.82
+  },
+  "id": "indigo"
+ },
+ {
+  "nom": "Cobalt",
+  "teinte": 262,
+  "clair": {
+   "accent": "#2863D8",
+   "hover": "#1550C4",
+   "vif": "#3E7FFE",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#E9F1FE",
+   "doux_bord": "#CDDFFF"
+  },
+  "sombre": {
+   "accent": "#6B9FFF",
+   "hover": "#8AB3FF",
+   "vif": "#6B9FFF",
+   "texte_sur_accent": "#061431",
+   "doux": "#19263F",
+   "doux_bord": "#23375C"
+  },
+  "controle": {
+   "acc_surface": 5.43,
+   "acc_fond": 4.73,
+   "fg_acc": 5.43,
+   "vif_fond": 3.23,
+   "acc_doux": 4.78,
+   "sombre_acc_surface": 6.0,
+   "sombre_fg_acc": 6.97,
+   "sombre_acc_doux": 5.77
+  },
+  "id": "cobalt"
+ },
+ {
+  "nom": "Azur",
+  "teinte": 240,
+  "clair": {
+   "accent": "#0470A5",
+   "hover": "#045E8C",
+   "vif": "#058DCE",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#E3F3FF",
+   "doux_bord": "#BFE4FF"
+  },
+  "sombre": {
+   "accent": "#26A9F1",
+   "hover": "#43B4F3",
+   "vif": "#26A9F1",
+   "texte_sur_accent": "#001829",
+   "doux": "#0F293A",
+   "doux_bord": "#163C54"
+  },
+  "controle": {
+   "acc_surface": 5.43,
+   "acc_fond": 4.73,
+   "fg_acc": 5.43,
+   "vif_fond": 3.21,
+   "acc_doux": 4.79,
+   "sombre_acc_surface": 6.0,
+   "sombre_fg_acc": 6.9,
+   "sombre_acc_doux": 5.74
+  },
+  "id": "azur"
+ },
+ {
+  "nom": "Lagon",
+  "teinte": 215,
+  "clair": {
+   "accent": "#057488",
+   "hover": "#026273",
+   "vif": "#0992AA",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#DBF6FD",
+   "doux_bord": "#BBE7F2"
+  },
+  "sombre": {
+   "accent": "#17B0CC",
+   "hover": "#1CC6E5",
+   "vif": "#17B0CC",
+   "texte_sur_accent": "#011A20",
+   "doux": "#0E2B31",
+   "doux_bord": "#153E47"
+  },
+  "controle": {
+   "acc_surface": 5.44,
+   "acc_fond": 4.74,
+   "fg_acc": 5.44,
+   "vif_fond": 3.21,
+   "acc_doux": 4.82,
+   "sombre_acc_surface": 6.07,
+   "sombre_fg_acc": 6.94,
+   "sombre_acc_doux": 5.76
+  },
+  "id": "lagon"
+ },
+ {
+  "nom": "Sarcelle",
+  "teinte": 190,
+  "clair": {
+   "accent": "#047772",
+   "hover": "#016460",
+   "vif": "#0B9590",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#DCF7F4",
+   "doux_bord": "#BEE8E4"
+  },
+  "sombre": {
+   "accent": "#2DB2AC",
+   "hover": "#33CAC4",
+   "vif": "#2DB2AC",
+   "texte_sur_accent": "#001B19",
+   "doux": "#112C2A",
+   "doux_bord": "#183F3D"
+  },
+  "controle": {
+   "acc_surface": 5.4,
+   "acc_fond": 4.71,
+   "fg_acc": 5.4,
+   "vif_fond": 3.2,
+   "acc_doux": 4.8,
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 6.9,
+   "sombre_acc_doux": 5.7
+  },
+  "id": "sarcelle"
+ },
+ {
+  "nom": "Jade",
+  "teinte": 165,
+  "clair": {
+   "accent": "#067957",
+   "hover": "#036649",
+   "vif": "#06976D",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#DDF8EB",
+   "doux_bord": "#BFEAD5"
+  },
+  "sombre": {
+   "accent": "#33B588",
+   "hover": "#3EC999",
+   "vif": "#33B588",
+   "texte_sur_accent": "#001C11",
+   "doux": "#122C22",
+   "doux_bord": "#1A4031"
+  },
+  "controle": {
+   "acc_surface": 5.41,
+   "acc_fond": 4.72,
+   "fg_acc": 5.41,
+   "vif_fond": 3.24,
+   "acc_doux": 4.82,
+   "sombre_acc_surface": 6.06,
+   "sombre_fg_acc": 6.9,
+   "sombre_acc_doux": 5.75
+  },
+  "id": "jade"
+ },
+ {
+  "nom": "Forêt",
+  "teinte": 145,
+  "clair": {
+   "accent": "#237A2D",
+   "hover": "#04691A",
+   "vif": "#369740",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#E2F7E2",
+   "doux_bord": "#C8E8C8"
+  },
+  "sombre": {
+   "accent": "#5FB364",
+   "hover": "#74BD78",
+   "vif": "#5FB364",
+   "texte_sur_accent": "#031C05",
+   "doux": "#192C19",
+   "doux_bord": "#244025"
+  },
+  "controle": {
+   "acc_surface": 5.39,
+   "acc_fond": 4.7,
+   "fg_acc": 5.39,
+   "vif_fond": 3.23,
+   "acc_doux": 4.79,
+   "sombre_acc_surface": 6.07,
+   "sombre_fg_acc": 6.93,
+   "sombre_acc_doux": 5.73
+  },
+  "id": "foret"
+ },
+ {
+  "nom": "Olive",
+  "teinte": 120,
+  "clair": {
+   "accent": "#61711B",
+   "hover": "#506002",
+   "vif": "#7A8D2F",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#EDF3DF",
+   "doux_bord": "#DAE3C3"
+  },
+  "sombre": {
+   "accent": "#96A856",
+   "hover": "#A3B36A",
+   "vif": "#96A856",
+   "texte_sur_accent": "#141901",
+   "doux": "#242916",
+   "doux_bord": "#353B21"
+  },
+  "controle": {
+   "acc_surface": 5.4,
+   "acc_fond": 4.71,
+   "fg_acc": 5.4,
+   "vif_fond": 3.22,
+   "acc_doux": 4.76,
+   "sombre_acc_surface": 6.0,
+   "sombre_fg_acc": 6.87,
+   "sombre_acc_doux": 5.72
+  },
+  "id": "olive"
+ },
+ {
+  "nom": "Ambre",
+  "teinte": 75,
+  "clair": {
+   "accent": "#906004",
+   "hover": "#7A5102",
+   "vif": "#B47901",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FFEDD6",
+   "doux_bord": "#F6D9B2"
+  },
+  "sombre": {
+   "accent": "#D89201",
+   "hover": "#F6A701",
+   "vif": "#D89201",
+   "texte_sur_accent": "#211300",
+   "doux": "#33230A",
+   "doux_bord": "#4A330F"
+  },
+  "controle": {
+   "acc_surface": 5.44,
+   "acc_fond": 4.74,
+   "fg_acc": 5.44,
+   "vif_fond": 3.22,
+   "acc_doux": 4.75,
+   "sombre_acc_surface": 6.0,
+   "sombre_fg_acc": 6.94,
+   "sombre_acc_doux": 5.8
+  },
+  "id": "ambre"
+ },
+ {
+  "nom": "Miel",
+  "teinte": 85,
+  "clair": {
+   "accent": "#866404",
+   "hover": "#715403",
+   "vif": "#A87E03",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FBEFD6",
+   "doux_bord": "#EFDCB4"
+  },
+  "sombre": {
+   "accent": "#C99918",
+   "hover": "#E4AE1C",
+   "vif": "#C99918",
+   "texte_sur_accent": "#1E1400",
+   "doux": "#30250C",
+   "doux_bord": "#453512"
+  },
+  "controle": {
+   "acc_surface": 5.47,
+   "acc_fond": 4.77,
+   "fg_acc": 5.47,
+   "vif_fond": 3.24,
+   "acc_doux": 4.8,
+   "sombre_acc_surface": 6.02,
+   "sombre_fg_acc": 6.97,
+   "sombre_acc_doux": 5.77
+  },
+  "id": "miel"
+ },
+ {
+  "nom": "Braise",
+  "teinte": 45,
+  "clair": {
+   "accent": "#B24904",
+   "hover": "#983D01",
+   "vif": "#DF5D03",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FFECE3",
+   "doux_bord": "#FED4C1"
+  },
+  "sombre": {
+   "accent": "#FE7A35",
+   "hover": "#FE8E53",
+   "vif": "#FE7A35",
+   "texte_sur_accent": "#2A0B00",
+   "doux": "#3A1E11",
+   "doux_bord": "#552B17"
+  },
+  "controle": {
+   "acc_surface": 5.46,
+   "acc_fond": 4.76,
+   "fg_acc": 5.46,
+   "vif_fond": 3.21,
+   "acc_doux": 4.77,
+   "sombre_acc_surface": 6.02,
+   "sombre_fg_acc": 7.02,
+   "sombre_acc_doux": 5.86
+  },
+  "id": "braise"
+ },
+ {
+  "nom": "Terracotta",
+  "teinte": 38,
+  "clair": {
+   "accent": "#AB4E31",
+   "hover": "#983C1E",
+   "vif": "#D16645",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FFEBE5",
+   "doux_bord": "#FED3C6"
+  },
+  "sombre": {
+   "accent": "#E98667",
+   "hover": "#ED9B82",
+   "vif": "#E98667",
+   "texte_sur_accent": "#290C04",
+   "doux": "#372018",
+   "doux_bord": "#4F2E24"
+  },
+  "controle": {
+   "acc_surface": 5.43,
+   "acc_fond": 4.73,
+   "fg_acc": 5.43,
+   "vif_fond": 3.21,
+   "acc_doux": 4.73,
+   "sombre_acc_surface": 6.03,
+   "sombre_fg_acc": 7.03,
+   "sombre_acc_doux": 5.84
+  },
+  "id": "terracotta"
+ },
+ {
+  "nom": "Corail",
+  "teinte": 25,
+  "clair": {
+   "accent": "#C33436",
+   "hover": "#AE1C24",
+   "vif": "#EC4B4A",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FFEBE9",
+   "doux_bord": "#FED2CD"
+  },
+  "sombre": {
+   "accent": "#FE766F",
+   "hover": "#FE938D",
+   "vif": "#FE766F",
+   "texte_sur_accent": "#2C0807",
+   "doux": "#3B1C1A",
+   "doux_bord": "#572825"
+  },
+  "controle": {
+   "acc_surface": 5.43,
+   "acc_fond": 4.73,
+   "fg_acc": 5.43,
+   "vif_fond": 3.23,
+   "acc_doux": 4.74,
+   "sombre_acc_surface": 6.01,
+   "sombre_fg_acc": 7.02,
+   "sombre_acc_doux": 5.88
+  },
+  "id": "corail"
+ },
+ {
+  "nom": "Rubis",
+  "teinte": 20,
+  "clair": {
+   "accent": "#CC243D",
+   "hover": "#B5022E",
+   "vif": "#F63C52",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FFEBEA",
+   "doux_bord": "#FED2D0"
+  },
+  "sombre": {
+   "accent": "#FE757A",
+   "hover": "#FE9397",
+   "vif": "#FE757A",
+   "texte_sur_accent": "#2C070A",
+   "doux": "#3B1C1C",
+   "doux_bord": "#572729"
+  },
+  "controle": {
+   "acc_surface": 5.4,
+   "acc_fond": 4.71,
+   "fg_acc": 5.4,
+   "vif_fond": 3.22,
+   "acc_doux": 4.71,
+   "sombre_acc_surface": 6.01,
+   "sombre_fg_acc": 7.04,
+   "sombre_acc_doux": 5.87
+  },
+  "id": "rubis"
+ },
+ {
+  "nom": "Framboise",
+  "teinte": 0,
+  "clair": {
+   "accent": "#C5256D",
+   "hover": "#B0015C",
+   "vif": "#EF3D88",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FFEAEF",
+   "doux_bord": "#FFCFDC"
+  },
+  "sombre": {
+   "accent": "#FE70A3",
+   "hover": "#FE8EB7",
+   "vif": "#FE70A3",
+   "texte_sur_accent": "#2A0715",
+   "doux": "#3A1B25",
+   "doux_bord": "#542736"
+  },
+  "controle": {
+   "acc_surface": 5.44,
+   "acc_fond": 4.74,
+   "fg_acc": 5.44,
+   "vif_fond": 3.21,
+   "acc_doux": 4.73,
+   "sombre_acc_surface": 6.03,
+   "sombre_fg_acc": 7.07,
+   "sombre_acc_doux": 5.91
+  },
+  "id": "framboise"
+ },
+ {
+  "nom": "Orchidée",
+  "teinte": 330,
+  "clair": {
+   "accent": "#A73FA1",
+   "hover": "#932A8E",
+   "vif": "#CC56C5",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#FFE8FC",
+   "doux_bord": "#F6D0F1"
+  },
+  "sombre": {
+   "accent": "#E579DD",
+   "hover": "#EA93E4",
+   "vif": "#E579DD",
+   "texte_sur_accent": "#240A23",
+   "doux": "#341D32",
+   "doux_bord": "#4C2A49"
+  },
+  "controle": {
+   "acc_surface": 5.43,
+   "acc_fond": 4.73,
+   "fg_acc": 5.43,
+   "vif_fond": 3.21,
+   "acc_doux": 4.7,
+   "sombre_acc_surface": 6.06,
+   "sombre_fg_acc": 7.1,
+   "sombre_acc_doux": 5.93
+  },
+  "id": "orchidee"
+ },
+ {
+  "nom": "Violet",
+  "teinte": 300,
+  "clair": {
+   "accent": "#844CCC",
+   "hover": "#7239B8",
+   "vif": "#A265F5",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#F2EDFE",
+   "doux_bord": "#E3D6FE"
+  },
+  "sombre": {
+   "accent": "#B78AFE",
+   "hover": "#CAA8FE",
+   "vif": "#B78AFE",
+   "texte_sur_accent": "#1B0E2D",
+   "doux": "#2A203B",
+   "doux_bord": "#3E2F57"
+  },
+  "controle": {
+   "acc_surface": 5.4,
+   "acc_fond": 4.71,
+   "fg_acc": 5.4,
+   "vif_fond": 3.2,
+   "acc_doux": 4.71,
+   "sombre_acc_surface": 6.04,
+   "sombre_fg_acc": 7.04,
+   "sombre_acc_doux": 5.91
+  },
+  "id": "violet"
+ },
+ {
+  "nom": "Moka",
+  "teinte": 55,
+  "clair": {
+   "accent": "#876249",
+   "hover": "#755139",
+   "vif": "#A67C60",
+   "texte_sur_accent": "#FFFFFF",
+   "doux": "#F9EEE7",
+   "doux_bord": "#EBDACF"
+  },
+  "sombre": {
+   "accent": "#C0987E",
+   "hover": "#CAA893",
+   "vif": "#C0987E",
+   "texte_sur_accent": "#1F130B",
+   "doux": "#2E241E",
+   "doux_bord": "#42352C"
+  },
+  "controle": {
+   "acc_surface": 5.42,
+   "acc_fond": 4.72,
+   "fg_acc": 5.42,
+   "vif_fond": 3.23,
+   "acc_doux": 4.75,
+   "sombre_acc_surface": 6.01,
+   "sombre_fg_acc": 6.95,
+   "sombre_acc_doux": 5.79
+  },
+  "id": "moka"
+ }
+]

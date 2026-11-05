@@ -1,0 +1,46 @@
+{
+  "id": "revelation-texte",
+  "nom": "Révélation de texte",
+  "categorie": "texte-anime",
+  "description": "Les mots d’un titre montent un à un depuis un masque. CSS pur pour l’animation, quelques lignes de JS pour découper un texte libre.",
+  "tags": ["Titre", "CSS", "Entrée"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1024 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Police et couleurs du DS" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Keyframe reveal-up à déclarer" }
+  ],
+  "props": [
+    { "name": "text", "label": "Texte", "type": "text", "default": "Des interfaces qui tiennent debout.",
+      "code": { "react": "text=\"{v}\"" } },
+    { "name": "delay", "label": "Délai", "type": "number", "default": 100, "min": 0, "max": 1500, "step": 50, "unit": "ms",
+      "hint": "Attente avant le premier mot.",
+      "code": { "html": "--reveal-delay: {v}ms", "js": "delay: {v},", "react": "delay={{v}}" } },
+    { "name": "duration", "label": "Durée", "type": "number", "default": 700, "min": 200, "max": 2000, "step": 50, "unit": "ms",
+      "code": { "html": "--reveal-duration: {v}ms", "js": "duration: {v},", "react": "duration={{v}}" } },
+    { "name": "stagger", "label": "Décalage", "type": "number", "default": 60, "min": 0, "max": 300, "step": 10, "unit": "ms",
+      "hint": "Écart entre deux mots.",
+      "code": { "html": "--reveal-stagger: {v}ms", "js": "stagger: {v} }", "react": "stagger={{v}}" } },
+    { "name": "ease", "label": "Courbe", "type": "select", "default": "cubic-bezier(0.2, 0, 0, 1)",
+      "options": [ { "value": "cubic-bezier(0.2, 0, 0, 1)", "label": "Douce" }, { "value": "cubic-bezier(0.16, 1, 0.3, 1)", "label": "Expo" }, { "value": "cubic-bezier(0.34, 1.4, 0.64, 1)", "label": "Rebond" } ],
+      "code": { "html": "--reveal-ease: {v};" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS", "file": "code/index.html", "lang": "html" },
+    { "id": "js", "label": "Vanilla JS", "file": "code/reveal.js", "lang": "js" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/TextReveal.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour un titre principal, une fois par écran : répété partout, l’effet fatigue.",
+    "Gardez la durée totale sous une seconde et demie pour ne pas faire attendre la lecture.",
+    "Lancez l’animation à l’entrée dans l’écran (IntersectionObserver), pas au chargement d’une page longue.",
+    "Le masque garde 0,08 em sous la ligne pour ne pas couper les jambages."
+  ],
+  "accessibilite": [
+    "Le titre complet est porté par aria-label ; les mots découpés sont masqués aux lecteurs d’écran.",
+    "Avec « réduire les animations », le texte s’affiche sans mouvement.",
+    "Aucun clignotement : un seul passage, sans boucle."
+  ]
+}

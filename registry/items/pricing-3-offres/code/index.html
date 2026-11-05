@@ -1,0 +1,250 @@
+<!-- Pricing 3 offres — nécessite tokens.css. Textes génériques à remplacer. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="pricing" aria-labelledby="pricing-title" data-period="monthly" data-discount="20">
+  <div class="pricing__in">
+    <header class="pricing__head">
+      <h2 id="pricing-title">Choisissez l’offre qui fait grandir votre équipe</h2>
+      <p>Commencez gratuitement, changez d’offre quand vous voulez. Sans engagement.</p>
+      <div class="pricing__toggle" role="radiogroup" aria-label="Période de facturation">
+        <button type="button" role="radio" aria-checked="true" data-set-period="monthly">Mensuel</button>
+        <button type="button" role="radio" aria-checked="false" data-set-period="yearly">Annuel <span class="pricing__save" data-save>−20 %</span></button>
+      </div>
+    </header>
+    <div class="pricing__plans">
+      <article class="plan" aria-labelledby="plan-essentiel">
+        <header class="plan__head">
+          <h3 id="plan-essentiel">Essentiel</h3>
+        </header>
+        <p class="plan__pitch">Pour découvrir et lancer vos premiers projets.</p>
+        <p class="plan__price"><span class="plan__amount" data-monthly="0">0 €</span><span class="plan__unit">pour toujours</span></p>
+        <p class="plan__note">Gratuit, sans carte bancaire</p>
+        <a class="plan__cta" data-variant="secondary" href="#">Commencer gratuitement</a>
+        <ul class="plan__features">
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Jusqu’à 3 projets</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>1 Go de stockage</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Modèles de base</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Export PDF</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Support par e-mail</span></li>
+        </ul>
+      </article>
+      <article class="plan plan--featured" aria-labelledby="plan-pro">
+        <header class="plan__head">
+          <h3 id="plan-pro">Pro</h3>
+          <span class="plan__badge">Le plus choisi</span>
+        </header>
+        <p class="plan__pitch">Pour les équipes qui produisent chaque semaine.</p>
+        <p class="plan__price"><span class="plan__amount" data-monthly="19">19 €</span><span class="plan__unit">par utilisateur<br>par mois</span></p>
+        <p class="plan__note" data-note>Facturé chaque mois</p>
+        <a class="plan__cta" data-variant="primary" href="#">Choisir Pro</a>
+        <ul class="plan__features">
+          <li class="plan__lead">Tout ce qu’il y a dans Essentiel, plus :</li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Projets illimités</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>100 Go de stockage</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Collaboration en temps réel</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Historique de 90 jours</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Support prioritaire</span></li>
+        </ul>
+      </article>
+      <article class="plan" aria-labelledby="plan-entreprise">
+        <header class="plan__head">
+          <h3 id="plan-entreprise">Entreprise</h3>
+        </header>
+        <p class="plan__pitch">Pour les organisations qui ont besoin de contrôle.</p>
+        <p class="plan__price"><span class="plan__amount" data-monthly="39">39 €</span><span class="plan__unit">par utilisateur<br>par mois</span></p>
+        <p class="plan__note" data-note>Facturé chaque mois</p>
+        <a class="plan__cta" data-variant="secondary" href="#">Parler à l’équipe</a>
+        <ul class="plan__features">
+          <li class="plan__lead">Tout ce qu’il y a dans Pro, plus :</li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Authentification unique (SSO)</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Rôles et permissions avancés</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Stockage illimité</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Historique illimité</span></li>
+          <li><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Accompagnement dédié</span></li>
+        </ul>
+      </article>
+    </div>
+    <section class="compare" aria-labelledby="compare-title" data-compare>
+      <h3 id="compare-title" class="compare__title">Comparer les offres</h3>
+      <div class="compare__table-wrap">
+        <table class="compare__table">
+          <thead><tr><th scope="col"><span class="sr-only">Fonctionnalité</span></th><th scope="col">Essentiel</th><th scope="col">Pro</th><th scope="col">Entreprise</th></tr></thead>
+          <tbody>
+            <tr class="compare__group"><th scope="colgroup" colspan="4">Projets</th></tr>
+            <tr><th scope="row">Projets</th><td>3</td><td>Illimités</td><td>Illimités</td></tr>
+            <tr><th scope="row">Stockage</th><td>1 Go</td><td>100 Go</td><td>Illimité</td></tr>
+            <tr><th scope="row">Historique des versions</th><td>7 jours</td><td>90 jours</td><td>Illimité</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th scope="colgroup" colspan="4">Collaboration</th></tr>
+            <tr><th scope="row">Membres</th><td>1</td><td>Jusqu’à 50</td><td>Illimités</td></tr>
+            <tr><th scope="row">Commentaires et mentions</th><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td></tr>
+            <tr><th scope="row">Édition en temps réel</th><td><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th scope="colgroup" colspan="4">Sécurité</th></tr>
+            <tr><th scope="row">Authentification à deux facteurs</th><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td></tr>
+            <tr><th scope="row">Authentification unique (SSO)</th><td><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></td><td><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td></tr>
+            <tr><th scope="row">Journal d’audit</th><td><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></td><td><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td></tr>
+          </tbody>
+          <tbody>
+            <tr class="compare__group"><th scope="colgroup" colspan="4">Support</th></tr>
+            <tr><th scope="row">Support par e-mail</th><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td></tr>
+            <tr><th scope="row">Support prioritaire</th><td><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td></tr>
+            <tr><th scope="row">Accompagnement dédié</th><td><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></td><td><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></td><td><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="compare__acc">
+        <details class="acc" open>
+          <summary>Projets<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="cmp-row"><p class="cmp-row__name">Projets</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd>3</dd></div><div><dt>Pro</dt><dd>Illimités</dd></div><div><dt>Entreprise</dt><dd>Illimités</dd></div></dl></div>
+          <div class="cmp-row"><p class="cmp-row__name">Stockage</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd>1 Go</dd></div><div><dt>Pro</dt><dd>100 Go</dd></div><div><dt>Entreprise</dt><dd>Illimité</dd></div></dl></div>
+          <div class="cmp-row"><p class="cmp-row__name">Historique des versions</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd>7 jours</dd></div><div><dt>Pro</dt><dd>90 jours</dd></div><div><dt>Entreprise</dt><dd>Illimité</dd></div></dl></div>
+        </details>
+        <details class="acc">
+          <summary>Collaboration<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="cmp-row"><p class="cmp-row__name">Membres</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd>1</dd></div><div><dt>Pro</dt><dd>Jusqu’à 50</dd></div><div><dt>Entreprise</dt><dd>Illimités</dd></div></dl></div>
+          <div class="cmp-row"><p class="cmp-row__name">Commentaires et mentions</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div><div><dt>Pro</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div><div><dt>Entreprise</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div></dl></div>
+          <div class="cmp-row"><p class="cmp-row__name">Édition en temps réel</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></dd></div><div><dt>Pro</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div><div><dt>Entreprise</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div></dl></div>
+        </details>
+        <details class="acc">
+          <summary>Sécurité<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="cmp-row"><p class="cmp-row__name">Authentification à deux facteurs</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div><div><dt>Pro</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div><div><dt>Entreprise</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div></dl></div>
+          <div class="cmp-row"><p class="cmp-row__name">Authentification unique (SSO)</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></dd></div><div><dt>Pro</dt><dd><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></dd></div><div><dt>Entreprise</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div></dl></div>
+          <div class="cmp-row"><p class="cmp-row__name">Journal d’audit</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></dd></div><div><dt>Pro</dt><dd><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></dd></div><div><dt>Entreprise</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div></dl></div>
+        </details>
+        <details class="acc">
+          <summary>Support<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="cmp-row"><p class="cmp-row__name">Support par e-mail</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div><div><dt>Pro</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div><div><dt>Entreprise</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div></dl></div>
+          <div class="cmp-row"><p class="cmp-row__name">Support prioritaire</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></dd></div><div><dt>Pro</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div><div><dt>Entreprise</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div></dl></div>
+          <div class="cmp-row"><p class="cmp-row__name">Accompagnement dédié</p><dl class="cmp-row__vals"><div><dt>Essentiel</dt><dd><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></dd></div><div><dt>Pro</dt><dd><span class="cmp-no" aria-hidden="true">—</span><span class="sr-only">Non inclus</span></dd></div><div><dt>Entreprise</dt><dd><svg class="ic-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="sr-only">Inclus</span></dd></div></dl></div>
+        </details>
+      </div>
+    </section>
+    <section class="faq" aria-labelledby="faq-title" data-faq>
+      <h3 id="faq-title" class="faq__title">Questions fréquentes</h3>
+      <div class="faq__list">
+        <details class="acc"><summary>L’offre Essentiel est-elle vraiment gratuite ?<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><p>Oui, sans limite de durée et sans carte bancaire. Vous passez à Pro le jour où vos projets le demandent.</p></details>
+        <details class="acc"><summary>Puis-je changer d’offre à tout moment ?<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><p>Oui. Le passage à une offre supérieure est immédiat et calculé au prorata ; le retour à une offre inférieure prend effet à la prochaine échéance.</p></details>
+        <details class="acc"><summary>Comment fonctionne la facturation annuelle ?<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><p>Vous payez douze mois d’un coup, avec la remise affichée sur la bascule Annuel. Le prix par mois indiqué en tient déjà compte.</p></details>
+        <details class="acc"><summary>Quels moyens de paiement acceptez-vous ?<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><p>Carte bancaire et prélèvement SEPA. L’offre Entreprise peut aussi être réglée sur facture, par virement.</p></details>
+        <details class="acc"><summary>Puis-je annuler mon abonnement ?<svg class="acc__chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><p>Oui, en deux clics depuis vos réglages. Vous gardez l’accès jusqu’à la fin de la période déjà payée.</p></details>
+      </div>
+    </section>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .pricing { background: var(--bg); color: var(--text); font-family: var(--font-sans); padding: 64px 16px 80px; }
+  .pricing__in { max-width: 1120px; margin: 0 auto; }
+  .pricing .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* En-tête */
+  .pricing__head { display: grid; justify-items: center; gap: 16px; text-align: center; margin-bottom: 40px; }
+  .pricing__head h2 { margin: 0; max-width: 20ch; color: var(--text-strong); font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem); line-height: 1.12; letter-spacing: -0.02em; font-weight: 600; text-wrap: balance; }
+  .pricing__head p { margin: 0; max-width: 48ch; color: var(--text-muted); font-size: 1.0625rem; line-height: 1.6; text-wrap: pretty; }
+  .pricing__toggle { display: inline-flex; gap: 2px; padding: 2px; margin-top: 8px; border-radius: var(--radius-ctl); background: var(--raised); border: 1px solid var(--border); }
+  .pricing__toggle button { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border: 0; border-radius: 6px; background: transparent; color: var(--text-muted); font: 500 14px/1 var(--font-sans); cursor: pointer; }
+  .pricing__toggle button[aria-checked=true] { background: var(--surface); color: var(--text-strong); box-shadow: var(--shadow-overlay); }
+  .pricing__save { display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: var(--radius-pill); background: var(--tint-green-bg); color: var(--tint-green-fg); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+  /* Offres : empilées sur mobile, trois colonnes dès 900 px */
+  .pricing__plans { display: grid; gap: 16px; }
+  @media (min-width: 900px) { .pricing__plans { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; } }
+  .plan { position: relative; display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--border); }
+  .plan--featured { border-color: var(--border-control); }
+  .plan__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 24px; }
+  .plan__head h3 { margin: 0; color: var(--text-strong); font-size: 1.125rem; line-height: 1.3; font-weight: 600; }
+  .plan__badge { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: var(--radius-pill); background: var(--accent-subtle); border: 1px solid var(--accent-subtle-border); color: var(--accent); font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .plan__pitch { margin: 0; color: var(--text-muted); font-size: 15px; line-height: 1.45; min-height: 2.9em; }
+  .plan__price { display: flex; align-items: center; gap: 12px; margin: 8px 0 0; }
+  .plan__amount { color: var(--text-strong); font-size: 2.75rem; line-height: 1; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .plan__unit { color: var(--text-muted); font-size: 13px; line-height: 1.35; }
+  .plan__note { margin: -8px 0 0; color: var(--text-muted); font-size: 13px; line-height: 1.4; min-height: 1.4em; font-variant-numeric: tabular-nums; }
+  .plan__cta { display: flex; align-items: center; justify-content: center; height: 44px; padding: 0 16px; border-radius: var(--radius-ctl); border: 1px solid transparent; font: 500 15px/1 var(--font-sans); text-decoration: none; transition: background-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out); }
+  .plan__cta[data-variant=primary] { background: var(--accent); color: var(--accent-fg); }
+  .plan__cta[data-variant=secondary] { background: var(--surface); color: var(--text-strong); border-color: var(--border-control); }
+  @media (hover: hover) and (pointer: fine) {
+    .plan__cta[data-variant=primary]:hover { background: var(--accent-hover); }
+    .plan__cta[data-variant=secondary]:hover { box-shadow: inset 0 0 0 999px var(--state-hover); }
+  }
+  .plan__cta:focus-visible, .pricing__toggle button:focus-visible, .acc summary:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .plan__features { list-style: none; margin: 8px 0 0; padding: 20px 0 0; border-top: 1px solid var(--border); display: grid; gap: 12px; }
+  .plan__features li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.4; color: var(--text); }
+  .plan__features .ic-check { flex: none; margin-top: 1px; color: var(--text-strong); }
+  .plan__lead { color: var(--text-muted) !important; font-size: 14px !important; }
+
+  /* Comparatif : tableau sur grand écran, accordéon groupé sur mobile */
+  .compare { margin-top: 80px; }
+  .compare__title, .faq__title { margin: 0 0 24px; text-align: center; color: var(--text-strong); font-size: clamp(1.25rem, 1.18rem + .3vw, 1.375rem); font-weight: 600; letter-spacing: -0.01em; }
+  .compare__table-wrap { display: none; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); overflow-x: auto; touch-action: pan-x pan-y; }
+  .compare__table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 15px; }
+  .compare__table th, .compare__table td { height: 52px; padding: 0 20px; border-bottom: 1px solid var(--border); text-align: center; font-variant-numeric: tabular-nums; }
+  .compare__table thead th { height: 56px; color: var(--text-strong); font-weight: 600; }
+  .compare__table tbody th[scope=row] { text-align: left; font-weight: 400; color: var(--text); width: 40%; }
+  .compare__table td { color: var(--text-strong); }
+  .compare__table td .ic-check { display: inline-block; vertical-align: middle; }
+  .compare__group th { height: 40px !important; text-align: left !important; background: var(--raised); color: var(--text-muted); font: 500 12px/1 var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .compare__table tbody:last-child tr:last-child > * { border-bottom: 0; }
+  .cmp-no { color: var(--text-disabled); }
+  .compare__acc { display: grid; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); }
+  @media (min-width: 768px) { .compare__table-wrap { display: block; } .compare__acc { display: none; } }
+
+  /* Accordéons (comparatif mobile et FAQ) */
+  .acc + .acc { border-top: 1px solid var(--border); }
+  .acc summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding: 0 16px; list-style: none; cursor: pointer; color: var(--text-strong); font-weight: 500; border-radius: var(--radius-ctl); }
+  .acc summary::-webkit-details-marker { display: none; }
+  .acc__chev { flex: none; color: var(--text-muted); transition: transform var(--motion-base) var(--ease-out); }
+  .acc[open] .acc__chev { transform: rotate(180deg); }
+  .faq .acc[open] .acc__chev { transform: rotate(45deg); }
+  .cmp-row { padding: 12px 16px 16px; border-top: 1px solid var(--border); }
+  .cmp-row__name { margin: 0 0 10px; font-size: 15px; color: var(--text); }
+  .cmp-row__vals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; }
+  .cmp-row__vals div { display: grid; gap: 4px; }
+  .cmp-row__vals dt { font-size: 12px; color: var(--text-muted); }
+  .cmp-row__vals dd { margin: 0; min-height: 20px; font-size: 14px; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+
+  /* FAQ */
+  .faq { margin: 80px auto 0; max-width: 760px; }
+  .faq__list { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .faq .acc summary { padding: 0 4px; min-height: 64px; font-size: 16px; }
+  .faq .acc p { margin: 0; padding: 0 4px 20px; max-width: 64ch; color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+  @media (min-width: 768px) { .pricing { padding: 96px 32px 112px; } .plan { padding: 28px; } }
+  @media (prefers-reduced-motion: reduce) { .acc__chev, .plan__cta { transition: none; } }
+</style>
+
+<script>
+  // Bascule Mensuel / Annuel : prix en nombres entiers, économie affichée côté Annuel.
+  document.querySelectorAll('.pricing').forEach((root) => {
+    const fmt = (n) => `${n}\u00A0€`;
+    const discount = Number(root.dataset.discount) || 0;
+    const save = root.querySelector('[data-save]');
+    if (save) save.textContent = `−${discount}\u00A0%`;
+    function setPeriod(period) {
+      root.dataset.period = period;
+      root.querySelectorAll('[data-set-period]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.setPeriod === period)));
+      root.querySelectorAll('.plan').forEach((plan) => {
+        const amount = plan.querySelector('.plan__amount');
+        const note = plan.querySelector('[data-note]');
+        const m = Number(amount.dataset.monthly);
+        const y = Math.round(m * (1 - discount / 100)); // prix entier
+        const v = period === 'yearly' ? y : m;
+        amount.textContent = fmt(v);
+        if (note) note.textContent = period === 'yearly' ? `Facturé ${fmt(y * 12)} par an` : 'Facturé chaque mois';
+      });
+    }
+    root.querySelectorAll('[data-set-period]').forEach((b) => b.addEventListener('click', () => setPeriod(b.dataset.setPeriod)));
+    // Flèches gauche / droite dans la bascule
+    root.querySelector('.pricing__toggle').addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      const next = root.dataset.period === 'monthly' ? 'yearly' : 'monthly';
+      setPeriod(next);
+      root.querySelector(`[data-set-period="${next}"]`).focus();
+    });
+    setPeriod(root.dataset.period || 'monthly');
+  });
+</script>

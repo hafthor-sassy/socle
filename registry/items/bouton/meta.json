@@ -1,0 +1,151 @@
+{
+  "id": "bouton",
+  "nom": "Bouton",
+  "categorie": "boutons",
+  "description": "Le bouton du design system : primaire, secondaire, fantôme et danger, trois tailles et tous les états, du survol au chargement.",
+  "tags": [
+    "Formulaire",
+    "États",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 900
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Couleurs, rayons, mouvements du DS"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "variant",
+      "label": "Variante",
+      "type": "select",
+      "default": "primary",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primaire"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondaire"
+        },
+        {
+          "value": "ghost",
+          "label": "Fantôme"
+        },
+        {
+          "value": "danger",
+          "label": "Danger"
+        }
+      ],
+      "code": {
+        "html": "data-variant=\"{v}\"",
+        "react": "variant=\"{v}\""
+      }
+    },
+    {
+      "name": "size",
+      "label": "Taille",
+      "type": "select",
+      "default": "md",
+      "options": [
+        {
+          "value": "sm",
+          "label": "32 px"
+        },
+        {
+          "value": "md",
+          "label": "40 px"
+        },
+        {
+          "value": "lg",
+          "label": "48 px"
+        }
+      ],
+      "hint": "Sur mobile, la taille moyenne passe à 44 px ; la petite garde une zone tactile de 44 px.",
+      "code": {
+        "html": "data-size=\"{v}\"",
+        "react": "size=\"{v}\""
+      }
+    },
+    {
+      "name": "label",
+      "label": "Libellé",
+      "type": "text",
+      "default": "Continuer",
+      "code": {
+        "html": "<span class=\"btn__label\">{v}</span>",
+        "react": "      {v}\n    </Button>"
+      }
+    },
+    {
+      "name": "icon",
+      "label": "Icône à droite",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "react": "icon={{v}}"
+      }
+    },
+    {
+      "name": "loading",
+      "label": "Chargement",
+      "type": "boolean",
+      "default": false,
+      "code": {
+        "html": "aria-busy=\"{v}\"",
+        "react": "loading={{v}}"
+      }
+    },
+    {
+      "name": "disabled",
+      "label": "Désactivé",
+      "type": "boolean",
+      "default": false,
+      "code": {
+        "react": "disabled={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/Button.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Un seul bouton primaire par zone ; les autres actions passent en secondaire ou fantôme.",
+    "Libellé à l’infinitif, court et précis : « Enregistrer », pas « OK ».",
+    "Danger réservé aux actions destructrices, idéalement suivies d’une confirmation.",
+    "En chargement, le bouton garde sa largeur pour ne pas faire sauter la mise en page."
+  ],
+  "accessibilite": [
+    "Contraste du texte ≥ 4,5:1 sur chaque variante, en clair et en sombre.",
+    "Focus visible au clavier uniquement (:focus-visible), anneau de 2 px décalé de 2 px.",
+    "Chargement annoncé par aria-busy ; désactivé par l’attribut disabled natif.",
+    "Cible tactile de 44 px minimum sur mobile, survol réservé à la souris."
+  ]
+}

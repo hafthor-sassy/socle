@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Révélation de texte — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; gap: 20px; padding: 48px clamp(24px, 6vw, 96px); }
+  .eyebrow { font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .sub { max-width: 52ch; color: var(--text-muted); font-size: 17px; line-height: 1.6; opacity: 0; animation: fade 600ms var(--ease-out) forwards; }
+  @keyframes fade { to { opacity: 1; } }
+  .is-thumb .stage { padding: 64px; }
+  .is-thumb .reveal { font-size: 72px; }
+  @media (prefers-reduced-motion: reduce) { .sub { animation: none; opacity: 1; } }
+</style>
+</head>
+<body>
+<main class="stage">
+  <p class="eyebrow">Texte animé</p>
+  <h1 id="title"></h1>
+  <p class="sub" id="sub">Chaque mot monte depuis son masque, l’un après l’autre. Réglez le délai, la durée et le décalage.</p>
+</main>
+<script>
+  var props = Socle.props({ text: 'Des interfaces qui tiennent debout.', delay: 100, duration: 700, stagger: 60, ease: 'cubic-bezier(0.2, 0, 0, 1)' });
+  var el = document.getElementById('title');
+  var sub = document.getElementById('sub');
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function render(p) {
+    var text = String(p.text || '').trim().replace(/\s+/g, ' ') || 'Votre titre ici';
+    el.className = 'reveal';
+    el.setAttribute('aria-label', text);
+    el.style.setProperty('--reveal-delay', p.delay + 'ms');
+    el.style.setProperty('--reveal-duration', p.duration + 'ms');
+    el.style.setProperty('--reveal-stagger', p.stagger + 'ms');
+    el.style.setProperty('--reveal-ease', p.ease);
+    var words = text.split(' ');
+    el.innerHTML = words.map(function (w, i) { return '<span class="reveal__w" style="--i:' + i + '" aria-hidden="true"><span>' + esc(w) + '</span></span>'; }).join(' ');
+    var total = p.delay + (words.length - 1) * p.stagger + p.duration * 0.6;
+    sub.style.animationDelay = total + 'ms';
+    sub.style.animation = 'none'; void sub.offsetWidth; sub.style.animation = '';
+    sub.style.animationDelay = total + 'ms';
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var m = t.match(/<style>([\s\S]*?)<\/style>/);
+    if (m) document.getElementById('component-css').textContent = m[1];
+    render(props);
+  }).catch(function () { render(props); });
+  Socle.onChange(render);
+  Socle.onReplay(render);
+  if (Socle.thumb && !Socle.reducedMotion()) setInterval(function () { render(props); }, 4200);
+</script>
+</body>
+</html>

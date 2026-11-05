@@ -1,0 +1,117 @@
+{
+  "id": "bento-5-cases",
+  "nom": "Bento 5 cases",
+  "categorie": "bento",
+  "description": "Une grille asymétrique de cinq cases : une grande, une large, deux petites et un bandeau. Une colonne sur mobile, deux sur tablette, six sur bureau.",
+  "tags": [
+    "Grille",
+    "Responsive",
+    "Fonctionnalités"
+  ],
+  "date": "2026-11-03",
+  "thumb": {
+    "width": 1200
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, bordures et accent du DS"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "gap",
+      "label": "Espacement",
+      "type": "number",
+      "default": 16,
+      "min": 8,
+      "max": 32,
+      "step": 8,
+      "unit": "px",
+      "hint": "Sur la grille de 8 px.",
+      "code": {
+        "html": "--bento-gap: {v}px",
+        "react": "gap={{v}}"
+      }
+    },
+    {
+      "name": "radius",
+      "label": "Rayon",
+      "type": "select",
+      "default": "12",
+      "options": [
+        {
+          "value": "8",
+          "label": "8 px"
+        },
+        {
+          "value": "12",
+          "label": "12 px"
+        },
+        {
+          "value": "16",
+          "label": "16 px"
+        }
+      ],
+      "code": {
+        "html": "--bento-radius: {v}px",
+        "react": "radius={{v}}"
+      }
+    },
+    {
+      "name": "visuals",
+      "label": "Visuels",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "react": "visuals={{v}}"
+      }
+    },
+    {
+      "name": "showHeader",
+      "label": "Titre de section",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "react": "showHeader={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/Bento.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "La grande case porte l’argument principal ; le bandeau du bas, l’argument d’ouverture (intégrations, communauté).",
+    "Un titre court et une phrase par case : le visuel fait le reste.",
+    "Un seul élément en accent dans toute la grille, pour guider l’œil.",
+    "Les cases s’adaptent à leur propre largeur (@container), pas seulement à celle de l’écran."
+  ],
+  "accessibilite": [
+    "Chaque case est un article avec un titre h3 : la structure se lit sans le visuel.",
+    "Visuels décoratifs masqués aux lecteurs d’écran (aria-hidden).",
+    "Ordre de lecture identique à l’ordre visuel, sur mobile comme sur bureau."
+  ]
+}

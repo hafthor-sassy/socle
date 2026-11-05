@@ -1,0 +1,4 @@
+_captures/
+node_modules/
+.DS_Store
+*.log

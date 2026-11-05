@@ -1,0 +1,49 @@
+<!-- Grille fine — fond en motif SVG, animé en CSS. Nécessite tokens.css. -->
+<link rel="stylesheet" href="tokens.css">
+
+<section class="hero-zone">
+  <div class="grid-bg" aria-hidden="true">
+    <svg class="grid-bg__svg">
+      <defs>
+        <!-- width / height = --grid-size ; cx / cy = moitié de la taille -->
+        <pattern id="grid-bg-motif" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="12" cy="12" r="1" fill="currentColor" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid-bg-motif)" />
+    </svg>
+  </div>
+  <!-- Votre contenu ici -->
+</section>
+
+<style>
+  .hero-zone { position: relative; isolation: isolate; min-height: 480px; background: var(--bg); }
+  .grid-bg {
+    --grid-size: 24px;      /* identique à width/height du <pattern> */
+    --grid-opacity: 0.35;
+    --grid-duration: 2s;    /* une case parcourue par cycle : vitesse = taille ÷ durée */
+    --grid-dx: 1;           /* direction : 1 / 0 / -1 */
+    --grid-dy: 1;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    color: var(--text-muted);
+    opacity: var(--grid-opacity);
+  }
+  .grid-bg__svg {
+    position: absolute;
+    top: calc(var(--grid-size) * -1);
+    left: calc(var(--grid-size) * -1);
+    width: calc(100% + var(--grid-size) * 2);
+    height: calc(100% + var(--grid-size) * 2);
+    animation: grid-drift var(--grid-duration) linear infinite;
+  }
+  @keyframes grid-drift {
+    to { transform: translate(calc(var(--grid-size) * var(--grid-dx)), calc(var(--grid-size) * var(--grid-dy))); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .grid-bg__svg { animation: none; }
+  }
+</style>

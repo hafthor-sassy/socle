@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "total": 5,
+  "items": [
+    {
+      "id": "bouton",
+      "nom": "Bouton",
+      "categorie": "boutons",
+      "description": "Le bouton du design system : primaire, secondaire, fantôme et danger, trois tailles et tous les états, du survol au chargement.",
+      "tags": [
+        "Formulaire",
+        "États",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 900
+      }
+    },
+    {
+      "id": "pricing-3-offres",
+      "nom": "Pricing 3 offres",
+      "categorie": "pricing",
+      "description": "Trois offres de la moins à la plus engageante, bascule Mensuel / Annuel avec l’économie affichée, comparatif groupé et mini FAQ. Selon les bonnes pratiques des pages de prix.",
+      "tags": [
+        "SaaS",
+        "Tableau",
+        "Accordéon",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      }
+    },
+    {
+      "id": "revelation-texte",
+      "nom": "Révélation de texte",
+      "categorie": "texte-anime",
+      "description": "Les mots d’un titre montent un à un depuis un masque. CSS pur pour l’animation, quelques lignes de JS pour découper un texte libre.",
+      "tags": [
+        "Titre",
+        "CSS",
+        "Entrée"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1024
+      }
+    },
+    {
+      "id": "grille-fine",
+      "nom": "Grille fine",
+      "categorie": "backgrounds",
+      "description": "Une trame de points, de lignes ou de croix qui dérive lentement derrière le contenu. Motif SVG, animation CSS, aucune image.",
+      "tags": [
+        "Motif",
+        "SVG",
+        "Boucle"
+      ],
+      "date": "2026-11-04",
+      "thumb": {
+        "width": 640
+      }
+    },
+    {
+      "id": "bento-5-cases",
+      "nom": "Bento 5 cases",
+      "categorie": "bento",
+      "description": "Une grille asymétrique de cinq cases : une grande, une large, deux petites et un bandeau. Une colonne sur mobile, deux sur tablette, six sur bureau.",
+      "tags": [
+        "Grille",
+        "Responsive",
+        "Fonctionnalités"
+      ],
+      "date": "2026-11-03",
+      "thumb": {
+        "width": 1200
+      }
+    }
+  ]
+}

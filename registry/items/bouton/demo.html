@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bouton — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .wrap { min-height: 100vh; display: grid; grid-template-rows: 1fr auto; }
+  .live { display: grid; place-items: center; padding: 48px 24px; }
+  .states { border-top: 1px solid var(--border); background: var(--surface); padding: 24px; }
+  .states h2 { font-size: 12px; line-height: 18px; font-weight: 500; color: var(--text-muted); letter-spacing: var(--track-caps); text-transform: uppercase; font-family: var(--font-mono); margin-bottom: 16px; }
+  .row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 16px; }
+  @media (min-width: 720px) { .row { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+  .cell { display: grid; justify-items: start; gap: 10px; min-width: 0; }
+  .cell > span { font-size: 13px; color: var(--text-muted); }
+  .is-thumb .live { padding: 0; }
+  .is-thumb .live .btn { transform: scale(1.6); }
+  /* États forcés pour la planche (démo uniquement) */
+  .btn.is-hover[data-variant=primary] { background: var(--accent-hover); }
+  .btn.is-hover[data-variant=secondary] { box-shadow: inset 0 0 0 999px var(--state-hover); }
+  .btn.is-hover[data-variant=ghost] { background: var(--state-hover); }
+  .btn.is-hover[data-variant=danger] { box-shadow: inset 0 0 0 999px var(--state-press); }
+  .btn.is-press { transform: scale(0.98); }
+  .btn.is-press[data-variant=primary] { background: var(--accent-hover); }
+  .btn.is-press[data-variant=secondary] { box-shadow: inset 0 0 0 999px var(--state-press); }
+  .btn.is-press[data-variant=ghost] { background: var(--state-press); }
+  .btn.is-press[data-variant=danger] { box-shadow: inset 0 0 0 999px var(--state-press); }
+  .btn.is-focus { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="live"><div id="live"></div></div>
+  <section class="states" aria-label="Tous les états">
+    <h2>États</h2>
+    <div class="row" id="states"></div>
+  </section>
+</div>
+<script>
+  var props = Socle.props({ variant: 'primary', size: 'md', label: 'Continuer', loading: false, disabled: false, icon: true });
+  var ICON = '<svg class="btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function btn(p, extra) {
+    extra = extra || {};
+    var busy = extra.busy != null ? extra.busy : p.loading;
+    var dis = extra.disabled != null ? extra.disabled : p.disabled;
+    return '<button class="btn ' + (extra.cls || '') + '" data-variant="' + p.variant + '" data-size="' + p.size + '" aria-busy="' + busy + '" type="button"' + (dis ? ' disabled' : '') + (extra.tab ? ' tabindex="-1"' : '') + '>' +
+      '<span class="btn__label">' + esc(p.label || 'Bouton') + '</span>' + (p.icon ? ICON : '') + '<span class="btn__spinner" aria-hidden="true"></span></button>';
+  }
+  function render(p) {
+    document.getElementById('live').innerHTML = btn(p);
+    var S = [['Normal', {}], ['Survol', { cls: 'is-hover' }], ['Appui', { cls: 'is-press' }], ['Focus', { cls: 'is-focus' }], ['Désactivé', { disabled: true, busy: false }], ['Chargement', { busy: true, disabled: false }]];
+    document.getElementById('states').innerHTML = S.map(function (s) {
+      var e = s[1]; e.tab = true; if (e.disabled == null) e.disabled = false; if (e.busy == null) e.busy = false;
+      return '<div class="cell">' + btn(p, e) + '<span>' + s[0] + '</span></div>';
+    }).join('');
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var m = t.match(/<style>([\s\S]*?)<\/style>/);
+    if (m) document.getElementById('component-css').textContent = m[1];
+  }).catch(function () {});
+  render(props);
+  Socle.onChange(render);
+</script>
+</body>
+</html>
