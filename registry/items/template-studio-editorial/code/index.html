@@ -1,0 +1,781 @@
+<!-- Template « Studio éditorial » — page complète en HTML + CSS + JS autonomes. Nécessite tokens.css.
+     Marque fictive : Marge (studio de design éditorial et de scénographie). Index et pages projet dans un seul document :
+     transitions persistantes par View Transitions API (la couverture et le titre passent d’une page à l’autre, l’en-tête
+     reste en place), repli en rideau (mouvement du design Socle « Rideaux »), galerie 3D en CSS liée au défilement,
+     curseur contextuel (design Socle « Curseur contextuel », souris seulement), typographie géante lettre par lettre.
+     Aucune image : les couvertures sont composées avec les variables de tokens.css. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="mg cc" id="accueil" data-template-studio data-cursor-zone data-stiffness="320" data-damping="26" data-dot="8" data-labels="true" data-blend="normal" data-magnet="0.25" data-stretch="true"
+  data-intro="true" data-transition="native" data-rayon="1" data-vitesse="1">
+  <a class="mg-skip" href="#mg-main" data-cursor="lien">Aller au contenu</a>
+
+  <!-- En-tête persistant : il ne bouge pas pendant les transitions de page (view-transition-name: mg-head). -->
+  <header class="mg-head" data-mg-head>
+    <a class="mg-brand" href="#/" data-mg-home data-cursor="lien" aria-label="Marge, accueil"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 305 100" aria-hidden="true" focusable="false"><g data-role="icone"><rect width="100" height="100" rx="28" style="fill:var(--p, currentColor)"/><rect x="24" y="22" width="34" height="56" rx="4" style="fill:var(--lt, #fff)"/><rect x="66" y="22" width="10" height="30" rx="3" style="fill:var(--a, var(--lt, #fff))"/><path d="M31 34H51M31 42H51M31 50H45" fill="none" style="stroke:var(--p, currentColor)" stroke-width="4" stroke-linecap="round"/></g><path data-role="nom" d="M136.48 70V30.24H146.29L157.28 61.04L168.23 30.24H178.04V70H170.76V42.56L160.74 69.93H153.76L143.76 42.56V70ZM193.41 70.67Q188.75 70.67 185.89 68.52Q183.03 66.37 183.03 62.52Q183.03 58.62 185.44 56.45Q187.84 54.28 192.74 53.31L202.68 51.37Q202.68 48.18 201.22 46.58Q199.76 44.98 196.93 44.98Q194.32 44.98 192.83 46.17Q191.34 47.36 190.82 49.63L183.53 49.26Q184.39 44.54 187.87 41.98Q191.35 39.42 196.93 39.42Q203.31 39.42 206.58 42.63Q209.85 45.84 209.85 51.83V62.73Q209.85 63.92 210.26 64.35Q210.67 64.78 211.51 64.78H212.46V70Q212.12 70.1 211.37 70.17Q210.62 70.25 209.86 70.25Q208 70.25 206.55 69.64Q205.1 69.03 204.3 67.56Q203.49 66.1 203.49 63.53L204.14 63.95Q203.66 65.92 202.19 67.45Q200.72 68.98 198.47 69.83Q196.22 70.67 193.41 70.67ZM194.89 65.45Q197.27 65.45 199.02 64.52Q200.76 63.58 201.72 61.89Q202.68 60.19 202.68 57.93V56.25L194.93 57.81Q192.56 58.28 191.5 59.28Q190.44 60.27 190.44 61.85Q190.44 63.56 191.6 64.51Q192.76 65.45 194.89 65.45ZM215.57 70V40.1H222.27L222.54 48.41L221.96 48.26Q222.63 43.96 224.5 42.03Q226.36 40.1 229.59 40.1H232.36V46.23H229.57Q227.27 46.23 225.76 46.91Q224.25 47.59 223.5 49.02Q222.74 50.44 222.74 52.77V70ZM249.53 79.07Q245.6 79.07 242.81 78.01Q240.02 76.94 238.31 75.02Q236.6 73.09 235.94 70.58L243.33 70.07Q243.87 71.74 245.26 72.69Q246.65 73.65 249.53 73.65Q252.87 73.65 254.66 72.16Q256.44 70.67 256.44 67.51V63.75Q255.38 65.92 253.03 67.23Q250.68 68.54 247.76 68.54Q244.06 68.54 241.17 66.72Q238.29 64.89 236.67 61.62Q235.05 58.35 235.05 54.02Q235.05 49.72 236.65 46.44Q238.25 43.16 241.1 41.29Q243.96 39.42 247.63 39.42Q250.88 39.42 253.22 40.88Q255.57 42.34 256.67 44.76V40.1H263.66V67.36Q263.66 71.19 261.9 73.8Q260.14 76.42 256.97 77.74Q253.8 79.07 249.53 79.07ZM249.44 62.92Q252.65 62.92 254.55 60.54Q256.45 58.16 256.49 53.97Q256.52 51.18 255.66 49.18Q254.81 47.19 253.21 46.1Q251.62 45.02 249.44 45.02Q246.13 45.02 244.3 47.45Q242.47 49.87 242.47 53.97Q242.47 58.09 244.35 60.51Q246.24 62.92 249.44 62.92ZM282.73 70.67Q278.26 70.67 274.97 68.75Q271.69 66.82 269.89 63.3Q268.09 59.77 268.09 55.05Q268.09 50.32 269.89 46.83Q271.69 43.33 274.94 41.38Q278.19 39.42 282.6 39.42Q286.86 39.42 290.07 41.33Q293.27 43.24 295.02 46.83Q296.77 50.41 296.77 55.44V57.04H275.53Q275.74 61 277.67 62.97Q279.6 64.94 282.82 64.94Q285.22 64.94 286.8 63.87Q288.39 62.8 289.02 60.83L296.35 61.29Q295.15 65.62 291.53 68.15Q287.9 70.67 282.73 70.67ZM275.53 52.23H289.34Q289.11 48.59 287.28 46.83Q285.45 45.07 282.6 45.07Q279.72 45.07 277.84 46.91Q275.96 48.75 275.53 52.23Z" style="fill:var(--ink, currentColor)"/></svg></a>
+    <nav class="mg-nav" aria-label="Principale">
+      <a href="#travaux" data-cursor="lien">Travaux</a><a href="#index" data-cursor="lien">Index</a><a href="#studio" data-cursor="lien">Studio</a><a href="#contact" data-cursor="lien">Contact</a>
+    </nav>
+    <p class="mg-head__meta"><span>Marseille</span><time data-mg-clock>17:42</time></p>
+    <a class="mg-head__cta" href="#contact" data-cursor="aimant">Écrire au studio</a>
+  </header>
+
+  <main id="mg-main">
+    <!-- Vue « index » -->
+    <div class="mg-view" data-mg-view="index">
+      <!-- Typographie géante : le mot-symbole, lettre par lettre -->
+      <section class="mg-hero" aria-labelledby="mg-h1">
+        <h1 class="mg-sr" id="mg-h1">Marge, studio de design éditorial et de scénographie</h1>
+        <div class="mg-hero__word" aria-hidden="true"><svg viewBox="0 -4 288 100" focusable="false"><g class="mg-l" style="--k:0"><path d="M8 70V-1H25.52L45.14 54L64.7 -1H82.22V70H69.22V21L51.32 69.88H38.86L21 21V70Z"/></g><g class="mg-l" style="--k:1"><path d="M108.16 71.2Q99.84 71.2 94.73 67.36Q89.62 63.52 89.62 56.64Q89.62 49.68 93.92 45.8Q98.22 41.92 106.96 40.2L124.72 36.74Q124.72 31.04 122.11 28.18Q119.5 25.32 114.44 25.32Q109.78 25.32 107.12 27.45Q104.46 29.58 103.54 33.62L90.52 32.96Q92.06 24.54 98.27 19.97Q104.48 15.4 114.44 15.4Q125.84 15.4 131.68 21.13Q137.52 26.86 137.52 37.56V57.02Q137.52 59.14 138.25 59.91Q138.98 60.68 140.48 60.68H142.18V70Q141.58 70.18 140.24 70.31Q138.9 70.44 137.54 70.44Q134.22 70.44 131.63 69.35Q129.04 68.26 127.6 65.65Q126.16 63.04 126.16 58.44L127.32 59.2Q126.46 62.72 123.84 65.45Q121.22 68.18 117.2 69.69Q113.18 71.2 108.16 71.2ZM110.8 61.88Q115.06 61.88 118.17 60.21Q121.28 58.54 123 55.51Q124.72 52.48 124.72 48.44V45.44L110.88 48.24Q106.64 49.08 104.75 50.85Q102.86 52.62 102.86 55.44Q102.86 58.5 104.93 60.19Q107 61.88 110.8 61.88Z"/></g><g class="mg-l" style="--k:2"><path d="M146.24 70V16.6H158.2L158.68 31.44L157.64 31.18Q158.84 23.5 162.17 20.05Q165.5 16.6 171.26 16.6H176.22V27.56H171.24Q167.12 27.56 164.43 28.77Q161.74 29.98 160.39 32.53Q159.04 35.08 159.04 39.24V70Z"/></g><g class="mg-l" style="--k:3"><path d="M205.38 86.2Q198.36 86.2 193.38 84.3Q188.4 82.4 185.34 78.96Q182.28 75.52 181.1 71.04L194.3 70.12Q195.26 73.1 197.75 74.81Q200.24 76.52 205.38 76.52Q211.34 76.52 214.53 73.86Q217.72 71.2 217.72 65.56V58.84Q215.82 62.72 211.62 65.06Q207.42 67.4 202.22 67.4Q195.6 67.4 190.45 64.14Q185.3 60.88 182.41 55.04Q179.52 49.2 179.52 41.46Q179.52 33.78 182.38 27.93Q185.24 22.08 190.33 18.74Q195.42 15.4 201.98 15.4Q207.78 15.4 211.97 18Q216.16 20.6 218.12 24.92V16.6H230.6V65.28Q230.6 72.12 227.46 76.79Q224.32 81.46 218.66 83.83Q213 86.2 205.38 86.2ZM205.22 57.36Q210.94 57.36 214.34 53.11Q217.74 48.86 217.8 41.38Q217.86 36.4 216.33 32.83Q214.8 29.26 211.95 27.33Q209.1 25.4 205.22 25.4Q199.3 25.4 196.03 29.73Q192.76 34.06 192.76 41.38Q192.76 48.74 196.13 53.05Q199.5 57.36 205.22 57.36Z"/></g><g class="mg-l" style="--k:4"><path d="M263.16 71.2Q255.18 71.2 249.31 67.76Q243.44 64.32 240.23 58.03Q237.02 51.74 237.02 43.3Q237.02 34.86 240.23 28.62Q243.44 22.38 249.25 18.89Q255.06 15.4 262.92 15.4Q270.54 15.4 276.26 18.81Q281.98 22.22 285.11 28.62Q288.24 35.02 288.24 44V46.86H250.3Q250.68 53.92 254.13 57.44Q257.58 60.96 263.32 60.96Q267.6 60.96 270.43 59.05Q273.26 57.14 274.4 53.62L287.48 54.44Q285.34 62.18 278.87 66.69Q272.4 71.2 263.16 71.2ZM250.3 38.26H274.96Q274.56 31.76 271.29 28.62Q268.02 25.48 262.92 25.48Q257.78 25.48 254.43 28.77Q251.08 32.06 250.3 38.26Z"/></g></svg></div>
+        <div class="mg-hero__row">
+          <p class="mg-hero__k">(Studio de design éditorial)</p>
+          <p class="mg-hero__lead">Nous dessinons des livres qu’on relit, des expositions qu’on traverse deux fois et des signes qu’on suit sans y penser.</p>
+          <p class="mg-hero__m">Livres · Expositions<br>Signalétique · Identités<br><span>Marseille, depuis 2011</span></p>
+        </div>
+      </section>
+
+      <!-- Galerie 3D liée au défilement -->
+      <section class="mg-gal" id="travaux" aria-labelledby="mg-gal-t" data-mg-gal>
+        <div class="mg-gal__sticky">
+          <div class="mg-gal__head">
+            <h2 class="mg-gal__t" id="mg-gal-t">Travaux choisis</h2>
+            <p class="mg-gal__n" aria-hidden="true"><b data-mg-n>01</b> / 08</p>
+          </div>
+          <div class="mg-gal__scene" data-cursor="voir" data-cursor-label="Voir">
+            <ul class="mg-gal__ring" data-mg-ring>
+              <li class="mg-card" style="--i:0"><a class="mg-card__a" href="#/projet/atlas-des-marees" data-mg-open="atlas-des-marees" aria-label="Atlas des marées, livre, 2026"><span class="mg-cv mg-cv--marees mg-t--accent" aria-hidden="true"><span class="mg-cv__art"><i class="mg-cv__c" style="--k:1"></i><i class="mg-cv__c" style="--k:2"></i><i class="mg-cv__c" style="--k:3"></i><i class="mg-cv__c" style="--k:4"></i></span><span class="mg-cv__top"><span>Livre</span><span>2026</span></span><span class="mg-cv__t">Atlas des marées</span><span class="mg-cv__by">Éditions du Large</span></span></a></li>
+              <li class="mg-card" style="--i:1"><a class="mg-card__a" href="#/projet/le-bruit-des-villes" data-mg-open="le-bruit-des-villes" aria-label="Le bruit des villes, exposition, 2025"><span class="mg-cv mg-cv--ondes mg-t--ink" aria-hidden="true"><span class="mg-cv__art"><i class="mg-cv__w" style="--k:0;height:10.0cqw"></i><i class="mg-cv__w" style="--k:1;height:28.4cqw"></i><i class="mg-cv__w" style="--k:2;height:46.8cqw"></i><i class="mg-cv__w" style="--k:3;height:14.6cqw"></i><i class="mg-cv__w" style="--k:4;height:33.0cqw"></i><i class="mg-cv__w" style="--k:5;height:51.4cqw"></i><i class="mg-cv__w" style="--k:6;height:19.2cqw"></i><i class="mg-cv__w" style="--k:7;height:37.599999999999994cqw"></i><i class="mg-cv__w" style="--k:8;height:56.0cqw"></i></span><span class="mg-cv__top"><span>Exposition</span><span>2025</span></span><span class="mg-cv__t">Le bruit des villes</span><span class="mg-cv__by">Musée des Docks</span></span></a></li>
+              <li class="mg-card" style="--i:2"><a class="mg-card__a" href="#/projet/halle-saint-roch" data-mg-open="halle-saint-roch" aria-label="Halle Saint-Roch, signalétique, 2025"><span class="mg-cv mg-cv--fleches mg-t--subtle" aria-hidden="true"><span class="mg-cv__art"><i class="mg-cv__a" style="--k:0;width:30cqw"></i><i class="mg-cv__a" style="--k:1;width:60cqw"></i><i class="mg-cv__a" style="--k:2;width:40cqw"></i><i class="mg-cv__a" style="--k:3;width:70cqw"></i><i class="mg-cv__a" style="--k:4;width:50cqw"></i><i class="mg-cv__a" style="--k:5;width:30cqw"></i></span><span class="mg-cv__top"><span>Signalétique</span><span>2025</span></span><span class="mg-cv__t">Halle Saint-Roch</span><span class="mg-cv__by">Ville de Montpellier</span></span></a></li>
+              <li class="mg-card" style="--i:3"><a class="mg-card__a" href="#/projet/herbier-du-jardin" data-mg-open="herbier-du-jardin" aria-label="Herbier du jardin, catalogue, 2024"><span class="mg-cv mg-cv--herbier mg-t--raised" aria-hidden="true"><span class="mg-cv__art"><i class="mg-cv__l mg-cv__l--1"></i><i class="mg-cv__l mg-cv__l--2"></i><i class="mg-cv__l mg-cv__l--3"></i><i class="mg-cv__stem"></i></span><span class="mg-cv__top"><span>Catalogue</span><span>2024</span></span><span class="mg-cv__t">Herbier du jardin</span><span class="mg-cv__by">Jardin botanique de Nantes</span></span></a></li>
+              <li class="mg-card" style="--i:4"><a class="mg-card__a" href="#/projet/revue-pli" data-mg-open="revue-pli" aria-label="Revue Pli, n° 12, revue, 2024"><span class="mg-cv mg-cv--numero mg-t--surface" aria-hidden="true"><span class="mg-cv__art"><b class="mg-cv__n">12</b></span><span class="mg-cv__top"><span>Revue</span><span>2024</span></span><span class="mg-cv__t">Revue Pli, n° 12</span><span class="mg-cv__by">Pli, revue d’architecture</span></span></a></li>
+              <li class="mg-card" style="--i:5"><a class="mg-card__a" href="#/projet/lumiere-froide" data-mg-open="lumiere-froide" aria-label="Lumière froide, exposition, 2023"><span class="mg-cv mg-cv--blocs mg-t--accent" aria-hidden="true"><span class="mg-cv__art"><i class="mg-cv__b mg-cv__b--1"></i><i class="mg-cv__b mg-cv__b--2"></i><i class="mg-cv__b mg-cv__b--3"></i></span><span class="mg-cv__top"><span>Exposition</span><span>2023</span></span><span class="mg-cv__t">Lumière froide</span><span class="mg-cv__by">Centre photographique d’Arles</span></span></a></li>
+              <li class="mg-card" style="--i:6"><a class="mg-card__a" href="#/projet/lettres-du-metro" data-mg-open="lettres-du-metro" aria-label="Lettres du métro, livre, 2023"><span class="mg-cv mg-cv--lettres mg-t--ink" aria-hidden="true"><span class="mg-cv__art"><b class="mg-cv__g">Aa</b><i class="mg-cv__rail"></i></span><span class="mg-cv__top"><span>Livre</span><span>2023</span></span><span class="mg-cv__t">Lettres du métro</span><span class="mg-cv__by">Éditions Ligne</span></span></a></li>
+              <li class="mg-card" style="--i:7"><a class="mg-card__a" href="#/projet/ateliers-ouverts" data-mg-open="ateliers-ouverts" aria-label="Ateliers ouverts, identité, 2022"><span class="mg-cv mg-cv--etoile mg-t--subtle" aria-hidden="true"><span class="mg-cv__art"><i class="mg-cv__s"></i><i class="mg-cv__s" style="--r:45deg"></i><i class="mg-cv__s" style="--r:90deg"></i><i class="mg-cv__s" style="--r:135deg"></i></span><span class="mg-cv__top"><span>Identité</span><span>2022</span></span><span class="mg-cv__t">Ateliers ouverts</span><span class="mg-cv__by">Collectif Friche 42</span></span></a></li>
+            </ul>
+          </div>
+          <div class="mg-gal__cap" aria-hidden="true">
+            <p class="mg-gal__ct" data-mg-cap-t>Atlas des marées</p>
+            <p class="mg-gal__cm" data-mg-cap-m>Livre · Éditions du Large · 2026</p>
+          </div>
+          <div class="mg-gal__bar" aria-hidden="true"><i data-mg-bar></i></div>
+          <p class="mg-gal__hint" aria-hidden="true">Faites défiler pour tourner</p>
+        </div>
+      </section>
+
+      <!-- Index des projets : aperçu de la couverture qui suit le curseur -->
+      <section class="mg-idx" id="index" aria-labelledby="mg-idx-t">
+        <div class="mg-sec-head"><h2 class="mg-h2" id="mg-idx-t">Index</h2><p>08 projets, 2022 – 2026</p></div>
+        <ol class="mg-idx__list" role="list" data-mg-idx>
+          <li><a href="#/projet/atlas-des-marees" data-mg-open="atlas-des-marees" data-cursor="lien"><span class="mg-idx__y">2026</span><span class="mg-idx__t">Atlas des marées</span><span class="mg-idx__c">Éditions du Large</span><span class="mg-idx__d">Livre</span><svg class="mg-idx__i" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></li>
+          <li><a href="#/projet/le-bruit-des-villes" data-mg-open="le-bruit-des-villes" data-cursor="lien"><span class="mg-idx__y">2025</span><span class="mg-idx__t">Le bruit des villes</span><span class="mg-idx__c">Musée des Docks</span><span class="mg-idx__d">Exposition</span><svg class="mg-idx__i" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></li>
+          <li><a href="#/projet/halle-saint-roch" data-mg-open="halle-saint-roch" data-cursor="lien"><span class="mg-idx__y">2025</span><span class="mg-idx__t">Halle Saint-Roch</span><span class="mg-idx__c">Ville de Montpellier</span><span class="mg-idx__d">Signalétique</span><svg class="mg-idx__i" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></li>
+          <li><a href="#/projet/herbier-du-jardin" data-mg-open="herbier-du-jardin" data-cursor="lien"><span class="mg-idx__y">2024</span><span class="mg-idx__t">Herbier du jardin</span><span class="mg-idx__c">Jardin botanique de Nantes</span><span class="mg-idx__d">Catalogue</span><svg class="mg-idx__i" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></li>
+          <li><a href="#/projet/revue-pli" data-mg-open="revue-pli" data-cursor="lien"><span class="mg-idx__y">2024</span><span class="mg-idx__t">Revue Pli, n° 12</span><span class="mg-idx__c">Pli, revue d’architecture</span><span class="mg-idx__d">Revue</span><svg class="mg-idx__i" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></li>
+          <li><a href="#/projet/lumiere-froide" data-mg-open="lumiere-froide" data-cursor="lien"><span class="mg-idx__y">2023</span><span class="mg-idx__t">Lumière froide</span><span class="mg-idx__c">Centre photographique d’Arles</span><span class="mg-idx__d">Exposition</span><svg class="mg-idx__i" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></li>
+          <li><a href="#/projet/lettres-du-metro" data-mg-open="lettres-du-metro" data-cursor="lien"><span class="mg-idx__y">2023</span><span class="mg-idx__t">Lettres du métro</span><span class="mg-idx__c">Éditions Ligne</span><span class="mg-idx__d">Livre</span><svg class="mg-idx__i" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></li>
+          <li><a href="#/projet/ateliers-ouverts" data-mg-open="ateliers-ouverts" data-cursor="lien"><span class="mg-idx__y">2022</span><span class="mg-idx__t">Ateliers ouverts</span><span class="mg-idx__c">Collectif Friche 42</span><span class="mg-idx__d">Identité</span><svg class="mg-idx__i" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></li>
+        </ol>
+        <div class="mg-idx__peek" aria-hidden="true" data-mg-peek></div>
+      </section>
+
+      <!-- Studio -->
+      <section class="mg-studio" id="studio" aria-labelledby="mg-studio-t">
+        <div class="mg-sec-head"><h2 class="mg-h2" id="mg-studio-t">Studio</h2><p>Marseille et Lyon</p></div>
+        <p class="mg-studio__big" data-cursor="texte">Quatorze personnes autour d’une même table : des graphistes, une typographe, deux scénographes, un éditeur. Nous restons petits pour suivre chaque projet jusqu’à l’imprimerie, et jusqu’au jour de l’accrochage.</p>
+        <dl class="mg-studio__facts">
+          <div><dt>Livres imprimés</dt><dd>212</dd></div>
+          <div><dt>Expositions</dt><dd>38</dd></div>
+          <div><dt>Prix et sélections</dt><dd>17</dd></div>
+        </dl>
+        <div class="mg-studio__cols">
+          <div><h3>Ils nous confient leurs projets</h3><ul role="list"><li>Éditions du Large</li><li>Musée des Docks</li><li>Ville de Montpellier</li><li>Jardin botanique de Nantes</li><li>Centre photographique d’Arles</li><li>Pli, revue d’architecture</li></ul></div>
+          <div><h3>Ce que nous faisons</h3><ul role="list"><li>Livres et catalogues</li><li>Scénographie et graphisme d’exposition</li><li>Signalétique</li><li>Identités culturelles</li><li>Revues et éditions périodiques</li></ul></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Vue « projet » : remplie par le script ; la couverture et le titre passent d’une vue à l’autre -->
+    <article class="mg-view mg-proj" data-mg-view="projet" hidden aria-labelledby="mg-p-t" tabindex="-1">
+      <div class="mg-proj__top">
+        <a class="mg-proj__back" href="#/" data-mg-back data-cursor="lien"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg>Tous les travaux</a>
+        <p class="mg-proj__n" data-mg-p-n></p>
+      </div>
+      <h2 class="mg-proj__t" id="mg-p-t" data-mg-p-t></h2>
+      <div class="mg-proj__grid">
+        <figure class="mg-proj__cover" data-mg-p-cover></figure>
+        <div class="mg-proj__body">
+          <p class="mg-proj__lead" data-mg-p-lead></p>
+          <div class="mg-proj__text" data-mg-p-text></div>
+          <dl class="mg-proj__facts" data-mg-p-facts></dl>
+        </div>
+      </div>
+      <a class="mg-proj__next" href="#/" data-mg-next data-cursor="voir" data-cursor-label="Suivant"><span>Projet suivant</span><b data-mg-next-t></b></a>
+    </article>
+
+    <!-- Contact (commun aux deux vues) -->
+    <section class="mg-contact" id="contact" aria-labelledby="mg-contact-t">
+      <h2 class="mg-contact__k" id="mg-contact-t">Un livre, une exposition, un manuscrit&nbsp;?</h2>
+      <a class="mg-contact__mail" href="mailto:bonjour@marge.studio" data-cursor="voir" data-cursor-label="Écrire">bonjour@marge.studio</a>
+      <div class="mg-contact__cols">
+        <p><b>Marseille</b>14 rue des Petites-Maries<br>13001 Marseille</p>
+        <p><b>Lyon</b>3 quai Saint-Vincent<br>69001 Lyon</p>
+        <p><b>Suivre</b><a href="#" data-cursor="lien">Journal du studio</a><br><a href="#" data-cursor="lien">Lettre trimestrielle</a></p>
+      </div>
+      <p class="mg-legal">© 2026 Marge, studio de design éditorial (marque fictive).</p>
+    </section>
+  </main>
+
+  <!-- Rideau : intro et repli des transitions sans View Transitions -->
+  <div class="mg-curtain" aria-hidden="true" data-mg-curtain><p class="mg-curtain__l" data-mg-curtain-l>Marge</p></div>
+  <p class="mg-sr" aria-live="polite" data-mg-live></p>
+
+  <!-- Curseur contextuel (design Socle « Curseur contextuel ») : décoratif, ajouté seulement avec une souris -->
+  <div class="cc__cursor" aria-hidden="true">
+    <span class="cc__ring"></span>
+    <span class="cc__label" data-cc-label></span>
+    <svg class="cc__glyph cc__glyph--lien" viewBox="0 0 24 24"><path d="M8 16 16 8M10 8h6v6"/></svg>
+    <svg class="cc__glyph cc__glyph--glisser" viewBox="0 0 156 24"><path d="M10 5 3 12l7 7M146 5l7 7-7 7"/></svg>
+    <span class="cc__dot"></span>
+  </div>
+</div>
+<!-- /SECTION -->
+
+<style>
+  /* ——— Curseur contextuel (Socle) : règles du curseur seulement, la zone est toute la page ——— */
+  /* Curseur */
+  .cc__cursor { position: fixed; left: 0; top: 0; z-index: var(--z-overlay); width: 0; height: 0; pointer-events: none; opacity: 0; transition: opacity 200ms var(--ease-out); }
+  .cc.has-cursor .cc__cursor { opacity: 1; }
+  .cc.has-cursor.is-out .cc__cursor { opacity: 0; }
+  .cc.has-cursor, .cc.has-cursor * { cursor: none !important; }
+  .cc__ring, .cc__dot { position: absolute; left: 0; top: 0; border-radius: var(--radius-pill); will-change: transform, width, height; }
+  .cc__ring { border: 1.5px solid var(--text-strong); background: transparent; transition: background-color 220ms var(--ease-out), border-color 220ms var(--ease-out); }
+  .cc__dot { width: var(--cc-dot, 8px); height: var(--cc-dot, 8px); margin: calc(var(--cc-dot, 8px) / -2) 0 0 calc(var(--cc-dot, 8px) / -2); background: var(--text-strong); transition: opacity 160ms var(--ease-out), scale 260ms cubic-bezier(.22, 1, .36, 1); }
+  .cc__label, .cc__glyph { position: absolute; left: 0; top: 0; color: var(--accent-fg); opacity: 0; scale: .6; transition: opacity 200ms var(--ease-out), scale 380ms cubic-bezier(.34, 1.56, .64, 1); }
+  .cc__label { translate: -50% -50%; font: 600 14px/1 var(--font-sans); letter-spacing: -0.01em; white-space: nowrap; }
+  .cc__glyph { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .cc__glyph--lien { width: 16px; height: 16px; translate: -50% -50%; }
+  .cc__glyph--glisser { width: 156px; height: 24px; translate: -50% -50%; stroke-width: 2; color: var(--text-strong); }
+  /* Voir et Glisser : pastille inversée (lisible sur toute image) ; lien : pastille d'accent */
+  .cc[data-cc-state="voir"] .cc__ring, .cc[data-cc-state="glisser"] .cc__ring { background: var(--text-strong); border-color: var(--text-strong); }
+  .cc[data-cc-state="voir"] .cc__label, .cc[data-cc-state="glisser"] .cc__label { color: var(--bg); }
+  .cc[data-cc-state="lien"] .cc__ring { background: var(--accent); border-color: var(--accent); }
+  .cc[data-cc-state="voir"] .cc__label, .cc[data-cc-state="glisser"] .cc__label { opacity: 1; scale: 1; }
+  .cc[data-cc-state="glisser"] .cc__glyph--glisser, .cc[data-cc-state="lien"] .cc__glyph--lien { opacity: 1; scale: 1; }
+  .cc[data-cc-state="voir"] .cc__dot, .cc[data-cc-state="glisser"] .cc__dot, .cc[data-cc-state="lien"] .cc__dot, .cc[data-cc-state="aimant"] .cc__dot { opacity: 0; scale: .2; }
+  .cc[data-cc-state="aimant"] .cc__ring { border-color: var(--text-strong); background: var(--state-hover); }
+  .cc[data-cc-state="texte"] .cc__dot { opacity: 0; }
+  .cc[data-cc-state="texte"] .cc__ring { background: var(--text-strong); border-color: var(--text-strong); }
+  .cc[data-labels="false"] .cc__label { display: none; }
+  .cc[data-blend="difference"] .cc__cursor { mix-blend-mode: difference; }
+  .cc[data-blend="difference"] .cc__ring, .cc[data-blend="difference"] .cc__dot { border-color: var(--surface); }
+  .cc[data-blend="difference"] .cc__dot, .cc[data-blend="difference"][data-cc-state="texte"] .cc__ring { background: var(--surface); }
+  .cc.is-pressed .cc__ring { scale: .9; } .cc.is-pressed .cc__dot { scale: .6; }
+  @media (prefers-reduced-motion: reduce) { .cc__label, .cc__glyph, .cc__dot, .cc__ring { transition: none; } }
+  /* ======================================================================
+     Template « Studio éditorial » — Marge (design éditorial et scénographie).
+     Transitions de page persistantes (View Transitions API, repli en rideau), galerie 3D liée au défilement,
+     curseur contextuel (design Socle), typographie géante. Couleurs : variables de tokens.css uniquement.
+     ====================================================================== */
+  .mg { --mg-ease: cubic-bezier(.16, 1, .3, 1); --mg-io: cubic-bezier(.65, 0, .35, 1); --mg-pad: clamp(16px, 3.4vw, 48px);
+    position: relative; min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--font-sans); overflow-x: clip; }
+  .mg *, .mg *::before, .mg *::after { box-sizing: border-box; }
+  .mg a { color: inherit; }
+  .mg :is(h1, h2, h3, p, dl, dd, ol, ul) { margin: 0; }
+  .mg :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 3px; }
+  .mg :is(section)[id] { scroll-margin-top: 64px; }
+  .mg-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .mg-skip { position: absolute; left: 16px; top: -64px; z-index: 60; padding: 12px 16px; border-radius: var(--radius-ctl); background: var(--accent); color: var(--accent-fg) !important; text-decoration: none; }
+  .mg-skip:focus { top: 12px; }
+
+  /* ---------- En-tête persistant ---------- */
+  .mg-head { position: sticky; top: 0; z-index: var(--z-header); display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 24px; height: 64px; padding: 0 var(--mg-pad);
+    background: color-mix(in srgb, var(--bg) 86%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); view-transition-name: mg-head; }
+  .mg-brand { display: inline-flex; align-items: center; min-height: 44px; border-radius: var(--radius-ctl); color: var(--text-strong); --p: var(--accent); --lt: var(--accent-fg); --a: var(--accent-subtle); --ink: var(--text-strong); }
+  .mg-brand svg { height: 26px; width: auto; display: block; }
+  .mg-nav { display: flex; gap: 4px; justify-self: center; }
+  .mg-nav a { position: relative; display: inline-flex; align-items: center; height: 40px; padding: 0 12px; font-size: 15px; text-decoration: none; color: var(--text-muted); transition: color var(--motion-base); }
+  .mg-nav a::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 8px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform 500ms var(--mg-ease); }
+  .mg-nav a:hover, .mg-nav a[aria-current="true"] { color: var(--text-strong); }
+  .mg-nav a:hover::after, .mg-nav a[aria-current="true"]::after { transform: scaleX(1); transform-origin: left; }
+  .mg-head__meta { display: inline-flex; gap: 8px; font: 500 13px/1 var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .mg-head__meta time { color: var(--text-strong); }
+  .mg-head__cta { display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border-radius: var(--radius-pill); background: var(--accent); color: var(--accent-fg) !important; font-size: 14px; font-weight: 500; text-decoration: none; transition: background-color var(--motion-base); }
+  .mg-head__cta:hover { background: var(--accent-hover); }
+
+  /* ---------- Typographie géante ---------- */
+  .mg-hero { padding: clamp(24px, 4vw, 56px) var(--mg-pad) clamp(48px, 7vw, 112px); border-bottom: 1px solid var(--border); }
+  .mg-hero__word svg { display: block; width: 100%; height: auto; overflow: hidden; }
+  .mg-hero__word path { fill: var(--text-strong); }
+  .mg-hero__word g:last-child path { fill: var(--accent); }
+  .mg-l { transform-box: fill-box; transform-origin: 50% 100%; }
+  .mg.is-js .mg-l { transform: translateY(105%); }
+  .mg.is-ready .mg-l { transform: none; transition: transform 1200ms var(--mg-ease) calc(var(--k) * 80ms + var(--mg-d, 0ms)); }
+  .mg-hero__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-top: clamp(24px, 3vw, 40px); padding-top: 20px; border-top: 1px solid var(--border); }
+  .mg-hero__k { font: 500 13px/20px var(--font-mono); color: var(--text-muted); }
+  .mg-hero__lead { max-width: 30ch; color: var(--text-strong); font-size: clamp(1.25rem, .9rem + 1vw, 1.75rem); line-height: 1.25; font-weight: 500; letter-spacing: -0.02em; text-wrap: pretty; }
+  .mg-hero__m { justify-self: end; text-align: right; font-size: 15px; line-height: 22px; color: var(--text); }
+  .mg-hero__m span { color: var(--text-muted); }
+  .mg.is-js .mg-hero__row > * { opacity: 0; transform: translateY(16px); }
+  .mg.is-ready .mg-hero__row > * { opacity: 1; transform: none; transition: opacity 900ms var(--mg-ease), transform 900ms var(--mg-ease); transition-delay: calc(500ms + var(--mg-d, 0ms)); }
+
+  /* ---------- Couvertures (composées, sans image) ---------- */
+  .mg-cv { --bgc: var(--accent); --fgc: var(--accent-fg); position: relative; display: block; container-type: inline-size; aspect-ratio: 3 / 4; width: 100%; overflow: hidden; border-radius: 4px; background: var(--bgc); color: var(--fgc); }
+  .mg-t--accent { --bgc: var(--accent); --fgc: var(--accent-fg); }
+  .mg-t--ink { --bgc: var(--text-strong); --fgc: var(--bg); }
+  .mg-t--subtle { --bgc: var(--accent-subtle); --fgc: var(--text-strong); }
+  .mg-t--raised { --bgc: var(--raised); --fgc: var(--text-strong); }
+  .mg-t--surface { --bgc: var(--surface); --fgc: var(--accent); box-shadow: inset 0 0 0 1px var(--border); }
+  .mg-cv__art { position: absolute; inset: 0; }
+  .mg-cv__art > * { position: absolute; display: block; }
+  .mg-cv__top { position: absolute; left: 7cqw; right: 7cqw; top: 6cqw; display: flex; justify-content: space-between; font: 500 4.4cqw/1 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; opacity: .82; }
+  .mg-cv__t { position: absolute; left: 7cqw; right: 7cqw; bottom: 13cqw; font: 600 10.5cqw/.98 var(--font-sans); letter-spacing: -0.04em; text-wrap: balance; }
+  .mg-cv__by { position: absolute; left: 7cqw; bottom: 6cqw; font: 500 4.2cqw/1 var(--font-sans); opacity: .82; }
+  /* variantes */
+  .mg-cv--marees .mg-cv__c { left: 50%; top: 40%; width: calc(var(--k) * 22cqw); aspect-ratio: 1; border: .9cqw solid currentColor; border-radius: 50%; translate: -50% -50%; opacity: calc(1 - var(--k) * .18); }
+  .mg-cv--ondes .mg-cv__w { left: calc(10cqw + var(--k) * 9.4cqw); top: 18cqw; width: 2.6cqw; border-radius: 2cqw; background: currentColor; transform-origin: 50% 0; }
+  .mg-cv--fleches .mg-cv__a { left: 10cqw; top: calc(17cqw + var(--k) * 11cqw); height: 6cqw; background: currentColor; clip-path: polygon(0 35%, 82% 35%, 82% 0, 100% 50%, 82% 100%, 82% 65%, 0 65%); opacity: calc(1 - var(--k) * .1); }
+  .mg-cv--herbier .mg-cv__l { left: 50%; width: 30cqw; aspect-ratio: 1 / 2; background: var(--accent); border-radius: 100% 0; }
+  .mg-cv--herbier .mg-cv__l--1 { top: 16cqw; rotate: -32deg; translate: -90% 0; }
+  .mg-cv--herbier .mg-cv__l--2 { top: 10cqw; rotate: 30deg; translate: -10% 0; }
+  .mg-cv--herbier .mg-cv__l--3 { top: 34cqw; rotate: -4deg; translate: -50% 0; width: 22cqw; opacity: .7; }
+  .mg-cv--herbier .mg-cv__stem { left: 50%; top: 52cqw; width: .8cqw; height: 40cqw; background: currentColor; }
+  .mg-cv--numero .mg-cv__n { left: 4cqw; top: 6cqw; font: 600 92cqw/.8 var(--font-sans); letter-spacing: -0.08em; color: var(--accent); }
+  .mg-cv--blocs .mg-cv__b { background: currentColor; }
+  .mg-cv--blocs .mg-cv__b--1 { left: 7cqw; top: 18cqw; width: 54cqw; height: 40cqw; }
+  .mg-cv--blocs .mg-cv__b--2 { left: 66cqw; top: 18cqw; width: 27cqw; height: 18cqw; opacity: .6; }
+  .mg-cv--blocs .mg-cv__b--3 { left: 66cqw; top: 40cqw; width: 27cqw; height: 18cqw; opacity: .35; }
+  .mg-cv--lettres .mg-cv__g { left: 6cqw; top: 12cqw; font: 600 62cqw/.9 var(--font-sans); letter-spacing: -0.06em; color: var(--accent-vivid); }
+  .mg-cv--lettres .mg-cv__rail { left: 7cqw; right: 7cqw; top: 76cqw; height: 1.4cqw; background: currentColor; }
+  .mg-cv--etoile .mg-cv__s { left: 50%; top: 42%; width: 64cqw; height: 9cqw; border-radius: 9cqw; background: var(--accent); translate: -50% -50%; rotate: var(--r, 0deg); }
+
+  /* ---------- Galerie 3D ---------- */
+  .mg-gal { position: relative; height: calc(100vh + var(--mg-run, 2400px)); border-bottom: 1px solid var(--border); }
+  .mg-gal__sticky { position: sticky; top: 64px; height: calc(100vh - 64px); min-height: 520px; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+  .mg-gal__head { display: flex; justify-content: space-between; align-items: baseline; padding: 24px var(--mg-pad) 0; }
+  .mg-gal__t { font: 500 13px/20px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .mg-gal__n { font: 500 13px/20px var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .mg-gal__n b { color: var(--text-strong); font-weight: 600; }
+  .mg-gal__scene { position: relative; perspective: 1700px; perspective-origin: 50% 42%; }
+  .mg-gal__ring { --w: clamp(240px, 22vw, 360px); position: absolute; left: 50%; top: 47%; width: var(--w); aspect-ratio: 3 / 4; margin: 0; padding: 0; list-style: none; transform-style: preserve-3d; translate: -50% -50%; will-change: transform; }
+  .mg-card { position: absolute; inset: 0 auto auto 0; width: var(--w); transform-style: preserve-3d; backface-visibility: hidden; }
+  .mg-card__a { display: block; border-radius: 4px; text-decoration: none; transition: scale 600ms var(--mg-ease); }
+  .mg-card__a:hover { scale: 1.03; }
+  .mg-card__a:focus-visible { outline-offset: 6px; }
+  .mg-card .mg-cv { box-shadow: 0 24px 48px -24px var(--scrim); }
+  .mg-gal__cap { display: grid; justify-items: center; gap: 4px; padding: 0 var(--mg-pad) 12px; text-align: center; }
+  .mg-gal__ct { color: var(--text-strong); font-size: clamp(1.5rem, 1rem + 1.4vw, 2.25rem); line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; }
+  .mg-gal__cm { font-size: 15px; color: var(--text-muted); }
+  .mg-gal__bar { height: 2px; margin: 8px var(--mg-pad) 0; background: var(--border); }
+  .mg-gal__bar i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(var(--mg-p, 0)); }
+  .mg-gal__hint { position: absolute; right: var(--mg-pad); bottom: 20px; font: 500 12px/1 var(--font-mono); color: var(--text-muted); }
+  .mg-gal__cap.is-swap > * { animation: mg-cap 520ms var(--mg-ease); }
+  @keyframes mg-cap { from { opacity: 0; transform: translateY(8px); } }
+  /* Sans 3D (réduire les animations) : un ruban défilant */
+  .mg.is-flat .mg-gal { height: auto; }
+  .mg.is-flat .mg-gal__sticky { position: relative; top: 0; height: auto; min-height: 0; }
+  .mg.is-flat .mg-gal__scene { perspective: none; padding: 24px 0 32px; }
+  .mg.is-flat .mg-gal__ring { position: static; translate: none; transform: none !important; width: auto; display: grid; grid-auto-flow: column; grid-auto-columns: var(--w); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 var(--mg-pad) 8px; }
+  .mg.is-flat .mg-card { position: relative; transform: none !important; opacity: 1 !important; scroll-snap-align: start; }
+  .mg.is-flat .mg-gal__cap, .mg.is-flat .mg-gal__bar, .mg.is-flat .mg-gal__hint, .mg.is-flat .mg-gal__n { display: none; }
+
+  /* ---------- Index ---------- */
+  .mg-sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+  .mg-sec-head p { font: 500 13px/20px var(--font-mono); color: var(--text-muted); }
+  .mg-h2 { color: var(--text-strong); font-size: clamp(2.5rem, 1.2rem + 4.4vw, 6rem); line-height: .95; font-weight: 600; letter-spacing: -0.05em; }
+  .mg-idx { position: relative; padding: clamp(64px, 8vw, 128px) var(--mg-pad); }
+  .mg-idx__list { margin: 0; padding: 0; list-style: none; }
+  .mg-idx__list a { display: grid; grid-template-columns: 80px minmax(0, 2fr) minmax(0, 1.4fr) minmax(0, 1fr) 24px; align-items: center; gap: 24px; min-height: 76px; border-bottom: 1px solid var(--border); text-decoration: none; transition: padding 500ms var(--mg-ease), color var(--motion-base); }
+  .mg-idx__y { font: 500 14px/1 var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .mg-idx__t { color: var(--text-strong); font-size: clamp(1.25rem, .9rem + 1vw, 1.875rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
+  .mg-idx__c, .mg-idx__d { font-size: 15px; color: var(--text-muted); }
+  .mg-idx__i { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; color: var(--text-muted); transition: transform 500ms var(--mg-ease), color var(--motion-base); }
+  @media (hover: hover) {
+    .mg-idx__list:hover a { color: var(--text-muted); }
+    .mg-idx__list a:hover { padding-left: 16px; }
+    .mg-idx__list a:hover .mg-idx__t { color: var(--accent); }
+    .mg-idx__list a:hover .mg-idx__i { transform: translateX(4px) rotate(-45deg); color: var(--accent); }
+  }
+  .mg-idx__peek { position: fixed; left: 0; top: 0; z-index: 5; width: 200px; pointer-events: none; opacity: 0; scale: .7; rotate: -4deg; transition: opacity 260ms var(--ease-out), scale 520ms var(--mg-ease), rotate 520ms var(--mg-ease); }
+  .mg-idx__peek.is-on { opacity: 1; scale: 1; rotate: 0deg; }
+  .mg-idx__peek .mg-cv { box-shadow: var(--shadow-popover); }
+
+  /* ---------- Studio ---------- */
+  .mg-studio { padding: clamp(64px, 8vw, 128px) var(--mg-pad); border-top: 1px solid var(--border); }
+  .mg-studio__big { max-width: 24ch; margin-top: clamp(40px, 5vw, 72px); color: var(--text-strong); font-size: clamp(1.75rem, .9rem + 2.8vw, 4rem); line-height: 1.08; font-weight: 500; letter-spacing: -0.035em; text-wrap: pretty; }
+  .mg-studio__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: clamp(48px, 6vw, 96px); border-top: 1px solid var(--border); }
+  .mg-studio__facts div { display: flex; flex-direction: column-reverse; gap: 8px; padding: 24px 24px 0 0; }
+  .mg-studio__facts div + div { padding-left: 24px; border-left: 1px solid var(--border); }
+  .mg-studio__facts dt { font-size: 15px; color: var(--text-muted); }
+  .mg-studio__facts dd { color: var(--text-strong); font-size: clamp(3rem, 2rem + 3vw, 6rem); line-height: .9; font-weight: 600; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+  .mg-studio__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: clamp(48px, 6vw, 96px); }
+  .mg-studio__cols h3 { margin-bottom: 16px; font: 500 13px/20px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .mg-studio__cols ul { padding: 0; list-style: none; display: grid; }
+  .mg-studio__cols li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 17px; color: var(--text-strong); }
+
+  /* ---------- Projet ---------- */
+  .mg-proj { padding: clamp(24px, 3vw, 40px) var(--mg-pad) 0; }
+  .mg-proj:focus { outline: none; }
+  .mg-proj__top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .mg-proj__back { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 500; text-decoration: none; color: var(--text-strong); }
+  .mg-proj__back svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: transform 500ms var(--mg-ease); }
+  .mg-proj__back:hover svg { transform: translateX(-4px); }
+  .mg-proj__n { font: 500 13px/20px var(--font-mono); color: var(--text-muted); }
+  .mg-proj__t { margin-top: clamp(24px, 4vw, 56px); max-width: 14ch; color: var(--text-strong); font-size: clamp(3rem, 1.2rem + 7vw, 9rem); line-height: .92; font-weight: 600; letter-spacing: -0.055em; text-wrap: balance; view-transition-name: mg-title; width: fit-content; }
+  .mg-proj__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 5vw, 80px); margin-top: clamp(32px, 5vw, 72px); padding-bottom: clamp(64px, 8vw, 128px); }
+  .mg-proj__cover { margin: 0; align-self: start; position: sticky; top: 96px; view-transition-name: mg-cover; }
+  .mg-proj__cover .mg-cv { border-radius: 6px; }
+  .mg-proj__body { display: grid; align-content: start; gap: 32px; }
+  .mg-proj__lead { color: var(--text-strong); font-size: clamp(1.375rem, 1rem + 1.2vw, 2rem); line-height: 1.2; font-weight: 500; letter-spacing: -0.02em; text-wrap: pretty; }
+  .mg-proj__text { display: grid; gap: 16px; max-width: 60ch; font-size: 17px; line-height: 1.65; color: var(--text); }
+  .mg-proj__text p { margin: 0; }
+  .mg-proj__facts { display: grid; border-top: 1px solid var(--border); }
+  .mg-proj__facts div { display: grid; grid-template-columns: 160px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 15px; }
+  .mg-proj__facts dt { color: var(--text-muted); } .mg-proj__facts dd { color: var(--text-strong); }
+  .mg-proj__next { display: grid; gap: 8px; padding: clamp(40px, 6vw, 96px) 0; border-top: 1px solid var(--border); text-decoration: none; }
+  .mg-proj__next span { font: 500 13px/20px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .mg-proj__next b { color: var(--text-strong); font-size: clamp(2.5rem, 1rem + 5vw, 7rem); line-height: .95; font-weight: 600; letter-spacing: -0.05em; transition: color var(--motion-base), padding 600ms var(--mg-ease); }
+  .mg-proj__next:hover b { color: var(--accent); padding-left: 24px; }
+  .mg-proj.is-enter > :not(.mg-proj__t):not(.mg-proj__grid), .mg-proj.is-enter .mg-proj__body { animation: mg-rise 900ms var(--mg-ease) backwards; animation-delay: 160ms; }
+  @keyframes mg-rise { from { opacity: 0; transform: translateY(24px); } }
+
+  /* ---------- Contact ---------- */
+  .mg-contact { padding: clamp(64px, 8vw, 128px) var(--mg-pad) 32px; border-top: 1px solid var(--border); background: var(--surface); }
+  .mg-contact__k { font: 500 13px/20px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .mg-contact__mail { display: block; width: fit-content; max-width: 100%; margin-top: 24px; color: var(--text-strong); font-size: clamp(2rem, .6rem + 6.4vw, 8.5rem); line-height: 1; font-weight: 600; letter-spacing: -0.055em; text-decoration: none; overflow-wrap: anywhere; background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size 700ms var(--mg-ease), color var(--motion-base); padding-bottom: .06em; }
+  .mg-contact__mail:hover { color: var(--accent); background-size: 100% 2px; }
+  .mg-contact__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: clamp(48px, 6vw, 96px); padding-top: 24px; border-top: 1px solid var(--border); font-size: 15px; line-height: 24px; color: var(--text); }
+  .mg-contact__cols b { display: block; margin-bottom: 8px; color: var(--text-strong); font-weight: 600; }
+  .mg-contact__cols a { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  .mg-legal { margin-top: 48px; font-size: 13px; color: var(--text-muted); }
+
+  /* ---------- Rideau (intro + repli des transitions) ---------- */
+  .mg-curtain { position: fixed; inset: 0; z-index: var(--z-overlay); display: grid; grid-template-columns: repeat(6, 1fr); pointer-events: none; visibility: hidden; }
+  .mg-curtain.is-on { visibility: visible; pointer-events: auto; }
+  .mg-curtain i { display: block; background: var(--accent); margin-right: -1px; transform: scaleY(0); }
+  .mg-curtain__l { position: absolute; left: 50%; top: 50%; translate: -50% -50%; color: var(--accent-fg); font-size: clamp(2rem, 1rem + 4vw, 5rem); font-weight: 600; letter-spacing: -0.05em; white-space: nowrap; opacity: 0; transition: opacity 300ms var(--ease-out); }
+  .mg-curtain.is-label .mg-curtain__l { opacity: 1; }
+
+  /* ---------- Curseur contextuel : couleurs reprises du design Socle, zone = toute la page ---------- */
+  .mg.has-cursor .mg-idx__list a, .mg.has-cursor .mg-card__a { cursor: none; }
+
+  /* ---------- View Transitions ---------- */
+  ::view-transition-group(*) { animation-duration: var(--mg-vt, 900ms); animation-timing-function: cubic-bezier(.7, 0, .2, 1); }
+  ::view-transition-old(root) { animation: mg-vt-out var(--mg-vt, 900ms) cubic-bezier(.7, 0, .2, 1) both; }
+  ::view-transition-new(root) { animation: mg-vt-in var(--mg-vt, 900ms) cubic-bezier(.7, 0, .2, 1) both; }
+  ::view-transition-old(mg-head), ::view-transition-new(mg-head) { animation: none; mix-blend-mode: normal; }
+  ::view-transition-old(mg-cover), ::view-transition-new(mg-cover) { height: 100%; width: 100%; object-fit: cover; }
+  ::view-transition-old(mg-title), ::view-transition-new(mg-title) { height: 100%; width: auto; object-fit: none; object-position: left top; }
+  @keyframes mg-vt-out { to { opacity: 0; transform: translateY(-40px) scale(.98); } }
+  @keyframes mg-vt-in { from { opacity: 0; transform: translateY(64px); } }
+
+  /* ---------- Téléphone ---------- */
+  @media (max-width: 899px) {
+    .mg-head { grid-template-columns: auto 1fr auto; gap: 12px; height: 56px; }
+    .mg-nav, .mg-head__meta { display: none; }
+    .mg-head__cta { justify-self: end; grid-column: 3; height: 40px; }
+    .mg :is(section)[id] { scroll-margin-top: 56px; }
+    .mg-hero__row { grid-template-columns: 1fr; gap: 16px; }
+    .mg-hero__k { order: -1; }
+    .mg-hero__m { justify-self: start; text-align: left; }
+    .mg-gal__sticky { top: 56px; height: calc(100svh - 56px); min-height: 480px; }
+    .mg-gal__ring { --w: min(58vw, 260px); }
+    .mg-gal__scene { perspective: 900px; }
+    .mg-gal__hint { display: none; }
+    .mg-idx__list a { grid-template-columns: 52px minmax(0, 1fr) 20px; grid-template-rows: auto auto; gap: 4px 12px; min-height: 0; padding: 16px 0; }
+    .mg-idx__y { grid-row: 1 / 3; align-self: start; padding-top: 6px; }
+    .mg-idx__t { grid-column: 2; font-size: 20px; }
+    .mg-idx__c { grid-column: 2; grid-row: 2; font-size: 14px; }
+    .mg-idx__d { display: none; }
+    .mg-idx__i { grid-column: 3; grid-row: 1 / 3; }
+    .mg-idx__peek { display: none; }
+    .mg-studio__facts { grid-template-columns: 1fr; }
+    .mg-studio__facts div { flex-direction: row-reverse; justify-content: space-between; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .mg-studio__facts div + div { padding-left: 0; border-left: 0; }
+    .mg-studio__facts dd { font-size: 48px; }
+    .mg-studio__cols { grid-template-columns: 1fr; }
+    .mg-studio__cols li { font-size: 16px; }
+    .mg-proj__grid { grid-template-columns: 1fr; }
+    .mg-proj__cover { position: relative; top: 0; }
+    .mg-proj__facts div { grid-template-columns: 1fr; gap: 2px; }
+    .mg-proj__text { font-size: 16px; }
+    .mg-contact__cols { grid-template-columns: 1fr; gap: 24px; }
+    .mg-contact__cols a { display: inline-flex; min-height: 44px; align-items: center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mg.is-js .mg-l, .mg.is-js .mg-hero__row > * { transform: none !important; opacity: 1 !important; transition: none !important; }
+    .mg-card__a, .mg-idx__list a, .mg-idx__peek, .mg-proj__next b, .mg-contact__mail { transition: none !important; }
+    .mg-proj.is-enter > *, .mg-proj.is-enter .mg-proj__body, .mg-gal__cap.is-swap > * { animation: none !important; }
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  }
+</style>
+
+<script>
+/* ——— Curseur contextuel (Socle) ——— */
+/* ContextCursor : un curseur à ressort qui change de rôle selon la cible (data-cursor="voir | glisser | lien | aimant | texte"),
+   s'accroche aux boutons en prenant leur forme et s'étire avec la vitesse. Uniquement avec une souris ; rien au tactile. */
+(function () {
+  var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+  var FINE = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)');
+  var SIZES = { voir: 96, glisser: 112, lien: 32, defaut: 36 };
+
+  function read(zone) {
+    var d = zone.dataset;
+    return { stiffness: +d.stiffness || 320, damping: +d.damping || 26, dot: +d.dot || 8, labels: d.labels !== 'false', blend: d.blend || 'normal', magnet: d.magnet != null ? +d.magnet : 0.25, stretch: d.stretch !== 'false' };
+  }
+
+  /* Un ressort amorti par valeur animée : x, y, largeur, hauteur, rayon. */
+  function Spring(v) { this.v = v; this.t = v; this.vel = 0; }
+  Spring.prototype.step = function (k, c, dt) { this.vel += ((this.t - this.v) * k - this.vel * c) * dt; this.v += this.vel * dt; return Math.abs(this.t - this.v) + Math.abs(this.vel) * 0.01; };
+  Spring.prototype.snap = function (v) { this.v = this.t = v; this.vel = 0; };
+
+  /* Glisser pour faire défiler, avec inertie au relâché (le défilement natif reste disponible). */
+  function dragScroll(track) {
+    var down = false, sx = 0, sl = 0, lastX = 0, lastT = 0, vel = 0, moved = 0, raf = 0;
+    track.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      down = true; moved = 0; sx = lastX = e.clientX; sl = track.scrollLeft; lastT = performance.now(); vel = 0; cancelAnimationFrame(raf);
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!down) return;
+      var dx = e.clientX - sx; moved = Math.max(moved, Math.abs(dx));
+      if (moved > 4) track.classList.add('is-dragging');
+      track.scrollLeft = sl - dx;
+      var now = performance.now(); vel = (e.clientX - lastX) / Math.max(1, now - lastT); lastX = e.clientX; lastT = now;
+    });
+    window.addEventListener('pointerup', function () {
+      if (!down) return; down = false;
+      var v = -vel * 16;
+      (function glide() {
+        if (Math.abs(v) < 0.4 || REDUCED.matches) { track.classList.remove('is-dragging'); return; }
+        track.scrollLeft += v; v *= 0.93; raf = requestAnimationFrame(glide);
+      })();
+    });
+    track.addEventListener('click', function (e) { if (moved > 4) { e.preventDefault(); e.stopPropagation(); } }, true);
+  }
+
+  function init(scope) {
+    var zone = (scope || document).querySelector('[data-cursor-zone]');
+    if (!zone || zone._cc) return zone && zone._cc;
+    var o = read(zone);
+    var cur = zone.querySelector('.cc__cursor'), ring = cur.querySelector('.cc__ring'), dot = cur.querySelector('.cc__dot');
+    var labelEl = cur.querySelector('[data-cc-label]'), glyphs = cur.querySelectorAll('.cc__glyph');
+    Array.prototype.forEach.call(zone.querySelectorAll('[data-drag]'), dragScroll);
+
+    var X = new Spring(-100), Y = new Spring(-100), Wd = new Spring(SIZES.defaut), Ht = new Spring(SIZES.defaut), R = new Spring(SIZES.defaut / 2);
+    var mx = -100, my = -100, raf = 0, last = 0, state = 'defaut', target = null, enabled = false, magnetEl = null, mgx = 0, mgy = 0;
+
+    function apply() {
+      zone.dataset.labels = String(o.labels); zone.dataset.blend = o.blend;
+      zone.style.setProperty('--cc-dot', o.dot + 'px');
+    }
+    function enable(on) {
+      enabled = on && FINE.matches;
+      zone.classList.toggle('has-cursor', enabled);
+      if (!enabled) release();
+    }
+    function release() {
+      if (magnetEl) { magnetEl.style.translate = ''; magnetEl = null; } mgx = mgy = 0;
+    }
+
+    function setState(next, el) {
+      target = el;
+      if (next !== 'aimant') release();
+      if (next === state) return;
+      state = next; zone.dataset.ccState = next;
+      if (el && (next === 'voir' || next === 'glisser')) labelEl.textContent = el.getAttribute('data-cursor-label') || (next === 'voir' ? 'Voir' : 'Glisser');
+    }
+    function targets() {
+      var sz = SIZES[state] || SIZES.defaut;
+      if (state === 'aimant' && target) {
+        if (magnetEl && magnetEl !== target) release();
+        var r = target.getBoundingClientRect(), cs = getComputedStyle(target), pad = 6;
+        var rad = parseFloat(cs.borderTopLeftRadius) || 8;
+        // Centre au repos : on retire le décalage magnétique déjà appliqué
+        var cx = r.left + r.width / 2 - mgx, cy = r.top + r.height / 2 - mgy;
+        // L'élément suit un peu le pointeur, le curseur l'enveloppe.
+        var px = (mx - cx) * o.magnet, py = (my - cy) * o.magnet;
+        if (REDUCED.matches) { px = py = 0; } else { target.style.translate = px.toFixed(1) + 'px ' + py.toFixed(1) + 'px'; magnetEl = target; mgx = px; mgy = py; }
+        X.t = cx + px; Y.t = cy + py; Wd.t = r.width + pad * 2; Ht.t = r.height + pad * 2; R.t = Math.min(rad + pad, (r.height + pad * 2) / 2);
+        return;
+      }
+      if (state === 'texte' && target) {
+        var lh = parseFloat(getComputedStyle(target).lineHeight) || 24;
+        X.t = mx; Y.t = my; Wd.t = 2; Ht.t = Math.min(32, lh + 4); R.t = 1; return;
+      }
+      // Lien : petite pastille décalée en bas à droite, le texte du lien reste lisible
+      var off = state === 'lien' ? 18 : 0;
+      X.t = mx + off; Y.t = my + off; Wd.t = sz; Ht.t = sz; R.t = sz / 2;
+    }
+    function frame(now) {
+      raf = 0;
+      var dt = Math.min(0.032, last ? (now - last) / 1000 : 0.016); last = now;
+      targets();
+      var k = o.stiffness, c = o.damping, e = 0;
+      if (REDUCED.matches) { X.snap(X.t); Y.snap(Y.t); Wd.snap(Wd.t); Ht.snap(Ht.t); R.snap(R.t); }
+      else { e += X.step(k, c, dt) + Y.step(k, c, dt) + Wd.step(k * 0.8, c, dt) + Ht.step(k * 0.8, c, dt) + R.step(k * 0.8, c, dt); }
+      // Étirement selon la vitesse (pas sur une cible aimantée ni sur le texte)
+      var sx = 1, sy = 1, ang = 0;
+      if (o.stretch && !REDUCED.matches && state !== 'aimant' && state !== 'texte') {
+        var sp = Math.hypot(X.vel, Y.vel), s = Math.min(0.35, sp / 5000);
+        if (s > 0.01) { sx = 1 + s; sy = 1 - s * 0.6; ang = Math.atan2(Y.vel, X.vel) * 57.2958; }
+      }
+      var w = Math.max(2, Wd.v), h = Math.max(2, Ht.v);
+      ring.style.width = w + 'px'; ring.style.height = h + 'px'; ring.style.borderRadius = Math.max(1, R.v) + 'px';
+      ring.style.transform = 'translate(' + (X.v - w / 2).toFixed(2) + 'px,' + (Y.v - h / 2).toFixed(2) + 'px) rotate(' + ang.toFixed(1) + 'deg) scale(' + sx.toFixed(3) + ',' + sy.toFixed(3) + ')';
+      ring.style.transformOrigin = (w / 2) + 'px ' + (h / 2) + 'px';
+      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
+      var lt = 'translate(' + X.v.toFixed(2) + 'px,' + Y.v.toFixed(2) + 'px)';
+      labelEl.style.transform = lt; for (var i = 0; i < glyphs.length; i++) glyphs[i].style.transform = lt;
+      if (e > 0.05 || state === 'aimant') raf = requestAnimationFrame(frame); else last = 0;
+    }
+    function wake() { if (!raf && enabled) raf = requestAnimationFrame(frame); }
+
+    function onMove(e) {
+      if (e.pointerType !== 'mouse') { if (enabled) enable(false); return; }
+      if (!enabled) { enable(true); X.snap(e.clientX); Y.snap(e.clientY); }
+      mx = e.clientX; my = e.clientY;
+      zone.classList.remove('is-out');
+      var el = e.target.closest && e.target.closest('[data-cursor]');
+      if (el && !zone.contains(el)) el = null;
+      setState(el ? el.getAttribute('data-cursor') : 'defaut', el);
+      wake();
+    }
+    zone.addEventListener('pointermove', onMove, { passive: true });
+    zone.addEventListener('pointerover', onMove, { passive: true });
+    zone.addEventListener('pointerleave', function () { zone.classList.add('is-out'); setState('defaut', null); release(); });
+    zone.addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse') zone.classList.add('is-pressed'); });
+    window.addEventListener('pointerup', function () { zone.classList.remove('is-pressed'); });
+    window.addEventListener('scroll', function () { if (enabled) wake(); }, { passive: true });
+    zone.addEventListener('touchstart', function () { enable(false); }, { passive: true });
+    if (FINE.addEventListener) FINE.addEventListener('change', function () { enable(FINE.matches); });
+
+    apply(); zone.dataset.ccState = 'defaut';
+    var api = {
+      update: function (n) { o = n; apply(); wake(); },
+      /* Démo et tests : poser le curseur en (x, y), coordonnées de la fenêtre */
+      at: function (x, y) { enable(true); if (!FINE.matches) { enabled = true; zone.classList.add('has-cursor'); } mx = x; my = y; X.snap(x); Y.snap(y); var el = document.elementFromPoint(x, y); el = el && el.closest('[data-cursor]'); setState(el ? el.getAttribute('data-cursor') : 'defaut', el); wake(); },
+    };
+    zone._cc = api;
+    return api;
+  }
+
+  window.ContextCursor = { init: init, read: read };
+  if (document.readyState !== 'loading') init(document); else document.addEventListener('DOMContentLoaded', function () { init(document); });
+})();
+/* ——— Template ——— */
+(function () {
+  /* Template Studio éditorial : rideau d’entrée, galerie 3D liée au défilement, aperçus de l’index,
+     pages projet par View Transitions (repli : rideau en store), en-tête persistant. */
+  var PROJECTS = [{"id": "atlas-des-marees", "titre": "Atlas des marées", "annee": "2026", "client": "Éditions du Large", "disc": "Livre", "v": "marees", "t": "accent", "court": "Un atlas de 312 pages qui lit la côte atlantique au rythme de ses marées.", "texte": ["Trois ans de relevés, quarante cartes redessinées et un calendrier des coefficients qui court sur tout le livre : chaque double page suit l’heure de la pleine mer.", "Nous avons dessiné une grille à deux vitesses, serrée pour les tableaux, ample pour les cartes, et choisi un papier assez fin pour que la marée suivante transparaisse."], "faits": [["Format", "24 × 32 cm, 312 pages"], ["Tirage", "4 000 exemplaires"], ["Prix", "Prix du beau livre 2026"]]}, {"id": "le-bruit-des-villes", "titre": "Le bruit des villes", "annee": "2025", "client": "Musée des Docks", "disc": "Exposition", "v": "ondes", "t": "ink", "court": "Une exposition sonore de 900 m² où chaque salle a sa propre fréquence.", "texte": ["Le parcours se lit à l’oreille : douze salles, douze enregistrements de villes, et une signalétique qui donne la mesure du bruit avant d’entrer.", "Les cartels ont été composés comme des partitions ; le catalogue reprend leurs portées et les décibels relevés le jour du vernissage."], "faits": [["Surface", "900 m², 12 salles"], ["Visiteurs", "84 000 en cinq mois"], ["Durée", "Mars à juillet 2025"]]}, {"id": "halle-saint-roch", "titre": "Halle Saint-Roch", "annee": "2025", "client": "Ville de Montpellier", "disc": "Signalétique", "v": "fleches", "t": "subtle", "court": "La signalétique d’une halle de 1932 rouverte au public, lisible à quarante mètres.", "texte": ["Une famille de 64 panneaux émaillés, une typographie ouverte dessinée pour la lecture de loin et un code couleur par allée, repris au sol.", "Tout est démontable : les panneaux s’accrochent à la charpente d’origine sans un seul perçage."], "faits": [["Éléments", "64 panneaux émaillés"], ["Lisibilité", "40 m pour les directions"], ["Livraison", "Septembre 2025"]]}, {"id": "herbier-du-jardin", "titre": "Herbier du jardin", "annee": "2024", "client": "Jardin botanique de Nantes", "disc": "Catalogue", "v": "herbier", "t": "raised", "court": "Le catalogue raisonné de 1 200 planches d’herbier, numérisées puis remises en page.", "texte": ["Chaque planche garde sa taille réelle à la double page ; les notices, en marge, suivent la main des botanistes du XIXᵉ siècle.", "Un index par couleur de fleur, imaginé avec les jardiniers, ouvre le livre à ceux qui ne connaissent pas les noms latins."], "faits": [["Planches", "1 200 numérisées"], ["Pages", "448"], ["Index", "Par couleur et par saison"]]}, {"id": "revue-pli", "titre": "Revue Pli, n° 12", "annee": "2024", "client": "Pli, revue d’architecture", "disc": "Revue", "v": "numero", "t": "surface", "court": "La nouvelle formule d’une revue d’architecture : un pli, un sujet, un numéro.", "texte": ["La couverture se déplie en affiche ; le sommaire tient sur la tranche. Chaque numéro choisit une couleur, et une seule.", "Nous avons gardé le papier non couché de la première formule, rendu la grille plus libre et ouvert les marges aux annotations des auteurs."], "faits": [["Rythme", "Deux numéros par an"], ["Format", "21 × 28 cm, dépliant 56 × 84 cm"], ["Abonnés", "+ 38 % en un an"]]}, {"id": "lumiere-froide", "titre": "Lumière froide", "annee": "2023", "client": "Centre photographique d’Arles", "disc": "Exposition", "v": "blocs", "t": "accent", "court": "Une exposition de photographie nordique, accrochée à hauteur d’enfant.", "texte": ["Les tirages descendent à 1,10 m du sol ; les textes, eux, restent à hauteur d’adulte. Deux lectures pour une même salle.", "Le livret de visite tient dans une poche et se déplie en plan."], "faits": [["Tirages", "86 photographies"], ["Hauteur", "1,10 m au centre"], ["Lieu", "Arles, été 2023"]]}, {"id": "lettres-du-metro", "titre": "Lettres du métro", "annee": "2023", "client": "Éditions Ligne", "disc": "Livre", "v": "lettres", "t": "ink", "court": "L’histoire des lettres peintes du métro, de 1900 à nos jours, en 140 relevés.", "texte": ["Chaque lettre a été relevée sur place, au calque, puis vectorisée. Le livre les montre à l’échelle, avec la station et l’année de leur pose.", "Une jaquette en calque reprend le plan du réseau ; elle se superpose aux pages de garde."], "faits": [["Relevés", "140 stations"], ["Pages", "256"], ["Jaquette", "Calque imprimé"]]}, {"id": "ateliers-ouverts", "titre": "Ateliers ouverts", "annee": "2022", "client": "Collectif Friche 42", "disc": "Identité", "v": "etoile", "t": "subtle", "court": "L’identité d’un week-end d’ateliers d’artistes ouverts dans une ancienne usine.", "texte": ["Un signe simple, une étoile à huit branches, que chaque artiste a redessinée à sa manière : 120 variantes pour 120 ateliers.", "Les affiches, le plan et les badges partagent la même grille, imprimée en une couleur sur papier recyclé."], "faits": [["Ateliers", "120 ouverts"], ["Variantes", "120 étoiles"], ["Public", "9 500 visiteurs"]]}];
+  var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+  var IO = 'cubic-bezier(.65, 0, .35, 1)';
+
+  document.querySelectorAll('[data-template-studio]').forEach(function (root) {
+    if (root._mg) return;
+    var q = function (s) { return root.querySelector(s); }, qa = function (s) { return [].slice.call(root.querySelectorAll(s)); };
+    var views = { index: q('[data-mg-view="index"]'), projet: q('[data-mg-view="projet"]') };
+    var live = q('[data-mg-live]'), curtain = q('[data-mg-curtain]'), curtainL = q('[data-mg-curtain-l]');
+    var current = 'index', currentId = null, busy = false, savedY = 0;
+    root.classList.add('is-js');
+
+    /* ——— Heure du studio, à la minute ——— */
+    var clock = q('[data-mg-clock]'), tick = 0;
+    (function time() {
+      try { clock.textContent = new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Paris' }).format(new Date()); } catch (e) {}
+      tick = setTimeout(time, 60000 - (Date.now() % 60000));
+    })();
+
+    /* ——— Rideau : six lames d’accent qui tombent puis se relèvent (même mouvement que le design « Rideaux », mode store) ——— */
+    curtain.insertAdjacentHTML('afterbegin', '<i></i><i></i><i></i><i></i><i></i><i></i>');
+    var slats = qa('.mg-curtain i');
+    function curtainRun(dir, T) {
+      var n = slats.length, each = T * 0.62, st = (T - each) / (n - 1);
+      return Promise.all(slats.map(function (s, i) {
+        s.style.transformOrigin = dir === 'in' ? 'center top' : 'center bottom';
+        var a = s.animate(dir === 'in' ? [{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }] : [{ transform: 'scaleY(1)' }, { transform: 'scaleY(0)' }],
+          { duration: each, delay: i * st, easing: IO, fill: 'forwards' });
+        return a.finished;
+      }));
+    }
+    function cover(label, swap) {
+      var T = 900;
+      curtainL.textContent = label || 'Marge';
+      curtain.classList.add('is-on');
+      return curtainRun('in', T).then(function () {
+        curtain.classList.add('is-label');
+        swap && swap();
+        return new Promise(function (r) { setTimeout(r, 260); });
+      }).then(function () { curtain.classList.remove('is-label'); return curtainRun('out', T); })
+        .then(function () { curtain.classList.remove('is-on'); slats.forEach(function (s) { s.getAnimations().forEach(function (a) { a.cancel(); }); }); });
+    }
+
+    function ready(delay) { root.style.setProperty('--mg-d', (delay || 0) + 'ms'); requestAnimationFrame(function () { requestAnimationFrame(function () { root.classList.add('is-ready'); }); }); }
+    if (root.dataset.intro === 'true' && !REDUCE.matches && 'animate' in Element.prototype) {
+      slats.forEach(function (s) { s.style.transform = 'scaleY(1)'; }); curtain.classList.add('is-on', 'is-label');
+      setTimeout(function () { curtain.classList.remove('is-label'); curtainRun('out', 1000).then(function () { curtain.classList.remove('is-on'); slats.forEach(function (s) { s.style.transform = ''; s.getAnimations().forEach(function (a) { a.cancel(); }); }); }); ready(380); }, 520);
+    } else ready(0);
+
+    /* ——— Galerie 3D : un anneau de couvertures qui tourne avec le défilement, avec inertie ——— */
+    var gal = q('[data-mg-gal]'), ring = q('[data-mg-ring]'), cards = qa('.mg-card'), N = cards.length, STEP = 360 / N;
+    var capT = q('[data-mg-cap-t]'), capM = q('[data-mg-cap-m]'), cap = q('.mg-gal__cap'), nEl = q('[data-mg-n]'), bar = q('.mg-gal__bar');
+    var ang = 0, target = 0, raf = 0, galVisible = true, active = -1, R = 400;
+    function flat() { return REDUCE.matches; }
+    function layout() {
+      root.classList.toggle('is-flat', flat());
+      if (flat()) return;
+      var w = cards[0].getBoundingClientRect().width / (cards[0]._s || 1) || ring.offsetWidth;
+      var k = parseFloat(root.dataset.rayon) || 1;
+      R = Math.round((ring.offsetWidth / 2) / Math.tan(Math.PI / N) * 1.3 * k);
+      cards.forEach(function (c, i) { c.style.transform = 'rotateY(' + (i * STEP) + 'deg) translateZ(' + R + 'px)'; });
+      var run = Math.round(innerHeight * (N - 1) * 0.42 / (parseFloat(root.dataset.vitesse) || 1));
+      gal.style.setProperty('--mg-run', run + 'px');
+      measure(); paint(true);
+    }
+    function measure() {
+      var r = gal.getBoundingClientRect(), total = gal.offsetHeight - innerHeight;
+      var p = Math.max(0, Math.min(1, -r.top / Math.max(1, total)));
+      /* Chaque couverture marque un temps au premier plan : la rotation se fait sur le milieu de chaque intervalle. */
+      var f = p * (N - 1), k = Math.floor(f), fr = f - k, x = Math.max(0, Math.min(1, (fr - 0.22) / 0.56));
+      target = -(k + x * x * (3 - 2 * x)) * STEP;
+      gal.style.setProperty('--mg-p', p.toFixed(4));
+    }
+    function paint(snap) {
+      if (snap) ang = target;
+      ring.style.transform = 'translateZ(' + (-R) + 'px) rotateX(-4deg) rotateY(' + ang.toFixed(3) + 'deg)';
+      cards.forEach(function (c, i) {
+        var a = ((i * STEP + ang) % 360 + 540) % 360 - 180, cs = Math.cos(a * Math.PI / 180);
+        c.style.opacity = (0.18 + 0.82 * Math.max(0, cs)).toFixed(3);
+        c.style.visibility = cs < -0.2 ? 'hidden' : 'visible';
+        c.querySelector('a').tabIndex = Math.abs(a) < STEP / 2 ? 0 : -1;
+      });
+      var idx = ((Math.round(-ang / STEP) % N) + N) % N;
+      if (idx !== active) {
+        active = idx; var p = PROJECTS[idx];
+        capT.textContent = p.titre; capM.textContent = p.disc + ' · ' + p.client + ' · ' + p.annee;
+        nEl.textContent = String(idx + 1).padStart(2, '0');
+        cap.classList.remove('is-swap'); void cap.offsetWidth; cap.classList.add('is-swap');
+      }
+    }
+    function loop() {
+      raf = 0; if (!galVisible || current !== 'index' || flat()) return;
+      var d = target - ang; ang += d * 0.12;
+      if (Math.abs(d) < 0.02) ang = target;
+      paint(false);
+      if (ang !== target) raf = requestAnimationFrame(loop);
+    }
+    function onScroll() { if (current !== 'index' || flat()) return; measure(); if (!raf) raf = requestAnimationFrame(loop); }
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', layout);
+    if (REDUCE.addEventListener) REDUCE.addEventListener('change', layout);
+    var gio = 'IntersectionObserver' in window ? new IntersectionObserver(function (e) { galVisible = e[0].isIntersecting; if (galVisible) onScroll(); }) : null;
+    if (gio) gio.observe(gal);
+    /* Clavier : la couverture qui reçoit le focus vient au premier plan */
+    ring.addEventListener('focusin', function (e) {
+      var c = e.target.closest('.mg-card'); if (!c || flat()) return;
+      var i = cards.indexOf(c), total = gal.offsetHeight - innerHeight;
+      scrollTo({ top: gal.getBoundingClientRect().top + scrollY + total * (i / (N - 1)), behavior: REDUCE.matches ? 'auto' : 'smooth' });
+    });
+    layout();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+
+    /* ——— Index : la couverture suit le curseur au survol d’une ligne ——— */
+    var peek = q('[data-mg-peek]'), idx = q('[data-mg-idx]'), px = 0, py = 0, tx = 0, ty = 0, praf = 0, fine = window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)');
+    function peekLoop() { praf = 0; px += (tx - px) * 0.18; py += (ty - py) * 0.18; peek.style.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px)'; if (Math.abs(tx - px) + Math.abs(ty - py) > .5) praf = requestAnimationFrame(peekLoop); }
+    idx.addEventListener('pointermove', function (e) {
+      if (!fine.matches) return;
+      var a = e.target.closest('a'); if (!a) return;
+      if (peek._id !== a.dataset.mgOpen) { peek._id = a.dataset.mgOpen; var src = q('.mg-card [data-mg-open="' + a.dataset.mgOpen + '"] .mg-cv'); peek.innerHTML = src ? src.outerHTML : ''; }
+      tx = e.clientX + 24; ty = e.clientY - 140; if (!peek.classList.contains('is-on')) { px = tx; py = ty; }
+      peek.classList.add('is-on'); if (!praf && !REDUCE.matches) praf = requestAnimationFrame(peekLoop); else if (REDUCE.matches) { px = tx; py = ty; peekLoop(); }
+    });
+    idx.addEventListener('pointerleave', function () { peek.classList.remove('is-on'); });
+
+    /* ——— Page projet ——— */
+    var P = { n: q('[data-mg-p-n]'), t: q('[data-mg-p-t]'), cover: q('[data-mg-p-cover]'), lead: q('[data-mg-p-lead]'), text: q('[data-mg-p-text]'), facts: q('[data-mg-p-facts]'), next: q('[data-mg-next]'), nextT: q('[data-mg-next-t]') };
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function fill(id) {
+      var i = PROJECTS.findIndex(function (p) { return p.id === id; }), p = PROJECTS[i], nx = PROJECTS[(i + 1) % N];
+      P.n.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(N).padStart(2, '0') + ' · ' + p.disc + ' · ' + p.annee;
+      P.t.textContent = p.titre;
+      var src = q('.mg-card [data-mg-open="' + id + '"] .mg-cv'); P.cover.innerHTML = src ? src.outerHTML : '';
+      P.lead.textContent = p.court;
+      P.text.innerHTML = p.texte.map(function (x) { return '<p>' + esc(x) + '</p>'; }).join('');
+      P.facts.innerHTML = [['Client', p.client], ['Discipline', p.disc], ['Année', p.annee]].concat(p.faits).map(function (f) { return '<div><dt>' + esc(f[0]) + '</dt><dd>' + esc(f[1]) + '</dd></div>'; }).join('');
+      P.next.setAttribute('href', '#/projet/' + nx.id); P.next.dataset.mgOpen = nx.id; P.nextT.textContent = nx.titre;
+      document.title = p.titre + ' — Marge';
+      return p;
+    }
+    function cardCover(id) { var a = q('.mg-card [data-mg-open="' + id + '"]'); return a && a.querySelector('.mg-cv'); }
+    function show(view, id) {
+      if (view === 'projet') { savedY = current === 'index' ? scrollY : savedY; fill(id); views.index.hidden = true; views.projet.hidden = false; views.projet.classList.remove('is-enter'); void views.projet.offsetWidth; views.projet.classList.add('is-enter'); scrollTo(0, 0); }
+      else { views.projet.hidden = true; views.index.hidden = false; document.title = 'Marge — studio de design éditorial'; scrollTo(0, savedY); measure(); paint(true); }
+      current = view; currentId = id || null;
+    }
+    function after(view, p) {
+      live.textContent = view === 'projet' ? p.titre + ', page projet' : 'Index des travaux';
+      if (view === 'projet') views.projet.focus({ preventScroll: true });
+      else { var a = currentFrom && q('.mg-card [data-mg-open="' + currentFrom + '"]'); if (a && !flat()) a.focus({ preventScroll: true }); }
+      root.dispatchEvent(new CustomEvent('mg:change', { detail: { view: view, id: currentId } }));
+    }
+    var currentFrom = null;
+    function go(view, id, opts) {
+      if (busy || (view === current && id === currentId)) return Promise.resolve();
+      opts = opts || {};
+      var mode = root.dataset.transition || 'native', p = id && PROJECTS.filter(function (x) { return x.id === id; })[0];
+      if (view === 'projet' && !p) return Promise.resolve();
+      var fromId = currentId, fromView = current; currentFrom = fromId;
+      var vt = mode === 'native' && document.startViewTransition && !REDUCE.matches;
+      if (mode === 'aucune' || (REDUCE.matches && mode !== 'rideau')) { show(view, id); after(view, p); return Promise.resolve(); }
+      if (!vt) { busy = true; return cover(view === 'projet' ? p.titre : 'Travaux', function () { show(view, id); }).then(function () { busy = false; after(view, p); }); }
+      /* View Transition : la couverture et le titre passent d’une vue à l’autre, l’en-tête ne bouge pas. */
+      var shared = null;
+      if (fromView === 'index' && view === 'projet' && !opts.fromNext) shared = cardCover(id);
+      if (shared) shared.style.viewTransitionName = 'mg-cover';
+      if (fromView === 'projet' && view === 'projet') { P.cover.style.viewTransitionName = 'none'; P.t.style.viewTransitionName = 'none'; }
+      if (fromView === 'projet' && view === 'index') P.t.style.viewTransitionName = 'none';
+      busy = true;
+      var t = document.startViewTransition(function () {
+        if (shared) shared.style.viewTransitionName = '';
+        P.cover.style.viewTransitionName = ''; P.t.style.viewTransitionName = '';
+        show(view, id);
+        if (view === 'index' && fromId) { var back = cardCover(fromId); if (back) { P.cover.style.viewTransitionName = 'none'; back.style.viewTransitionName = 'mg-cover'; root._backName = back; } }
+        if (view === 'projet' && fromView === 'projet') { P.cover.style.viewTransitionName = 'none'; }
+      });
+      return t.finished.catch(function () {}).then(function () {
+        busy = false;
+        if (root._backName) { root._backName.style.viewTransitionName = ''; root._backName = null; }
+        P.cover.style.viewTransitionName = ''; P.t.style.viewTransitionName = '';
+        after(view, p);
+      });
+    }
+
+    /* Routage par l’adresse (#/projet/<id>), le bouton Précédent fonctionne. */
+    function route() {
+      var h = location.hash, m = h.match(/^#\/projet\/([\w-]+)/);
+      if (m) return go('projet', m[1], { fromNext: current === 'projet' });
+      if (h === '#/' || h === '' || h === '#') return go('index');
+      var sec = h.length > 1 && root.querySelector(h);
+      if (sec && current === 'projet' && views.index.contains(sec)) go('index').then(function () { sec.scrollIntoView(); });
+    }
+    addEventListener('hashchange', route);
+    root.addEventListener('click', function (e) {
+      var a = e.target.closest('[data-mg-open]');
+      if (a) { e.preventDefault(); setHash('#/projet/' + a.dataset.mgOpen); return; }
+      if (e.target.closest('[data-mg-back], [data-mg-home]')) { e.preventDefault(); if (current === 'projet') setHash('#/'); else scrollTo({ top: 0, behavior: REDUCE.matches ? 'auto' : 'smooth' }); }
+    });
+    function setHash(h) { if (location.hash === h) route(); else location.hash = h; }
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && current === 'projet') setHash('#/'); });
+
+    /* Section courante dans la navigation */
+    var links = qa('.mg-nav a');
+    if ('IntersectionObserver' in window) {
+      var cur = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) links.forEach(function (a) { if (a.getAttribute('href') === '#' + e.target.id) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); }); }); }, { rootMargin: '-45% 0px -50% 0px' });
+      links.forEach(function (a) { var s = root.querySelector(a.getAttribute('href')); if (s) cur.observe(s); });
+    }
+    if (/^#\/projet\//.test(location.hash)) { var m0 = location.hash.match(/^#\/projet\/([\w-]+)/); if (m0 && PROJECTS.some(function (p) { return p.id === m0[1]; })) show('projet', m0[1]); }
+
+    root._mg = { go: go, layout: layout, open: function (id) { setHash('#/projet/' + id); }, home: function () { setHash('#/'); }, get view() { return current; } };
+  });
+})();
+</script>

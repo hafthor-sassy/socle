@@ -639,6 +639,10 @@ main:focus, #contenu:focus { outline: none; }
 .logo-safe { margin: -8px 0 20px; flex-wrap: wrap; }
 .logo-card__art { display: block; }
 .logo-card__title a { color: var(--text-strong); min-width: 0; }
+/* Secteur long (Idées de logos) : la pastille se tronque au lieu d'élargir la carte. */
+.logo-card, .logo-card__body { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+.logo-card__title .badge { min-width: 0; max-width: 60%; flex-shrink: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; line-height: 20px; align-self: center; flex: 0 1 auto; }
+.logo-sect .select { width: auto; max-width: min(100%, 360px); }
 @media (hover: hover) and (pointer: fine) { .logo-card:hover { border-color: var(--border-control); } .logo-card__title a:hover { text-decoration: underline; text-underline-offset: 3px; } }
 .logo-card__foot { gap: 8px; }
 .logo-card__foot .palbtn { flex: 0 1 auto; }

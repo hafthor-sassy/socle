@@ -48,7 +48,7 @@ export function OtpInput({
       try { ok = await onComplete?.(v); } catch { ok = false; }
       if (ok) { setState('success'); return; }
       setState('error'); setShake((n) => n + 1);
-      navigator.vibrate?.([10, 40, 10]);
+      (navigator.userActivation?.hasBeenActive ?? true) && navigator.vibrate?.([10, 40, 10]);
       setTimeout(() => { setValue(''); input.current?.focus(); }, 520);
     }
   };

@@ -1,0 +1,59 @@
+{
+  "id": "template-lancement-ia",
+  "nom": "Lancement produit IA",
+  "categorie": "pages-completes",
+  "niveau": "premium",
+  "ordre": 20,
+  "description": "La page de lancement d’un produit d’agents IA, de bout en bout : hero au fluide WebGL qui réagit au curseur et au doigt, agent qui travaille en direct et demande votre accord, flux d’intégrations animé, chiffres qui comptent à l’entrée, liste d’attente vivante (inscriptions qui arrivent, place dans la file qui roule, lien d’invitation) et FAQ. Une barre compacte garde l’action à portée après le hero. Sans calculateur de prix.",
+  "tags": ["Page complète", "Lancement", "Agents IA", "WebGL", "Liste d’attente", "Assemblage Socle", "Responsive"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "palette": "sarcelle",
+  "logo_exemple": { "nom": "Nuée", "secteur": "Agents IA pour les équipes opérations", "fichier": "logo.svg", "palette": "sarcelle", "typo": "Geist SemiBold" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Le shader lit --bg, --accent-subtle, --accent, --accent-vivid ; tout le reste passe par les variables, aucune couleur en dur" },
+    { "nom": "WebGL 1", "note": "Shader maison ≈ 3 ko, aucune bibliothèque ni CDN ; repli en dégradé CSS sans WebGL" },
+    { "nom": "JavaScript intégré", "note": "≈ 60 ko non minifié pour les six blocs (fil d’agent et flux d’intégrations compris), sans dépendance" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, aucune bibliothèque d’animation (WebGL, SVG animateMotion, minuteries)" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "titre", "label": "Titre (H1)", "type": "text", "default": "Des agents qui finissent le travail.",
+      "code": { "html": "<h1 id=\"hsh-title\" class=\"hsh__title\">{v}</h1>", "react": "titre=\"{v}\"" } },
+    { "name": "matiere", "label": "Matière du fond", "type": "select", "default": "soie",
+      "options": [{ "value": "soie", "label": "Soie" }, { "value": "verre", "label": "Verre cannelé" }],
+      "code": { "html": "data-style=\"{v}\"", "react": "matiere=\"{v}\"" } },
+    { "name": "force", "label": "Réaction au curseur", "type": "number", "default": 1, "min": 0, "max": 2, "step": 0.1,
+      "code": { "html": "data-force=\"{v}\"", "react": "force={{v}}" } },
+    { "name": "carte", "label": "Carte de tâche dans le hero", "type": "boolean", "default": true,
+      "code": { "html": "data-card=\"{v}\"", "react": "carte={{v}}" } },
+    { "name": "validation", "label": "Validation humaine dans le fil", "type": "boolean", "default": true, "hint": "Désactivée, l’agent valide seul selon la règle et le dit.",
+      "code": { "html": "data-approval=\"{v}\"", "react": "validation={{v}}" } },
+    { "name": "autoValidation", "label": "Approuver seul après 7 s", "type": "boolean", "default": true, "hint": "Pour que la démo continue si personne ne clique.",
+      "code": { "html": "data-autoapprove=\"7000\"", "react": "autoValidation={{v}}" } },
+    { "name": "places", "label": "Équipes en attente", "type": "number", "default": 2418, "min": 0, "max": 99999, "step": 1,
+      "code": { "html": "data-places=\"{v}\"", "react": "places={{v}}" } },
+    { "name": "etatListe", "label": "État de la liste d’attente", "type": "select", "default": "formulaire",
+      "options": [{ "value": "formulaire", "label": "Formulaire" }, { "value": "erreur", "label": "Erreur" }, { "value": "chargement", "label": "Chargement" }, { "value": "inscrit", "label": "Inscrit" }],
+      "hint": "Pour montrer chaque état ; le vrai parcours se fait dans le formulaire." }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/TemplateLancementIA.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Designs Socle réutilisés, chacun sous son préfixe d’origine : Hero shader interactif (.hsh, carte de tâche réécrite), Fil d’activité d’agent IA (.af, scénario « facture fournisseur » et libellés neutres à la place de l’appel), Flux d’intégrations (.fx), Compteurs à l’entrée (.ce), Accordéon natif (.an, variante cartes). La liste d’attente vivante (.wl) est construite pour ce template.",
+    "Pour lancer un produit d’IA, une bêta privée ou une nouvelle version : la page montre le produit en action plutôt qu’un dégradé décoratif, puis convertit vers la liste d’attente. Changez le scénario de l’agent (SCENARIOS) et les apps du flux (attributs data-*) sans toucher au moteur.",
+    "Liste d’attente : validation de l’adresse (vide, incomplète, déjà inscrite avec « deja@… »), chargement, place dans la file en chiffres roulants, vague et mois d’ouverture, lien d’invitation à copier, retour au formulaire. Inscriptions simulées toutes les 6 à 11 s, seulement à l’écran : branchez votre API à la place.",
+    "Téléphone : une fenêtre de fluide pur sous la barre avant le titre, actions pleine largeur, fil d’agent à hauteur d’écran, flux d’intégrations en colonne, chiffres en 2 × 2, formulaire empilé avec bouton de 56 px, barre compacte pleine largeur.",
+    "Onglet React : Hero (fond WebGL par le hook useFluid), Dock, AgentFeed, IntegrationFlow, Stats, Waitlist, Faq, Footer, assemblés par TemplateLancementIA.",
+    "Palette par défaut : Sarcelle. Le shader relit ses couleurs à chaque changement de palette ou de thème."
+  ],
+  "accessibilite": [
+    "Un seul H1, sections titrées, lien d’évitement. Le fond animé a son bouton pause (WCAG 2.2.2) et s’arrête hors écran ou onglet masqué ; idem pour les paquets du flux, le fil d’agent et les inscriptions simulées.",
+    "Fil d’agent en role=\"log\", annonces sobres dans une région polie ; Approuver / Refuser sont de vrais boutons au clavier. Apps du flux en boutons, leur détail est annoncé.",
+    "Formulaire : label visible, aide et erreur reliées par aria-describedby, aria-invalid, erreur en role=\"alert\" ; bouton aria-busy pendant l’envoi ; le focus passe sur le résultat ; le nombre roulant a sa valeur lue en clair.",
+    "« Réduire les animations » : image fixe du fluide, aucune entrée, compteurs posés à leur valeur, pas d’inscriptions simulées. Champs à 16 px sur téléphone, cibles de 44 px, contrastes AA en clair et en sombre."
+  ]
+}

@@ -60,11 +60,11 @@ export function Passkey({
   const setProgress = (v) => { pRef.current = v; setP(v); };
   const say = (t) => { setHelp(t); setAnnounce(t); };
   const success = useCallback(() => {
-    setProgress(1); setState('success'); say('Identité confirmée'); navigator.vibrate?.(12);
+    setProgress(1); setState('success'); say('Identité confirmée'); (navigator.userActivation?.hasBeenActive ?? true) && navigator.vibrate?.(12);
     timer.current = setTimeout(() => { setWelcome(true); setTimeout(() => okRef.current?.focus({ preventScroll: true }), 30); }, reduce ? 200 : 900);
   }, [reduce]);
   const fail = useCallback((msg) => {
-    setFails((n) => n + 1); setState('error'); say(face ? 'Visage non reconnu. Réessayez.' : msg); navigator.vibrate?.([20, 60, 20]);
+    setFails((n) => n + 1); setState('error'); say(face ? 'Visage non reconnu. Réessayez.' : msg); (navigator.userActivation?.hasBeenActive ?? true) && navigator.vibrate?.([20, 60, 20]);
     timer.current = setTimeout(() => { setProgress(0); setState('idle'); }, 1600);
   }, [face]);
   const finish = useCallback(() => (simulatedOutcome === 'failure' ? fail('Empreinte non reconnue. Réessayez, ou utilisez votre mot de passe.') : success()), [simulatedOutcome, fail, success]);
@@ -85,7 +85,7 @@ export function Passkey({
   };
   const release = () => {
     if (!holding.current) return; holding.current = false;
-    if (pRef.current < 1) { setState('idle'); setHelp('Maintenez jusqu’au bout du cercle'); navigator.vibrate?.(6); }
+    if (pRef.current < 1) { setState('idle'); setHelp('Maintenez jusqu’au bout du cercle'); (navigator.userActivation?.hasBeenActive ?? true) && navigator.vibrate?.(6); }
     if (!raf.current) { last.current = performance.now(); raf.current = requestAnimationFrame(loop); }
   };
   const scanFace = () => {

@@ -35,7 +35,7 @@
       set(1);
       btn.classList.remove('is-holding');
       btn.dataset.state = 'done';
-      if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} }
+      if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) { try { navigator.vibrate(12); } catch (e) {} }
       if (live) live.textContent = btn.dataset.done || 'Confirmé';
       btn.dispatchEvent(new CustomEvent('hold:confirm', { bubbles: true }));
       var r = +btn.dataset.reset;

@@ -77,7 +77,14 @@ function controlHTML(p, v) {
 
 export async function renderItem(view, id, onCat) {
   let meta;
-  try { meta = await loadMeta(id); } catch (e) {
+  /* Id absent du registre : page « n’existe pas » sans requête 404 (erreur console).
+     En local, on tente quand même meta.json pour prévisualiser un design pas encore indexé. */
+  const known = (await loadIndex()).items;
+  const local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  try {
+    if (known.length && !local && !known.some((i) => i.id === id)) throw new Error('meta');
+    meta = await loadMeta(id);
+  } catch (e) {
     view.innerHTML = `<div class="empty" style="margin-top:24px"><h1 class="t-section">Ce design n’existe pas</h1><p>Il a peut-être été renommé. Cherchez-le avec ⌘K.</p><a class="btn btn--secondary" href="#/">Vue d’ensemble</a></div>`;
     return;
   }

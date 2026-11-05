@@ -141,7 +141,7 @@
     this.size(instant);
     if (name === 'error' && !reduce.matches) {
       el.classList.remove('cb--shake'); el.offsetWidth; el.classList.add('cb--shake');
-      if (el.dataset.haptic !== 'false' && navigator.vibrate) navigator.vibrate([12, 40, 12]);
+      if (el.dataset.haptic !== 'false' && navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate([12, 40, 12]);
     }
     if (this.live && !instant) {
       var label = this.states[name] ? this.states[name].textContent.trim() : '';

@@ -1,0 +1,62 @@
+{
+  "id": "template-saas-calme",
+  "nom": "SaaS calme",
+  "categorie": "pages-completes",
+  "niveau": "essentiel",
+  "ordre": 10,
+  "description": "Une page d’accueil SaaS entière, sobre et très légère : navigation collante, hero typographique, aperçu du produit dessiné en HTML, preuve, bento filtrable, tarifs à bascule mensuel / annuel, témoignage, FAQ native et footer qui se dévoile. Sans WebGL ni boucle permanente. Sur téléphone, chaque section est recomposée : action sous le titre, devis en cartes, offres en carrousel, liens du footer en tiroirs.",
+  "tags": ["Page complète", "SaaS", "Landing", "Assemblage Socle", "Sans WebGL", "Responsive"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "palette": "olive",
+  "logo_exemple": { "nom": "Tilleul", "secteur": "Devis et factures pour artisans (SaaS)", "fichier": "logo.svg", "palette": "olive", "typo": "Geist SemiBold" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Neutres, accent, teintes d’état, polices Geist et Geist Mono ; aucune couleur en dur" },
+    { "nom": "JavaScript intégré", "note": "≈ 22 ko non minifié pour les cinq blocs et la page, sans bibliothèque ; sans JS, tout reste lisible et les FAQ s’ouvrent" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "framer-motion ≥ 11", "note": "Onglet React seulement : réarrangement du bento (layout) et pastille des filtres" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "titre", "label": "Titre (H1)", "type": "text", "default": "Vos devis signés avant le café.",
+      "code": { "html": "data-htp-title data-accent-word=\"café\">{v}</h1>", "react": "titre=\"{v}\"" } },
+    { "name": "motAccent", "label": "Mot accentué", "type": "text", "default": "café", "hint": "Un mot du titre, coloré et souligné d’un trait qui se dessine.",
+      "code": { "html": "data-accent-word=\"{v}\"", "react": "motAccent=\"{v}\"" } },
+    { "name": "entree", "label": "Entrée du titre", "type": "select", "default": "montee",
+      "options": [{ "value": "montee", "label": "Montée" }, { "value": "bascule", "label": "Bascule" }, { "value": "flou", "label": "Netteté" }],
+      "code": { "html": "data-entree=\"{v}\"", "react": "entree=\"{v}\"" } },
+    { "name": "filtre", "label": "Filtre du bento", "type": "select", "default": "tout",
+      "options": [{ "value": "tout", "label": "Tout" }, { "value": "devis", "label": "Devis" }, { "value": "factures", "label": "Factures" }, { "value": "suivi", "label": "Suivi" }],
+      "code": { "html": "data-filtre=\"{v}\"", "react": "filtre=\"{v}\"" } },
+    { "name": "periode", "label": "Période des tarifs", "type": "select", "default": "mensuel",
+      "options": [{ "value": "mensuel", "label": "Mensuel" }, { "value": "annuel", "label": "Annuel" }],
+      "code": { "html": "data-period=\"{v}\"", "react": "periode=\"{v}\"" } },
+    { "name": "remise", "label": "Remise annuelle", "type": "number", "default": 20, "min": 0, "max": 40, "step": 5, "unit": "%",
+      "code": { "html": "data-discount=\"{v}\"", "react": "remise={{v}}" } },
+    { "name": "effetFooter", "label": "Dévoilement du footer", "type": "select", "default": "montee",
+      "options": [{ "value": "montee", "label": "Montée" }, { "value": "echelle", "label": "Échelle" }],
+      "code": { "html": "data-effet=\"{v}\"", "react": "effetFooter=\"{v}\"" } },
+    { "name": "voile", "label": "Voile sur le footer", "type": "boolean", "default": true,
+      "code": { "html": "data-voile=\"{v}\"", "react": "" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/TemplateSaasCalme.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Designs Socle réutilisés, chacun dans sa section et sous son préfixe d’origine : Hero typographique (.htp), Bento filtrable (.bf, illustrations refaites pour Tilleul), Bascule à chiffres roulants (.pb), Accordéon natif (.an), Footer dévoilé (.fd, qui enveloppe la page).",
+    "Pour un SaaS qui veut rassurer plutôt qu’impressionner : logiciel métier, outil de gestion, B2B pour indépendants. Remplacez le contenu section par section, la structure tient de 4 à 9 cases de bento et de 2 à 4 offres.",
+    "Page très rapide : aucune image, aucun WebGL, aucune boucle permanente ; les petites animations d’illustration du bento s’arrêtent hors écran.",
+    "Téléphone : menu déroulant, action pleine largeur sous le titre, tableau du devis recomposé en cartes, filtres en ruban défilant, offres en carrousel avec onglets, colonnes du footer en tiroirs natifs.",
+    "Onglet React : un composant par section (Nav, Hero, ProductShot, Proof, Features, Pricing, Quote, Faq, RevealFooter), assemblés par TemplateSaasCalme.",
+    "Palette par défaut : Olive. Tout passe par les variables de tokens.css, testez une autre palette dans les Props."
+  ],
+  "accessibilite": [
+    "Lien d’évitement, un seul H1 (lu d’un seul tenant, la version découpée est masquée), titres de section en H2, section courante signalée par aria-current dans la navigation.",
+    "Menu mobile : bouton natif avec aria-expanded et aria-controls, fermeture par Échap, au clic extérieur ou au choix d’un lien.",
+    "Filtres du bento, bascule de période (radiogroup, flèches) et FAQ (details / summary, exclusives) entièrement utilisables au clavier ; les changements sont annoncés par des régions polies.",
+    "« Réduire les animations » : aucune entrée, aucun réarrangement animé, footer posé sans translation. Sans JavaScript, tout le contenu reste visible.",
+    "Cibles de 44 px minimum sur téléphone, texte de contenu ≥ 14 px, contrastes AA en clair et en sombre pour toutes les palettes du DS."
+  ]
+}

@@ -269,7 +269,7 @@
     }
     function release() {
       if (!holding) return; holding = false;
-      if (p < 1) { state('idle'); help.textContent = 'Maintenez jusqu’au bout du cercle'; if (navigator.vibrate) navigator.vibrate(6); }
+      if (p < 1) { state('idle'); help.textContent = 'Maintenez jusqu’au bout du cercle'; if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate(6); }
       if (!raf) { last = performance.now(); raf = requestAnimationFrame(loop); }
     }
     function finish() {
@@ -278,11 +278,11 @@
     }
     function fail(msg) {
       fails++; state('error'); help.textContent = mode() === 'face' ? 'Visage non reconnu. Réessayez.' : msg; say(help.textContent);
-      if (navigator.vibrate) navigator.vibrate([20, 60, 20]);
+      if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate([20, 60, 20]);
       resetT = setTimeout(function () { p = 0; paint(); state('idle'); texts(); if (fails >= 2) { $('[data-pk-fallback]').textContent = 'Utiliser plutôt mon mot de passe'; } }, 1600);
     }
     function success() {
-      done = true; p = 1; paint(); state('success'); help.textContent = 'Identité confirmée'; if (navigator.vibrate) navigator.vibrate(12);
+      done = true; p = 1; paint(); state('success'); help.textContent = 'Identité confirmée'; if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate(12);
       say('Identité confirmée. Bienvenue, Claire.');
       setTimeout(showWelcome, reduce && reduce.matches ? 200 : 900);
     }

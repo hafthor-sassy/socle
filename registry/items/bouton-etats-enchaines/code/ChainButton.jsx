@@ -50,7 +50,7 @@ export function ChainButton({
     setStatus(next);
     if (next === 'error') {
       if (!reduce) shake.start({ x: [0, -7, 6, -4, 3, -1.5, 0], transition: { duration: 0.46 } });
-      if (haptic) navigator.vibrate?.([12, 40, 12]);
+      if (haptic) (navigator.userActivation?.hasBeenActive ?? true) && navigator.vibrate?.([12, 40, 12]);
     }
     if (resetAfter > 0) timer.current = setTimeout(() => setStatus('idle'), resetAfter);
   };

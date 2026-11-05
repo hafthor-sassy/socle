@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "total": 102,
+  "total": 105,
   "items": [
     {
       "id": "bouton-magnetique",
@@ -1072,6 +1072,34 @@
       }
     },
     {
+      "id": "template-saas-calme",
+      "nom": "SaaS calme",
+      "categorie": "pages-completes",
+      "niveau": "essentiel",
+      "palette": "olive",
+      "description": "Une page d’accueil SaaS entière, sobre et très légère : navigation collante, hero typographique, aperçu du produit dessiné en HTML, preuve, bento filtrable, tarifs à bascule mensuel / annuel, témoignage, FAQ native et footer qui se dévoile. Sans WebGL ni boucle permanente. Sur téléphone, chaque section est recomposée : action sous le titre, devis en cartes, offres en carrousel, liens du footer en tiroirs.",
+      "tags": [
+        "Page complète",
+        "SaaS",
+        "Landing",
+        "Assemblage Socle",
+        "Sans WebGL",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 10,
+      "logo_exemple": {
+        "nom": "Tilleul",
+        "secteur": "Devis et factures pour artisans (SaaS)",
+        "fichier": "registry/items/template-saas-calme/logo.svg",
+        "palette": "olive",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "icones-morphing",
       "nom": "Icônes qui se transforment",
       "categorie": "icones",
@@ -1314,6 +1342,35 @@
         "secteur": "Banque en ligne pour indépendants",
         "fichier": "registry/items/faq-categories/logo.svg",
         "palette": "encre",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "template-lancement-ia",
+      "nom": "Lancement produit IA",
+      "categorie": "pages-completes",
+      "niveau": "premium",
+      "palette": "sarcelle",
+      "description": "La page de lancement d’un produit d’agents IA, de bout en bout : hero au fluide WebGL qui réagit au curseur et au doigt, agent qui travaille en direct et demande votre accord, flux d’intégrations animé, chiffres qui comptent à l’entrée, liste d’attente vivante (inscriptions qui arrivent, place dans la file qui roule, lien d’invitation) et FAQ. Une barre compacte garde l’action à portée après le hero. Sans calculateur de prix.",
+      "tags": [
+        "Page complète",
+        "Lancement",
+        "Agents IA",
+        "WebGL",
+        "Liste d’attente",
+        "Assemblage Socle",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 20,
+      "logo_exemple": {
+        "nom": "Nuée",
+        "secteur": "Agents IA pour les équipes opérations",
+        "fichier": "registry/items/template-lancement-ia/logo.svg",
+        "palette": "sarcelle",
         "typo": "Geist SemiBold"
       }
     },
@@ -1898,6 +1955,38 @@
         "secteur": "Gestion d’écoles de musique",
         "fichier": "registry/items/recherche-reglages/logo.svg",
         "palette": "lavande",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "template-studio-editorial",
+      "nom": "Studio éditorial",
+      "categorie": "pages-completes",
+      "niveau": "premium",
+      "palette": "rubis",
+      "description": "Le site d’un studio de design éditorial, index et pages projet dans un seul document : rideau d’entrée, mot-symbole géant qui monte lettre par lettre, anneau 3D de couvertures qui tourne avec le défilement et marque un temps sur chaque projet, index à aperçu flottant, puis transition persistante vers la page projet (la couverture et le titre passent d’une page à l’autre, l’en-tête ne bouge pas). Curseur contextuel à ressort à la souris. Aucune image : les huit couvertures sont composées avec les variables de la palette.",
+      "tags": [
+        "Page complète",
+        "Portfolio",
+        "Studio",
+        "Édition",
+        "View Transitions",
+        "Galerie 3D",
+        "Défilement lié",
+        "Curseur",
+        "Assemblage Socle",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 30,
+      "logo_exemple": {
+        "nom": "Marge",
+        "secteur": "Studio de design éditorial et de scénographie",
+        "fichier": "registry/items/template-studio-editorial/logo.svg",
+        "palette": "rubis",
         "typo": "Geist SemiBold"
       }
     },

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio éditorial — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  html.bg-grid .mg { background: transparent; }
+  .is-thumb .mg-gal, .is-thumb .mg-idx, .is-thumb .mg-studio, .is-thumb .mg-contact { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  /* La page est code/index.html tel quel ; les props pilotent ses attributs data-* (rideau, transitions, galerie, curseur). */
+  var props = Socle.props({ intro: true, transition: 'native', rayon: 1, vitesse: 1, fusion: 'normal', etiquettes: true, projet: 'aucun' });
+  var mount = document.getElementById('mount'), last = {};
+  function q(s) { return mount.querySelector(s); }
+  function apply(p, first) {
+    var r = q('[data-template-studio]');
+    r.dataset.intro = String(p.intro && !Socle.thumb);
+    r.dataset.transition = p.transition; r.dataset.rayon = String(p.rayon); r.dataset.vitesse = String(p.vitesse);
+    r.dataset.blend = p.fusion; r.dataset.labels = String(p.etiquettes);
+    if (!first) {
+      if (r._mg && (p.rayon !== last.rayon || p.vitesse !== last.vitesse)) r._mg.layout();
+      if (r._cc) r._cc.update(window.ContextCursor.read(r));
+      if (r._mg && p.projet !== last.projet) { if (p.projet === 'aucun') r._mg.home(); else r._mg.open(p.projet); }
+    }
+    last = JSON.parse(JSON.stringify(p));
+  }
+  fetch('code/index.html').then(function (x) { return x.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    apply(props, true);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (props.projet !== 'aucun') { var r = q('[data-template-studio]'); last.projet = 'aucun'; r._mg.open(props.projet); }
+  });
+  Socle.onChange(function (p) { if (q('[data-template-studio]')) apply(p, false); });
+  Socle.onReplay(function () {
+    var r = q('[data-template-studio]'); if (!r || !r._mg) return;
+    if (r._mg.view === 'projet') r._mg.home();
+    r.classList.remove('is-ready'); void r.offsetWidth; requestAnimationFrame(function () { requestAnimationFrame(function () { r.classList.add('is-ready'); }); });
+    window.scrollTo(0, 0);
+  });
+</script>
+</body>
+</html>

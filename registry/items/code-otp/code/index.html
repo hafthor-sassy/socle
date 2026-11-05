@@ -135,7 +135,7 @@
     this.root.dataset.state = 'error';
     this.input.setAttribute('aria-invalid', 'true');
     if (!reduce.matches) { this.root.classList.remove('is-shake'); this.root.offsetWidth; this.root.classList.add('is-shake'); }
-    if (navigator.vibrate) navigator.vibrate([10, 40, 10]);
+    if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) navigator.vibrate([10, 40, 10]);
     // Vider après le tremblement et rendre la main
     setTimeout(function () { self.set('', true); self.input.focus(); }, reduce.matches ? 0 : 520);
   };

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SaaS calme — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  html.bg-grid .tl { background: transparent; }
+  html.bg-grid .tl .fd__page { background: transparent; }
+  /* Vignette : la page s’arrête après l’aperçu du produit, sans entrée animée. */
+  .is-thumb .tl-proof, .is-thumb .bf, .is-thumb .pb, .is-thumb .tl-quote, .is-thumb .an, .is-thumb .fd__foot { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  /* La page est le fichier code/index.html tel quel ; les props pilotent ses attributs data-* et les API des blocs. */
+  var props = Socle.props({ titre: 'Vos devis signés avant le café.', motAccent: 'café', entree: 'montee', filtre: 'tout', periode: 'mensuel', remise: 20, effetFooter: 'montee', voile: true });
+  var mount = document.getElementById('mount'), src = null, last = {};
+  function q(s) { return mount.querySelector(s); }
+  function run() { try { new Function(src.script)(); } catch (e) { console.error(e); } }
+  function apply(p, first) {
+    var hero = q('[data-hero-typo]'), h = q('[data-htp-title]');
+    if (first || p.titre !== last.titre || p.motAccent !== last.motAccent || p.entree !== last.entree) {
+      h.setAttribute('data-text', p.titre || 'Vos devis signés avant le café.');
+      h.setAttribute('data-accent-word', p.motAccent || '');
+      hero.dataset.entree = p.entree;
+      if (!first) run();                                   /* relance le hero (les autres blocs ignorent une 2e initialisation) */
+    }
+    var pb = q('[data-pricing-bascule]');
+    pb.dataset.period = p.periode; pb.dataset.discount = String(p.remise);
+    if (pb._pricing) pb._pricing.render();
+    var bf = q('[data-bento-filter]');
+    if (bf._inst && p.filtre !== last.filtre && !first) bf._inst.filter(p.filtre); else bf.dataset.filtre = p.filtre;
+    var fd = q('[data-footer-devoile]');
+    if (fd._fd) fd._fd.update({ effet: p.effetFooter, voile: String(p.voile) }); else { fd.dataset.effet = p.effetFooter; fd.dataset.voile = String(p.voile); }
+    last = JSON.parse(JSON.stringify(p));
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { script: js ? js[1] : '' };
+    mount.innerHTML = mk ? mk[1] : '';
+    apply(props, true);
+    run();
+  });
+  Socle.onChange(function (p) { if (src) apply(p, false); });
+  Socle.onReplay(function () { if (!src) return; window.scrollTo(0, 0); run(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lancement produit IA — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  html.bg-grid .nu, html.bg-grid .nu .fx, html.bg-grid .nu-foot { background: transparent; }
+  /* Vignette : le hero seul, sans la barre compacte. */
+  .is-thumb .nu-dock, .is-thumb .nu-agent, .is-thumb .fx, .is-thumb .ce, .is-thumb .wl, .is-thumb .an, .is-thumb .nu-foot, .is-thumb .hsh__pause { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  /* La page est code/index.html tel quel ; les props pilotent les attributs data-* des blocs et leurs API. */
+  var props = Socle.props({ titre: 'Des agents qui finissent le travail.', matiere: 'soie', force: 1, carte: true, validation: true, autoValidation: true, places: 2418, etatListe: 'formulaire' });
+  var mount = document.getElementById('mount'), last = {};
+  function q(s) { return mount.querySelector(s); }
+  function apply(p, first) {
+    var h = q('[data-hero-shader]');
+    q('#hsh-title').textContent = p.titre || 'Des agents qui finissent le travail.';
+    h.dataset.style = p.matiere; h.dataset.force = String(p.force); h.dataset.card = String(p.carte);
+    if (h._inst && !first) h._inst.update();
+    var af = q('[data-agent-feed]');
+    af.dataset.approval = String(p.validation); af.dataset.autoapprove = p.autoValidation ? '7000' : '0';
+    var nu = q('[data-template-ia]');
+    if (first) nu.dataset.places = String(p.places);
+    else if (nu._nu && p.places !== last.places) nu._nu.setPlaces(p.places);
+    if (!first && nu._nu && p.etatListe !== last.etatListe) nu._nu.demo({ formulaire: 'form', erreur: 'error', chargement: 'loading', inscrit: 'done' }[p.etatListe]);
+    last = JSON.parse(JSON.stringify(p));
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    apply(props, true);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (props.etatListe !== 'formulaire') { last.etatListe = 'formulaire'; apply(props, false); }
+  });
+  Socle.onChange(function (p) { if (q('[data-template-ia]')) apply(p, false); });
+  Socle.onReplay(function () { var af = q('[data-agent-feed]'); if (af && af.agentFeed) af.agentFeed.replay(); var f = q('[data-flow]'); if (f && f._flow) f._flow.replay(); });
+</script>
+</body>
+</html>

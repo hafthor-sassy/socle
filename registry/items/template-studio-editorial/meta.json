@@ -1,0 +1,70 @@
+{
+  "id": "template-studio-editorial",
+  "nom": "Studio éditorial",
+  "categorie": "pages-completes",
+  "niveau": "premium",
+  "ordre": 30,
+  "description": "Le site d’un studio de design éditorial, index et pages projet dans un seul document : rideau d’entrée, mot-symbole géant qui monte lettre par lettre, anneau 3D de couvertures qui tourne avec le défilement et marque un temps sur chaque projet, index à aperçu flottant, puis transition persistante vers la page projet (la couverture et le titre passent d’une page à l’autre, l’en-tête ne bouge pas). Curseur contextuel à ressort à la souris. Aucune image : les huit couvertures sont composées avec les variables de la palette.",
+  "tags": ["Page complète", "Portfolio", "Studio", "Édition", "View Transitions", "Galerie 3D", "Défilement lié", "Curseur", "Assemblage Socle", "Responsive"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "palette": "rubis",
+  "logo_exemple": { "nom": "Marge", "secteur": "Studio de design éditorial et de scénographie", "fichier": "logo.svg", "palette": "rubis", "typo": "Geist SemiBold" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Couvertures, rideau, curseur et textes ne lisent que les variables (--accent, --accent-fg, --accent-vivid, --accent-subtle, --bg, --surface, --raised, --border, --text, --text-strong, --text-muted) : la page suit toute palette, en clair et en sombre" },
+    { "nom": "View Transitions API", "note": "Chrome, Edge, Safari 18 ; ailleurs le rideau prend le relais, sans rien perdre du parcours" },
+    { "nom": "JavaScript intégré", "note": "≈ 29 ko non minifié (curseur contextuel compris), sans dépendance ni CDN ; aucune image, la page entière pèse ≈ 80 ko" },
+    { "nom": "react ≥ 18 + react-dom", "note": "Onglet React seulement (flushSync pour la transition), aucune bibliothèque d’animation" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement ; les couvertures (unités cqw) et les pseudo-éléments des View Transitions sont dans une petite feuille intégrée au composant" }
+  ],
+  "props": [
+    { "name": "intro", "label": "Rideau d’entrée", "type": "boolean", "default": true, "hint": "Le store se lève sur le nom du studio, puis les lettres montent.",
+      "code": { "html": "data-intro=\"{v}\"", "react": "intro={{v}}" } },
+    { "name": "transition", "label": "Passage vers un projet", "type": "select", "default": "native",
+      "options": [{ "value": "native", "label": "Partagée" }, { "value": "rideau", "label": "Rideau" }, { "value": "aucune", "label": "Aucune" }],
+      "hint": "« Partagée » : la couverture et le titre passent d’une page à l’autre (View Transitions) ; sans cette API, le rideau prend le relais.",
+      "code": { "html": "data-transition=\"{v}\"", "react": "transition=\"{v}\"" } },
+    { "name": "rayon", "label": "Rayon de l’anneau", "type": "number", "default": 1, "min": 0.7, "max": 1.6, "step": 0.05, "unit": "×",
+      "code": { "html": "data-rayon=\"{v}\"", "react": "rayon={{v}}" } },
+    { "name": "vitesse", "label": "Vitesse de rotation", "type": "number", "default": 1, "min": 0.5, "max": 2, "step": 0.1, "unit": "×", "hint": "Plus vite = moins de défilement pour faire le tour.",
+      "code": { "html": "data-vitesse=\"{v}\"", "react": "vitesse={{v}}" } },
+    { "name": "fusion", "label": "Mélange du curseur", "type": "select", "default": "normal",
+      "options": [{ "value": "normal", "label": "Normal" }, { "value": "difference", "label": "Différence" }],
+      "hint": "Onglet HTML ; le curseur React reste en mode normal.",
+      "code": { "html": "data-blend=\"{v}\"" } },
+    { "name": "etiquettes", "label": "Libellés du curseur", "type": "boolean", "default": true, "hint": "« Voir » sur les couvertures. Onglet HTML.",
+      "code": { "html": "data-labels=\"{v}\"" } },
+    { "name": "projet", "label": "Page affichée", "type": "select", "default": "aucun",
+      "options": [
+        { "value": "aucun", "label": "Index" },
+        { "value": "atlas-des-marees", "label": "Atlas des marées" },
+        { "value": "le-bruit-des-villes", "label": "Le bruit des villes" },
+        { "value": "halle-saint-roch", "label": "Halle Saint-Roch" },
+        { "value": "herbier-du-jardin", "label": "Herbier du jardin" },
+        { "value": "revue-pli", "label": "Revue Pli, n° 12" },
+        { "value": "lumiere-froide", "label": "Lumière froide" },
+        { "value": "lettres-du-metro", "label": "Lettres du métro" },
+        { "value": "ateliers-ouverts", "label": "Ateliers ouverts" }
+      ],
+      "hint": "Pour voir la transition et chaque page projet ; dans la page, l’adresse #/projet/<id> fait la même chose." }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/TemplateStudioEditorial.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Designs Socle réutilisés : Curseur contextuel (.cc, règles et moteur à ressort repris tels quels, la zone devient toute la page), Rideaux (mouvement du store en lattes, pour l’intro et le repli des transitions), Transitions de page natives (principe des view-transition-name partagés : couverture, titre, en-tête). Le mot-symbole lettre par lettre, l’anneau 3D lié au défilement, l’index à aperçu et les pages projet (.mg) sont construits pour ce template.",
+    "Pour un studio, une agence, un photographe, un architecte ou une maison d’édition : un portfolio où l’on passe d’un travail à l’autre sans recharger, avec une vraie page par projet (adresse #/projet/<id> partageable, Échap ou « Tous les travaux » pour revenir à la même position). Changez les projets dans PROJECTS : titre, client, discipline, textes, chiffres clés, composition (v) et tons (t) de la couverture.",
+    "Couvertures sans image, composées en CSS avec les couleurs de la palette (huit compositions : cercles, ondes, flèches, herbier, numéro, blocs, lettres, étoile) ; remplacez le contenu de .mg-cv__art par une image si vous en avez.",
+    "Téléphone : en-tête réduit au logo et au bouton, mot-symbole pleine largeur, anneau resserré piloté au doigt par le défilement, index en lignes sur deux niveaux (titre, client) sans aperçu flottant, page projet empilée (couverture, chiffres, texte), contact en colonne avec cibles de 44 px. Pas de curseur au toucher.",
+    "Onglet React : Cover, MargeLogo, ContextCursor, Header, Hero, Gallery3D, ProjectIndex, Studio, ProjectPage, Contact, useCurtain, assemblés par TemplateStudioEditorial (props intro, transition, rayon, vitesse).",
+    "Palette par défaut : Rubis. Tout passe par les variables : la page change de couleurs avec la palette, sans retouche."
+  ],
+  "accessibilite": [
+    "Un seul H1 (le nom du studio, le mot-symbole dessiné est décoratif), sections titrées, lien d’évitement. Chaque couverture est un vrai lien libellé « titre, discipline, année » ; l’index est une liste ordonnée de liens.",
+    "Changement de page annoncé dans une région polie, focus porté sur la page projet, Échap ramène à l’index à la même position et sur la couverture d’origine. L’en-tête et la navigation restent en place pendant la transition.",
+    "Curseur contextuel à la souris seulement, jamais au toucher ni au clavier ; le curseur système reprend la main hors de la page. Focus visible sur tous les liens et boutons, cibles de 44 px.",
+    "« Réduire les animations » : pas de rideau ni de lettres qui montent, anneau 3D remplacé par une rangée de couvertures à plat qui défile à l’horizontale, changement de page instantané (le rideau seulement s’il est choisi), aucune boucle. L’anneau s’arrête hors écran ; contrastes AA en clair et en sombre."
+  ]
+}

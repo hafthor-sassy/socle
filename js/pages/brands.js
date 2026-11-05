@@ -372,6 +372,9 @@ export async function renderBrand(view, bid) {
     ...libPals().map((p) => ({ key: p.id, pal: p, nom: p.nom, group: p.categorie || 'Classiques' }))];
   const allKey = () => shared.all[bid] || '';
   const allName = (key) => (key === CUSTOM ? 'Couleurs perso' : (libOpts.find((o) => o.key === key) || {}).nom || '');
+  /* Idées de logos : un secteur par marque fictive, trop nombreux pour des onglets → liste déroulante. */
+  const usedCats = categories.filter((c) => items.some((it) => it.categorie === c));
+  const catSel = isIdeas && usedCats.length > 8;
   const origin = (it) => (it.origines || []).map((o) => `<a href="#/i/${esc(o.id)}">${esc(o.nom)}</a>`).join(', ');
 
   view.innerHTML = `
@@ -383,10 +386,15 @@ export async function renderBrand(view, bid) {
     </header>
     <div data-feature></div>
     <div class="toolbar toolbar--logos">
-      <div class="toolbar__left"><div class="seg" role="radiogroup" aria-label="${isIdeas ? 'Secteur' : 'Catégorie de logo'}" data-cats>
+      <div class="toolbar__left">${catSel ? `<div class="logo-sect" data-cats>
+        <label class="sr-only" for="logo-sect">Secteur</label>
+        <select class="select" id="logo-sect" data-cat-select>
+          <option value="">Tous les secteurs (${items.length})</option>
+          ${usedCats.slice().sort((x, y) => x.localeCompare(y, 'fr')).map((c) => `<option value="${esc(c)}">${esc(c)} (${items.filter((it) => it.categorie === c).length})</option>`).join('')}
+        </select></div>` : `<div class="seg" role="radiogroup" aria-label="${isIdeas ? 'Secteur' : 'Catégorie de logo'}" data-cats>
         <button type="button" role="radio" aria-checked="true" data-cat="">Toutes</button>
-        ${categories.filter((c) => items.some((it) => it.categorie === c)).map((c) => `<button type="button" role="radio" aria-checked="false" data-cat="${esc(c)}">${esc(c)}</button>`).join('')}
-      </div></div>
+        ${usedCats.map((c) => `<button type="button" role="radio" aria-checked="false" data-cat="${esc(c)}">${esc(c)}</button>`).join('')}
+      </div>`}</div>
       <div class="toolbar__right">
         <button class="palbtn" type="button" aria-haspopup="dialog" aria-expanded="false" data-all>${icon('palette', { size: 16 })}<span data-all-lbl>Palette pour ${isIdeas ? 'tous' : 'toutes'}</span>${icon('chevronDown', { size: 16 })}</button>
         <div class="seg" role="radiogroup" aria-label="Thème des logos" data-themes>
@@ -409,7 +417,7 @@ export async function renderBrand(view, bid) {
       <a class="logo-card__art" href="${sheet}" aria-label="Fiche technique : ${esc(it.nom)}">${art(it, 'svg_logo', o.pal, state.theme, `Logo ${b.nom}, piste ${it.nom}`, shared.safe)}
         <div class="logo-card__icons" aria-hidden="true">${art(it, 'svg_app', o.pal, state.theme, '', shared.safe)}</div></a>
       <div class="logo-card__body">
-        <div class="logo-card__title"><span class="n">${esc(it.num)}</span><a href="${sheet}"><b>${esc(it.nom)}</b></a><span class="badge ${/retenu/i.test(it.categorie || '') ? 'badge--accent' : ''}" style="margin-left:auto">${esc(it.categorie || '')}</span></div>
+        <div class="logo-card__title"><span class="n">${esc(it.num)}</span><a href="${sheet}"><b>${esc(it.nom)}</b></a><span class="badge ${/retenu/i.test(it.categorie || '') ? 'badge--accent' : ''}" style="margin-left:auto" title="${esc(it.categorie || '')}">${esc(it.categorie || '')}</span></div>
         ${it.origines ? `<p class="logo-card__origin">Vu dans ${origin(it)}</p>` : `<p class="clamp2" title="${esc(it.idee || '')}">${fr(it.idee || '')}</p>`}
         <p class="t-xs muted mono">${esc(it.typo_titre || (it.origines ? 'Marque fictive' : ''))}${Object.keys(adjusted).length ? ' · <span class="adj">couleurs ajustées</span>' : ''}</p>
       </div>
@@ -454,6 +462,8 @@ export async function renderBrand(view, bid) {
     view.querySelectorAll('[data-cat]').forEach((y) => y.setAttribute('aria-checked', String(y === x)));
     render();
   });
+  const catSelect = view.querySelector('[data-cat-select]');
+  if (catSelect) catSelect.addEventListener('change', () => { state.cat = catSelect.value; render(); });
   view.querySelector('[data-themes]').addEventListener('click', (e) => {
     const x = e.target.closest('[data-th]');
     if (!x) return;
