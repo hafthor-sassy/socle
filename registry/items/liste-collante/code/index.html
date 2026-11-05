@@ -1,0 +1,306 @@
+<!-- Liste collante synchronisée — HTML + CSS + JS autonome (sans bibliothèque). Nécessite tokens.css.
+     Une liste qu’on fait défiler à gauche, un visuel unique collant à droite qui change d’écran selon l’étape lue.
+     Sur téléphone, le visuel se colle en haut et la liste défile dessous. Marque et données fictives (Comptoir, caisse pour restaurants). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="lc" data-sticky-list data-cote="droite" data-transition="glisse" data-progression="true" data-hauteur="70" data-numeros="true" aria-labelledby="lc-title">
+  <header class="lc__head">
+    <p class="lc__brand"><span class="lc__logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 378 100" data-icone="0 0 100 100" aria-hidden="true" focusable="false"><g data-role="icone"><rect width="100" height="100" rx="28" style="fill:var(--p, currentColor)"/><path d="M24 64A26 26 0 0 1 76 64Z" style="fill:var(--lt, #fff)"/><rect x="18" y="68" width="64" height="8" rx="4" style="fill:var(--lt, #fff)"/><circle cx="50" cy="32" r="5" style="fill:var(--a, var(--lt, #fff))"/></g><path data-role="nom" d="M148.81 70.9Q143.4 70.9 139.24 68.42Q135.09 65.93 132.75 61.3Q130.41 56.66 130.41 50.18Q130.41 43.8 132.69 39.13Q134.98 34.45 139.14 31.9Q143.31 29.34 148.9 29.34Q156.5 29.34 160.72 33.12Q164.93 36.89 166.18 43.7L158.58 44.06Q157.85 40.14 155.44 37.91Q153.03 35.68 148.9 35.68Q145.52 35.68 143.06 37.46Q140.6 39.23 139.27 42.49Q137.93 45.74 137.93 50.18Q137.93 54.66 139.29 57.88Q140.64 61.11 143.1 62.83Q145.56 64.56 148.85 64.56Q153.28 64.56 155.71 62.13Q158.14 59.71 158.78 55.46L166.4 55.82Q165.63 60.49 163.39 63.86Q161.15 67.23 157.5 69.06Q153.84 70.9 148.81 70.9ZM184.32 70.67Q179.9 70.67 176.59 68.75Q173.27 66.82 171.44 63.3Q169.62 59.77 169.62 55.05Q169.62 50.29 171.44 46.79Q173.27 43.3 176.59 41.36Q179.9 39.42 184.32 39.42Q188.75 39.42 192.05 41.36Q195.35 43.3 197.17 46.79Q199 50.29 199 55.05Q199 59.77 197.17 63.3Q195.35 66.82 192.05 68.75Q188.75 70.67 184.32 70.67ZM184.32 64.87Q187.79 64.87 189.68 62.28Q191.58 59.68 191.58 55.05Q191.58 50.43 189.68 47.83Q187.79 45.23 184.32 45.23Q180.86 45.23 178.95 47.83Q177.03 50.43 177.03 55.05Q177.03 59.68 178.95 62.28Q180.86 64.87 184.32 64.87ZM204.01 70V40.1H210.5L210.73 47.42L210.02 47.11Q210.57 44.69 211.83 42.98Q213.09 41.27 214.9 40.35Q216.72 39.42 218.89 39.42Q222.68 39.42 225.04 41.59Q227.4 43.75 228.04 47.49L227.05 47.5Q227.55 44.88 228.78 43.09Q230.02 41.31 231.89 40.36Q233.76 39.42 236.11 39.42Q239.24 39.42 241.47 40.73Q243.7 42.03 244.89 44.56Q246.09 47.1 246.09 50.77V70H238.92V52.65Q238.92 48.96 237.68 47.1Q236.44 45.25 233.83 45.25Q232.12 45.25 230.89 46.14Q229.66 47.04 229 48.74Q228.34 50.43 228.34 52.85V70H221.71V52.85Q221.71 49.19 220.58 47.22Q219.45 45.25 216.7 45.25Q214.99 45.25 213.76 46.14Q212.54 47.04 211.86 48.75Q211.18 50.47 211.18 52.85V70ZM252.85 78.4V40.1H259.7L259.86 46.46L259.16 46.14Q260.28 42.86 262.83 41.14Q265.38 39.42 268.77 39.42Q273.04 39.42 275.86 41.54Q278.67 43.66 280.08 47.2Q281.48 50.74 281.48 55.05Q281.48 59.34 280.07 62.89Q278.65 66.44 275.82 68.56Q273 70.67 268.73 70.67Q266.5 70.67 264.57 69.88Q262.64 69.08 261.26 67.64Q259.89 66.19 259.32 64.22L260.01 63.66V78.4ZM267.05 64.87Q270.31 64.87 272.19 62.26Q274.07 59.65 274.07 55.05Q274.07 50.44 272.19 47.84Q270.31 45.23 267.05 45.23Q264.88 45.23 263.3 46.32Q261.73 47.42 260.87 49.62Q260.01 51.81 260.01 55.05Q260.01 58.28 260.85 60.48Q261.69 62.68 263.28 63.77Q264.88 64.87 267.05 64.87ZM298.44 70Q293.98 70 291.88 67.94Q289.78 65.88 289.78 61.44V33.08H296.95V60.75Q296.95 62.85 297.86 63.65Q298.77 64.44 300.64 64.44H304.85V70ZM285.1 45.65V40.1H304.85V45.65ZM322.25 70.67Q317.83 70.67 314.51 68.75Q311.2 66.82 309.37 63.3Q307.55 59.77 307.55 55.05Q307.55 50.29 309.37 46.79Q311.2 43.3 314.51 41.36Q317.83 39.42 322.25 39.42Q326.68 39.42 329.98 41.36Q333.27 43.3 335.1 46.79Q336.92 50.29 336.92 55.05Q336.92 59.77 335.1 63.3Q333.27 66.82 329.98 68.75Q326.68 70.67 322.25 70.67ZM322.25 64.87Q325.71 64.87 327.61 62.28Q329.51 59.68 329.51 55.05Q329.51 50.43 327.61 47.83Q325.71 45.23 322.25 45.23Q318.79 45.23 316.88 47.83Q314.96 50.43 314.96 55.05Q314.96 59.68 316.88 62.28Q318.79 64.87 322.25 64.87ZM341.94 70V40.1H349.11V70ZM341.81 36.1V29.76H349.24V36.1ZM355.89 70V40.1H362.58L362.85 48.41L362.27 48.26Q362.94 43.96 364.81 42.03Q366.67 40.1 369.9 40.1H372.68V46.23H369.89Q367.58 46.23 366.07 46.91Q364.57 47.59 363.81 49.02Q363.05 50.44 363.05 52.77V70Z" style="fill:var(--ink, currentColor)"/></svg></span><span class="lc__eyebrow">Caisse pour restaurants</span></p>
+    <h2 id="lc-title" class="lc__title">Du premier couvert à la clôture, une seule caisse.</h2>
+  </header>
+
+  <div class="lc__body">
+    <ol class="lc__list" data-lc-list>
+      <li class="lc__item" data-step="0">
+        <button class="lc__jump" type="button" aria-label="Afficher l’étape : prise de commande"></button>
+        <span class="lc__bar" aria-hidden="true"><i></i></span>
+        <p class="lc__n">01</p>
+        <h3>Prise de commande en trois touches</h3>
+        <p>La table, les plats, envoyer. Les modifications (« sans oignon », « cuisson rosée ») suivent le plat jusqu’en cuisine.</p>
+      </li>
+      <li class="lc__item" data-step="1">
+        <button class="lc__jump" type="button" aria-label="Afficher l’étape : cuisine synchronisée"></button>
+        <span class="lc__bar" aria-hidden="true"><i></i></span>
+        <p class="lc__n">02</p>
+        <h3>La cuisine voit tout, dans l’ordre</h3>
+        <p>Chaque bon arrive sur l’écran du passe avec son minuteur. Le chef envoie par table, la salle est prévenue quand c’est prêt.</p>
+      </li>
+      <li class="lc__item" data-step="2">
+        <button class="lc__jump" type="button" aria-label="Afficher l’étape : paiement à table"></button>
+        <span class="lc__bar" aria-hidden="true"><i></i></span>
+        <p class="lc__n">03</p>
+        <h3>Paiement à table, addition partagée</h3>
+        <p>Le terminal vient à table : par carte, sans contact ou en plusieurs parts, pourboire proposé sans gêne.</p>
+      </li>
+      <li class="lc__item" data-step="3">
+        <button class="lc__jump" type="button" aria-label="Afficher l’étape : stocks"></button>
+        <span class="lc__bar" aria-hidden="true"><i></i></span>
+        <p class="lc__n">04</p>
+        <h3>Des stocks qui se tiennent seuls</h3>
+        <p>Chaque plat vendu décompte ses ingrédients. Une alerte prévient avant la rupture, la commande fournisseur est prête.</p>
+      </li>
+      <li class="lc__item" data-step="4">
+        <button class="lc__jump" type="button" aria-label="Afficher l’étape : clôture"></button>
+        <span class="lc__bar" aria-hidden="true"><i></i></span>
+        <p class="lc__n">05</p>
+        <h3>La clôture en un clic</h3>
+        <p>Ticket Z, chiffre d’affaires, couverts et ticket moyen : envoyés à votre expert-comptable avant que vous ayez rangé la salle.</p>
+      </li>
+    </ol>
+
+    <div class="lc__aside">
+      <div class="lc__stick">
+        <figure class="lc-dev" data-lc-visual aria-live="polite" aria-label="Aperçu de l’écran Comptoir">
+          <div class="lc-dev__top" aria-hidden="true"><span class="lc-dev__app"><i></i>Comptoir · Le Petit Zinc</span><span class="lc-dev__count"><b data-lc-count>01</b> / 05</span></div>
+          <div class="lc-dev__screen">
+            <!-- 1. Commande -->
+            <div class="lc-sc" data-scene="0" role="img" aria-label="Commande de la table 12 : deux plats et un dessert, total 64 euros, bouton Envoyer en cuisine.">
+              <div class="lc-sc__h"><b>Table 12</b><span>3 couverts · 20:14</span></div>
+              <ul class="lc-ord">
+                <li><span>2 ×</span><b>Tartare de bœuf</b><em>36,00</em><small>Cuisson : sans oignon</small></li>
+                <li><span>1 ×</span><b>Risotto aux cèpes</b><em>19,00</em></li>
+                <li class="is-new"><span>1 ×</span><b>Tarte fine aux pommes</b><em>9,00</em></li>
+              </ul>
+              <div class="lc-sc__f"><span>Total</span><b>64,00 €</b></div>
+              <span class="lc-btn">Envoyer en cuisine</span>
+            </div>
+            <!-- 2. Cuisine -->
+            <div class="lc-sc" data-scene="1" role="img" aria-label="Écran de cuisine : trois bons en cours avec leur minuteur, la table 12 est prête.">
+              <div class="lc-sc__h"><b>Passe</b><span>3 bons en cours</span></div>
+              <div class="lc-kds">
+                <div class="lc-kds__t is-ok"><p><b>T12</b><time>08:41</time></p><span>2 Tartare</span><span>1 Risotto</span><em>Prêt</em></div>
+                <div class="lc-kds__t"><p><b>T07</b><time>05:12</time></p><span>4 Entrecôte</span><span>2 Salade</span><i style="--p:.62"></i></div>
+                <div class="lc-kds__t is-warn"><p><b>T03</b><time>14:30</time></p><span>1 Bar rôti</span><span>1 Risotto</span><i style="--p:.92"></i></div>
+              </div>
+            </div>
+            <!-- 3. Paiement -->
+            <div class="lc-sc" data-scene="2" role="img" aria-label="Paiement de la table 12 : 64 euros partagés en trois parts de 21,34 euros, pourboire 10 % sélectionné.">
+              <div class="lc-pay">
+                <p class="lc-pay__k">Table 12 · part 1 sur 3</p>
+                <p class="lc-pay__v">21,34 €</p>
+                <div class="lc-pay__tip"><span>Sans</span><span class="is-on">10 %</span><span>15 %</span></div>
+                <div class="lc-pay__nfc"><span class="lc-pay__ico"><i></i><i></i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M8.5 8.5a5 5 0 0 1 0 7M12 6a8.5 8.5 0 0 1 0 12M15.5 3.5a12 12 0 0 1 0 17"/></svg></span><span>Approchez la carte</span></div>
+              </div>
+            </div>
+            <!-- 4. Stocks -->
+            <div class="lc-sc" data-scene="3" role="img" aria-label="Stocks : burrata en alerte avec 4 portions restantes, autres produits au-dessus du seuil.">
+              <div class="lc-sc__h"><b>Stocks</b><span>mis à jour à l’instant</span></div>
+              <ul class="lc-stk">
+                <li class="is-low"><b>Burrata</b><i style="--p:.12"></i><span>4 portions</span></li>
+                <li><b>Cèpes</b><i style="--p:.46"></i><span>2,3 kg</span></li>
+                <li><b>Bœuf (tartare)</b><i style="--p:.68"></i><span>18 portions</span></li>
+                <li><b>Pommes</b><i style="--p:.84"></i><span>6 kg</span></li>
+              </ul>
+              <span class="lc-btn lc-btn--soft">Commande fournisseur prête · 3 articles</span>
+            </div>
+            <!-- 5. Clôture -->
+            <div class="lc-sc" data-scene="4" role="img" aria-label="Clôture du jour : 3 482 euros de chiffre d’affaires, 126 couverts, ticket moyen 27,60 euros.">
+              <div class="lc-sc__h"><b>Clôture · jeudi 5 nov.</b><span>Ticket Z n° 1 204</span></div>
+              <p class="lc-z__v">3 482 €<small>+9 % vs jeudi dernier</small></p>
+              <div class="lc-z__ch"><i style="--h:.3"></i><i style="--h:.42"></i><i style="--h:.85"></i><i style="--h:.62"></i><i style="--h:.36"></i><i style="--h:.52"></i><i style="--h:.94"></i><i style="--h:.7"></i></div>
+              <dl class="lc-z__kpi"><div><dt>Couverts</dt><dd>126</dd></div><div><dt>Ticket moyen</dt><dd>27,60 €</dd></div></dl>
+            </div>
+          </div>
+          <div class="lc-dev__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .lc { --lc-ease: cubic-bezier(.22, 1, .36, 1); --lc-h: 70; position: relative; padding: clamp(48px, 7vw, 96px) clamp(16px, 4vw, 56px); background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  .lc *, .lc *::before, .lc *::after { box-sizing: border-box; }
+  .lc__head { max-width: 1200px; margin: 0 auto 24px; display: grid; gap: 16px; }
+  .lc__brand { display: flex; align-items: center; gap: 12px; margin: 0; }
+  .lc__logo { display: inline-flex; color: var(--text-strong); --p: var(--accent); --lt: var(--accent-fg); --a: var(--accent-vivid); --ink: var(--text-strong); }
+  .lc__logo svg { display: block; height: 24px; width: auto; }
+  .lc__eyebrow { padding-left: 12px; border-left: 1px solid var(--border); font: 500 13px/20px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .lc__title { margin: 0; max-width: 20ch; font-size: clamp(1.875rem, 1.2rem + 2.4vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em; font-weight: 600; color: var(--text-strong); text-wrap: balance; }
+
+  .lc__body { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(32px, 6vw, 96px); }
+  .lc[data-cote="gauche"] .lc__aside { order: -1; }
+  .lc__list { margin: 0; padding: 0; list-style: none; }
+  .lc__item { position: relative; display: grid; align-content: center; gap: 8px; min-height: calc(var(--lc-h) * 1vh); padding: 24px 0 24px 32px; }
+  .lc__item:first-child { min-height: calc(var(--lc-h) * .8vh); align-content: start; padding-top: 96px; }
+  .lc__item:last-child { min-height: calc(var(--lc-h) * 1vh); }
+  .lc__jump { position: absolute; inset: 0; z-index: 1; width: 100%; border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: var(--radius-card); }
+  .lc__jump:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 2px; }
+  .lc__bar { position: absolute; left: 0; top: 24px; bottom: 24px; width: 2px; border-radius: 2px; background: var(--border); overflow: hidden; }
+  .lc__item:first-child .lc__bar { top: 96px; }
+  .lc__bar i { position: absolute; inset: 0; border-radius: inherit; background: var(--accent); transform-origin: 50% 0; transform: scaleY(var(--p, 0)); }
+  .lc[data-progression="false"] .lc__bar i { transform: scaleY(0); }
+  .lc[data-progression="false"] .lc__item.is-on .lc__bar i { transform: scaleY(1); }
+  .lc__n { margin: 0; font: 500 13px/20px var(--font-mono); color: var(--text-muted); transition: color 400ms var(--lc-ease); }
+  .lc[data-numeros="false"] .lc__n { display: none; }
+  .lc__item h3 { margin: 0; font-size: clamp(1.25rem, 1.05rem + .7vw, 1.75rem); line-height: 1.2; letter-spacing: -0.02em; font-weight: 600; color: var(--text-muted); transition: color 400ms var(--lc-ease); }
+  .lc__item > p:last-child { margin: 0; max-width: 44ch; font-size: 16px; line-height: 26px; color: var(--text-muted); transition: color 400ms var(--lc-ease); }
+  .lc__item.is-on .lc__n { color: var(--accent); }
+  .lc__item.is-on h3 { color: var(--text-strong); }
+  .lc__item.is-on > p:last-child { color: var(--text); }
+
+  .lc__stick { position: sticky; top: max(24px, calc(50vh - 280px)); }
+  /* Le visuel unique : un écran de caisse, ses scènes se relaient */
+  .lc-dev { margin: 0; padding: 12px; border-radius: 24px; background: var(--raised); border: 1px solid var(--border); }
+  .lc-dev__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 4px 8px 12px; font-size: 13px; color: var(--text-muted); }
+  .lc-dev__app { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--text); }
+  .lc-dev__app i { width: 8px; height: 8px; border-radius: 999px; background: var(--up); }
+  .lc-dev__count { font: 500 13px/1 var(--font-mono); font-variant-numeric: tabular-nums; } .lc-dev__count b { color: var(--text-strong); font-weight: 600; }
+  .lc-dev__screen { position: relative; aspect-ratio: 4 / 3.2; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); overflow: hidden; }
+  .lc-dev__dots { display: flex; justify-content: center; gap: 6px; padding-top: 12px; }
+  .lc-dev__dots i { width: 6px; height: 6px; border-radius: 999px; background: var(--border-strong); opacity: .5; transition: width 500ms var(--lc-ease), background-color 300ms, opacity 300ms; }
+  .lc-dev__dots i.is-on { width: 20px; background: var(--accent); opacity: 1; }
+
+  .lc-sc { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 16px; padding: clamp(16px, 2.4vw, 28px); opacity: 0; visibility: hidden;
+    transform: translateY(24px) scale(.985); transition: opacity 420ms var(--lc-ease), transform 700ms var(--lc-ease), visibility 0ms 700ms; }
+  .lc-sc.is-before { transform: translateY(-24px) scale(.985); }
+  .lc[data-transition="fondu"] .lc-sc, .lc[data-transition="fondu"] .lc-sc.is-before { transform: none; }
+  .lc-sc.is-on { opacity: 1; visibility: visible; transform: none; transition: opacity 520ms var(--lc-ease) 80ms, transform 800ms var(--lc-ease), visibility 0ms; }
+  .lc-sc__h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .lc-sc__h b { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: var(--text-strong); } .lc-sc__h span { font-size: 14px; color: var(--text-muted); }
+  .lc-sc__f { display: flex; justify-content: space-between; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); font-size: 15px; } .lc-sc__f b { font-size: 20px; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .lc-btn { display: grid; place-items: center; min-height: 48px; border-radius: 12px; background: var(--accent); color: var(--accent-fg); font-size: 15px; font-weight: 600; }
+  .lc-btn--soft { margin-top: auto; background: var(--accent-subtle); color: var(--text-strong); border: 1px solid var(--accent-subtle-border); }
+
+  .lc-ord { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+  .lc-ord li { display: grid; grid-template-columns: 36px 1fr auto; column-gap: 8px; align-items: baseline; padding: 10px 12px; border-radius: 10px; font-size: 15px; }
+  .lc-ord li:nth-child(odd) { background: var(--raised); }
+  .lc-ord span { font: 500 13px/1 var(--font-mono); color: var(--text-muted); } .lc-ord b { font-weight: 500; color: var(--text-strong); } .lc-ord em { font-style: normal; font-variant-numeric: tabular-nums; color: var(--text); }
+  .lc-ord small { grid-column: 2 / -1; font-size: 13px; color: var(--warn); }
+  .lc-sc.is-on .lc-ord .is-new { animation: lc-new 900ms var(--lc-ease) 350ms both; }
+  @keyframes lc-new { from { opacity: 0; transform: translateX(-12px); background: var(--accent-subtle); } }
+
+  .lc-kds { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; min-height: 0; }
+  .lc-kds__t { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 12px; background: var(--raised); border: 1px solid var(--border); font-size: 14px; color: var(--text); overflow: hidden; }
+  .lc-kds__t p { display: flex; justify-content: space-between; margin: 0 0 4px; } .lc-kds__t b { font-weight: 600; color: var(--text-strong); } .lc-kds__t time { font: 500 13px/20px var(--font-mono); color: var(--text-muted); }
+  .lc-kds__t em { margin-top: auto; align-self: start; padding: 2px 10px; border-radius: 999px; background: var(--tint-green-bg); color: var(--tint-green-fg); border: 1px solid var(--tint-green-border); font-style: normal; font-weight: 600; font-size: 13px; }
+  .lc-kds__t i { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--border); }
+  .lc-kds__t i::after { content: ""; position: absolute; inset: 0; width: calc(var(--p) * 100%); background: var(--accent); }
+  .lc-kds__t.is-warn i::after { background: var(--down); } .lc-kds__t.is-warn time { color: var(--down); }
+  .lc-kds__t.is-ok { border-color: var(--tint-green-border); }
+
+  .lc-pay { flex: 1; display: grid; align-content: center; justify-items: center; gap: 16px; text-align: center; }
+  .lc-pay__k { margin: 0; font-size: 14px; color: var(--text-muted); }
+  .lc-pay__v { margin: 0; font-size: clamp(2.5rem, 1.6rem + 2.6vw, 4rem); line-height: 1; font-weight: 600; letter-spacing: -0.04em; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .lc-pay__tip { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--raised); }
+  .lc-pay__tip span { min-width: 64px; padding: 8px 12px; border-radius: 999px; font-size: 14px; font-weight: 500; color: var(--text-muted); } .lc-pay__tip .is-on { background: var(--accent); color: var(--accent-fg); }
+  .lc-pay__nfc { display: flex; align-items: center; gap: 12px; padding-top: 8px; font-size: 14px; color: var(--text-muted); }
+  .lc-pay__ico { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; background: var(--accent-subtle); color: var(--text-strong); }
+  .lc-pay__ico i { position: absolute; inset: 0; border-radius: 999px; border: 1.5px solid var(--accent); opacity: 0; }
+  .lc-sc.is-on .lc-pay__ico i { animation: lc-nfc 2.4s var(--lc-ease) infinite; } .lc-sc.is-on .lc-pay__ico i + i { animation-delay: .8s; }
+  @keyframes lc-nfc { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.7); opacity: 0; } }
+
+  .lc-stk { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+  .lc-stk li { display: grid; grid-template-columns: 1fr 1.2fr auto; align-items: center; gap: 12px; font-size: 15px; } .lc-stk b { font-weight: 500; color: var(--text-strong); } .lc-stk span { font-size: 14px; color: var(--text-muted); font-variant-numeric: tabular-nums; min-width: 92px; text-align: right; }
+  .lc-stk i { position: relative; height: 8px; border-radius: 999px; background: var(--raised); overflow: hidden; } .lc-stk i::after { content: ""; position: absolute; inset: 0; width: calc(var(--p) * 100%); border-radius: inherit; background: var(--accent); transform-origin: 0 50%; }
+  .lc-sc.is-on .lc-stk i::after { animation: lc-fill 900ms var(--lc-ease) 250ms both; } @keyframes lc-fill { from { transform: scaleX(0); } }
+  .lc-stk .is-low i::after { background: var(--down); } .lc-stk .is-low span { color: var(--down); font-weight: 600; }
+
+  .lc-z__v { margin: 0; display: grid; gap: 4px; font-size: clamp(2.25rem, 1.6rem + 2vw, 3.25rem); line-height: 1; font-weight: 600; letter-spacing: -0.04em; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .lc-z__v small { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0; color: var(--up); }
+  .lc-z__ch { flex: 1; min-height: 48px; display: flex; align-items: flex-end; gap: 8px; } .lc-z__ch i { flex: 1; height: calc(var(--h) * 100%); border-radius: 6px 6px 2px 2px; background: var(--accent-subtle); transform-origin: 50% 100%; }
+  .lc-z__ch i:nth-child(7) { background: var(--accent); } .lc-sc.is-on .lc-z__ch i { animation: lc-grow 800ms var(--lc-ease) both; } .lc-sc.is-on .lc-z__ch i:nth-child(2n) { animation-delay: 80ms; }
+  @keyframes lc-grow { from { transform: scaleY(0); } }
+  .lc-z__kpi { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0; padding-top: 12px; border-top: 1px solid var(--border); } .lc-z__kpi div { display: flex; flex-direction: column-reverse; } .lc-z__kpi dt { font-size: 14px; color: var(--text-muted); } .lc-z__kpi dd { margin: 0; font-size: 22px; font-weight: 600; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+
+  /* Téléphone : le visuel se colle en haut, la liste défile dessous (réorganisé, pas réduit) */
+  @media (max-width: 859px) {
+    .lc__body { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .lc__aside { order: -1 !important; position: sticky; top: 0; z-index: 2; margin: 0 -16px; padding: 8px 16px 16px; background: var(--bg); }
+    .lc__aside::after { content: ""; position: absolute; left: 0; right: 0; bottom: -24px; height: 24px; background: linear-gradient(var(--bg), transparent); pointer-events: none; }
+    .lc__stick { position: static; }
+    .lc-dev { padding: 8px; border-radius: 20px; }
+    .lc-dev__top { padding: 2px 6px 8px; } .lc-dev__app { font-size: 13px; }
+    .lc-dev__screen { aspect-ratio: auto; height: min(40svh, 300px); border-radius: 14px; }
+    .lc-dev__dots { padding-top: 8px; }
+    .lc-sc { padding: 14px; gap: 10px; }
+    .lc-sc__h b { font-size: 16px; }
+    .lc-ord li { padding: 8px 10px; font-size: 14px; }
+    .lc-kds { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; } .lc-kds__t { padding: 8px; font-size: 13px; } .lc-kds__t span:nth-of-type(2) { display: none; }
+    .lc-stk { gap: 8px; } .lc-stk li { grid-template-columns: 1fr auto; gap: 4px 8px; font-size: 14px; } .lc-stk i { grid-column: 1 / -1; grid-row: 2; height: 6px; } .lc-stk li:nth-child(4) { display: none; }
+    .lc-btn { min-height: 44px; font-size: 14px; }
+    .lc-z__ch { min-height: 32px; }
+    .lc-pay__tip span { min-width: 56px; padding: 8px 10px; }
+    .lc__item { min-height: calc(var(--lc-h) * .75vh); padding: 32px 0 32px 24px; align-content: start; }
+    .lc__item:first-child { min-height: calc(var(--lc-h) * .75vh); padding-top: 32px; } .lc__item:first-child .lc__bar { top: 32px; }
+    .lc__bar { top: 32px; bottom: 32px; }
+    .lc__item:last-child { min-height: calc(var(--lc-h) * 1vh); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lc *, .lc *::before, .lc *::after { animation: none !important; transition-duration: 0ms !important; transition-delay: 0ms !important; }
+  }
+</style>
+
+<script>
+(function () {
+  function setup(root) {
+    if (root._inst) root._inst.destroy();
+    var items = [].slice.call(root.querySelectorAll('.lc__item'));
+    var scenes = [].slice.call(root.querySelectorAll('[data-scene]'));
+    var dots = [].slice.call(root.querySelectorAll('.lc-dev__dots i'));
+    var count = root.querySelector('[data-lc-count]');
+    var aside = root.querySelector('.lc__aside');
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var active = -1, ticking = false, live = false;
+    root.style.setProperty('--lc-h', +root.dataset.hauteur || 70);
+
+    function show(i) {
+      if (i === active) return;
+      active = i;
+      items.forEach(function (el, k) { el.classList.toggle('is-on', k === i); el.querySelector('.lc__jump').setAttribute('aria-current', k === i ? 'step' : 'false'); });
+      scenes.forEach(function (el, k) { el.classList.toggle('is-on', k === i); el.classList.toggle('is-before', k < i); el.setAttribute('aria-hidden', String(k !== i)); });
+      dots.forEach(function (el, k) { el.classList.toggle('is-on', k === i); });
+      count.textContent = (i < 9 ? '0' : '') + (i + 1);
+    }
+
+    /* Étape active : celle qui coupe la ligne de lecture (au milieu de la zone visible sous le visuel collant sur téléphone).
+       La barre de l’étape se remplit avec la lecture. */
+    function readLine() {
+      var vh = window.innerHeight;
+      var top = getComputedStyle(aside).position === 'sticky' ? aside.getBoundingClientRect().bottom : 0;
+      return top + (vh - top) * .45;
+    }
+    function update() {
+      ticking = false;
+      var line = readLine(), pick = 0;
+      items.forEach(function (el, k) {
+        var r = el.getBoundingClientRect();
+        if (r.top <= line) pick = k;
+        var bar = el.querySelector('.lc__bar');
+        var br = bar.getBoundingClientRect();
+        var p = Math.max(0, Math.min(1, (line - br.top) / Math.max(1, br.height)));
+        bar.firstElementChild.style.setProperty('--p', reduce ? (r.top <= line ? 1 : 0) : p);
+      });
+      show(pick);
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    /* L’écoute du défilement ne tourne que lorsque la section est à l’écran */
+    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (e) {
+      var on = e[0].isIntersecting;
+      if (on && !live) { window.addEventListener('scroll', onScroll, { passive: true }); window.addEventListener('resize', onScroll); live = true; onScroll(); }
+      if (!on && live) { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); live = false; }
+    }) : null;
+    if (io) io.observe(root); else { window.addEventListener('scroll', onScroll, { passive: true }); live = true; }
+
+    /* Toucher ou cliquer une étape amène sa lecture au bon endroit */
+    function onJump(e) {
+      var b = e.target.closest('.lc__jump'); if (!b) return;
+      var el = b.closest('.lc__item'), r = el.getBoundingClientRect();
+      var y = window.scrollY + r.top - readLine() + 24;
+      window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+      show(+el.dataset.step);
+    }
+    root.addEventListener('click', onJump);
+
+    show(0); update();
+    root._inst = {
+      go: function (i) { show(i); },
+      destroy: function () { if (io) io.disconnect(); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); root.removeEventListener('click', onJump); }
+    };
+  }
+  document.querySelectorAll('[data-sticky-list]').forEach(setup);
+})();
+</script>

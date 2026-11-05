@@ -1,0 +1,53 @@
+{
+  "id": "liste-collante",
+  "nom": "Liste collante synchronisée",
+  "categorie": "fonctionnalites",
+  "niveau": "essentiel",
+  "ordre": 10,
+  "description": "Une liste d’étapes qu’on fait défiler, et un visuel unique collant (un écran d’app dessiné en HTML) qui change de scène selon l’étape lue, avec une barre de progression liée au défilement. Sur téléphone, le visuel se colle en haut de l’écran et la liste défile dessous.",
+  "tags": ["Défilement", "Sticky", "Scrollspy", "Capture d’app", "Étapes", "Responsive"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1120 },
+  "palette": "miel",
+  "logo_exemple": { "nom": "Comptoir", "secteur": "Logiciel de caisse pour restaurants", "fichier": "logo.svg", "palette": "miel", "typo": "Geist SemiBold" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, accent, teintes, --up / --down / --warn" },
+    { "nom": "Script de synchronisation", "note": "≈ 1,5 ko intégré au HTML : une ligne de lecture, rAF au défilement, IntersectionObserver" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, aucune autre bibliothèque" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "cote", "label": "Côté du visuel", "type": "select", "default": "droite",
+      "options": [{ "value": "droite", "label": "À droite" }, { "value": "gauche", "label": "À gauche" }],
+      "code": { "html": "data-cote=\"{v}\"", "react": "cote=\"{v}\"" } },
+    { "name": "transition", "label": "Changement d’écran", "type": "select", "default": "glisse",
+      "options": [{ "value": "glisse", "label": "Glissé" }, { "value": "fondu", "label": "Fondu" }],
+      "code": { "html": "data-transition=\"{v}\"", "react": "transition=\"{v}\"" } },
+    { "name": "progression", "label": "Barre liée au défilement", "type": "boolean", "default": true,
+      "code": { "html": "data-progression=\"{v}\"", "react": "progression={{v}}" } },
+    { "name": "hauteur", "label": "Hauteur d’une étape", "type": "number", "default": 70, "min": 40, "max": 100, "step": 5, "unit": "vh",
+      "hint": "Plus haut : chaque écran reste affiché plus longtemps pendant le défilement.",
+      "code": { "html": "data-hauteur=\"{v}\"", "react": "hauteur={{v}}" } },
+    { "name": "numeros", "label": "Numéros d’étape", "type": "boolean", "default": true,
+      "code": { "html": "data-numeros=\"{v}\"", "react": "numeros={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/ListeCollante.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour raconter un parcours en 3 à 6 étapes (de la commande à la clôture, de l’inscription au premier rapport…) avec un seul visuel qui évolue, au lieu d’une capture par bloc. Faites défiler l’aperçu.",
+    "L’étape active est celle qui franchit la ligne de lecture (45 % de la zone visible) ; sa barre se remplit avec le défilement. Toucher ou cliquer une étape l’amène à cette ligne.",
+    "Téléphone (< 860 px) : le visuel se colle en haut (40 % de l’écran au plus, 300 px), avec un fondu sous lui ; la liste défile dessous en texte de 16 px. Certaines lignes secondaires des écrans sont masquées pour rester lisibles.",
+    "Remplacez les scènes (data-scene) par vos propres écrans : elles se relaient seules, dans l’ordre des étapes.",
+    "Palette par défaut : Miel. Uniquement des variables de tokens.css : changez de palette sans toucher au composant."
+  ],
+  "accessibilite": [
+    "Liste ordonnée de vraies étapes (H3 et paragraphe) ; chaque étape a un bouton natif « Afficher l’étape : … » avec aria-current=\"step\" sur l’étape active.",
+    "Chaque écran du visuel est une image décrite (role=\"img\" et description complète) ; seul l’écran affiché est exposé.",
+    "Étapes inactives en --text-muted (pas d’opacité) : contraste AA conservé en clair et en sombre.",
+    "« Réduire les animations » : changement d’écran instantané, barres pleines ou vides, défilement au clic sans glissé.",
+    "L’écoute du défilement (passive, regroupée par rAF) ne tourne que lorsque la section est à l’écran."
+  ]
+}

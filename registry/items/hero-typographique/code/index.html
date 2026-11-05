@@ -1,0 +1,249 @@
+<!-- Hero typographique — HTML + CSS + JS autonome. Nécessite tokens.css (variables de couleur, police Geist).
+     Marque et chiffres fictifs (Fugue, studio de design de marque). Le titre est un vrai <h1> : le script le découpe
+     en mots, détecte les lignes réelles (elles changent avec la largeur) et les fait entrer une à une. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="htp" data-hero-typo data-entree="montee" data-duree="1100" data-decalage="110" data-align="gauche" data-trait="true" aria-labelledby="htp-titre">
+  <header class="htp__bar">
+    <a class="htp__brand" href="#" aria-label="Fugue, accueil"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 295 100" data-icone="0 0 100 100" aria-hidden="true" focusable="false"><g data-role="icone"><rect width="100" height="100" rx="28" style="fill:var(--p, currentColor)"/><rect x="26" y="24" width="13" height="52" rx="6.5" style="fill:var(--lt, #fff)"/><rect x="26" y="24" width="48" height="13" rx="6.5" style="fill:var(--lt, #fff)"/><rect x="45" y="44" width="25" height="13" rx="6.5" style="fill:var(--lt, #fff)"/><circle cx="70" cy="70" r="6.5" style="fill:var(--a, var(--lt, #fff))"/></g><path data-role="nom" d="M132.48 70V30.24H159.09V36.58H135.81L139.76 32.5V50.74L135.81 47.44H158.08V53.69H135.81L139.76 50.4V70ZM174.26 70.67Q169.7 70.67 167.06 67.68Q164.42 64.68 164.42 59.35V40.1H171.59V57.59Q171.59 61.34 172.83 63.1Q174.07 64.85 176.65 64.85Q179.55 64.85 181.17 62.92Q182.78 60.98 182.78 57.3V40.1H189.95V70H183.36L183.2 61.79L184.13 62.07Q183.42 66.29 180.9 68.48Q178.38 70.67 174.26 70.67ZM209.47 79.07Q205.54 79.07 202.75 78.01Q199.96 76.94 198.25 75.02Q196.53 73.09 195.87 70.58L203.26 70.07Q203.8 71.74 205.2 72.69Q206.59 73.65 209.47 73.65Q212.81 73.65 214.59 72.16Q216.38 70.67 216.38 67.51V63.75Q215.32 65.92 212.96 67.23Q210.61 68.54 207.7 68.54Q203.99 68.54 201.11 66.72Q198.22 64.89 196.61 61.62Q194.99 58.35 194.99 54.02Q194.99 49.72 196.59 46.44Q198.19 43.16 201.04 41.29Q203.89 39.42 207.56 39.42Q210.81 39.42 213.16 40.88Q215.51 42.34 216.6 44.76V40.1H223.59V67.36Q223.59 71.19 221.83 73.8Q220.08 76.42 216.91 77.74Q213.74 79.07 209.47 79.07ZM209.38 62.92Q212.58 62.92 214.49 60.54Q216.39 58.16 216.42 53.97Q216.46 51.18 215.6 49.18Q214.74 47.19 213.15 46.1Q211.55 45.02 209.38 45.02Q206.06 45.02 204.23 47.45Q202.4 49.87 202.4 53.97Q202.4 58.09 204.29 60.51Q206.18 62.92 209.38 62.92ZM240.17 70.67Q235.61 70.67 232.97 67.68Q230.33 64.68 230.33 59.35V40.1H237.5V57.59Q237.5 61.34 238.74 63.1Q239.98 64.85 242.56 64.85Q245.47 64.85 247.08 62.92Q248.69 60.98 248.69 57.3V40.1H255.86V70H249.27L249.12 61.79L250.05 62.07Q249.33 66.29 246.81 68.48Q244.29 70.67 240.17 70.67ZM275.54 70.67Q271.07 70.67 267.78 68.75Q264.49 66.82 262.7 63.3Q260.9 59.77 260.9 55.05Q260.9 50.32 262.7 46.83Q264.49 43.33 267.75 41.38Q271 39.42 275.4 39.42Q279.67 39.42 282.87 41.33Q286.08 43.24 287.83 46.83Q289.58 50.41 289.58 55.44V57.04H268.34Q268.55 61 270.48 62.97Q272.41 64.94 275.63 64.94Q278.02 64.94 279.61 63.87Q281.19 62.8 281.83 60.83L289.16 61.29Q287.96 65.62 284.34 68.15Q280.71 70.67 275.54 70.67ZM268.34 52.23H282.15Q281.92 48.59 280.09 46.83Q278.26 45.07 275.4 45.07Q272.52 45.07 270.65 46.91Q268.77 48.75 268.34 52.23Z" style="fill:var(--ink, currentColor)"/></svg></a>
+    <p class="htp__meta"><span class="htp__dot" aria-hidden="true"></span><span class="htp__city">Studio à Lyon</span><span class="htp__sep" aria-hidden="true">·</span><time class="htp__clock" data-htp-clock>16:34</time></p>
+  </header>
+
+  <div class="htp__body">
+    <p class="htp__eyebrow" data-htp-fade><span class="htp__num">(01)</span> Identités, sites et systèmes de marque depuis 2014</p>
+    <h1 class="htp__title" id="htp-titre" data-htp-title data-accent-word="distance">Des marques qui tiennent la distance.</h1>
+
+    <div class="htp__foot">
+      <p class="htp__lead" data-htp-fade>Nous dessinons des identités qui restent justes dix ans plus tard : un nom, un logo, une typographie et les règles pour que votre équipe les applique seule.</p>
+      <dl class="htp__stats" data-htp-fade>
+        <div><dt>Marques accompagnées</dt><dd>126</dd></div>
+        <div><dt>Durée moyenne d’une collaboration</dt><dd>6 ans</dd></div>
+      </dl>
+      <div class="htp__action" data-htp-fade>
+        <a class="htp__cta" href="#contact">
+          <span class="htp__cta-label">Démarrer un projet</span>
+          <span class="htp__cta-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </a>
+        <p class="htp__note">Réponse sous 48 h · 2 places pour janvier</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .htp {
+    --htp-ease: cubic-bezier(.16, 1, .3, 1);      /* expo-out : départ vif, pose très douce */
+    --htp-dur: 1100ms;
+    position: relative; isolation: isolate;
+    display: flex; flex-direction: column;
+    min-height: max(100svh, 560px);
+    padding: 24px clamp(16px, 4vw, 64px) clamp(24px, 4vw, 48px);
+    background: var(--bg); color: var(--text);
+    font-family: var(--font-sans);
+    overflow: hidden;
+  }
+  .htp *, .htp *::before, .htp *::after { box-sizing: border-box; }
+
+  /* Barre du haut : logo et heure locale du studio, rien d’autre (une seule action sur la page). */
+  .htp__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; }
+  .htp__brand { display: inline-flex; align-items: center; min-height: 44px; color: var(--text-strong); border-radius: var(--radius-ctl);
+    --p: var(--accent); --lt: var(--accent-fg); --a: var(--accent-subtle); --ink: var(--text-strong); }
+  .htp__brand svg { display: block; height: 28px; width: auto; }
+  .htp__meta { display: inline-flex; align-items: center; gap: 8px; margin: 0; font: 500 13px/1 var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .htp__sep { opacity: .6; }
+  .htp__dot { width: 8px; height: 8px; border-radius: 999px; background: var(--up); box-shadow: 0 0 0 0 var(--up); animation: htp-pulse 2.4s var(--htp-ease) infinite; }
+  @keyframes htp-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--up) 45%, transparent); } 70%, 100% { box-shadow: 0 0 0 8px transparent; } }
+
+  .htp__body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: clamp(24px, 3.2vw, 40px); padding-block: clamp(32px, 5vw, 64px) 0; }
+  .htp__eyebrow { margin: 0; font: 500 13px/20px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .htp__num { color: var(--text-strong); }
+
+  /* Le titre : un vrai H1, géant, interlignage serré. */
+  .htp__title {
+    margin: 0; max-width: 14ch;
+    font-size: clamp(3.25rem, 0.9rem + 8.6vw, 9.5rem);
+    line-height: .94; letter-spacing: -0.045em; font-weight: 600;
+    color: var(--text-strong); text-wrap: balance;
+    font-feature-settings: "ss01", "kern";
+  }
+  .htp__line { display: block; overflow: clip; padding-bottom: .16em; margin-bottom: -.16em; }   /* masque de la ligne, descendantes comprises */
+  .htp__line-in { display: inline-block; will-change: transform; }
+  .htp__w { display: inline-block; white-space: nowrap; }
+  .htp__mark { position: relative; color: var(--accent); }
+  .htp__mark svg { position: absolute; left: -1%; bottom: -.07em; width: 102%; height: .2em; overflow: visible; pointer-events: none; }
+  .htp__mark path { fill: none; stroke: currentColor; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .htp[data-trait="false"] .htp__mark svg { display: none; }
+
+  .htp[data-align="centre"] .htp__body { align-items: center; text-align: center; }
+  .htp[data-align="centre"] .htp__title { margin-inline: auto; }
+  .htp[data-align="centre"] .htp__foot { justify-items: center; }
+
+  /* Pied du hero : chapô, deux chiffres, l’action. */
+  .htp__foot { display: grid; gap: 24px; align-items: end; padding-top: clamp(8px, 2vw, 24px); border-top: 1px solid var(--border); }
+  .htp__lead { margin: 0; padding-top: 16px; max-width: 46ch; font-size: 17px; line-height: 26px; color: var(--text); text-wrap: pretty; }
+  .htp__stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0; }
+  .htp__stats div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 8px; }
+  .htp__stats dt { font-size: 14px; line-height: 20px; color: var(--text-muted); }
+  .htp__stats dd { margin: 0; font-size: 32px; line-height: 1; font-weight: 600; letter-spacing: -0.03em; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .htp__action { display: grid; gap: 12px; }
+  .htp__cta {
+    position: relative; display: inline-flex; align-items: center; justify-content: space-between; gap: 16px;
+    min-height: 56px; padding: 8px 8px 8px 24px; border-radius: 999px;
+    background: var(--accent); color: var(--accent-fg); text-decoration: none;
+    font-size: 17px; font-weight: 600; letter-spacing: -0.01em;
+    transition: background-color var(--motion-base) var(--ease-out), transform 500ms var(--htp-ease);
+  }
+  .htp__cta:hover { background: var(--accent-hover); }
+  .htp__cta:active { transform: scale(.98); transition-duration: 120ms; }
+  .htp__cta:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 3px; }
+  .htp__cta-icon { position: relative; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; overflow: hidden;
+    background: color-mix(in srgb, var(--accent-fg) 16%, transparent); }
+  .htp__cta-icon svg { grid-area: 1 / 1; transition: transform 520ms var(--htp-ease); }
+  .htp__cta-icon svg + svg { transform: translateX(-160%); }
+  .htp__cta:hover .htp__cta-icon svg:first-child, .htp__cta:focus-visible .htp__cta-icon svg:first-child { transform: translateX(160%); }
+  .htp__cta:hover .htp__cta-icon svg + svg, .htp__cta:focus-visible .htp__cta-icon svg + svg { transform: translateX(0); }
+  .htp__note { margin: 0; font-size: 14px; line-height: 20px; color: var(--text-muted); }
+
+  @media (min-width: 900px) {
+    .htp__foot { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) auto; gap: 48px; }
+    .htp__stats { padding-top: 16px; }
+    .htp__action { justify-items: end; text-align: right; }
+    .htp__cta { min-width: 264px; }
+    .htp[data-align="centre"] .htp__foot { grid-template-columns: 1fr; }
+    .htp[data-align="centre"] .htp__action { justify-items: center; text-align: center; }
+  }
+  @media (max-width: 899px) {
+    .htp { padding-top: 12px; }
+    .htp__title { max-width: none; }
+    .htp__foot { padding-top: 0; }
+    .htp__cta { width: 100%; }
+    .htp__action { order: -1; padding-top: 24px; }   /* sur téléphone l’action passe juste sous le titre */
+    .htp__lead { padding-top: 0; font-size: 16px; line-height: 24px; }
+    .htp__city, .htp__sep { display: none; }
+  }
+
+  /* États de l’entrée (posés par le script, jamais sans lui : sans JS tout reste visible). */
+  .htp.is-ready [data-htp-fade] { opacity: 0; transform: translateY(16px); }
+  .htp.is-ready .htp__line-in { transform: translateY(105%); }
+  .htp.is-ready[data-entree="flou"] .htp__line-in { transform: translateY(24%); filter: blur(16px); opacity: 0; }
+  .htp.is-ready[data-entree="bascule"] .htp__line-in { transform: translateY(100%) rotate(6deg); transform-origin: 0 100%; }
+  .htp.is-play [data-htp-fade] { opacity: 1; transform: none; transition: opacity 900ms var(--htp-ease), transform 900ms var(--htp-ease); transition-delay: var(--d, 0ms); }
+  .htp.is-play .htp__line-in { transform: none; filter: none; opacity: 1; transition: transform var(--htp-dur) var(--htp-ease), filter var(--htp-dur) var(--htp-ease), opacity calc(var(--htp-dur) * .7) var(--htp-ease); transition-delay: var(--d, 0ms); }
+  .htp.is-play .htp__mark path { stroke-dashoffset: 0; transition: stroke-dashoffset 900ms cubic-bezier(.65, 0, .35, 1) var(--dm, 0ms); }
+  .htp:not(.is-ready) .htp__mark path { stroke-dashoffset: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .htp.is-ready [data-htp-fade], .htp.is-ready .htp__line-in { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
+    .htp .htp__mark path { stroke-dashoffset: 0 !important; transition: none !important; }
+    .htp__dot { animation: none; }
+  }
+</style>
+
+<script>
+(function () {
+  /* Découpe le H1 en mots, regroupe les mots par ligne réelle, puis anime ligne par ligne.
+     Le texte complet reste lisible par les lecteurs d’écran (copie masquée), la version découpée est aria-hidden. */
+  function setup(root) {
+    if (root._inst) root._inst.destroy();
+    var title = root.querySelector('[data-htp-title]');
+    var text = title.getAttribute('data-text') || title.textContent.trim();
+    title.setAttribute('data-text', text);
+    var accent = (title.getAttribute('data-accent-word') || '').trim().toLowerCase();
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var timers = [], ro = null, lastW = 0;
+
+    function build() {
+      var words = text.split(/\s+/);
+      title.innerHTML = '';
+      var sr = document.createElement('span'); sr.textContent = text;
+      sr.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap';
+      var vis = document.createElement('span'); vis.setAttribute('aria-hidden', 'true');
+      title.appendChild(sr); title.appendChild(vis);
+      var spans = words.map(function (w, i) {
+        var s = document.createElement('span'); s.className = 'htp__w';
+        var bare = w.toLowerCase().replace(/[.,;:!?…»«"’]/g, '');
+        if (accent && bare === accent) {
+          var core = w.replace(/[.,;:!?…]+$/, ''), tail = w.slice(core.length);
+          s.innerHTML = '<span class="htp__mark">' + esc(core) + '<svg viewBox="0 0 400 22" preserveAspectRatio="none"><path pathLength="1" d="M4 15C90 7 200 5 396 11"/></svg></span>' + esc(tail);
+        } else s.textContent = w;
+        vis.appendChild(s); if (i < words.length - 1) vis.appendChild(document.createTextNode(' '));
+        return s;
+      });
+      /* Lignes réelles : mots de même offsetTop. */
+      var lines = [], top = null;
+      spans.forEach(function (s) { var t = s.offsetTop; if (top === null || Math.abs(t - top) > 4) { lines.push([]); top = t; } lines[lines.length - 1].push(s); });
+      vis.innerHTML = '';
+      lines.forEach(function (ws, li) {
+        var line = document.createElement('span'); line.className = 'htp__line';
+        var inner = document.createElement('span'); inner.className = 'htp__line-in';
+        ws.forEach(function (w, i) { inner.appendChild(w); if (i < ws.length - 1) inner.appendChild(document.createTextNode(' ')); });
+        line.appendChild(inner); vis.appendChild(line);
+      });
+      lastW = Math.round(title.getBoundingClientRect().width);
+      return lines.length;
+    }
+    function esc(s) { return s.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+
+    function play() {
+      timers.forEach(clearTimeout); timers = [];
+      var dur = +root.dataset.duree || 1100, step = +root.dataset.decalage || 110;
+      root.style.setProperty('--htp-dur', dur + 'ms');
+      root.classList.remove('is-play'); root.classList.add('is-ready');
+      var n = build();
+      var lines = root.querySelectorAll('.htp__line-in');
+      var eyebrow = root.querySelector('.htp__eyebrow');
+      if (eyebrow) eyebrow.style.setProperty('--d', '0ms');
+      lines.forEach(function (l, i) { l.style.setProperty('--d', (120 + i * step) + 'ms'); });
+      var after = 120 + n * step + dur * .35;
+      root.style.setProperty('--dm', after + 'ms');
+      root.querySelectorAll('.htp__foot [data-htp-fade]').forEach(function (el, i) { el.style.setProperty('--d', (after + 120 + i * 90) + 'ms'); });
+      if (reduce) { root.classList.add('is-play'); return; }
+      void root.offsetWidth;                                   /* applique l’état de départ avant la transition */
+      requestAnimationFrame(function () { requestAnimationFrame(function () { root.classList.add('is-play'); }); });
+    }
+
+    /* Recalcule les lignes quand la largeur change (rotation du téléphone, fenêtre redimensionnée)
+       ou quand la police arrive, sans rejouer l’entrée. */
+    function relayout() {
+      var playing = root.classList.contains('is-play');
+      build();
+      if (playing) root.querySelectorAll('.htp__line-in').forEach(function (l) { l.style.transition = 'none'; });
+    }
+    if ('ResizeObserver' in window) {
+      ro = new ResizeObserver(function () { if (Math.round(title.getBoundingClientRect().width) !== lastW) relayout(); });
+      ro.observe(title);
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (root.isConnected) relayout(); });
+
+    /* Heure locale du studio, mise à jour à la minute (pas de boucle rAF). */
+    var clock = root.querySelector('[data-htp-clock]'), tick = 0;
+    function time() {
+      if (!clock) return;
+      try { clock.textContent = new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Paris' }).format(new Date()); } catch (e) {}
+      tick = setTimeout(time, 60000 - (Date.now() % 60000));
+    }
+    time();
+
+    /* Lance l’entrée tout de suite si le hero est à l’écran, sinon quand il y entre (une seule fois). */
+    var io = null;
+    var r0 = root.getBoundingClientRect();
+    var above = r0.top < (window.innerHeight || 800) && r0.bottom > 0;     /* déjà à l’écran (cas normal d’un hero) : on joue tout de suite */
+    if ('IntersectionObserver' in window && !reduce && !above) {
+      root.classList.add('is-ready'); build();
+      io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); io = null; play(); } }, { threshold: .2 });
+      io.observe(root);
+    } else play();
+
+    root._inst = {
+      play: play,
+      destroy: function () { timers.forEach(clearTimeout); clearTimeout(tick); if (ro) ro.disconnect(); if (io) io.disconnect(); }
+    };
+  }
+  document.querySelectorAll('[data-hero-typo]').forEach(setup);
+})();
+</script>

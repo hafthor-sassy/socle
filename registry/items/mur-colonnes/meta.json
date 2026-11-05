@@ -1,0 +1,52 @@
+{
+  "id": "mur-colonnes",
+  "nom": "Mur en colonnes",
+  "categorie": "temoignages",
+  "niveau": "essentiel",
+  "description": "Un mur de témoignages en colonnes qui défilent en sens opposés, sans fin. Sous la souris, la colonne ralentit en douceur (vitesse lissée, pas d’arrêt sec) pour qu’on lise ; le défilement se met en pause hors écran, au focus clavier ou avec le bouton Pause. Sur mobile, le mur devient deux rangées horizontales qu’on tient et fait glisser au doigt. Démontré sur Escale, voyages en train.",
+  "tags": ["Témoignages", "Avis", "Défilement infini", "Ticker", "Tactile", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 33,
+  "palette": "miel",
+  "logo_exemple": { "nom": "Escale", "secteur": "Voyages en train", "fichier": "logo.svg", "palette": "miel", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop", "desktopMin": 1100 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, bordures, teintes des avatars, accent des étoiles" },
+    { "nom": "≈ 3 ko de JS", "note": "Inclus dans l’onglet HTML : un seul rAF pour toutes les colonnes, arrêté hors écran et onglet masqué" },
+    { "nom": "mask-image", "note": "Fondu haut et bas (ou gauche et droite) ; désactivable" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, sans bibliothèque d’animation" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "vitesse", "label": "Vitesse", "type": "number", "default": 28, "min": 8, "max": 80, "step": 2, "unit": "px/s",
+      "code": { "html": "data-speed=\"{v}\"", "react": "speed={{v}}" } },
+    { "name": "ralenti", "label": "Vitesse au survol", "type": "number", "default": 15, "min": 0, "max": 60, "step": 5, "unit": "%",
+      "hint": "0 : la colonne s’arrête (en douceur) sous la souris.",
+      "code": { "html": "data-slow=\"{v}\"", "react": "hoverSpeed={{v}}" } },
+    { "name": "sens", "label": "Sens", "type": "select", "default": "alterne",
+      "options": [ { "value": "alterne", "label": "Alterné" }, { "value": "meme", "label": "Même sens" } ],
+      "code": { "html": "data-dir=\"{v}\"", "react": "direction=\"{v}\"" } },
+    { "name": "colonnes", "label": "Colonnes (bureau)", "type": "number", "default": 3, "min": 2, "max": 4, "step": 1,
+      "code": { "html": "data-cols=\"{v}\"", "react": "columns={{v}}" } },
+    { "name": "masque", "label": "Fondu des bords", "type": "boolean", "default": true,
+      "code": { "html": "data-mask=\"{v}\"", "react": "mask={{v}}" } },
+    { "name": "hauteur", "label": "Hauteur du mur", "type": "number", "default": 640, "min": 400, "max": 880, "step": 40, "unit": "px",
+      "code": { "html": "--mc-h: {v}px", "react": "height={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/MurColonnes.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour une preuve sociale abondante (avis clients, retours d’utilisateurs, citations presse) sur une page d’accueil ou de tarifs. Les avis sont écrits une fois dans la liste source ; le script les répartit en colonnes et les double pour la boucle.",
+    "Au moins 8 avis pour 3 colonnes ; variez les longueurs, c’est ce qui donne son rythme au mur. Le gras (<b>) met en valeur la phrase clé de chaque avis.",
+    "Sur mobile (≤ 639 px), deux rangées horizontales en sens opposés, cartes de 284 px ; un doigt posé arrête la rangée et la fait glisser, le défilement reprend en douceur au relâcher."
+  ],
+  "accessibilite": [
+    "Bouton Pause / Reprendre (aria-pressed) toujours présent : un contenu qui bouge plus de 5 s doit pouvoir être arrêté (WCAG 2.2.2). Le défilement s’arrête aussi dès que le focus clavier entre dans le mur.",
+    "Chaque avis est une <figure> avec <blockquote> et <figcaption> ; la copie qui sert à la boucle est aria-hidden (et inert dans l’onglet HTML), les lecteurs d’écran ne lisent chaque avis qu’une fois.",
+    "Avec « réduire les animations », le mur est statique : colonnes complètes sur bureau, rangées défilables au doigt avec aimantation sur mobile.",
+    "Textes de 15–16 px, contraste AA en clair et en sombre ; la note est écrite en toutes lettres à côté des étoiles décoratives."
+  ]
+}

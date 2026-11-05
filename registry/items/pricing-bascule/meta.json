@@ -1,0 +1,55 @@
+{
+  "id": "pricing-bascule",
+  "nom": "Bascule à chiffres roulants",
+  "categorie": "pricing",
+  "niveau": "essentiel",
+  "description": "Trois offres d’abonnement classiques (Starter, Pro, Équipe) avec une bascule Mensuel / Annuel : la pastille glisse sur un ressort, chaque chiffre du prix roule dans sa colonne, les unités d’abord, et l’économie annuelle apparaît en badge sous le prix. Les tarifs annuels sont calculés depuis le mensuel et la remise. Sur mobile, les offres passent en carrousel aimanté avec onglets synchronisés.",
+  "tags": ["Pricing", "Abonnement", "Mensuel / annuel", "Chiffres", "Ressort", "Carrousel", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 31,
+  "palette": "aubergine",
+  "logo_exemple": { "nom": "Volute", "secteur": "Logiciel collaboratif (SaaS)", "fichier": "logo.svg", "palette": "aubergine", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1180 },
+  "stage": { "width": "desktop", "desktopMin": 1120 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, accent, teinte verte du badge d’économie" },
+    { "nom": "≈ 3 ko de JS", "note": "Inclus dans l’onglet HTML : rouleaux de chiffres (transitions CSS, aucun rAF), bascule clavier, carrousel mobile" },
+    { "nom": "Intl.NumberFormat", "note": "Natif : « 19 € », « 228 € », « $19 », « 19 CHF »" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, sans bibliothèque d’animation" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "periode", "label": "Période", "type": "select", "default": "mensuel",
+      "options": [ { "value": "mensuel", "label": "Mensuel" }, { "value": "annuel", "label": "Annuel" } ],
+      "code": { "html": "data-period=\"{v}\"", "react": "defaultPeriod=\"{v}\"" } },
+    { "name": "remise", "label": "Remise annuelle", "type": "number", "default": 20, "min": 0, "max": 40, "step": 5, "unit": "%",
+      "hint": "Les prix annuels sont recalculés (arrondis à l’euro) ; 0 masque le badge.",
+      "code": { "html": "data-discount=\"{v}\"", "react": "discount={{v}}" } },
+    { "name": "devise", "label": "Devise", "type": "select", "default": "EUR",
+      "options": [ { "value": "EUR", "label": "Euro" }, { "value": "USD", "label": "Dollar" }, { "value": "CHF", "label": "CHF" } ],
+      "code": { "html": "data-currency=\"{v}\"", "react": "currency=\"{v}\"" } },
+    { "name": "miseEnAvant", "label": "Offre mise en avant", "type": "select", "default": "1",
+      "options": [ { "value": "0", "label": "Starter" }, { "value": "1", "label": "Pro" }, { "value": "2", "label": "Équipe" }, { "value": "-1", "label": "Aucune" } ],
+      "code": { "html": "data-featured=\"{v}\"", "react": "featured={{v}}" } },
+    { "name": "duree", "label": "Durée du roulement", "type": "number", "default": 700, "min": 300, "max": 1400, "step": 50, "unit": "ms",
+      "code": { "html": "--pb-dur: {v}ms", "react": "duration={{v}}" } },
+    { "name": "decalage", "label": "Décalage entre chiffres", "type": "number", "default": 60, "min": 0, "max": 160, "step": 10, "unit": "ms",
+      "hint": "Les unités partent en premier, puis les dizaines.",
+      "code": { "html": "--pb-stagger: {v}ms", "react": "stagger={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/PricingBascule.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour toute page de tarifs à trois niveaux avec engagement mensuel ou annuel : logiciel, abonnement média, salle de sport, service en ligne. Les noms, prix et listes se changent dans le balisage (data-monthly sur chaque offre).",
+    "Le prix annuel affiché est le prix mensuel équivalent ; la ligne en dessous rappelle le prix mensuel barré, le total facturé par an et l’économie réelle.",
+    "Sur mobile (≤ 767 px), les offres deviennent un carrousel à aimantation centré sur l’offre mise en avant, avec des onglets qui suivent le défilement ; la bascule prend toute la largeur."
+  ],
+  "accessibilite": [
+    "Bascule en role=\"radiogroup\" : flèches et Origine / Fin au clavier, état aria-checked, cibles de 44 px sur mobile.",
+    "Les rouleaux sont masqués aux lecteurs d’écran ; chaque offre porte son prix en texte (« 19 € par utilisateur et par mois, facturé 228 € par an »), et une région aria-live annonce une seule phrase au changement de période.",
+    "L’économie est écrite en toutes lettres, pas signalée par la couleur seule ; chiffres tabulaires, textes ≥ 14 px, contraste AA en clair et en sombre.",
+    "Avec « réduire les animations », les prix changent instantanément, sans roulement ni rebond."
+  ]
+}

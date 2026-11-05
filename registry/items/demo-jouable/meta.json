@@ -1,0 +1,156 @@
+{
+  "id": "demo-jouable",
+  "nom": "Démo jouable",
+  "categorie": "fonctionnalites",
+  "niveau": "premium",
+  "description": "Une section de fonctionnalité qui montre le produit au lieu de le décrire : un curseur fantôme nommé réserve une salle dans une vraie mini-interface (créneau, glisser pour la durée, titre tapé, invités, visio, confirmation), les étapes du texte avancent avec lui, puis le visiteur prend la main sur la même interface, entièrement fonctionnelle (conflits, modification, annulation). Démontré sur Alcôve, réservation d’espaces de coworking.",
+  "tags": [
+    "Fonctionnalités",
+    "Démo produit",
+    "Curseur",
+    "Scénario",
+    "Interactif",
+    "Ressort",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 30,
+  "palette": "sauge",
+  "logo_exemple": {
+    "nom": "Alcôve",
+    "secteur": "Réservation d’espaces de coworking",
+    "fichier": "logo.svg",
+    "palette": "sauge",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1280
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent, surfaces, teintes des réservations, ombres de la fenêtre et du toast"
+    },
+    {
+      "nom": "Script DemoJouable",
+      "note": "≈ 9 ko non minifié, inclus dans l’onglet HTML : planning, formulaire, scénario du curseur (rAF en pause hors écran), sans bibliothèque"
+    },
+    {
+      "nom": "Container queries",
+      "note": "La fenêtre passe en une salle à la fois (onglets) et en feuille du bas sous 560 px de large"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, sans bibliothèque d’animation"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "vitesse",
+      "label": "Vitesse du scénario",
+      "type": "number",
+      "default": 1,
+      "min": 0.5,
+      "max": 2,
+      "step": 0.25,
+      "unit": "×",
+      "hint": "Multiplie tous les temps du curseur (déplacements, frappe, pauses).",
+      "code": {
+        "html": "data-speed=\"{v}\"",
+        "react": "speed={{v}}"
+      }
+    },
+    {
+      "name": "boucle",
+      "label": "Rejouer si personne ne touche",
+      "type": "boolean",
+      "default": true,
+      "hint": "9 s après la fin, la démo repart tant que le visiteur n’a pas interagi.",
+      "code": {
+        "html": "data-loop=\"{v}\"",
+        "react": "loop={{v}}"
+      }
+    },
+    {
+      "name": "pointeur",
+      "label": "Pointeur",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "fleche",
+          "label": "Flèche"
+        },
+        {
+          "value": "doigt",
+          "label": "Doigt"
+        }
+      ],
+      "code": {
+        "html": "data-pointer=\"{v}\"",
+        "react": "pointer=\"{v}\""
+      },
+      "hint": "Auto : flèche à la souris, point de toucher sur mobile et sous 560 px."
+    },
+    {
+      "name": "etapes",
+      "label": "Étapes synchronisées",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-steps=\"{v}\"",
+        "react": "showSteps={{v}}"
+      }
+    },
+    {
+      "name": "libelle",
+      "label": "Nom sur le curseur",
+      "type": "text",
+      "default": "Camille",
+      "hint": "Vide : curseur sans étiquette.",
+      "code": {
+        "html": "data-label=\"{v}\"",
+        "react": "cursorLabel=\"{v}\""
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/DemoJouable.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour la section qui doit prouver qu’un produit est simple : prise de rendez-vous, création d’une facture, envoi d’un virement, lancement d’un agent. Le visiteur voit le parcours en 10 secondes, puis le refait lui-même.",
+    "Le scénario est une suite d’étapes awaitables (déplacer, cliquer, glisser, taper) qui pilotent l’état réel de l’interface : changez la fonction script() pour raconter un autre parcours sans toucher au rendu.",
+    "Toute action du visiteur (clic, toucher, clavier) arrête le curseur et lui laisse l’interface dans son état du moment ; « Revoir la démo » repart de zéro.",
+    "Sous 560 px de large, la fenêtre se réorganise : une salle à la fois avec des onglets, formulaire en feuille du bas, curseur remplacé par un point de toucher."
+  ],
+  "accessibilite": [
+    "Le curseur est décoratif (aria-hidden) ; chaque étape importante est annoncée par une région aria-live polie, une seule phrase à la fois.",
+    "Planning en grille clavier : flèches pour se déplacer, Entrée pour réserver, Échap pour fermer la fenêtre ; durée en groupe radio, invités en boutons aria-pressed, visio en role=\"switch\".",
+    "Conflit de créneau signalé par un message en texte (role=\"alert\") et un bouton désactivé, pas par la couleur seule.",
+    "Avec « réduire les animations », aucun scénario ne se lance : l’interface est directement à vous, étapes affichées terminées. Le scénario se met en pause hors écran (IntersectionObserver).",
+    "Cibles de 44 px sur mobile, champs à 16 px, textes ≥ 13 px ; contraste AA en clair et en sombre sur toutes les palettes."
+  ]
+}

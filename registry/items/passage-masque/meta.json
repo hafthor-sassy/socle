@@ -1,0 +1,161 @@
+{
+  "id": "passage-masque",
+  "nom": "Passage par masque",
+  "categorie": "transitions",
+  "niveau": "premium",
+  "ordre": 3,
+  "description": "Au défilement, la section suivante apparaît à travers une forme (hublot, cercle, arche, losange) qui grandit depuis le centre, cerclée d’un fin liseré, pendant que la scène de départ recule et que celle d’arrivée se recadre. Horloge et arrêts suivent la progression. Démo : un train de nuit Paris → Vienne.",
+  "tags": [
+    "Défilement",
+    "Masque CSS",
+    "Storytelling",
+    "Section",
+    "rAF",
+    "Accessible",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "difficulte": 2,
+  "technique": "Section collante (sticky) sur une piste de N × 100 svh, progression lue au défilement puis lissée en rAF (inertie exponentielle) ; mask-image SVG dont mask-size suit la progression, second masque légèrement plus grand pour le liseré ; recadrage et texte pilotés par variables CSS",
+  "poids": "≈ 2,5 Ko gzip de script, aucune dépendance",
+  "palette": "brique",
+  "thumb": {
+    "width": 1180
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent, accent-fg, accent-subtle, surfaces : la scène dessinée ne prend que des variables et suit la palette"
+    },
+    {
+      "nom": "CSS mask-image, position: sticky, unités svh",
+      "note": "Natifs : Chrome 120+, Safari 15.4+, Firefox 101+ (repli vh prévu)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React (darkMode: 'class')"
+    }
+  ],
+  "props": [
+    {
+      "name": "forme",
+      "label": "Forme",
+      "type": "select",
+      "default": "hublot",
+      "options": [
+        {
+          "value": "hublot",
+          "label": "Hublot"
+        },
+        {
+          "value": "cercle",
+          "label": "Cercle"
+        },
+        {
+          "value": "arche",
+          "label": "Arche"
+        },
+        {
+          "value": "losange",
+          "label": "Losange"
+        }
+      ],
+      "hint": "Changer de forme rejoue le passage.",
+      "code": {
+        "html": "data-shape=\"{v}\"",
+        "react": "shape=\"{v}\""
+      }
+    },
+    {
+      "name": "longueur",
+      "label": "Longueur du passage",
+      "type": "number",
+      "default": 220,
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "unit": "%",
+      "hint": "Défilement consacré à l’ouverture, en % de hauteur d’écran. 180 à 260 % : on a le temps de voir la forme sans s’ennuyer.",
+      "code": {
+        "html": "data-length=\"{v}\"",
+        "react": "length={{v}}"
+      }
+    },
+    {
+      "name": "inertie",
+      "label": "Inertie",
+      "type": "number",
+      "default": 0.12,
+      "min": 0,
+      "max": 0.3,
+      "step": 0.01,
+      "hint": "0 colle au défilement ; 0,1 à 0,15 donne une ouverture fluide même avec une molette crantée.",
+      "code": {
+        "html": "data-smooth=\"{v}\"",
+        "react": "smooth={{v}}"
+      }
+    },
+    {
+      "name": "lisere",
+      "label": "Liseré autour de la forme",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-ring=\"{v}\"",
+        "react": "ring={{v}}"
+      }
+    },
+    {
+      "name": "recadrage",
+      "label": "Recadrage de l’arrivée",
+      "type": "boolean",
+      "default": true,
+      "hint": "La scène d’arrivée part zoomée à 122 % et se pose à 100 %.",
+      "code": {
+        "html": "data-zoom=\"{v}\"",
+        "react": "zoom={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/MaskPassage.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour un moment de récit dans une page longue : avant / après, jour / nuit, problème / solution, ou le passage vers une offre. Une seule fois par page, jamais dans un tunnel de conversion.",
+    "HTML : une section [data-mask] avec deux scènes .hb__a (départ) et .hb__b (arrivée) dans .hb__sticky. Remplacez le contenu des scènes ; gardez la structure. el.mask.play() joue le passage sans défiler ; l’événement « mask:progress » donne p de 0 à 1 pour synchroniser d’autres éléments (ici l’horloge et les arrêts).",
+    "React : <MaskPassage from={…} to={…} shape=\"cercle\" onProgress={setP} overlay={(p) => …} />. La scène « to » peut lire --mp-z (recadrage) et --mp-t (apparition du texte). HublotDemo montre un exemple complet.",
+    "Le défilement lu est celui de la fenêtre : évitez de placer le composant dans un conteneur qui défile lui-même.",
+    "La forme couvre l’écran à 86 % de la piste ; le reste sert à poser le texte d’arrivée avant que la page reprenne."
+  ],
+  "accessibilite": [
+    "Les deux scènes sont dans le DOM, dans l’ordre de lecture : un lecteur d’écran lit le départ puis l’arrivée, sans dépendre du masque.",
+    "Le rail « Départ / Arrivée » (boutons aria-pressed) fait défiler jusqu’à chaque étape : utilisable au clavier et au toucher (44 px sur mobile). L’horloge est décorative (aria-hidden).",
+    "Contraste AA : texte accent-fg sur accent au départ, text-strong sur accent-subtle à l’arrivée, en clair comme en sombre et sur toute palette.",
+    "Avec « réduire les animations » : ni masque ni section collante, les deux scènes s’affichent l’une sous l’autre ; la boucle rAF ne tourne que pendant le défilement et s’arrête hors écran."
+  ],
+  "logo_exemple": {
+    "nom": "Hublot",
+    "secteur": "Voyage (trains de nuit)",
+    "fichier": "logo.svg",
+    "palette": "brique",
+    "typo": "Geist SemiBold"
+  }
+}

@@ -1,0 +1,147 @@
+<!-- Compteurs à l'entrée — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css (Geist).
+     Marque fictive : Escale (voyages sur mesure). Chiffres fictifs.
+     Chaque chiffre : data-count="38600" (valeur), data-decimals, data-prefix, data-suffix.
+     Réglages sur la racine : data-duree (ms), data-decalage (ms), data-courbe="expo|doux|lineaire",
+     data-depart="zero|proche", data-trait="true|false". -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="ce" data-compteurs-entree data-duree="1800" data-decalage="120" data-courbe="expo" data-depart="zero" data-trait="true" aria-labelledby="ce-titre">
+  <div class="ce__intro">
+    <a class="ce__brand" href="#accueil" aria-label="Escale, accueil">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" class="ce__brand-bg"/><path d="M24 70C30 44 52 30 76 30" class="ce__brand-ln ce__brand-dots"/><circle cx="24" cy="70" r="7" class="ce__brand-dot"/><path d="M68 22l12 8-12 8" class="ce__brand-ln"/></svg>
+      <span>Escale</span>
+    </a>
+    <h2 class="ce__title" id="ce-titre">Des voyages pensés à la main, depuis 2014.</h2>
+    <p class="ce__lead">Chaque itinéraire est construit par un conseiller qui connaît le terrain. Voici ce que cela donne, une fois les valises posées.</p>
+  </div>
+
+  <dl class="ce__grid">
+    <div class="ce__stat">
+      <dt class="ce__label">Voyageurs partis cette année</dt>
+      <dd class="ce__value"><span class="ce__num" data-count="38600"></span></dd>
+      <dd class="ce__note">De Lisbonne à Hokkaidō, en petit comité.</dd>
+    </div>
+    <div class="ce__stat">
+      <dt class="ce__label">Note moyenne</dt>
+      <dd class="ce__value"><span class="ce__num" data-count="4.9" data-decimals="1" data-suffix="/5"></span></dd>
+      <dd class="ce__note">Sur 12&nbsp;400 avis vérifiés après le retour.</dd>
+    </div>
+    <div class="ce__stat">
+      <dt class="ce__label">Destinations</dt>
+      <dd class="ce__value"><span class="ce__num" data-count="72"></span></dd>
+      <dd class="ce__note">Toutes repérées par l’équipe avant d’être proposées.</dd>
+    </div>
+    <div class="ce__stat">
+      <dt class="ce__label">Repartiraient avec nous</dt>
+      <dd class="ce__value"><span class="ce__num" data-count="96" data-suffix="&nbsp;%"></span></dd>
+      <dd class="ce__note">Enquête menée trois mois après chaque voyage.</dd>
+    </div>
+  </dl>
+</section>
+<!-- /SECTION -->
+
+<style>
+  /* ——— Compteurs à l'entrée ——— */
+  .ce { width: min(100%, 1200px); margin-inline: auto; padding: 64px; display: grid; gap: 56px; color: var(--text); font-family: var(--font-sans); background: var(--surface); border: 1px solid var(--border); border-radius: 16px; }
+  .ce__intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); align-items: end; column-gap: 48px; row-gap: 16px; }
+  .ce__brand { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 8px; justify-self: start; min-height: 44px; color: var(--text-strong); text-decoration: none; font: 600 16px/24px var(--font-sans); letter-spacing: var(--track-snug); border-radius: 8px; }
+  .ce__brand svg { width: 24px; height: 24px; }
+  .ce__brand-bg { fill: var(--accent); }
+  .ce__brand-ln { fill: none; stroke: var(--accent-fg); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+  .ce__brand-dots { stroke-dasharray: .5 12; }
+  .ce__brand-dot { fill: var(--accent-fg); }
+  .ce__title { margin: 0; max-width: 18ch; color: var(--text-strong); font: 600 clamp(28px, 2vw + 14px, 44px)/1.1 var(--font-sans); letter-spacing: -0.03em; text-wrap: balance; }
+  .ce__lead { margin: 0; color: var(--text-muted); font-size: 16px; line-height: 24px; text-wrap: pretty; }
+
+  .ce__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 0; }
+  .ce__stat { position: relative; display: flex; flex-direction: column; gap: 0; padding: 24px 24px 0 0; }
+  .ce__stat + .ce__stat { padding-left: 24px; border-left: 1px solid var(--border); }
+  .ce__stat::before, .ce__stat::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: var(--border); }
+  .ce__stat::after { height: 2px; top: -0.5px; background: var(--accent); transform-origin: 0 50%; transform: scaleX(var(--p, 1)); }
+  .ce[data-trait="false"] .ce__stat::after { display: none; }
+  .ce__label { order: -1; color: var(--text-muted); font: 500 13px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .ce__value { margin: 16px 0 0; color: var(--text-strong); font: 600 clamp(40px, 2.6vw + 18px, 60px)/1 var(--font-sans); letter-spacing: -0.045em; font-variant-numeric: tabular-nums; }
+  /* Pile : la valeur finale invisible réserve la largeur, le chiffre qui roule se pose dessus. */
+  .ce__num { display: inline-grid; }
+  .ce__num > * { grid-area: 1 / 1; }
+  .ce__ghost { visibility: hidden; }
+  .ce__live { text-align: left; }
+  .ce__suf { color: var(--text-muted); font-weight: 500; font-size: .5em; letter-spacing: -0.01em; margin-left: .06em; }
+  .ce__note { margin: 12px 0 0; max-width: 28ch; color: var(--text); font-size: 15px; line-height: 22px; text-wrap: pretty; }
+  .ce__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 960px) {
+    .ce { padding: 48px 40px; }
+    .ce__intro { grid-template-columns: 1fr; }
+    .ce__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; }
+    .ce__stat:nth-child(3) { padding-left: 0; border-left: 0; }
+  }
+  @media (max-width: 640px) {
+    .ce { padding: 32px 20px; gap: 32px; border-radius: 12px; }
+    .ce__title { font-size: 28px; line-height: 34px; }
+    .ce__lead { font-size: 15px; line-height: 22px; }
+    .ce__grid { row-gap: 32px; }
+    .ce__stat { padding: 16px 12px 0 0; }
+    .ce__stat + .ce__stat { padding-left: 16px; }
+    .ce__stat:nth-child(3) { padding-left: 0; }
+    .ce__label { font-size: 13px; line-height: 16px; letter-spacing: .02em; min-height: 32px; }
+    .ce__value { margin-top: 8px; font-size: 40px; }
+    .ce__note { font-size: 14px; line-height: 20px; }
+  }
+</style>
+
+<script>
+(function () {
+  var CURVES = {
+    expo: function (t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); },
+    doux: function (t) { return 1 - Math.pow(1 - t, 3); },
+    lineaire: function (t) { return t; },
+  };
+  document.querySelectorAll('[data-compteurs-entree]').forEach(function (root) {
+    if (root._ce) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    var items = [].slice.call(root.querySelectorAll('[data-count]')).map(function (el) {
+      var dec = Number(el.dataset.decimals || 0);
+      var nf = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+      var pre = el.dataset.prefix || '', suf = el.dataset.suffix || '', to = Number(el.dataset.count);
+      var html = function (v) { return (pre ? '<span class="ce__suf">' + pre + '</span>' : '') + nf.format(v) + (suf ? '<span class="ce__suf">' + suf + '</span>' : ''); };
+      el.innerHTML = '<span class="ce__ghost" aria-hidden="true">' + html(to) + '</span><span class="ce__live" aria-hidden="true"></span><span class="ce__sr">' + pre + nf.format(to) + suf.replace(/\u00a0/g, ' ') + '</span>';
+      return { el: el, live: el.querySelector('.ce__live'), stat: el.closest('.ce__stat'), to: to, dec: dec, html: html };
+    });
+    var raf = 0, done = false;
+
+    function paint(it, p) {
+      var v = it.to * p;
+      var shown = it.dec ? Math.round(v * Math.pow(10, it.dec)) / Math.pow(10, it.dec) : Math.round(v);
+      if (it.last !== shown) { it.last = shown; it.live.innerHTML = it.html(shown); }
+      if (it.stat) it.stat.style.setProperty('--p', p.toFixed(4));
+    }
+    function setAll(p) { items.forEach(function (it) { paint(it, p); }); }
+    function run() {
+      cancelAnimationFrame(raf);
+      if (reduce.matches) { setAll(1); return; }
+      var dur = Number(root.dataset.duree) || 1800, gap = Number(root.dataset.decalage) || 0;
+      var ease = CURVES[root.dataset.courbe] || CURVES.expo, from = root.dataset.depart === 'proche' ? 0.82 : 0;
+      var t0 = performance.now();
+      setAll(from);
+      (function frame(now) {
+        var running = false;
+        items.forEach(function (it, i) {
+          var t = Math.max(0, Math.min(1, (now - t0 - i * gap) / dur));
+          paint(it, from + (1 - from) * ease(t));
+          if (t < 1) running = true;
+        });
+        if (running) raf = requestAnimationFrame(frame);
+      })(t0);
+    }
+    /* Une seule fois, quand 40 % de la section est visible. */
+    setAll(root.dataset.depart === 'proche' ? 0.82 : 0);
+    var io = new IntersectionObserver(function (en) {
+      if (en[0].isIntersecting && !done) { done = true; io.disconnect(); run(); }
+    }, { threshold: 0.4 });
+    io.observe(root);
+    root._ce = { replay: function () { done = true; io.disconnect(); run(); }, final: function () { cancelAnimationFrame(raf); setAll(1); } };
+  });
+})();
+</script>

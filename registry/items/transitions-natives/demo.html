@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transitions de page natives — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; padding: 16px 32px 32px; }
+  @media (max-width: 719px) { .stage { padding: 4px 16px 24px; } }
+  .is-thumb .stage { padding: 8px 40px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  /* Props → attributs data-* : le composant relit ses réglages à chaque navigation. */
+  var props = Socle.props({ style: 'glisse', duree: 420, courbe: 'emphase', partage: true });
+  var MAP = { style: 'style', duree: 'duration', courbe: 'ease', partage: 'shared' };
+  var mount = document.getElementById('mount'), root = null, last = {}, step = 0;
+  var ORDER = ['veste', 'chemise', 'pantalon', 'pull'];
+  function apply(p) { Object.keys(MAP).forEach(function (k) { root.dataset[MAP[k]] = String(p[k]); }); }
+  function play() {
+    if (!root || !root.vt) return;
+    if (root.vt.page === 'list') root.vt.go(ORDER[step++ % ORDER.length]); else root.vt.go('list');
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-vt]');
+    apply(props); last = Object.assign({}, props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (Socle.thumb) thumb();
+  });
+  /* Un réglage changé se montre tout de suite : on joue une navigation. */
+  Socle.onChange(function (p) {
+    if (!root) return;
+    var show = Object.keys(MAP).some(function (k) { return last[k] !== p[k]; });
+    apply(p); last = Object.assign({}, p);
+    if (show) play();
+  });
+  Socle.onReplay(play);
+  /* Vignette : aller-retour automatique, en pause hors écran. */
+  function thumb() {
+    if (Socle.reducedMotion()) return;
+    var visible = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(mount);
+    (function tick() { setTimeout(function () { if (visible && !document.hidden) play(); tick(); }, 2400); })();
+  }
+</script>
+</body>
+</html>

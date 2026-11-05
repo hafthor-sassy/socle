@@ -1,0 +1,51 @@
+{
+  "id": "bento-extensible",
+  "nom": "Bento extensible",
+  "categorie": "bento",
+  "niveau": "premium",
+  "ordre": 2,
+  "description": "Une case touchée s’agrandit sur toute la largeur et révèle son détail (hypnogramme, courbes, jauges) ; les autres se réorganisent autour. Chaque case suit un vrai ressort intégré pas à pas : la vitesse est conservée si l’on change d’avis en plein vol, et le contenu est contre-étiré pour ne jamais se déformer.",
+  "tags": ["Bento", "Ressort", "Shared layout", "FLIP", "Données", "Santé", "Responsive"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1120 },
+  "palette": "lavande",
+  "logo_exemple": { "nom": "Mésange", "secteur": "Santé connectée (suivi du sommeil)", "fichier": "logo.svg", "palette": "lavande", "typo": "Geist SemiBold" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, accent (et ses déclinaisons), --up / --down, rayons" },
+    { "nom": "Moteur de ressort", "note": "≈ 2,5 ko intégré au HTML, rAF uniquement pendant le mouvement, aucune bibliothèque" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, même ressort fait main" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "ouvert", "label": "Case ouverte au départ", "type": "select", "default": "",
+      "options": [{ "value": "", "label": "Aucune" }, { "value": "score", "label": "Score" }, { "value": "coeur", "label": "Rythme" }, { "value": "reveil", "label": "Réveil" }, { "value": "souffle", "label": "Respiration" }, { "value": "habitudes", "label": "Habitudes" }, { "value": "chambre", "label": "Chambre" }],
+      "code": { "html": "data-ouvert=\"{v}\"", "react": "ouvert=\"{v}\"" } },
+    { "name": "raideur", "label": "Raideur du ressort", "type": "number", "default": 260, "min": 80, "max": 600, "step": 10,
+      "code": { "html": "data-raideur=\"{v}\"", "react": "raideur={{v}}" } },
+    { "name": "amorti", "label": "Amortissement", "type": "number", "default": 26, "min": 8, "max": 60, "step": 1,
+      "hint": "Bas : les cases rebondissent. Haut : elles se posent sans dépasser (≈ 2 × √raideur).",
+      "code": { "html": "data-amorti=\"{v}\"", "react": "amorti={{v}}" } },
+    { "name": "flou", "label": "Estomper les autres cases", "type": "boolean", "default": false,
+      "hint": "Met l’accent sur la case ouverte, mais baisse le contraste des autres sous le seuil AA.",
+      "code": { "html": "data-flou=\"{v}\"", "react": "flou={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/BentoExtensible.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Tableau de bord ou page produit à données : chaque case donne un chiffre clair, son détail ne s’ouvre qu’à la demande. Ici une app de sommeil, mais le même gabarit sert un suivi d’énergie, de flotte, de ventes…",
+    "La case ouverte prend toute la largeur sur 2 rangées (3 sur téléphone) ; les autres passent en 1×1 et la dernière s’étire si besoin : placement dense, la grille reste toujours pleine.",
+    "Cliquez une autre case pendant le mouvement : le ressort repart de la position et de la vitesse affichées, sans saut. 260 / 26 donne un léger dépassement ; 300 / 35 un geste plus sec.",
+    "Téléphone : 2 colonnes de 172 px, chiffres à 36 px, la case ouverte défile en vue si elle sort de l’écran ; tous les détails sont réorganisés en pile (barres sous leur libellé, indicateurs sur 2 colonnes).",
+    "Palette par défaut : Lavande. Uniquement des variables de tokens.css : changez de palette sans toucher au composant."
+  ],
+  "accessibilite": [
+    "Chaque case est un bouton natif aria-expanded / aria-controls avec un libellé complet (« Score de sommeil : 86 sur 100. Voir le détail ») ; ouverte, il devient « Réduire » (44 px) et Échap referme en rendant le focus.",
+    "Le détail est une région nommée ; les graphiques ont une description textuelle (figure étiquetée) et leurs chiffres clés sont repris en texte.",
+    "« Réduire les animations » : ouverture instantanée, aucun ressort ni balayage.",
+    "La boucle rAF ne tourne que pendant le mouvement et s’arrête net hors écran (IntersectionObserver).",
+    "Contraste AA en clair et en sombre ; l’option « Estomper » est désactivée par défaut car elle descend sous ce seuil."
+  ]
+}

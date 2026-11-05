@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Globe des clients — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 48px 24px; }
+  @media (max-width: 640px) { .stage { padding: 12px 10px 32px; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage"><div id="mount" style="display:contents"></div></main>
+<script>
+  var props = Socle.props({ vitesse: 6, inclinaison: 18, densite: '14000', arcs: true, impulsions: true, region: '-1' });
+  var root = null;
+  function apply(p) {
+    root.dataset.vitesse = String(p.vitesse);
+    root.dataset.inclinaison = String(p.inclinaison);
+    root.dataset.densite = String(Socle.thumb ? Math.min(9000, Number(p.densite)) : p.densite);
+    root.dataset.arcs = String(!!p.arcs);
+    root.dataset.impulsions = String(!!p.impulsions);
+    root.dataset.region = String(p.region);
+  }
+  function render(p) { if (!root || !root._gc) return; apply(p); root._gc.update(); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-globe-clients]');
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (Socle.thumb) root._gc.select(0, true);
+  });
+  Socle.onChange(render);
+  /* Rejouer : tour des régions, puis une ville survolée. */
+  Socle.onReplay(function () {
+    if (!root || !root._gc) return;
+    [0, 1, 4, 3].forEach(function (r, k) { setTimeout(function () { root._gc.select(r, true); }, k * 1600); });
+    setTimeout(function () { root._gc.select(-1, false); }, 6600);
+  });
+</script>
+</body>
+</html>

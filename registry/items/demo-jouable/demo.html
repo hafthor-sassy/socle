@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Démo jouable — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'sauge');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; }
+  .is-thumb .dj { padding: 40px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ vitesse: 1, boucle: true, pointeur: 'auto', etapes: true, libelle: 'Camille' });
+  var root = null;
+  function apply(p) {
+    if (!root) return;
+    root.dataset.speed = String(p.vitesse);
+    root.dataset.loop = String(!!p.boucle);
+    root.dataset.pointer = p.pointeur;
+    root.dataset.steps = String(!!p.etapes);
+    root.dataset.label = p.libelle;
+    if (root._demo) root._demo.refresh();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-demo-jouable]');
+    root.setAttribute('data-manual', '');
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    apply(props);
+    if (Socle.thumb) root._demo.snapshot(); else root._demo.play();
+  });
+  Socle.onChange(function (p) { apply(p); });
+  Socle.onReplay(function () { if (root && root._demo) root._demo.play(); });
+</script>
+</body>
+</html>

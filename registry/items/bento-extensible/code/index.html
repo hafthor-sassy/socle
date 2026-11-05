@@ -1,0 +1,348 @@
+<!-- Bento extensible — HTML + CSS + JS autonome (sans bibliothèque). Nécessite tokens.css.
+     Une case cliquée s’agrandit sur toute la largeur de la grille et révèle son détail ; les autres se réorganisent.
+     Chaque case suit un vrai ressort (raideur, amortissement, vitesse conservée si on change d’avis en plein vol),
+     son contenu est contre-étiré pour ne jamais se déformer. Marque et données fictives (Mésange, suivi du sommeil). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="be" data-bento-expand data-raideur="260" data-amorti="26" data-ouvert="" data-flou="false" aria-labelledby="be-title">
+  <header class="be__head">
+    <p class="be__brand"><span class="be__logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 373 100" data-icone="0 0 100 100" aria-hidden="true" focusable="false"><g data-role="icone"><circle cx="50" cy="50" r="50" style="fill:var(--p, currentColor)"/><path d="M45.24 28.06A25 25 0 1 0 70.65 61.10A21 21 0 0 1 45.24 28.06Z" style="fill:var(--lt, #fff)"/><circle cx="70" cy="66" r="5" style="fill:var(--a, var(--lt, #fff))"/></g><path data-role="nom" d="M132.48 70V30.24H142.29L153.28 61.04L164.23 30.24H174.04V70H166.76V42.56L156.74 69.93H149.76L139.76 42.56V70ZM194.23 70.67Q189.76 70.67 186.47 68.75Q183.18 66.82 181.38 63.3Q179.59 59.77 179.59 55.05Q179.59 50.32 181.38 46.83Q183.18 43.33 186.44 41.38Q189.69 39.42 194.09 39.42Q198.36 39.42 201.56 41.33Q204.76 43.24 206.52 46.83Q208.27 50.41 208.27 55.44V57.04H187.02Q187.24 61 189.17 62.97Q191.1 64.94 194.32 64.94Q196.71 64.94 198.3 63.87Q199.88 62.8 200.52 60.83L207.84 61.29Q206.65 65.62 203.02 68.15Q199.4 70.67 194.23 70.67ZM187.02 52.23H200.83Q200.61 48.59 198.78 46.83Q196.95 45.07 194.09 45.07Q191.21 45.07 189.34 46.91Q187.46 48.75 187.02 52.23ZM191.06 36.87 194.48 28.99H201.67L196.63 36.87ZM225.46 70.67Q220.88 70.67 217.89 69.37Q214.89 68.07 213.34 65.79Q211.79 63.52 211.56 60.58L218.89 60.27Q219.29 62.6 220.79 63.9Q222.28 65.21 225.48 65.21Q227.99 65.21 229.33 64.38Q230.67 63.56 230.67 61.82Q230.67 60.8 230.19 60.13Q229.72 59.46 228.34 58.95Q226.96 58.44 224.3 57.97Q219.77 57.16 217.21 56.01Q214.64 54.86 213.6 53.12Q212.56 51.39 212.56 48.85Q212.56 44.65 215.78 42.04Q219 39.42 225.23 39.42Q229.55 39.42 232.31 40.78Q235.07 42.15 236.49 44.43Q237.92 46.72 238.15 49.48L230.89 49.82Q230.83 48.42 230.2 47.3Q229.57 46.18 228.34 45.53Q227.11 44.89 225.12 44.89Q222.57 44.89 221.27 45.91Q219.97 46.93 219.97 48.59Q219.97 49.8 220.5 50.57Q221.02 51.35 222.31 51.84Q223.6 52.33 225.82 52.68Q230.44 53.37 233.12 54.53Q235.81 55.7 236.95 57.46Q238.08 59.23 238.08 61.73Q238.08 66.02 234.65 68.35Q231.22 70.67 225.46 70.67ZM251.79 70.67Q247.13 70.67 244.27 68.52Q241.41 66.37 241.41 62.52Q241.41 58.62 243.82 56.45Q246.23 54.28 251.12 53.31L261.07 51.37Q261.07 48.18 259.61 46.58Q258.14 44.98 255.31 44.98Q252.7 44.98 251.21 46.17Q249.72 47.36 249.21 49.63L241.92 49.26Q242.78 44.54 246.26 41.98Q249.73 39.42 255.31 39.42Q261.69 39.42 264.96 42.63Q268.24 45.84 268.24 51.83V62.73Q268.24 63.92 268.64 64.35Q269.05 64.78 269.89 64.78H270.84V70Q270.51 70.1 269.76 70.17Q269.01 70.25 268.25 70.25Q266.39 70.25 264.94 69.64Q263.49 69.03 262.68 67.56Q261.87 66.1 261.87 63.53L262.52 63.95Q262.04 65.92 260.57 67.45Q259.11 68.98 256.86 69.83Q254.6 70.67 251.79 70.67ZM253.27 65.45Q255.66 65.45 257.4 64.52Q259.14 63.58 260.1 61.89Q261.07 60.19 261.07 57.93V56.25L253.32 57.81Q250.94 58.28 249.88 59.28Q248.83 60.27 248.83 61.85Q248.83 63.56 249.98 64.51Q251.14 65.45 253.27 65.45ZM274.52 70V40.1H281L281.28 48.48L280.41 48.14Q280.88 45.01 282.27 43.1Q283.66 41.19 285.69 40.31Q287.72 39.42 290.13 39.42Q293.44 39.42 295.69 40.87Q297.95 42.31 299.12 44.86Q300.29 47.41 300.29 50.77V70H293.12V53.08Q293.12 50.56 292.63 48.82Q292.15 47.07 291 46.16Q289.86 45.25 287.94 45.25Q285.06 45.25 283.37 47.26Q281.69 49.27 281.69 53.08V70ZM319.79 79.07Q315.86 79.07 313.07 78.01Q310.28 76.94 308.57 75.02Q306.85 73.09 306.19 70.58L313.58 70.07Q314.12 71.74 315.52 72.69Q316.91 73.65 319.79 73.65Q323.13 73.65 324.91 72.16Q326.7 70.67 326.7 67.51V63.75Q325.64 65.92 323.28 67.23Q320.93 68.54 318.02 68.54Q314.31 68.54 311.43 66.72Q308.54 64.89 306.93 61.62Q305.31 58.35 305.31 54.02Q305.31 49.72 306.91 46.44Q308.51 43.16 311.36 41.29Q314.21 39.42 317.88 39.42Q321.13 39.42 323.48 40.88Q325.83 42.34 326.92 44.76V40.1H333.91V67.36Q333.91 71.19 332.15 73.8Q330.4 76.42 327.23 77.74Q324.06 79.07 319.79 79.07ZM319.7 62.92Q322.9 62.92 324.81 60.54Q326.71 58.16 326.74 53.97Q326.78 51.18 325.92 49.18Q325.06 47.19 323.47 46.1Q321.87 45.02 319.7 45.02Q316.38 45.02 314.55 47.45Q312.72 49.87 312.72 53.97Q312.72 58.09 314.61 60.51Q316.5 62.92 319.7 62.92ZM353.55 70.67Q349.08 70.67 345.79 68.75Q342.5 66.82 340.7 63.3Q338.91 59.77 338.91 55.05Q338.91 50.32 340.7 46.83Q342.5 43.33 345.76 41.38Q349.01 39.42 353.41 39.42Q357.68 39.42 360.88 41.33Q364.08 43.24 365.84 46.83Q367.59 50.41 367.59 55.44V57.04H346.34Q346.56 61 348.49 62.97Q350.42 64.94 353.64 64.94Q356.03 64.94 357.62 63.87Q359.2 62.8 359.84 60.83L367.16 61.29Q365.97 65.62 362.34 68.15Q358.72 70.67 353.55 70.67ZM346.34 52.23H360.15Q359.93 48.59 358.1 46.83Q356.27 45.07 353.41 45.07Q350.53 45.07 348.66 46.91Q346.78 48.75 346.34 52.23Z" style="fill:var(--ink, currentColor)"/></svg></span><span class="be__eyebrow">Nuit du 4 au 5 novembre</span></p>
+    <h2 id="be-title" class="be__title">Votre nuit, expliquée simplement.</h2>
+    <p class="be__lead">Touchez une case pour voir le détail. Mésange lit votre sommeil sans montre au poignet, depuis la table de chevet.</p>
+  </header>
+
+  <ul class="be__grid" data-be-grid>
+    <li class="be__card" data-id="score" data-base="2x2">
+      <div class="be__in">
+        <button class="be__hit" type="button" aria-expanded="false" aria-controls="be-d-score"><span class="be__sr">Score de sommeil : 86 sur 100. Voir le détail</span></button>
+        <div class="be__sum be__sum--score" aria-hidden="true">
+          <p class="be__k">Score de sommeil</p>
+          <div class="be__ring" style="--v:.86"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" pathLength="100"/><circle cx="60" cy="60" r="52" pathLength="100"/></svg><b>86</b></div>
+          <p class="be__v">Nuit réparatrice<span>7 h 33 de sommeil</span></p>
+        </div>
+        <div class="be__det" id="be-d-score" role="region" aria-label="Détail du score de sommeil">
+          <div class="be__dh"><p class="be__k">Score de sommeil · 86</p><h3>7 h 33 de sommeil, dont 2 h 22 de sommeil profond</h3></div>
+          <figure class="be-hy" aria-label="Hypnogramme de 23 h 10 à 7 h 05 : quatre cycles complets, sommeil profond surtout en début de nuit.">
+            <div class="be-hy__rows" aria-hidden="true"><span>Éveil</span><span>Paradoxal</span><span>Léger</span><span>Profond</span></div>
+            <svg class="be-hy__svg" viewBox="0 0 475 120" preserveAspectRatio="none" aria-hidden="true"><path class="be-hy__c" d="M12.0 15V75"/><path class="be-hy__c" d="M30.0 75V105"/><path class="be-hy__c" d="M72.0 105V75"/><path class="be-hy__c" d="M92.0 75V45"/><path class="be-hy__c" d="M106.0 45V75"/><path class="be-hy__c" d="M116.0 75V105"/><path class="be-hy__c" d="M164.0 105V75"/><path class="be-hy__c" d="M186.0 75V45"/><path class="be-hy__c" d="M204.0 45V15"/><path class="be-hy__c" d="M210.0 15V75"/><path class="be-hy__c" d="M240.0 75V105"/><path class="be-hy__c" d="M274.0 105V75"/><path class="be-hy__c" d="M300.0 75V45"/><path class="be-hy__c" d="M324.0 45V15"/><path class="be-hy__c" d="M328.0 15V75"/><path class="be-hy__c" d="M364.0 75V105"/><path class="be-hy__c" d="M382.0 105V75"/><path class="be-hy__c" d="M412.0 75V45"/><path class="be-hy__c" d="M440.0 45V75"/><path class="be-hy__c" d="M455.0 75V45"/><rect class="be-hy__w" x="0.6" y="6" width="10.8" height="18" rx="4"/><rect class="be-hy__l" x="12.6" y="66" width="16.8" height="18" rx="4"/><rect class="be-hy__d" x="30.6" y="96" width="40.8" height="18" rx="4"/><rect class="be-hy__l" x="72.6" y="66" width="18.8" height="18" rx="4"/><rect class="be-hy__r" x="92.6" y="36" width="12.8" height="18" rx="4"/><rect class="be-hy__l" x="106.6" y="66" width="8.8" height="18" rx="4"/><rect class="be-hy__d" x="116.6" y="96" width="46.8" height="18" rx="4"/><rect class="be-hy__l" x="164.6" y="66" width="20.8" height="18" rx="4"/><rect class="be-hy__r" x="186.6" y="36" width="16.8" height="18" rx="4"/><rect class="be-hy__w" x="204.6" y="6" width="4.8" height="18" rx="4"/><rect class="be-hy__l" x="210.6" y="66" width="28.8" height="18" rx="4"/><rect class="be-hy__d" x="240.6" y="96" width="32.8" height="18" rx="4"/><rect class="be-hy__l" x="274.6" y="66" width="24.8" height="18" rx="4"/><rect class="be-hy__r" x="300.6" y="36" width="22.8" height="18" rx="4"/><rect class="be-hy__w" x="324.6" y="6" width="2.8" height="18" rx="4"/><rect class="be-hy__l" x="328.6" y="66" width="34.8" height="18" rx="4"/><rect class="be-hy__d" x="364.6" y="96" width="16.8" height="18" rx="4"/><rect class="be-hy__l" x="382.6" y="66" width="28.8" height="18" rx="4"/><rect class="be-hy__r" x="412.6" y="36" width="26.8" height="18" rx="4"/><rect class="be-hy__l" x="440.6" y="66" width="13.8" height="18" rx="4"/><rect class="be-hy__r" x="455.6" y="36" width="18.8" height="18" rx="4"/></svg>
+            <div class="be-hy__t" aria-hidden="true"><span>23:10</span><span>01:00</span><span>03:00</span><span>05:00</span><span>07:05</span></div>
+          </figure>
+          <dl class="be__stats"><div><dt>Profond</dt><dd>2 h 22</dd></div><div><dt>Paradoxal</dt><dd>1 h 44</dd></div><div><dt>Endormissement</dt><dd>12 min</dd></div><div><dt>Réveils</dt><dd>3</dd></div></dl>
+        </div>
+      </div>
+    </li>
+    <li class="be__card" data-id="coeur" data-base="1x1">
+      <div class="be__in">
+        <button class="be__hit" type="button" aria-expanded="false" aria-controls="be-d-coeur"><span class="be__sr">Rythme cardiaque : 52 battements par minute au repos. Voir le détail</span></button>
+        <div class="be__sum" aria-hidden="true">
+          <p class="be__k">Rythme au repos</p>
+          <p class="be__big">52<small>bpm</small></p>
+          <svg class="be__spark" viewBox="0 0 200 60" preserveAspectRatio="none"><path d="M0.0 23.3 L3.3 22.8 L6.7 17.2 L10.0 21.3 L13.3 17.9 L16.7 20.9 L20.0 26.1 L23.3 26.0 L26.7 33.9 L30.0 34.7 L33.3 41.5 L36.7 44.2 L40.0 43.4 L43.3 40.8 L46.7 46.0 L50.0 43.7 L53.3 38.2 L56.7 33.2 L60.0 34.1 L63.3 34.1 L66.7 28.8 L70.0 36.9 L73.3 32.0 L76.7 39.2 L80.0 43.7 L83.3 47.3 L86.7 48.9 L90.0 47.3 L93.3 54.0 L96.7 51.1 L100.0 49.7 L103.3 49.8 L106.7 45.5 L110.0 46.3 L113.3 43.1 L116.7 39.2 L120.0 33.4 L123.3 34.6 L126.7 35.8 L130.0 34.9 L133.3 38.1 L136.7 41.8 L140.0 40.2 L143.3 42.9 L146.7 47.6 L150.0 44.8 L153.3 43.9 L156.7 38.5 L160.0 36.3 L163.3 36.0 L166.7 26.2 L170.0 29.6 L173.3 24.1 L176.7 19.4 L180.0 23.5 L183.3 21.1 L186.7 26.0 L190.0 22.7 L193.3 23.9 L196.7 27.2 L200.0 25.7"/></svg>
+        </div>
+        <div class="be__det" id="be-d-coeur" role="region" aria-label="Détail du rythme cardiaque">
+          <div class="be__dh"><p class="be__k">Rythme cardiaque</p><h3>Au plus bas à 48 bpm vers 3 h, signe d’une vraie récupération</h3></div>
+          <svg class="be__chart" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true"><path class="be__area" d="M0.0 23.3 L3.3 22.8 L6.7 17.2 L10.0 21.3 L13.3 17.9 L16.7 20.9 L20.0 26.1 L23.3 26.0 L26.7 33.9 L30.0 34.7 L33.3 41.5 L36.7 44.2 L40.0 43.4 L43.3 40.8 L46.7 46.0 L50.0 43.7 L53.3 38.2 L56.7 33.2 L60.0 34.1 L63.3 34.1 L66.7 28.8 L70.0 36.9 L73.3 32.0 L76.7 39.2 L80.0 43.7 L83.3 47.3 L86.7 48.9 L90.0 47.3 L93.3 54.0 L96.7 51.1 L100.0 49.7 L103.3 49.8 L106.7 45.5 L110.0 46.3 L113.3 43.1 L116.7 39.2 L120.0 33.4 L123.3 34.6 L126.7 35.8 L130.0 34.9 L133.3 38.1 L136.7 41.8 L140.0 40.2 L143.3 42.9 L146.7 47.6 L150.0 44.8 L153.3 43.9 L156.7 38.5 L160.0 36.3 L163.3 36.0 L166.7 26.2 L170.0 29.6 L173.3 24.1 L176.7 19.4 L180.0 23.5 L183.3 21.1 L186.7 26.0 L190.0 22.7 L193.3 23.9 L196.7 27.2 L200.0 25.7 L200 60 L0 60 Z"/><path d="M0.0 23.3 L3.3 22.8 L6.7 17.2 L10.0 21.3 L13.3 17.9 L16.7 20.9 L20.0 26.1 L23.3 26.0 L26.7 33.9 L30.0 34.7 L33.3 41.5 L36.7 44.2 L40.0 43.4 L43.3 40.8 L46.7 46.0 L50.0 43.7 L53.3 38.2 L56.7 33.2 L60.0 34.1 L63.3 34.1 L66.7 28.8 L70.0 36.9 L73.3 32.0 L76.7 39.2 L80.0 43.7 L83.3 47.3 L86.7 48.9 L90.0 47.3 L93.3 54.0 L96.7 51.1 L100.0 49.7 L103.3 49.8 L106.7 45.5 L110.0 46.3 L113.3 43.1 L116.7 39.2 L120.0 33.4 L123.3 34.6 L126.7 35.8 L130.0 34.9 L133.3 38.1 L136.7 41.8 L140.0 40.2 L143.3 42.9 L146.7 47.6 L150.0 44.8 L153.3 43.9 L156.7 38.5 L160.0 36.3 L163.3 36.0 L166.7 26.2 L170.0 29.6 L173.3 24.1 L176.7 19.4 L180.0 23.5 L183.3 21.1 L186.7 26.0 L190.0 22.7 L193.3 23.9 L196.7 27.2 L200.0 25.7"/></svg>
+          <dl class="be__stats"><div><dt>Moyenne</dt><dd>54 bpm</dd></div><div><dt>Minimum</dt><dd>48 bpm</dd></div><div><dt>Variabilité</dt><dd>64 ms</dd></div><div><dt>Tendance 7 nuits</dt><dd>−2 bpm</dd></div></dl>
+        </div>
+      </div>
+    </li>
+    <li class="be__card" data-id="reveil" data-base="1x1">
+      <div class="be__in">
+        <button class="be__hit" type="button" aria-expanded="false" aria-controls="be-d-reveil"><span class="be__sr">Réveil en douceur entre 6 h 45 et 7 h 05. Voir le détail</span></button>
+        <div class="be__sum" aria-hidden="true">
+          <p class="be__k">Réveil en douceur</p>
+          <p class="be__big">6:52</p>
+          <p class="be__v"><span>Fenêtre 6:45 – 7:05</span></p>
+        </div>
+        <div class="be__det" id="be-d-reveil" role="region" aria-label="Détail du réveil">
+          <div class="be__dh"><p class="be__k">Réveil en douceur</p><h3>Réveillé à 6 h 52, en sommeil léger, 13 minutes avant l’heure limite</h3></div>
+          <div class="be-wk" aria-hidden="true"><div class="be-wk__bar"><i class="be-wk__win"></i><i class="be-wk__mark"><b>6:52</b></i></div><div class="be-wk__t"><span>6:30</span><span>6:45</span><span>7:05</span><span>7:15</span></div></div>
+          <p class="be__p">La lampe monte en 20 minutes jusqu’à 300 lux, puis un son doux démarre dès que Mésange détecte une phase de sommeil léger dans la fenêtre choisie.</p>
+        </div>
+      </div>
+    </li>
+    <li class="be__card" data-id="souffle" data-base="1x1">
+      <div class="be__in">
+        <button class="be__hit" type="button" aria-expanded="false" aria-controls="be-d-souffle"><span class="be__sr">Respiration : 14 cycles par minute, aucune pause détectée. Voir le détail</span></button>
+        <div class="be__sum" aria-hidden="true">
+          <p class="be__k">Respiration</p>
+          <p class="be__big">14<small>/ min</small></p>
+          <svg class="be__wave" viewBox="0 0 200 60" preserveAspectRatio="none"><path d="M0.0 30.0 L1.7 27.0 L3.3 24.2 L5.0 22.0 L6.7 20.5 L8.3 19.9 L10.0 20.3 L11.7 21.6 L13.3 23.9 L15.0 26.7 L16.7 30.0 L18.3 33.3 L20.0 36.4 L21.7 38.8 L23.3 40.5 L25.0 41.1 L26.7 40.6 L28.3 39.1 L30.0 36.7 L31.7 33.5 L33.3 30.0 L35.0 26.4 L36.7 23.2 L38.3 20.6 L40.0 18.9 L41.7 18.2 L43.3 18.8 L45.0 20.4 L46.7 23.0 L48.3 26.3 L50.0 30.0 L51.7 33.7 L53.3 37.0 L55.0 39.7 L56.7 41.4 L58.3 42.0 L60.0 41.4 L61.7 39.7 L63.3 37.0 L65.0 33.7 L66.7 30.0 L68.3 26.3 L70.0 23.0 L71.7 20.4 L73.3 18.8 L75.0 18.2 L76.7 18.9 L78.3 20.6 L80.0 23.2 L81.7 26.4 L83.3 30.0 L85.0 33.5 L86.7 36.7 L88.3 39.1 L90.0 40.6 L91.7 41.1 L93.3 40.5 L95.0 38.8 L96.7 36.4 L98.3 33.3 L100.0 30.0 L101.7 26.7 L103.3 23.9 L105.0 21.6 L106.7 20.3 L108.3 19.9 L110.0 20.5 L111.7 22.0 L113.3 24.2 L115.0 27.0 L116.7 30.0 L118.3 32.9 L120.0 35.5 L121.7 37.5 L123.3 38.7 L125.0 39.1 L126.7 38.5 L128.3 37.2 L130.0 35.1 L131.7 32.7 L133.3 30.0 L135.0 27.4 L136.7 25.1 L138.3 23.3 L140.0 22.2 L141.7 21.9 L143.3 22.4 L145.0 23.6 L146.7 25.4 L148.3 27.6 L150.0 30.0 L151.7 32.4 L153.3 34.5 L155.0 36.1 L156.7 37.1 L158.3 37.4 L160.0 37.0 L161.7 35.9 L163.3 34.3 L165.0 32.3 L166.7 30.0 L168.3 27.8 L170.0 25.8 L171.7 24.2 L173.3 23.2 L175.0 22.8 L176.7 23.2 L178.3 24.2 L180.0 25.8 L181.7 27.8 L183.3 30.0 L185.0 32.3 L186.7 34.3 L188.3 35.9 L190.0 37.0 L191.7 37.4 L193.3 37.1 L195.0 36.1 L196.7 34.5 L198.3 32.4 L200.0 30.0"/></svg>
+        </div>
+        <div class="be__det" id="be-d-souffle" role="region" aria-label="Détail de la respiration">
+          <div class="be__dh"><p class="be__k">Respiration</p><h3>Aucune pause respiratoire détectée cette nuit</h3></div>
+          <svg class="be__chart be__chart--wave" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0.0 30.0 L1.7 27.0 L3.3 24.2 L5.0 22.0 L6.7 20.5 L8.3 19.9 L10.0 20.3 L11.7 21.6 L13.3 23.9 L15.0 26.7 L16.7 30.0 L18.3 33.3 L20.0 36.4 L21.7 38.8 L23.3 40.5 L25.0 41.1 L26.7 40.6 L28.3 39.1 L30.0 36.7 L31.7 33.5 L33.3 30.0 L35.0 26.4 L36.7 23.2 L38.3 20.6 L40.0 18.9 L41.7 18.2 L43.3 18.8 L45.0 20.4 L46.7 23.0 L48.3 26.3 L50.0 30.0 L51.7 33.7 L53.3 37.0 L55.0 39.7 L56.7 41.4 L58.3 42.0 L60.0 41.4 L61.7 39.7 L63.3 37.0 L65.0 33.7 L66.7 30.0 L68.3 26.3 L70.0 23.0 L71.7 20.4 L73.3 18.8 L75.0 18.2 L76.7 18.9 L78.3 20.6 L80.0 23.2 L81.7 26.4 L83.3 30.0 L85.0 33.5 L86.7 36.7 L88.3 39.1 L90.0 40.6 L91.7 41.1 L93.3 40.5 L95.0 38.8 L96.7 36.4 L98.3 33.3 L100.0 30.0 L101.7 26.7 L103.3 23.9 L105.0 21.6 L106.7 20.3 L108.3 19.9 L110.0 20.5 L111.7 22.0 L113.3 24.2 L115.0 27.0 L116.7 30.0 L118.3 32.9 L120.0 35.5 L121.7 37.5 L123.3 38.7 L125.0 39.1 L126.7 38.5 L128.3 37.2 L130.0 35.1 L131.7 32.7 L133.3 30.0 L135.0 27.4 L136.7 25.1 L138.3 23.3 L140.0 22.2 L141.7 21.9 L143.3 22.4 L145.0 23.6 L146.7 25.4 L148.3 27.6 L150.0 30.0 L151.7 32.4 L153.3 34.5 L155.0 36.1 L156.7 37.1 L158.3 37.4 L160.0 37.0 L161.7 35.9 L163.3 34.3 L165.0 32.3 L166.7 30.0 L168.3 27.8 L170.0 25.8 L171.7 24.2 L173.3 23.2 L175.0 22.8 L176.7 23.2 L178.3 24.2 L180.0 25.8 L181.7 27.8 L183.3 30.0 L185.0 32.3 L186.7 34.3 L188.3 35.9 L190.0 37.0 L191.7 37.4 L193.3 37.1 L195.0 36.1 L196.7 34.5 L198.3 32.4 L200.0 30.0"/></svg>
+          <dl class="be__stats"><div><dt>Fréquence</dt><dd>14 / min</dd></div><div><dt>Pauses &gt; 10 s</dt><dd>0</dd></div><div><dt>Ronflements</dt><dd>4 min</dd></div></dl>
+        </div>
+      </div>
+    </li>
+    <li class="be__card" data-id="habitudes" data-base="1x1">
+      <div class="be__in">
+        <button class="be__hit" type="button" aria-expanded="false" aria-controls="be-d-habitudes"><span class="be__sr">Habitudes : un café après 16 heures réduit votre sommeil profond. Voir le détail</span></button>
+        <div class="be__sum" aria-hidden="true">
+          <p class="be__k">Ce qui joue</p>
+          <p class="be__v be__v--lg">Café après 16 h<span>−12 min de sommeil profond</span></p>
+        </div>
+        <div class="be__det" id="be-d-habitudes" role="region" aria-label="Détail des habitudes">
+          <div class="be__dh"><p class="be__k">Ce qui joue sur vos nuits · 30 nuits</p><h3>Trois habitudes ont un effet net sur votre sommeil</h3></div>
+          <ul class="be-hb">
+            <li><span>Écran coupé avant 22 h 30</span><i style="--w:.72" data-pos></i><b>+18 min</b></li>
+            <li><span>Sport en fin de journée</span><i style="--w:.44" data-pos></i><b>+9 min</b></li>
+            <li><span>Café après 16 h</span><i style="--w:.58"></i><b>−12 min</b></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li class="be__card" data-id="chambre" data-base="4x1">
+      <div class="be__in">
+        <button class="be__hit" type="button" aria-expanded="false" aria-controls="be-d-chambre"><span class="be__sr">Chambre : 18,5 degrés, 34 décibels, obscurité totale. Voir le détail</span></button>
+        <div class="be__sum be__sum--row" aria-hidden="true">
+          <p class="be__k">Votre chambre</p>
+          <ul class="be-rm"><li><b>18,5 °C</b><span>Température</span></li><li><b>34 dB</b><span>Bruit moyen</span></li><li><b>0 lux</b><span>Lumière</span></li><li><b>52 %</b><span>Humidité</span></li></ul>
+        </div>
+        <div class="be__det" id="be-d-chambre" role="region" aria-label="Détail de la chambre">
+          <div class="be__dh"><p class="be__k">Votre chambre</p><h3>Des conditions idéales, sauf un pic de bruit à 4 h 12</h3></div>
+          <ul class="be-gs">
+            <li><span>Température</span><i style="--a:.35;--b:.55;--v:.47"></i><b>18,5 °C</b><em>idéal 17 – 19 °C</em></li>
+            <li><span>Bruit</span><i style="--a:0;--b:.4;--v:.34"></i><b>34 dB</b><em>pic à 58 dB à 4:12</em></li>
+            <li><span>Humidité</span><i style="--a:.4;--b:.6;--v:.52"></i><b>52 %</b><em>idéal 40 – 60 %</em></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .be { padding: clamp(48px, 7vw, 96px) clamp(16px, 4vw, 56px); background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+  .be *, .be *::before, .be *::after { box-sizing: border-box; }
+  .be__head { max-width: 1200px; margin: 0 auto 32px; display: grid; gap: 16px; }
+  .be__brand { display: flex; align-items: center; gap: 12px; margin: 0; }
+  .be__logo { display: inline-flex; color: var(--text-strong); --p: var(--accent); --lt: var(--accent-fg); --a: var(--accent-vivid); --ink: var(--text-strong); }
+  .be__logo svg { display: block; height: 24px; width: auto; }
+  .be__eyebrow { padding-left: 12px; border-left: 1px solid var(--border); font: 500 13px/20px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .be__title { margin: 0; font-size: clamp(1.875rem, 1.2rem + 2.4vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em; font-weight: 600; color: var(--text-strong); text-wrap: balance; }
+  .be__lead { margin: 0; max-width: 56ch; font-size: 17px; line-height: 26px; color: var(--text-muted); }
+
+  .be__grid { position: relative; max-width: 1200px; margin: 0 auto; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 200px; grid-auto-flow: row dense; gap: 12px; }
+  .be__card { position: relative; grid-column: span var(--c, 1); grid-row: span var(--r, 1); border-radius: var(--radius-sheet); background: var(--surface); border: 1px solid var(--border);
+    overflow: hidden; transform-origin: 0 0; will-change: transform; transition: border-color var(--motion-base) var(--ease-out); }
+  .be__card:hover { border-color: var(--border-strong); }
+  .be__card.is-open { border-color: var(--accent-subtle-border); z-index: 2; }
+  .be__in { position: absolute; inset: 0; transform-origin: 0 0; }
+  .be__hit { position: absolute; inset: 0; z-index: 1; width: 100%; border: 0; padding: 0; background: transparent; cursor: pointer; border-radius: inherit; }
+  .be__hit:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: -3px; }
+  .be__card.is-open .be__hit { inset: 12px 12px auto auto; width: 44px; height: 44px; border-radius: 999px; background: var(--raised); display: grid; place-items: center; z-index: 3; }
+  .be__card.is-open .be__hit::before, .be__card.is-open .be__hit::after { content: ""; position: absolute; width: 16px; height: 1.75px; border-radius: 2px; background: var(--text-strong); transform: rotate(45deg); }
+  .be__card.is-open .be__hit::after { transform: rotate(-45deg); }
+  .be__card.is-open .be__hit:hover { background: var(--state-press); }
+  .be__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .be__sum, .be__det { position: absolute; inset: 0; padding: 20px; transition: opacity 260ms var(--ease-out), transform 520ms cubic-bezier(.22, 1, .36, 1); }
+  .be__sum { display: flex; flex-direction: column; gap: 8px; }
+  .be__det { display: grid; grid-template-rows: auto 1fr auto; gap: 20px; padding: 24px; opacity: 0; visibility: hidden; transform: translateY(8px); }
+  .be__card.is-open .be__sum { opacity: 0; visibility: hidden; transition-duration: 120ms, 0ms; }
+  .be__card.is-open .be__det { opacity: 1; visibility: visible; transform: none; transition-delay: 140ms; }
+  .be__k { margin: 0; font: 500 13px/20px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .be__big { margin: auto 0 0; font-size: 44px; line-height: 1; font-weight: 600; letter-spacing: -0.04em; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .be__big small { margin-left: 6px; font-size: 15px; font-weight: 500; letter-spacing: 0; color: var(--text-muted); }
+  .be__v { margin: 0; display: grid; gap: 2px; font-size: 17px; line-height: 24px; font-weight: 600; color: var(--text-strong); }
+  .be__v span { font-size: 14px; line-height: 20px; font-weight: 400; color: var(--text-muted); }
+  .be__v--lg { margin-top: auto; font-size: 20px; line-height: 26px; letter-spacing: -0.01em; }
+  .be__spark, .be__wave { width: 100%; height: 40px; overflow: visible; }
+  .be__spark path, .be__wave path, .be__chart path { fill: none; stroke: var(--accent); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+  .be__ring { position: relative; flex: 1; min-height: 0; display: grid; place-items: center; }
+  .be__ring svg { height: 100%; max-height: 180px; aspect-ratio: 1; transform: rotate(-90deg); }
+  .be__ring circle { fill: none; stroke-width: 9; stroke: var(--raised); }
+  .be__ring circle + circle { stroke: var(--accent); stroke-linecap: round; stroke-dasharray: calc(var(--v) * 100) 100; }
+  .be__ring b { position: absolute; font-size: 44px; font-weight: 600; letter-spacing: -0.04em; color: var(--text-strong); }
+  .be__card:not([data-size="2x2"]):not(.is-open) .be__ring b { font-size: 28px; }
+  /* Case large et basse (téléphone, ou rangée unique) : anneau à droite, texte à gauche */
+  .be__card[data-size="2x1"] .be__sum--score { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr; column-gap: 16px; }
+  .be__card[data-size="2x1"] .be__sum--score .be__ring { grid-column: 2; grid-row: 1 / 3; height: 100%; }
+  .be__card[data-size="2x1"] .be__sum--score .be__v { grid-column: 1; grid-row: 2; align-self: end; }
+  .be__card[data-size="2x1"] .be__ring b { font-size: 32px; }
+
+  .be__dh { display: grid; gap: 6px; padding-right: 56px; }
+  .be__dh h3 { margin: 0; max-width: 34ch; font-size: clamp(1.25rem, 1rem + .8vw, 1.625rem); line-height: 1.2; letter-spacing: -0.02em; font-weight: 600; color: var(--text-strong); text-wrap: balance; }
+  .be__p { margin: 0; max-width: 64ch; font-size: 15px; line-height: 24px; color: var(--text-muted); }
+  .be__stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; margin: 0; padding-top: 16px; border-top: 1px solid var(--border); }
+  .be__stats div { display: flex; flex-direction: column-reverse; gap: 2px; }
+  .be__stats dt { font-size: 14px; color: var(--text-muted); }
+  .be__stats dd { margin: 0; font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+  .be__chart { width: 100%; height: 100%; min-height: 80px; overflow: visible; }
+  .be__chart .be__area { fill: var(--accent-subtle); stroke: none; }
+
+  .be-hy { position: relative; margin: 0; display: grid; grid-template-columns: 88px 1fr; grid-template-rows: 1fr auto; gap: 8px 12px; min-height: 0; }
+  .be-hy__rows { display: grid; grid-template-rows: repeat(4, 1fr); align-items: center; font-size: 13px; color: var(--text-muted); }
+  .be-hy__svg { width: 100%; height: 100%; min-height: 96px; }
+  .be-hy__c { fill: none; stroke: var(--border-strong); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: .6; }
+  .be-hy__w { fill: var(--text-disabled); } .be-hy__r { fill: var(--accent-vivid); opacity: .55; } .be-hy__l { fill: var(--accent); opacity: .35; } .be-hy__d { fill: var(--accent); }
+  .be-hy__t { grid-column: 2; display: flex; justify-content: space-between; font: 500 12px/16px var(--font-mono); color: var(--text-muted); }
+  .be__card.is-open .be-hy__svg rect { animation: be-in 700ms cubic-bezier(.22, 1, .36, 1) both; }
+  .be__card.is-open .be__chart { animation: be-wipe 1100ms cubic-bezier(.65, 0, .35, 1) 180ms both; }
+  @keyframes be-in { from { transform: scaleX(0); } } .be-hy__svg rect { transform-box: fill-box; transform-origin: 0 50%; }
+  @keyframes be-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+  .be-wk { display: grid; gap: 8px; align-content: center; }
+  .be-wk__bar { position: relative; height: 40px; border-radius: 12px; background: var(--raised); }
+  .be-wk__win { position: absolute; left: 33.3%; width: 44.4%; top: 0; bottom: 0; border-radius: 12px; background: var(--accent-subtle); border: 1px solid var(--accent-subtle-border); }
+  .be-wk__mark { position: absolute; left: 48.9%; top: -6px; bottom: -6px; width: 2px; border-radius: 2px; background: var(--accent); }
+  .be-wk__mark b { position: absolute; left: 50%; top: -28px; transform: translateX(-50%); padding: 2px 8px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: 600 12px/16px var(--font-mono); }
+  .be-wk__t { display: grid; grid-template-columns: 33.3% 44.4% 1fr auto; font: 500 12px/16px var(--font-mono); color: var(--text-muted); }
+
+  .be-hb { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; align-content: center; }
+  .be-hb li { display: grid; grid-template-columns: minmax(150px, 1.2fr) 2fr 72px; align-items: center; gap: 16px; font-size: 15px; color: var(--text); }
+  .be-hb i { height: 12px; border-radius: 999px; background: var(--raised); position: relative; overflow: hidden; }
+  .be-hb i::after { content: ""; position: absolute; inset: 0; width: calc(var(--w) * 100%); border-radius: inherit; background: var(--down); opacity: .8; transform-origin: 0 50%; }
+  .be-hb i[data-pos]::after { background: var(--accent); opacity: 1; }
+  .be__card.is-open .be-hb i::after { animation: be-in 800ms cubic-bezier(.22, 1, .36, 1) 200ms both; }
+  .be-hb b { text-align: right; font-weight: 600; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+
+  .be__sum--row { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 24px; } .be__sum--row .be__k { align-self: flex-start; }
+  .be-rm { display: flex; gap: 40px; margin: 0; padding: 0; list-style: none; }
+  .be-rm li { display: grid; gap: 2px; } .be-rm b { font-size: 26px; line-height: 32px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-strong); font-variant-numeric: tabular-nums; } .be-rm span { font-size: 14px; color: var(--text-muted); }
+  .be-gs { margin: 0; padding: 0; list-style: none; display: grid; gap: 16px; align-content: center; }
+  .be-gs li { display: grid; grid-template-columns: 120px 1fr 80px 180px; align-items: center; gap: 16px; font-size: 15px; }
+  .be-gs i { position: relative; height: 8px; border-radius: 999px; background: var(--raised); }
+  .be-gs i::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--a) * 100%); width: calc((var(--b) - var(--a)) * 100%); border-radius: 999px; background: var(--accent-subtle); border: 1px solid var(--accent-subtle-border); }
+  .be-gs i::after { content: ""; position: absolute; top: 50%; left: calc(var(--v) * 100%); width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 999px; background: var(--accent); border: 3px solid var(--surface); }
+  .be-gs b { font-weight: 600; color: var(--text-strong); font-variant-numeric: tabular-nums; } .be-gs em { font-style: normal; font-size: 14px; color: var(--text-muted); }
+
+  /* Voile : les cases fermées s’estompent légèrement quand une case est ouverte */
+  .be__grid.has-open .be__card:not(.is-open) .be__sum { opacity: .55; }
+  .be__grid.has-open .be__card:not(.is-open):hover .be__sum { opacity: 1; }
+  .be[data-flou="false"] .be__grid.has-open .be__card:not(.is-open) .be__sum { opacity: 1; }
+
+  /* Tablette et téléphone : 2 colonnes, l’ouverture prend toute la largeur sur 3 rangées */
+  @media (max-width: 899px) {
+    .be__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 172px; }
+    .be__sum { padding: 16px; } .be__det { padding: 20px 16px 16px; gap: 16px; }
+    .be__big { font-size: 36px; }
+    .be-rm { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; width: 100%; } .be-rm b { font-size: 20px; line-height: 24px; } .be-rm span { font-size: 13px; line-height: 16px; }
+    .be__sum--row { flex-direction: column; align-items: stretch; justify-content: space-between; gap: 8px; }
+    .be-hy { grid-template-columns: 72px 1fr; } .be-hy__rows { font-size: 12px; }
+    .be-hb li { grid-template-columns: 1fr 64px; gap: 6px 12px; } .be-hb i { grid-column: 1 / -1; grid-row: 2; }
+    .be-gs li { grid-template-columns: 1fr auto; gap: 6px 12px; } .be-gs i { grid-column: 1 / -1; } .be-gs em { grid-column: 1 / -1; }
+    .be__stats { grid-template-columns: repeat(2, 1fr); gap: 12px; } .be__stats dd { font-size: 18px; line-height: 24px; }
+    .be__dh h3 { font-size: 19px; line-height: 25px; }
+  }
+  @media (max-width: 899px) and (max-width: 420px) { .be__lead { font-size: 16px; line-height: 24px; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .be *, .be *::before, .be *::after { animation: none !important; transition-duration: 0ms !important; transition-delay: 0ms !important; }
+  }
+</style>
+
+<script>
+(function () {
+  /* Vrai ressort (masse 1) intégré pas à pas : la vitesse est conservée si l’utilisateur change d’avis en plein vol. */
+  function setup(root) {
+    if (root._inst) root._inst.destroy();
+    var grid = root.querySelector('[data-be-grid]');
+    var cards = [].slice.call(grid.children);
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var K = +root.dataset.raideur || 260, C = +root.dataset.amorti || 26;
+    var state = new Map(), raf = 0, open = null, last = 0;
+    cards.forEach(function (el) { state.set(el, { x: 0, y: 0, sx: 1, sy: 1, vx: 0, vy: 0, vsx: 0, vsy: 0 }); });
+
+    function cols() { return getComputedStyle(grid).gridTemplateColumns.split(' ').length; }
+    /* Tailles : la case ouverte prend toute la largeur sur 2 rangées (3 sur 2 colonnes), les autres 1×1 ;
+       la dernière case fermée s’étire si besoin pour que la grille reste pleine (placement dense). */
+    function layout() {
+      var c = cols();
+      if (!open) {
+        cards.forEach(function (el) {
+          var b = el.dataset.base.split('x').map(Number);
+          if (c === 2) b = el.dataset.base === '1x1' ? [1, 1] : [2, el.dataset.base === '2x2' ? 1 : 1];
+          set(el, b[0], b[1]);
+        });
+        return;
+      }
+      var rest = cards.filter(function (el) { return el !== open; });
+      set(open, c, c === 2 ? 3 : 2);
+      var lone = rest.length % c;
+      rest.forEach(function (el, i) { set(el, i === rest.length - 1 && lone ? c - lone + 1 : 1, 1); });
+    }
+    function set(el, w, h) { el.style.setProperty('--c', w); el.style.setProperty('--r', h); el.dataset.size = w + 'x' + h; }
+
+    /* FLIP au ressort : on part de la boîte affichée (transformations comprises), on vise la nouvelle. */
+    function change(next) {
+      var before = new Map();
+      cards.forEach(function (el) { before.set(el, el.getBoundingClientRect()); });
+      cards.forEach(function (el) { el.style.transform = ''; el.firstElementChild.style.transform = ''; });
+      open = next;
+      cards.forEach(function (el) {
+        var on = el === open; el.classList.toggle('is-open', on);
+        var btn = el.querySelector('.be__hit'); btn.setAttribute('aria-expanded', String(on));
+        var sr = btn.querySelector('.be__sr'); if (!sr.dataset.base) sr.dataset.base = sr.textContent;
+        sr.textContent = on ? 'Réduire' : sr.dataset.base;
+      });
+      grid.classList.toggle('has-open', !!open);
+      layout();
+      if (reduce) return;
+      cards.forEach(function (el) {
+        var a = before.get(el), b = el.getBoundingClientRect(), s = state.get(el);
+        s.x = a.left - b.left; s.y = a.top - b.top; s.sx = a.width / b.width; s.sy = a.height / b.height;
+      });
+      paint(); if (!raf) { last = 0; raf = requestAnimationFrame(tick); }
+    }
+    function paint() {
+      cards.forEach(function (el) {
+        var s = state.get(el);
+        el.style.transform = 'translate(' + s.x + 'px,' + s.y + 'px) scale(' + s.sx + ',' + s.sy + ')';
+        el.firstElementChild.style.transform = 'scale(' + (1 / s.sx) + ',' + (1 / s.sy) + ')';
+      });
+    }
+    function tick(now) {
+      var dt = Math.min(1 / 15, last ? (now - last) / 1000 : 1 / 60); last = now;
+      var moving = false, steps = 4, h = dt / steps;
+      cards.forEach(function (el) {
+        var s = state.get(el);
+        for (var i = 0; i < steps; i++) {
+          s.vx += (-K * s.x - C * s.vx) * h; s.x += s.vx * h;
+          s.vy += (-K * s.y - C * s.vy) * h; s.y += s.vy * h;
+          s.vsx += (-K * (s.sx - 1) - C * s.vsx) * h; s.sx += s.vsx * h;
+          s.vsy += (-K * (s.sy - 1) - C * s.vsy) * h; s.sy += s.vsy * h;
+        }
+        if (Math.abs(s.x) + Math.abs(s.y) > .3 || Math.abs(s.sx - 1) + Math.abs(s.sy - 1) > .002 || Math.abs(s.vx) + Math.abs(s.vy) > 2) moving = true;
+        else { s.x = s.y = s.vx = s.vy = s.vsx = s.vsy = 0; s.sx = s.sy = 1; }
+      });
+      paint();
+      if (moving) raf = requestAnimationFrame(tick);
+      else { raf = 0; cards.forEach(function (el) { el.style.transform = ''; el.firstElementChild.style.transform = ''; }); }
+    }
+
+    function onClick(e) {
+      var b = e.target.closest('.be__hit'); if (!b) return;
+      var el = b.closest('.be__card');
+      var target = open === el ? null : el;
+      change(target);
+      if (target && window.matchMedia('(max-width: 899px)').matches) {
+        setTimeout(function () { var r = el.getBoundingClientRect(); if (r.top < 0 || r.bottom > innerHeight) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }, 80);
+      }
+    }
+    function onKey(e) { if (e.key === 'Escape' && open) { var b = open.querySelector('.be__hit'); change(null); b.focus(); } }
+    grid.addEventListener('click', onClick);
+    root.addEventListener('keydown', onKey);
+    var lastCols = cols();
+    var ro = 'ResizeObserver' in window ? new ResizeObserver(function () { var c = cols(); if (c !== lastCols) { lastCols = c; layout(); } }) : null;
+    if (ro) ro.observe(grid);
+    /* Hors écran, l’animation s’arrête net à sa position finale */
+    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (en) { if (!en[0].isIntersecting && raf) { cancelAnimationFrame(raf); raf = 0; cards.forEach(function (el) { var s = state.get(el); s.x = s.y = s.vx = s.vy = s.vsx = s.vsy = 0; s.sx = s.sy = 1; el.style.transform = ''; el.firstElementChild.style.transform = ''; }); } }) : null;
+    if (io) io.observe(root);
+
+    layout();
+    var initial = root.dataset.ouvert && grid.querySelector('[data-id="' + root.dataset.ouvert + '"]');
+    if (initial) { var r0 = reduce; reduce = true; change(initial); reduce = r0; }
+
+    root._inst = {
+      open: function (id) { var el = grid.querySelector('[data-id="' + id + '"]'); change(el && el !== open ? el : null); },
+      destroy: function () { cancelAnimationFrame(raf); grid.removeEventListener('click', onClick); root.removeEventListener('keydown', onKey); if (ro) ro.disconnect(); if (io) io.disconnect(); }
+    };
+  }
+  document.querySelectorAll('[data-bento-expand]').forEach(setup);
+})();
+</script>

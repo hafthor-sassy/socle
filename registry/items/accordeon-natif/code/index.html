@@ -1,0 +1,236 @@
+<!-- Accordéon natif — HTML + CSS (+ ~2 ko de JS facultatif). Nécessite tokens.css (Geist).
+     Marque fictive : Abri (assurance habitation en ligne). Contenu fictif.
+     Base 100 % native : <details>/<summary>, exclusivité par l'attribut name, hauteur animée par
+     ::details-content + interpolate-size quand le navigateur les connaît. Le script ajoute l'animation ailleurs,
+     le lien direct par question (#id), « Tout ouvrir » et la copie du lien. Sans script, tout reste utilisable.
+     Réglages sur la racine : data-exclusif, data-icone="plus|chevron", --an-duree, data-style="lignes|cartes", data-liens. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="an" data-accordeon data-exclusif="true" data-icone="plus" data-style="lignes" data-liens="true" style="--an-duree: 320ms" aria-labelledby="an-titre">
+  <div class="an__side">
+    <a class="an__brand" href="#accueil" aria-label="Abri, accueil">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="an__b1"/><path d="M20 50a30 30 0 0 1 60 0z" class="an__b2"/><path d="M50 50v18a7 7 0 0 1-14 0" class="an__b3"/></svg>
+      <span>Abri</span>
+    </a>
+    <h2 class="an__title" id="an-titre">Questions fréquentes</h2>
+    <p class="an__lead">Tout ce qu’il faut savoir avant d’assurer votre logement. Mis à jour le 3&nbsp;novembre&nbsp;2026.</p>
+    <div class="an__tools">
+      <button type="button" class="an__all" data-all aria-pressed="false">Tout ouvrir</button>
+    </div>
+    <div class="an__help">
+      <p class="an__help-t">Votre question n’y est pas&nbsp;?</p>
+      <p class="an__help-d">Un conseiller vous répond en moyenne en 6&nbsp;minutes, du lundi au samedi.</p>
+      <a class="an__help-a" href="#contact">Écrire à un conseiller<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
+  </div>
+
+  <div class="an__list" data-list>
+    <details class="an__item" id="delai" name="faq-abri" open>
+      <summary><span class="an__q">Combien de temps faut-il pour être assuré&nbsp;?</span><span class="an__ico" aria-hidden="true"><i></i><i></i></span></summary>
+      <div class="an__a"><p>Quatre minutes en moyenne. Vous répondez à huit questions sur votre logement, vous choisissez votre formule et votre attestation arrive par e-mail dès le paiement validé, prête à envoyer à votre propriétaire ou à votre agence.</p></div>
+    </details>
+    <details class="an__item" id="formule-essentielle" name="faq-abri">
+      <summary><span class="an__q">Que couvre la formule Essentielle&nbsp;?</span><span class="an__ico" aria-hidden="true"><i></i><i></i></span></summary>
+      <div class="an__a"><p>Les garanties que la loi et votre bail attendent, sans option inutile&nbsp;:</p><ul><li>dégâts des eaux, incendie et explosion&nbsp;;</li><li>vol et vandalisme après effraction&nbsp;;</li><li>bris de vitres et de miroirs&nbsp;;</li><li>responsabilité civile de toute la famille.</li></ul></div>
+    </details>
+    <details class="an__item" id="locataire" name="faq-abri">
+      <summary><span class="an__q">Je suis locataire : que dois-je donner à mon propriétaire&nbsp;?</span><span class="an__ico" aria-hidden="true"><i></i><i></i></span></summary>
+      <div class="an__a"><p>Votre attestation d’assurance, chaque année. Elle est disponible à tout moment dans votre espace et se renouvelle seule à la date anniversaire&nbsp;; vous pouvez aussi l’envoyer directement depuis l’application.</p></div>
+    </details>
+    <details class="an__item" id="sinistre" name="faq-abri">
+      <summary><span class="an__q">Comment déclarer un sinistre&nbsp;?</span><span class="an__ico" aria-hidden="true"><i></i><i></i></span></summary>
+      <div class="an__a"><p>Depuis l’application, en photographiant les dégâts&nbsp;: la déclaration prend trois minutes. Un gestionnaire vous répond sous 48&nbsp;heures et, pour les petits sinistres, le remboursement part par virement le jour même de l’accord.</p></div>
+    </details>
+    <details class="an__item" id="resiliation" name="faq-abri">
+      <summary><span class="an__q">Puis-je résilier à tout moment&nbsp;?</span><span class="an__ico" aria-hidden="true"><i></i><i></i></span></summary>
+      <div class="an__a"><p>Oui, dès la fin de la première année, sans frais ni justificatif. Si vous venez d’un autre assureur, nous nous occupons de résilier votre ancien contrat à votre place.</p></div>
+    </details>
+    <details class="an__item" id="objets-valeur" name="faq-abri">
+      <summary><span class="an__q">Mes objets de valeur sont-ils couverts&nbsp;?</span><span class="an__ico" aria-hidden="true"><i></i><i></i></span></summary>
+      <div class="an__a"><p>Jusqu’à 3&nbsp;000&nbsp;€ sans justificatif, bijoux et matériel informatique compris. Au-delà, ajoutez l’option Objets précieux depuis votre espace&nbsp;: elle s’applique dès le lendemain.</p></div>
+    </details>
+    <details class="an__item" id="demenagement" name="faq-abri">
+      <summary><span class="an__q">Que se passe-t-il si je déménage&nbsp;?</span><span class="an__ico" aria-hidden="true"><i></i><i></i></span></summary>
+      <div class="an__a"><p>Indiquez votre nouvelle adresse et la date du départ&nbsp;: les deux logements sont couverts pendant les trente jours du déménagement, puis le contrat suit votre nouveau logement, avec un tarif recalculé.</p></div>
+    </details>
+  </div>
+  <p class="an__sr" aria-live="polite" data-live></p>
+</section>
+<!-- /SECTION -->
+
+<style>
+  /* ——— Accordéon natif ——— */
+  .an { --an-ease: cubic-bezier(.32, .72, 0, 1); width: min(100%, 1120px); margin-inline: auto; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 64px; padding: 64px; color: var(--text); font-family: var(--font-sans); background: var(--surface); border: 1px solid var(--border); border-radius: 16px; }
+  .an__side { display: flex; flex-direction: column; gap: 16px; align-self: start; position: sticky; top: 32px; }
+  .an__brand { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; min-height: 44px; margin-bottom: 8px; color: var(--text-strong); text-decoration: none; font: 600 16px/24px var(--font-sans); letter-spacing: var(--track-snug); border-radius: 8px; }
+  .an__brand svg { width: 24px; height: 24px; }
+  .an__b1 { fill: var(--accent); } .an__b2 { fill: var(--accent-fg); } .an__b3 { fill: none; stroke: var(--accent-fg); stroke-width: 7; stroke-linecap: round; }
+  .an__title { margin: 0; color: var(--text-strong); font: 600 clamp(28px, 1.6vw + 16px, 40px)/1.1 var(--font-sans); letter-spacing: -0.03em; }
+  .an__lead { margin: 0; color: var(--text-muted); font-size: 16px; line-height: 24px; text-wrap: pretty; }
+  .an__tools { display: flex; gap: 8px; }
+  .an__all { height: 36px; padding: 0 14px; border: 1px solid var(--border-control); border-radius: 8px; background: var(--surface); color: var(--text-strong); font: 500 14px/20px var(--font-sans); cursor: pointer; transition: background-color var(--motion-fast) var(--ease-out); }
+  .an__all:hover { background: var(--state-hover); }
+  .an__all[hidden] { display: none; }
+  .an__help { display: grid; gap: 4px; margin-top: 24px; padding: 20px; border-radius: 12px; background: var(--raised); }
+  .an__help-t { margin: 0; color: var(--text-strong); font-weight: 600; font-size: 16px; line-height: 24px; }
+  .an__help-d { margin: 0; color: var(--text-muted); font-size: 15px; line-height: 22px; }
+  .an__help-a { display: inline-flex; align-items: center; gap: 6px; align-self: start; justify-self: start; min-height: 44px; margin-bottom: -10px; color: var(--accent); font-weight: 500; font-size: 15px; text-decoration: none; }
+  .an__help-a svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform var(--motion-base) var(--ease-out); }
+  .an__help-a:hover svg { transform: translateX(3px); }
+
+  .an__list { display: grid; border-top: 1px solid var(--border); }
+  .an[data-style="cartes"] .an__list { gap: 8px; border-top: 0; }
+  .an__item { position: relative; border-bottom: 1px solid var(--border); }
+  .an[data-style="cartes"] .an__item { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); transition: background-color var(--an-duree) var(--ease-out); }
+  .an[data-style="cartes"] .an__item[open] { background: var(--raised); }
+  .an__item summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 64px; padding: 16px 4px 16px 0; list-style: none; cursor: pointer; border-radius: 8px; -webkit-tap-highlight-color: transparent; }
+  .an[data-style="cartes"] .an__item summary { padding: 16px 16px 16px 20px; }
+  .an__item summary::-webkit-details-marker { display: none; }
+  .an__item summary:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 2px; }
+  .an__q { color: var(--text-strong); font: 500 17px/24px var(--font-sans); letter-spacing: -0.01em; transition: color var(--motion-base) var(--ease-out); text-wrap: pretty; }
+  @media (hover: hover) { .an__item summary:hover .an__q { color: var(--accent); } }
+
+  /* Icône plus → moins (ou chevron) : la barre verticale s'efface en tournant */
+  .an__ico { position: relative; flex: none; width: 32px; height: 32px; border-radius: 999px; border: 1px solid var(--border); color: var(--text-strong); transition: transform var(--an-duree) var(--an-ease), background-color var(--an-duree) var(--ease-out), border-color var(--an-duree) var(--ease-out); }
+  .an__ico i { position: absolute; left: 50%; top: 50%; width: 12px; height: 1.5px; margin: -0.75px 0 0 -6px; border-radius: 2px; background: currentColor; transition: transform var(--an-duree) var(--an-ease), opacity var(--an-duree) var(--ease-out); }
+  .an__ico i + i { transform: rotate(90deg); }
+  .an__item[open] .an__ico { transform: rotate(180deg); background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+  .an__item[open] .an__ico i + i { transform: rotate(0deg) scaleX(.2); opacity: 0; }
+  .an[data-icone="chevron"] .an__ico i { width: 8px; margin-left: -6.6px; transform: rotate(40deg); transform-origin: 100% 50%; }
+  .an[data-icone="chevron"] .an__ico i + i { margin-left: -1.4px; transform: rotate(-40deg); transform-origin: 0 50%; opacity: 1; }
+  .an[data-icone="chevron"] .an__ico i { top: 50%; }
+  .an[data-icone="chevron"] .an__item[open] .an__ico i + i { transform: rotate(-40deg); opacity: 1; }
+
+  /* Réponse */
+  .an__a { padding: 0 64px 24px 0; color: var(--text); font-size: 16px; line-height: 26px; }
+  .an[data-style="cartes"] .an__a { padding: 0 56px 20px 20px; }
+  .an__a p { margin: 0; max-width: 62ch; text-wrap: pretty; }
+  .an__a ul { margin: 8px 0 0; padding-left: 20px; }
+  .an__a li { margin-top: 4px; }
+  .an__a li::marker { color: var(--accent); }
+  .an__link { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin: 4px 0 -12px; padding: 0; border: 0; background: none; color: var(--text-muted); font: 500 13px/20px var(--font-sans); cursor: pointer; opacity: 0; transition: opacity var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out); }
+  .an[data-liens="false"] .an__link { display: none; }
+  .an__item[open]:hover .an__link, .an__link:focus-visible, .an__link.is-done { opacity: 1; }
+  .an__link:hover, .an__link.is-done { color: var(--accent); }
+  .an__link svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Lien direct : la question ciblée s'éclaire un instant */
+  .an__item::before { content: ""; position: absolute; inset: 0 -12px; z-index: -1; border-radius: 12px; background: var(--accent-subtle); opacity: 0; pointer-events: none; }
+  .an__item.is-target::before { animation: an-flash 1600ms var(--ease-out); }
+  @keyframes an-flash { 0%, 30% { opacity: 1; } 100% { opacity: 0; } }
+  .an__list { isolation: isolate; }
+
+  /* Voie 100 % CSS (Chrome 131+, Safari 18.4+) : hauteur auto animée */
+  @supports (interpolate-size: allow-keywords) and selector(::details-content) {
+    .an { interpolate-size: allow-keywords; }
+    .an:not(.is-js) .an__item::details-content { block-size: 0; overflow: clip; transition: block-size var(--an-duree) var(--an-ease), content-visibility var(--an-duree) allow-discrete; }
+    .an:not(.is-js) .an__item[open]::details-content { block-size: auto; }
+  }
+  .an__a.is-anim { overflow: hidden; }
+
+  .an__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 860px) {
+    .an { grid-template-columns: 1fr; gap: 32px; padding: 48px 40px; }
+    .an__side { position: static; }
+    .an { gap: 0; }
+    .an__side { display: contents; }
+    .an__title { margin-top: 8px; } .an__lead { margin-top: 12px; } .an__tools { margin-top: 16px; }
+    .an__list { order: 1; margin-top: 24px; }
+    .an__help { order: 2; margin-top: 24px; }
+  }
+  @media (max-width: 640px) {
+    .an { padding: 32px 20px 24px; border-radius: 12px; }
+    .an__title { font-size: 28px; line-height: 34px; }
+    .an__lead { font-size: 15px; line-height: 22px; }
+    .an__item summary { min-height: 64px; gap: 16px; }
+    .an__q { font-size: 16px; line-height: 22px; }
+    .an__a { padding: 0 0 20px; font-size: 15px; line-height: 24px; }
+    .an[data-style="cartes"] .an__a { padding: 0 16px 16px; }
+    .an[data-style="cartes"] .an__item summary { padding: 14px 14px 14px 16px; }
+    .an__link { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .an { --an-duree: 0ms !important; }
+    .an__item.is-target::before { animation-duration: 1ms; }
+  }
+</style>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-accordeon]').forEach(function (root) {
+    if (root._an) return;
+    var items = [].slice.call(root.querySelectorAll('.an__item'));
+    var live = root.querySelector('[data-live]'), all = root.querySelector('[data-all]');
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    /* Le navigateur sait-il animer seul la hauteur ? Sinon, animation par Web Animations. */
+    var native = CSS.supports('interpolate-size: allow-keywords') && CSS.supports('selector(::details-content)');
+    if (!native) root.classList.add('is-js');
+    var dur = function () { return reduce.matches ? 0 : parseFloat(getComputedStyle(root).getPropertyValue('--an-duree')) || 320; };
+    var EASE = 'cubic-bezier(.32, .72, 0, 1)';
+    var exclusive = function () { return root.dataset.exclusif !== 'false'; };
+
+    function syncName() { items.forEach(function (d) { if (exclusive() && native) d.setAttribute('name', 'faq-abri'); else d.removeAttribute('name'); }); all.hidden = exclusive(); }
+
+    function animate(d, open) {
+      var a = d.querySelector('.an__a'), cur = d.open ? a.getBoundingClientRect().height : 0;
+      if (d._anim) { d._anim.cancel(); d._anim = null; }
+      d._want = open;
+      if (native || !dur()) { d.open = open; return; }
+      if (!open && !d.open) return;
+      if (open) d.open = true;
+      var full = a.offsetHeight, from = open ? cur : cur, to = open ? full : 0;
+      if (from === to) return;
+      a.classList.add('is-anim');
+      var anim = a.animate([{ height: from + 'px', opacity: open ? Math.max(0.2, from / full) : 1 }, { height: to + 'px', opacity: open ? 1 : 0 }], { duration: dur() * Math.max(0.4, Math.abs(to - from) / full), easing: EASE });
+      d._anim = anim;
+      anim.onfinish = function () { a.classList.remove('is-anim'); d._anim = null; if (!open) d.open = false; };
+    }
+    function set(d, open) {
+      if (open && exclusive()) items.forEach(function (o) { if (o !== d && o.open) animate(o, false); });
+      animate(d, open);
+    }
+
+    items.forEach(function (d) {
+      var s = d.querySelector('summary');
+      d._want = d.open;
+      s.addEventListener('click', function (e) { if (native) return; e.preventDefault(); set(d, !d._want); });
+      /* Lien direct : un bouton par réponse */
+      var a = d.querySelector('.an__a'), b = document.createElement('button');
+      b.type = 'button'; b.className = 'an__link';
+      b.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 9.5l3-3M7 4.5l1-1a2.8 2.8 0 0 1 4 4l-1 1M9 11.5l-1 1a2.8 2.8 0 0 1-4-4l1-1"/></svg><span>Copier le lien de la question</span>';
+      b.addEventListener('click', function () {
+        var url = location.href.split('#')[0] + '#' + d.id, done = function (msg) { b.classList.add('is-done'); b.querySelector('span').textContent = msg; live.textContent = msg; clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove('is-done'); b.querySelector('span').textContent = 'Copier le lien de la question'; }, 2000); };
+        try { history.replaceState(null, '', '#' + d.id); } catch (e) {}
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(function () { done('Lien copié'); }, function () { done('Lien prêt : #' + d.id); });
+        else done('Lien prêt : #' + d.id);
+      });
+      a.appendChild(b);
+      d.addEventListener('toggle', function () { if (d.open) live.textContent = ''; });
+    });
+
+    /* Ouvre la question visée par l'adresse (#sinistre), la fait défiler et l'éclaire. */
+    function fromHash(scroll) {
+      var id = decodeURIComponent(location.hash.slice(1)), d = id && items.filter(function (x) { return x.id === id; })[0];
+      if (!d) return;
+      set(d, true);
+      if (scroll !== false) d.scrollIntoView({ block: 'center', behavior: reduce.matches ? 'auto' : 'smooth' });
+      d.classList.remove('is-target'); void d.offsetWidth; d.classList.add('is-target');
+    }
+    window.addEventListener('hashchange', fromHash);
+
+    all.addEventListener('click', function () {
+      var open = all.getAttribute('aria-pressed') !== 'true';
+      items.forEach(function (d) { animate(d, open); });
+      all.setAttribute('aria-pressed', String(open)); all.textContent = open ? 'Tout fermer' : 'Tout ouvrir';
+    });
+
+    syncName(); fromHash();
+    root._an = {
+      refresh: function () { syncName(); if (exclusive()) { var first = items.filter(function (d) { return d.open; })[0]; items.forEach(function (d) { if (d !== first) d.open = false; d._want = d.open; }); all.setAttribute('aria-pressed', 'false'); all.textContent = 'Tout ouvrir'; } },
+      open: function (i) { set(items[i], true); }, target: function (id) { location.hash = id; }, closeAll: function () { items.forEach(function (d) { d.open = false; d._want = false; }); }
+    };
+  });
+})();
+</script>

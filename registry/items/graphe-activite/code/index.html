@@ -1,0 +1,367 @@
+<!-- Graphe d'activité — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css (Geist).
+     Marque fictive : Foulée (application de course à pied). Données fictives, générées de façon déterministe.
+     Réglages sur la racine : data-vague="diagonale|colonnes|radiale", data-vitesse (ms par semaine),
+     data-annee="2026|2025", data-forme="carre|rond", data-legende, data-resume.
+     Vos données : remplacez la fonction data(annee) par un objet { "2026-03-14": 12.4, … } (km par jour). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="ga" data-graphe-activite data-vague="diagonale" data-vitesse="14" data-annee="2026" data-forme="carre" data-legende="true" data-resume="true" aria-labelledby="ga-titre">
+  <header class="ga__head">
+    <div class="ga__brandrow">
+      <a class="ga__brand" href="#accueil" aria-label="Foulée, accueil">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="ga__brand-bg"/><path d="M30 70 46 30M48 70l16-40M66 70l8-20" class="ga__brand-ln"/></svg>
+        <span>Foulée</span>
+      </a>
+      <div class="ga__years" role="radiogroup" aria-label="Année affichée">
+        <span class="ga__pill" aria-hidden="true"></span>
+        <button type="button" role="radio" data-year="2025" aria-checked="false">2025</button>
+        <button type="button" role="radio" data-year="2026" aria-checked="true">2026</button>
+      </div>
+    </div>
+    <h2 class="ga__title" id="ga-titre">Votre année en foulées</h2>
+    <p class="ga__lead">Une case par jour, plus elle est foncée, plus la sortie était longue. <span class="ga__hint-fine">Survolez ou parcourez au clavier pour le détail.</span><span class="ga__hint-touch">Faites glisser la frise et touchez un jour.</span></p>
+  </header>
+
+  <dl class="ga__sum" data-sum>
+    <div><dt>Distance</dt><dd><span data-k="km">0</span><small>&nbsp;km</small></dd></div>
+    <div><dt>Sorties</dt><dd><span data-k="runs">0</span></dd></div>
+    <div><dt>Plus longue série</dt><dd><span data-k="streak">0</span><small>&nbsp;jours</small></dd></div>
+    <div><dt>Plus longue sortie</dt><dd><span data-k="best">0</span><small>&nbsp;km</small></dd></div>
+  </dl>
+
+  <div class="ga__scroller" data-scroller>
+    <div class="ga__chart" data-chart>
+      <div class="ga__months" aria-hidden="true" data-months></div>
+      <div class="ga__days" aria-hidden="true"><span>lun</span><span></span><span>mer</span><span></span><span>ven</span><span></span><span>dim</span></div>
+      <div class="ga__grid" role="grid" aria-labelledby="ga-titre" aria-describedby="ga-aide" data-grid></div>
+      <div class="ga__tip" data-tip aria-hidden="true"><strong data-tip-a></strong><span data-tip-b></span><em data-tip-c></em></div>
+    </div>
+  </div>
+  <p class="ga__sr" id="ga-aide">Flèches pour changer de jour ou de semaine, Début et Fin pour la semaine.</p>
+
+  <div class="ga__foot">
+    <div class="ga__day" data-day aria-live="polite">
+      <button type="button" class="ga__nav" data-step="-1" aria-label="Jour précédent"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+      <p><strong data-day-a>Touchez une case</strong><span data-day-b>pour voir la sortie du jour</span></p>
+      <button type="button" class="ga__nav" data-step="1" aria-label="Jour suivant"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+    </div>
+    <div class="ga__legend" data-legend>
+      <span>Repos</span>
+      <button type="button" data-lvl="0" aria-label="Afficher les jours de repos"></button>
+      <button type="button" data-lvl="1" aria-label="Afficher les sorties de moins de 6 km"></button>
+      <button type="button" data-lvl="2" aria-label="Afficher les sorties de 6 à 10 km"></button>
+      <button type="button" data-lvl="3" aria-label="Afficher les sorties de 10 à 16 km"></button>
+      <button type="button" data-lvl="4" aria-label="Afficher les sorties de plus de 16 km"></button>
+      <span>16&nbsp;km&nbsp;+</span>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  /* ——— Graphe d'activité ——— */
+  .ga { --c: 15px; --g: 4px; width: min(100%, 1200px); margin-inline: auto; padding: 40px 48px 32px; display: grid; gap: 32px; color: var(--text); font-family: var(--font-sans); background: var(--surface); border: 1px solid var(--border); border-radius: 16px; }
+  .ga__head { display: grid; gap: 8px; }
+  .ga__brandrow { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+  .ga__brand { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--text-strong); text-decoration: none; font: 600 16px/24px var(--font-sans); letter-spacing: var(--track-snug); border-radius: 8px; }
+  .ga__brand svg { width: 24px; height: 24px; }
+  .ga__brand-bg { fill: var(--accent); }
+  .ga__brand-ln { fill: none; stroke: var(--accent-fg); stroke-width: 9; stroke-linecap: round; }
+  .ga__title { margin: 0; color: var(--text-strong); font: 600 clamp(26px, 1.4vw + 16px, 36px)/1.15 var(--font-sans); letter-spacing: -0.03em; }
+  .ga__lead { margin: 0; max-width: 60ch; color: var(--text-muted); font-size: 16px; line-height: 24px; }
+  .ga__hint-touch { display: none; }
+
+  .ga__years { position: relative; display: inline-flex; padding: 4px; border-radius: 999px; background: var(--raised); border: 1px solid var(--border); }
+  .ga__years button { position: relative; z-index: 1; min-width: 72px; height: 36px; padding: 0 16px; border: 0; border-radius: 999px; background: none; color: var(--text-muted); font: 500 14px/20px var(--font-sans); font-variant-numeric: tabular-nums; cursor: pointer; transition: color 200ms var(--ease-out); }
+  .ga__years button[aria-checked="true"] { color: var(--text-strong); }
+  .ga__pill { position: absolute; top: 4px; left: 4px; height: 36px; width: var(--pw, 72px); border-radius: 999px; background: var(--surface); box-shadow: var(--shadow-overlay); border: 1px solid var(--border); transform: translateX(var(--px, 0px)); transition: transform 420ms cubic-bezier(.3, 1.4, .4, 1), width 300ms var(--ease-out); }
+
+  .ga__sum { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 0; }
+  .ga[data-resume="false"] .ga__sum { display: none; }
+  .ga__sum > div { padding: 16px; border-radius: 12px; background: var(--raised); }
+  .ga__sum dt { color: var(--text-muted); font: 500 13px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .ga__sum dd { margin: 8px 0 0; color: var(--text-strong); font: 600 28px/1.1 var(--font-sans); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .ga__sum small { color: var(--text-muted); font-size: 15px; font-weight: 500; letter-spacing: 0; }
+
+  .ga__scroller { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; margin: 0 -8px; padding: 0 8px; }
+  .ga__chart { position: relative; display: grid; grid-template-columns: 32px auto; grid-template-rows: 20px auto; column-gap: 8px; row-gap: 6px; width: max-content; margin-inline: auto; padding-top: 4px; }
+  .ga__months { grid-column: 2; display: grid; grid-template-columns: repeat(var(--weeks, 53), var(--c)); column-gap: var(--g); color: var(--text-muted); font: 400 13px/20px var(--font-sans); }
+  .ga__months span { white-space: nowrap; transition: color 200ms var(--ease-out); }
+  .ga__months span.is-on { color: var(--text-strong); }
+  .ga__days { grid-column: 1; grid-row: 2; display: grid; grid-template-rows: repeat(7, var(--c)); row-gap: var(--g); color: var(--text-muted); font: 400 12px/1 var(--font-sans); align-items: center; }
+  .ga__grid { grid-column: 2; grid-row: 2; display: grid; grid-template-columns: repeat(var(--weeks, 53), var(--c)); grid-template-rows: repeat(7, var(--c)); gap: var(--g); outline: none; }
+  .ga__row { display: contents; }
+  .ga__cell { width: var(--c); height: var(--c); border-radius: calc(var(--c) * .25); background: var(--lv); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--text) 6%, transparent); cursor: pointer; outline: none;
+    transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out); }
+  .ga[data-forme="rond"] .ga__cell { border-radius: 999px; }
+  .ga__cell[data-l="0"] { --lv: var(--raised); }
+  .ga__cell[data-l="1"] { --lv: color-mix(in oklab, var(--accent) 34%, var(--raised)); }
+  .ga__cell[data-l="2"] { --lv: color-mix(in oklab, var(--accent) 58%, var(--raised)); }
+  .ga__cell[data-l="3"] { --lv: color-mix(in oklab, var(--accent) 80%, var(--raised)); }
+  .ga__cell[data-l="4"] { --lv: var(--accent); }
+  .ga__cell[data-l="-1"] { --lv: transparent; box-shadow: inset 0 0 0 1px var(--border); cursor: default; }
+  .ga__cell.is-today { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--text-strong); }
+  .ga__cell:hover:not([data-l="-1"]), .ga__cell.is-hot { transform: scale(1.3); position: relative; z-index: 1; }
+  .ga__cell:focus-visible { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--focus-ring); transform: scale(1.2); position: relative; z-index: 1; }
+  .ga.is-filter .ga__cell:not(.is-match) { opacity: .18; }
+
+  /* Vague : chaque case porte son délai (--d) ; ressort en linear() */
+  .ga:not(.is-shown) .ga__cell { opacity: 0; }
+  .ga.is-wave .ga__cell { animation: ga-pop 560ms var(--d, 0ms) backwards cubic-bezier(.2, 1.4, .4, 1); }
+  @supports (animation-timing-function: linear(0, 1)) {
+    .ga.is-wave .ga__cell { animation-timing-function: linear(0, .02, .09 4%, .37 10%, .86 19%, 1.06 25%, 1.12 29%, 1.11 33%, 1.03 41%, .99 48%, .985 54%, 1 70%, 1); }
+  }
+  @keyframes ga-pop { from { opacity: 0; transform: scale(.25); } 30% { opacity: 1; } to { opacity: 1; transform: scale(1); } }
+
+  .ga__tip { position: absolute; left: 0; top: 0; z-index: 3; display: grid; gap: 2px; min-width: 176px; padding: 10px 12px; border-radius: 12px; background: var(--text-strong); color: var(--surface); pointer-events: none; white-space: nowrap;
+    opacity: 0; transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + 4px), 0) scale(.96); transform-origin: 50% 100%;
+    transition: opacity 140ms var(--ease-out), transform 300ms cubic-bezier(.25, 1.25, .4, 1); }
+  .ga__tip.is-on { opacity: 1; transform: translate3d(var(--x, 0px), var(--y, 0px), 0) scale(1); }
+  .ga__tip.is-snap { transition: opacity 140ms var(--ease-out); }
+  .ga__tip strong { font: 600 15px/20px var(--font-sans); font-variant-numeric: tabular-nums; }
+  .ga__tip span { font: 400 13px/18px var(--font-sans); opacity: .8; }
+  .ga__tip em { font: 500 12px/16px var(--font-mono); font-style: normal; opacity: .7; }
+  .ga__tip em:empty { display: none; }
+
+  .ga__foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; }
+  .ga__day { display: none; }
+  .ga__legend { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; color: var(--text-muted); font-size: 13px; line-height: 20px; }
+  .ga[data-legende="false"] .ga__legend { display: none; }
+  .ga__legend span { margin: 0 4px; }
+  .ga__legend button { position: relative; width: var(--c); height: var(--c); padding: 0; border: 0; border-radius: calc(var(--c) * .25); background: var(--lv); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--text) 6%, transparent); cursor: pointer; transition: transform 200ms var(--ease-out); }
+  .ga__legend button::after { content: ""; position: absolute; inset: -15px -2px; }
+  .ga[data-forme="rond"] .ga__legend button { border-radius: 999px; }
+  .ga__legend button:hover, .ga__legend button[aria-pressed="true"] { transform: scale(1.25); }
+  .ga__legend button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--text-strong); }
+  .ga__legend [data-lvl="0"] { --lv: var(--raised); } .ga__legend [data-lvl="1"] { --lv: color-mix(in oklab, var(--accent) 34%, var(--raised)); } .ga__legend [data-lvl="2"] { --lv: color-mix(in oklab, var(--accent) 58%, var(--raised)); } .ga__legend [data-lvl="3"] { --lv: color-mix(in oklab, var(--accent) 80%, var(--raised)); } .ga__legend [data-lvl="4"] { --lv: var(--accent); }
+  .ga__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 1180px) { .ga { --c: 13px; padding: 32px 40px 24px; } }
+  /* Mobile : frise qui défile horizontalement (année récente à droite) + fiche du jour avec ‹ › */
+  @media (max-width: 640px) {
+    .ga { --c: 16px; --g: 4px; padding: 24px 16px 16px; gap: 24px; border-radius: 12px; }
+    .ga__brandrow { margin-bottom: 8px; }
+    .ga__years button { min-width: 64px; height: 36px; padding: 0 12px; }
+    .ga__title { font-size: 26px; line-height: 32px; }
+    .ga__lead { font-size: 15px; line-height: 22px; }
+    .ga__sum { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .ga__sum > div { padding: 12px; }
+    .ga__sum dt { font-size: 12px; letter-spacing: .02em; }
+    .ga__sum dd { font-size: 24px; }
+    .ga__scroller { margin: 0 -16px; padding: 0 16px 8px; scroll-snap-type: x proximity; -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent); }
+    .ga__chart { margin-inline: 0; }
+    .ga__days { position: sticky; left: 0; z-index: 2; grid-row: 1 / span 2; align-self: start; padding: 26px 4px 0 0; background: var(--surface); }
+    .ga__days::before { content: ""; position: absolute; top: -4px; bottom: -4px; right: 100%; width: 16px; background: var(--surface); }
+    .ga__hint-fine { display: none; } .ga__hint-touch { display: inline; }
+    .ga__tip { display: none; }
+    .ga__foot { flex-direction: column; align-items: stretch; gap: 16px; }
+    .ga__day { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; gap: 8px; padding: 8px; border-radius: 12px; background: var(--raised); }
+    .ga__day p { display: grid; gap: 2px; margin: 0; text-align: center; }
+    .ga__day strong { color: var(--text-strong); font: 600 16px/22px var(--font-sans); font-variant-numeric: tabular-nums; }
+    .ga__day span { color: var(--text-muted); font-size: 14px; line-height: 20px; }
+    .ga__nav { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 8px; background: var(--surface); color: var(--text-strong); cursor: pointer; }
+    .ga__nav svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .ga__legend { margin: 0 auto; }
+    .ga__legend button { width: 20px; height: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ga.is-wave .ga__cell { animation: none; }
+    .ga:not(.is-shown) .ga__cell { opacity: 1; }
+    .ga__pill, .ga__tip, .ga__cell { transition: opacity 120ms linear !important; }
+    .ga__cell:hover:not([data-l="-1"]), .ga__cell.is-hot, .ga__cell:focus-visible { transform: none; }
+  }
+</style>
+
+<script>
+(function () {
+  var MOIS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+  var fmtDate = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  var fmtKm = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  var fmtInt = new Intl.NumberFormat('fr-FR');
+  var TODAY = new Date(2026, 10, 5); /* date de référence de l'exemple ; utilisez new Date() en production */
+  function key(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function level(km) { return km <= 0 ? 0 : km < 6 ? 1 : km < 10 ? 2 : km < 16 ? 3 : 4; }
+
+  /* Données d'exemple : un coureur qui prépare un marathon au printemps, vacances en août. */
+  function data(year) {
+    var s = year * 9301 + 49297, rnd = function () { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+    var out = {}, d = new Date(year, 0, 1);
+    while (d.getFullYear() === year) {
+      var m = d.getMonth(), wd = (d.getDay() + 6) % 7, doy = Math.floor((d - new Date(year, 0, 1)) / 864e5);
+      var build = year === 2026 ? Math.max(0, 1 - Math.abs(doy - 100) / 70) : Math.max(0, 1 - Math.abs(doy - 270) / 60);
+      var p = [0.55, 0.15, 0.6, 0.12, 0.35, 0.45, 0.8][wd] + build * 0.2, km = 0;
+      if (m === 7 && d.getDate() > 4 && d.getDate() < 22) p *= 0.15;
+      if (rnd() < p) {
+        if (wd === 6) km = rnd() < 0.25 ? 8 + rnd() * 4 : 12 + build * 18 + rnd() * 7;
+        else if (wd === 2) km = 7 + build * 6 + rnd() * 3;
+        else km = 4 + rnd() * 5 + build * 3;
+        km = Math.round(km * 10) / 10;
+      }
+      if (year === 2026 && m === 3 && d.getDate() === 19) km = 42.2;
+      out[key(d)] = km;
+      d.setDate(d.getDate() + 1);
+    }
+    return out;
+  }
+
+  document.querySelectorAll('[data-graphe-activite]').forEach(function (root) {
+    if (root._ga) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)'), narrow = matchMedia('(max-width: 640px)');
+    var grid = root.querySelector('[data-grid]'), months = root.querySelector('[data-months]'), tip = root.querySelector('[data-tip]');
+    var chart = root.querySelector('[data-chart]'), scroller = root.querySelector('[data-scroller]');
+    var cells = [], days = [], current = -1, hot = null, filter = null, seen = false;
+
+    function build() {
+      var year = Number(root.dataset.annee) || 2026, vals = data(year);
+      var start = new Date(year, 0, 1), off = (start.getDay() + 6) % 7, first = new Date(year, 0, 1 - off);
+      var end = new Date(year, 11, 31), weeks = Math.ceil((off + (end - start) / 864e5 + 1) / 7);
+      root.style.setProperty('--weeks', weeks);
+      grid.textContent = ''; months.textContent = ''; cells = []; days = []; current = -1;
+      var rows = [];
+      for (var r = 0; r < 7; r++) { var row = document.createElement('div'); row.className = 'ga__row'; row.setAttribute('role', 'row'); grid.appendChild(row); rows.push(row); }
+      var shape = root.dataset.vague, speed = Number(root.dataset.vitesse) || 14, todayIdx = -1;
+      for (var w = 0; w < weeks; w++) for (var r2 = 0; r2 < 7; r2++) {
+        var d = new Date(first); d.setDate(first.getDate() + w * 7 + r2);
+        var c = document.createElement('div'); c.className = 'ga__cell'; c.setAttribute('role', 'gridcell');
+        c.style.gridColumn = w + 1; c.style.gridRow = r2 + 1;
+        var inYear = d.getFullYear() === year, future = d > TODAY, km = inYear && !future ? vals[key(d)] || 0 : 0;
+        var dl = shape === 'colonnes' ? w * speed : shape === 'radiale' ? Math.hypot(w - weeks + 1, (r2 - 3) * 1.4) * speed : (w + r2 * 0.9) * speed;
+        c.style.setProperty('--d', Math.round(dl) + 'ms');
+        if (!inYear) { c.style.visibility = 'hidden'; c.setAttribute('aria-hidden', 'true'); rows[r2].appendChild(c); continue; }
+        var idx = days.length;
+        c.dataset.l = future ? -1 : level(km); c.dataset.i = idx;
+        c.tabIndex = -1;
+        var label = fmtDate.format(d) + ', ' + (future ? 'à venir' : km ? fmtKm.format(km) + ' km' : 'repos');
+        c.setAttribute('aria-label', label);
+        if (future) c.setAttribute('aria-disabled', 'true');
+        if (key(d) === key(TODAY)) { c.classList.add('is-today'); c.setAttribute('aria-current', 'date'); todayIdx = idx; }
+        days.push({ d: d, km: km, future: future, el: c, w: w, r: r2 });
+        rows[r2].appendChild(c); cells.push(c);
+        if (d.getDate() === 1) { var ms = document.createElement('span'); ms.textContent = MOIS[d.getMonth()]; ms.style.gridColumn = (r2 === 0 ? w : w + 1) + 1; ms.dataset.m = d.getMonth(); months.appendChild(ms); }
+      }
+      var focusIdx = todayIdx >= 0 ? todayIdx : days.length - 1;
+      days[focusIdx].el.tabIndex = 0; current = focusIdx;
+      summary(year);
+      if (narrow.matches) toToday();
+      if (filter !== null) applyFilter(filter);
+    }
+
+    /* Résumé : distance, sorties, plus longue série, plus longue sortie (avec un court comptage). */
+    function summary() {
+      var km = 0, runs = 0, streak = 0, best = 0, cur = 0;
+      days.forEach(function (x) { if (x.future) return; km += x.km; if (x.km > 0) { runs++; cur++; streak = Math.max(streak, cur); best = Math.max(best, x.km); } else cur = 0; });
+      var to = { km: Math.round(km), runs: runs, streak: streak, best: best };
+      Object.keys(to).forEach(function (k) {
+        var el = root.querySelector('[data-k="' + k + '"]'), from = Number(el.dataset.v || 0), t0 = performance.now(), dur = reduce.matches ? 0 : 700;
+        el.dataset.v = to[k];
+        (function f(now) {
+          var t = dur ? Math.min(1, (now - t0) / dur) : 1, e = 1 - Math.pow(1 - t, 3), v = from + (to[k] - from) * e;
+          el.textContent = k === 'best' ? fmtKm.format(t < 1 ? Math.round(v * 10) / 10 : to[k]) : fmtInt.format(Math.round(v));
+          if (t < 1) requestAnimationFrame(f);
+        })(t0);
+      });
+    }
+
+    /* Mobile : la frise s'ouvre calée sur aujourd'hui (ou la fin de l'année), un mois d'avance visible. */
+    function toToday() { var x = days[current]; if (x) scroller.scrollLeft = Math.max(0, x.el.offsetLeft - scroller.clientWidth + 120); }
+
+    function wave() {
+      root.classList.remove('is-wave'); void root.offsetWidth;
+      root.classList.add('is-shown');
+      if (!reduce.matches) root.classList.add('is-wave');
+    }
+
+    function describe(x) {
+      var a = x.future ? 'À venir' : x.km ? fmtKm.format(x.km) + ' km' : 'Repos';
+      var pace = x.km ? (function () { var s = Math.round(300 + (x.km > 20 ? 25 : x.km > 12 ? 12 : 0) + ((x.d.getDate() * 37) % 40)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') + ' /km'; })() : '';
+      var b = fmtDate.format(x.d); b = b.charAt(0).toUpperCase() + b.slice(1);
+      return [a, b, pace];
+    }
+    function showTip(x, snap) {
+      if (hot) hot.classList.remove('is-hot');
+      hot = x.el; hot.classList.add('is-hot');
+      var t = describe(x);
+      tip.querySelector('[data-tip-a]').textContent = t[0]; tip.querySelector('[data-tip-b]').textContent = t[1]; tip.querySelector('[data-tip-c]').textContent = t[2];
+      root.querySelector('[data-day-a]').textContent = t[0] + (t[2] ? ' · ' + t[2] : '');
+      root.querySelector('[data-day-b]').textContent = t[1];
+      [].forEach.call(months.children, function (m) { m.classList.toggle('is-on', Number(m.dataset.m) === x.d.getMonth()); });
+      var cr = chart.getBoundingClientRect(), er = x.el.getBoundingClientRect();
+      var wasOn = tip.classList.contains('is-on');
+      tip.classList.toggle('is-snap', !!snap || !wasOn);
+      var tw = tip.offsetWidth, th = tip.offsetHeight, cx = er.left - cr.left + er.width / 2;
+      tip.style.setProperty('--x', Math.max(-8, Math.min(cr.width - tw + 8, cx - tw / 2)).toFixed(1) + 'px');
+      tip.style.setProperty('--y', (er.top - cr.top - th - 10).toFixed(1) + 'px');
+      tip.classList.add('is-on');
+    }
+    function hideTip() { tip.classList.remove('is-on'); if (hot) hot.classList.remove('is-hot'); hot = null; [].forEach.call(months.children, function (m) { m.classList.remove('is-on'); }); }
+
+    function focusDay(i, scroll) {
+      i = Math.max(0, Math.min(days.length - 1, i));
+      var x = days[i]; if (!x) return;
+      if (days[current]) days[current].el.tabIndex = -1;
+      current = i; x.el.tabIndex = 0;
+      if (document.activeElement && grid.contains(document.activeElement)) x.el.focus({ preventScroll: true });
+      if (scroll && narrow.matches) { var l = x.el.offsetLeft, sw = scroller.clientWidth; if (l < scroller.scrollLeft + 48 || l > scroller.scrollLeft + sw - 48) scroller.scrollTo({ left: l - sw / 2, behavior: reduce.matches ? 'auto' : 'smooth' }); }
+      showTip(x);
+    }
+
+    grid.addEventListener('pointerover', function (e) {
+      var c = e.target.closest('.ga__cell'); if (!c || c.dataset.i === undefined || e.pointerType !== 'mouse') return;
+      showTip(days[Number(c.dataset.i)]);
+    });
+    grid.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !grid.contains(document.activeElement)) hideTip(); });
+    grid.addEventListener('click', function (e) {
+      var c = e.target.closest('.ga__cell'); if (!c || c.dataset.i === undefined) return;
+      focusDay(Number(c.dataset.i)); c.focus({ preventScroll: true });
+    });
+    grid.addEventListener('focusin', function (e) { var c = e.target.closest('.ga__cell'); if (c && c.dataset.i !== undefined) { current = Number(c.dataset.i); showTip(days[current]); } });
+    grid.addEventListener('focusout', function (e) { if (!grid.contains(e.relatedTarget)) hideTip(); });
+    grid.addEventListener('keydown', function (e) {
+      var m = { ArrowUp: -1, ArrowDown: 1, ArrowLeft: -7, ArrowRight: 7 }[e.key], x = days[current];
+      if (m !== undefined) { e.preventDefault(); focusDay(current + m, true); }
+      else if (e.key === 'Home') { e.preventDefault(); focusDay(current - x.r, true); }
+      else if (e.key === 'End') { e.preventDefault(); focusDay(current + 6 - x.r, true); }
+      else if (e.key === 'Escape') { hideTip(); }
+    });
+    root.querySelectorAll('[data-step]').forEach(function (b) { b.addEventListener('click', function () { focusDay(current + Number(b.dataset.step), true); }); });
+
+    /* Légende : filtre les cases d'un niveau. */
+    function applyFilter(l) {
+      filter = l; root.classList.toggle('is-filter', l !== null);
+      cells.forEach(function (c) { c.classList.toggle('is-match', l !== null && c.dataset.l === String(l)); });
+      root.querySelectorAll('[data-lvl]').forEach(function (b) { b.setAttribute('aria-pressed', String(l !== null && b.dataset.lvl === String(l))); });
+    }
+    root.querySelectorAll('[data-lvl]').forEach(function (b) {
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function () { var l = Number(b.dataset.lvl); applyFilter(filter === l ? null : l); });
+      b.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && filter === null) { root.classList.add('is-filter'); cells.forEach(function (c) { c.classList.toggle('is-match', c.dataset.l === b.dataset.lvl); }); } });
+      b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') applyFilter(filter); });
+    });
+
+    /* Années : pastille glissante, la grille se reconstruit et rejoue la vague. */
+    var yearBtns = [].slice.call(root.querySelectorAll('[data-year]'));
+    function pill() {
+      var on = yearBtns.filter(function (b) { return b.dataset.year === root.dataset.annee; })[0] || yearBtns[0], p = root.querySelector('.ga__pill');
+      yearBtns.forEach(function (b) { b.setAttribute('aria-checked', String(b === on)); b.tabIndex = b === on ? 0 : -1; });
+      p.style.setProperty('--px', (on.offsetLeft - 4) + 'px'); p.style.setProperty('--pw', on.offsetWidth + 'px');
+    }
+    function setYear(y) { root.dataset.annee = y; pill(); hideTip(); build(); if (seen) wave(); }
+    yearBtns.forEach(function (b, i) {
+      b.addEventListener('click', function () { if (root.dataset.annee !== b.dataset.year) setYear(b.dataset.year); });
+      b.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0; if (!d) return;
+        e.preventDefault(); var n = yearBtns[(i + d + yearBtns.length) % yearBtns.length]; n.focus(); setYear(n.dataset.year);
+      });
+    });
+
+    var io = new IntersectionObserver(function (en) { if (en[0].isIntersecting && !seen) { seen = true; wave(); } }, { threshold: 0.3 });
+    io.observe(grid);
+    narrow.addEventListener && narrow.addEventListener('change', function () { hideTip(); if (narrow.matches) toToday(); });
+    build(); pill();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(pill);
+    root._ga = { rebuild: function () { hideTip(); build(); pill(); if (seen) wave(); }, wave: wave, year: setYear, show: function (i) { var x = days[i < 0 ? days.length + i : i]; if (x) showTip(x, true); }, stepTo: function (i) { focusDay(i); } };
+  });
+})();
+</script>

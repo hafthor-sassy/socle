@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Préchargeur en tuiles — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; padding: 16px; display: grid; }
+  .stage > div { display: grid; }
+  .stage .cj { min-height: calc(100vh - 32px); }
+  @media (max-width: 719px) { .stage { padding: 8px; } .stage .cj { min-height: calc(100vh - 16px); } }
+  .is-thumb .stage { padding: 0; } .is-thumb .stage .cj { min-height: 100vh; border-radius: 0; }
+</style>
+</head>
+<body>
+<main class="stage"><div id="mount"></div></main>
+<script>
+  var props = Socle.props({ colonnes: 6, duree: 2600, sortie: 'up', ordre: 'left', compteur: 'large', teinte: 'relief' });
+  var MAP = { colonnes: 'columns', duree: 'duration', sortie: 'exit', ordre: 'order', compteur: 'counter', teinte: 'tone' };
+  var mount = document.getElementById('mount'), root = null, timer = 0;
+  function apply(p) { Object.keys(MAP).forEach(function (k) { root.dataset[MAP[k]] = String(p[k]); }); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-preloader]');
+    root.dataset.autostart = 'false'; /* la démo lance le préchargeur elle-même */
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (Socle.thumb) return thumb();
+    root.preloader.start();
+  });
+  /* Tout réglage relance le préchargeur (léger délai pour suivre un curseur sans saccade). */
+  Socle.onChange(function (p) { if (!root) return; apply(p); clearTimeout(timer); timer = setTimeout(function () { root.preloader.start(); }, 250); });
+  Socle.onReplay(function () { root && root.preloader.start(); });
+  function thumb() {
+    var visible = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(mount);
+    if (Socle.reducedMotion()) { root.preloader.set(.42); return; }
+    (function tick() { if (visible && !document.hidden) root.preloader.start(); setTimeout(tick, 5600); })();
+  }
+</script>
+</body>
+</html>

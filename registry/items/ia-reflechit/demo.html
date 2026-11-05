@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L’IA réfléchit — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 40px 24px; }
+  @media (max-width: 719px) { .stage { align-content: start; padding: 12px; } }
+  .is-thumb .stage { padding: 32px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ etape: 'auto', taille: 96, vitesse: 1, intensite: 0.6, rendu: 'webgl', reflet: true });
+  var MAP = { etape: 'step', taille: 'size', vitesse: 'speed', intensite: 'energy', rendu: 'render', reflet: 'shimmer' };
+  var mount = document.getElementById('mount'), root = null, last = {};
+  function apply(p) { Object.keys(MAP).forEach(function (k) { root.dataset[MAP[k]] = String(p[k]); }); }
+  function run(p) { if (p.etape === 'auto') root.thinking.play(); else root.thinking.hold(p.etape); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-thinking]');
+    apply(props); last = Object.assign({}, props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (Socle.thumb) { root.thinking.hold('tool'); }
+  });
+  Socle.onChange(function (p) {
+    if (!root) return;
+    var stepChanged = p.etape !== last.etape;
+    apply(p); last = Object.assign({}, p);
+    root.thinking.configure();
+    if (stepChanged) run(p);
+  });
+  Socle.onReplay(function (p) { root && run(p); });
+</script>
+</body>
+</html>

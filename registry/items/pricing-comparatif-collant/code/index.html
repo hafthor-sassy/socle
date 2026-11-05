@@ -1,0 +1,342 @@
+<!-- Comparatif collant — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Tableau comparatif d'offres d'abonnement : en-têtes d'offres collants qui se compactent au défilement,
+     intitulés de groupe collants dessous, bande de surlignage qui glisse d'une colonne à l'autre (ressort),
+     bascule « Seulement les différences » qui replie les lignes identiques. Sur mobile : deux offres choisies côte à côte.
+     Réglages sur la racine : data-diff, data-compact, data-band, data-featured (0–3), data-density (confort | compacte).
+     Marque fictive : Prisme. Les offres et les lignes sont dans l'objet DATA du script. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="pc" data-comparatif data-diff="false" data-compact="true" data-band="true" data-featured="1" data-density="confort" aria-labelledby="pc-title">
+  <header class="pc__intro">
+    <span class="pc__brand">
+      <svg class="pc__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="pc__logo-bg"/><path class="pc__logo-a" d="M50 22 78 70H22Z"/><path class="pc__logo-b" d="M50 22 64 70H22Z"/></svg>
+      <span class="pc__word">prisme</span>
+    </span>
+    <h2 class="pc__title" id="pc-title">Comparez les offres, ligne par ligne</h2>
+    <p class="pc__lead">Tout ce qui change d’une offre à l’autre, sans petites lignes. Les prix s’entendent par membre et par mois, hors taxes.</p>
+    <div class="pc__tools">
+      <label class="pc__toggle">
+        <input type="checkbox" role="switch" data-pc-diff>
+        <i aria-hidden="true"></i>
+        <span>Seulement les différences</span>
+      </label>
+      <span class="pc__count" data-pc-count aria-live="polite"></span>
+    </div>
+  </header>
+
+  <div class="pc__sentinel" data-pc-sentinel aria-hidden="true"></div>
+  <div class="pc__table" role="table" aria-labelledby="pc-title" aria-describedby="pc-desc" data-pc-table>
+    <p class="pc__sr" id="pc-desc">Comparatif de quatre offres. Chaque ligne indique ce que propose chaque offre ; les en-têtes d’offres restent visibles pendant le défilement.</p>
+    <div class="pc__head" role="rowgroup" data-pc-head></div>
+    <div class="pc__body" role="rowgroup" data-pc-body>
+      <span class="pc__band" aria-hidden="true" data-pc-band></span>
+    </div>
+  </div>
+  <p class="pc__foot">Besoin d’un volume particulier ou d’une facture annuelle ? <a href="#">Parlez-en à l’équipe</a>.</p>
+</section>
+<!-- /SECTION -->
+
+<style>
+.pc { min-width: 0; --pc-label: minmax(220px, 1.25fr); --pc-col: minmax(0, 1fr); --pc-head-h: 168px; --pc-row: 56px; --pc-spring: cubic-bezier(.34, 1.3, .64, 1); width: 100%; max-width: 1180px; margin: 0 auto; padding: 72px 40px 80px; font-family: var(--font-sans); color: var(--text); }
+.pc[data-density="compacte"] { --pc-row: 44px; }
+.pc *, .pc *::before, .pc *::after { box-sizing: border-box; }
+.pc :where(button, a, select) { font: inherit; color: inherit; }
+.pc svg { flex: none; }
+
+.pc__intro { display: grid; justify-items: center; text-align: center; margin-bottom: 40px; }
+.pc__brand { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px; color: var(--text-strong); }
+.pc__logo { width: 28px; height: 28px; }
+.pc__logo-bg { fill: var(--accent); } .pc__logo-a { fill: var(--accent-fg); opacity: .55; } .pc__logo-b { fill: var(--accent-fg); }
+.pc__word { font-weight: 600; font-size: 18px; letter-spacing: -0.03em; }
+.pc__title { margin: 0; font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem); line-height: 1.08; letter-spacing: -0.035em; font-weight: 600; color: var(--text-strong); text-wrap: balance; }
+.pc__lead { margin: 16px 0 0; max-width: 56ch; font-size: 17px; line-height: 1.55; color: var(--text-muted); text-wrap: pretty; }
+.pc__tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 16px; margin-top: 28px; }
+.pc__toggle { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 16px 0 8px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; font-size: 15px; font-weight: 500; color: var(--text-strong); -webkit-tap-highlight-color: transparent; }
+.pc__toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pc__toggle i { position: relative; width: 40px; height: 24px; border-radius: 999px; background: var(--border-control); transition: background var(--motion-base) var(--ease-out); }
+.pc__toggle i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 999px; background: var(--surface); transition: transform 380ms cubic-bezier(.34, 1.56, .64, 1); }
+.pc__toggle input:checked + i { background: var(--accent); }
+.pc__toggle input:checked + i::after { transform: translateX(16px); background: var(--accent-fg); }
+.pc__toggle:has(input:focus-visible) { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+.pc__count { min-height: 20px; font-size: 14px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+/* Tableau */
+.pc__sentinel { height: 1px; }
+.pc__table { position: relative; }
+.pc__row, .pc__hrow { display: grid; grid-template-columns: var(--pc-label) repeat(var(--pc-n, 4), var(--pc-col)); }
+
+/* En-têtes d'offres collants */
+.pc__head { position: sticky; top: 0; z-index: 4; background: var(--bg); }
+.pc__head::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--border); }
+.pc.is-stuck .pc__head { background: color-mix(in srgb, var(--bg) 94%, transparent); -webkit-backdrop-filter: saturate(1.4) blur(16px); backdrop-filter: saturate(1.4) blur(16px); }
+.pc__hcorner { display: flex; align-items: flex-end; padding: 0 16px 16px 0; }
+.pc__hcorner p { margin: 0; font-size: 13px; color: var(--text-muted); max-width: 22ch; transition: opacity var(--motion-base); }
+.pc__plan { position: relative; display: grid; align-content: end; gap: 0; padding: 20px 16px 16px; }
+.pc__plan-n { display: flex; align-items: center; gap: 8px; min-height: 24px; font-size: 16px; font-weight: 600; color: var(--text-strong); }
+.pc__plan-tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; background: var(--accent-subtle); border: 1px solid var(--accent-subtle-border); font-size: 12px; font-weight: 600; color: var(--text-strong); }
+.pc__plan-d { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 420ms var(--pc-spring), opacity 260ms var(--ease-out); }
+.pc__plan-d > span { min-height: 0; overflow: hidden; font-size: 13px; line-height: 1.4; color: var(--text-muted); padding-top: 4px; }
+.pc__plan-p { display: flex; align-items: baseline; gap: 6px; margin-top: 12px; font-variant-numeric: tabular-nums; transition: margin 420ms var(--pc-spring); }
+.pc__plan-p strong { font-size: 30px; line-height: 1; font-weight: 600; letter-spacing: -0.035em; color: var(--text-strong); transition: font-size 420ms var(--pc-spring); }
+.pc__plan-p span { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+.pc__cta { display: flex; align-items: center; justify-content: center; min-height: 40px; margin-top: 14px; border-radius: 999px; border: 1px solid var(--border-control); background: var(--surface); color: var(--text-strong); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background var(--motion-fast), min-height 420ms var(--pc-spring), margin 420ms var(--pc-spring), transform 300ms var(--pc-spring); }
+.pc__cta:hover { background: var(--raised); }
+.pc__cta:active { transform: scale(.97); }
+.pc__plan.is-featured .pc__cta { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.pc__plan.is-featured .pc__cta:hover { background: var(--accent-hover); }
+.pc__cta:focus-visible, .pc__ghead:focus-visible, .pc__info:focus-visible, .pc a:focus-visible, .pc__pick select:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+.pc__pick { display: none; }
+/* compaction quand l'en-tête est collé */
+.pc[data-compact="true"].is-stuck .pc__plan { padding-top: 12px; padding-bottom: 12px; }
+.pc[data-compact="true"].is-stuck .pc__plan-d { grid-template-rows: 0fr; opacity: 0; }
+.pc[data-compact="true"].is-stuck .pc__plan-p { margin-top: 4px; }
+.pc[data-compact="true"].is-stuck .pc__plan-p strong { font-size: 20px; }
+.pc[data-compact="true"].is-stuck .pc__cta { min-height: 32px; margin-top: 8px; }
+.pc[data-compact="true"].is-stuck .pc__hcorner p { opacity: 0; }
+.pc__plan, .pc__hcorner { transition: padding 420ms var(--pc-spring); }
+
+/* Corps */
+.pc__body { position: relative; }
+.pc__band, .pc__hband { position: absolute; top: 0; bottom: 0; left: 0; width: var(--pc-bw, 0px); z-index: 3; border-radius: 0 0 12px 12px; background: color-mix(in srgb, var(--accent) 7%, transparent); transform: translateX(var(--pc-bx, 0px)); transition: transform 520ms var(--pc-spring), width 520ms var(--pc-spring), opacity 240ms var(--ease-out); pointer-events: none; }
+.pc__hband { top: 8px; z-index: 0; border-radius: 12px 12px 0 0; }
+.dark .pc__band, .dark .pc__hband { background: color-mix(in srgb, var(--accent) 11%, transparent); }
+.pc[data-band="false"] .pc__band, .pc[data-band="false"] .pc__hband, .pc.is-band-off .pc__band, .pc.is-band-off .pc__hband { opacity: 0; }
+.pc__hrow { position: relative; z-index: 1; }
+.pc__group { position: relative; z-index: 1; }
+.pc__ghead { position: sticky; top: var(--pc-head-h); z-index: 2; display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; margin: 0; padding: 20px 0 8px; border: 0; background: transparent; text-align: left; cursor: pointer; font-size: 13px; font-weight: 600; letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+.pc__ghead::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--bg); }
+.pc__ghead svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: transform 380ms var(--pc-spring); }
+.pc__ghead[aria-expanded="false"] svg { transform: rotate(-90deg); }
+.pc__ghead span { color: var(--text-strong); }
+.pc__ghead small { font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--text-muted); }
+.pc__rows { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 480ms var(--pc-spring); }
+.pc__rows > div { min-height: 0; overflow: hidden; }
+.pc__group.is-closed .pc__rows { grid-template-rows: 0fr; }
+.pc__rwrap { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 460ms var(--pc-spring), opacity 300ms var(--ease-out); }
+.pc__rwrap > .pc__row { min-height: 0; overflow: hidden; }
+.pc[data-diff="true"] .pc__rwrap.is-same { grid-template-rows: 0fr; opacity: 0; }
+.pc__row { border-top: 1px solid var(--border); }
+.pc__cell, .pc__lab { display: flex; align-items: center; min-height: var(--pc-row); padding: 8px 16px; font-size: 15px; line-height: 1.35; }
+.pc__lab { padding-left: 0; gap: 6px; color: var(--text); }
+.pc__cell { color: var(--text-strong); font-variant-numeric: tabular-nums; transition: color var(--motion-base); }
+.pc__yes { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 999px; background: var(--accent-subtle); border: 1px solid var(--accent-subtle-border); color: var(--text-strong); }
+.pc__yes svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.pc__no { display: block; width: 14px; height: 1.5px; border-radius: 2px; background: var(--border-control); }
+.pc__info { position: relative; display: inline-grid; place-items: center; width: 28px; height: 28px; margin: -4px 0; padding: 0; border: 0; border-radius: 999px; background: transparent; color: var(--text-muted); cursor: pointer; }
+.pc__info:hover { color: var(--text-strong); background: var(--state-hover); }
+.pc__info svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.pc__tip { position: fixed; z-index: 30; width: 260px; padding: 10px 12px; border-radius: 12px; background: var(--text-strong); color: var(--bg); font-size: 13px; line-height: 1.45; font-weight: 400; letter-spacing: 0; text-transform: none; box-shadow: var(--shadow-popover); animation: pc-tip 300ms var(--pc-spring); }
+.pc__lab { position: relative; }
+@keyframes pc-tip { from { opacity: 0; transform: translateY(-4px) scale(.96); } to { opacity: 1; transform: none; } }
+.pc__foot { margin: 40px 0 0; text-align: center; font-size: 15px; color: var(--text-muted); }
+.pc__foot a { color: var(--text-strong); text-underline-offset: 3px; }
+.pc__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Mobile : deux offres choisies côte à côte */
+@media (max-width: 767px) {
+  .pc { --pc-head-h: 124px; padding: 48px 16px 56px; }
+  .pc__intro { margin-bottom: 24px; }
+  .pc__lead { font-size: 16px; }
+  .pc__tools { margin-top: 20px; }
+  .pc__row, .pc__hrow { grid-template-columns: 1fr 1fr; }
+  .pc__hcorner { display: none; }
+  .pc__plan:not(.is-cmp), .pc__cell:not(.is-cmp) { display: none; }
+  .pc__plan { padding: 12px 8px 12px 0; }
+  .pc__plan + .pc__plan { padding-left: 8px; }
+  .pc__plan-n { display: none; }
+  .pc__pick { display: block; position: relative; }
+  .pc__pick select { width: 100%; min-height: 44px; padding: 0 36px 0 12px; border-radius: 12px; border: 1px solid var(--border-control); background: var(--surface); color: var(--text-strong); font-size: 16px; font-weight: 600; -webkit-appearance: none; appearance: none; cursor: pointer; }
+  .pc__pick svg { position: absolute; right: 12px; top: 14px; width: 16px; height: 16px; fill: none; stroke: var(--text-muted); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+  .pc__plan-d { display: none; }
+  .pc__plan-p { margin-top: 8px; }
+  .pc__plan-p strong { font-size: 22px; }
+  .pc__cta { min-height: 44px; margin-top: 8px; }
+  .pc[data-compact="true"].is-stuck .pc__plan-p strong { font-size: 18px; }
+  .pc[data-compact="true"].is-stuck .pc__cta { min-height: 0; height: 0; margin-top: 0; border-width: 0; overflow: hidden; opacity: 0; }
+  .pc__lab { grid-column: 1 / -1; min-height: 0; padding: 14px 0 0; font-size: 14px; color: var(--text-muted); }
+  .pc__cell { min-height: 0; padding: 6px 8px 14px 0; font-size: 16px; }
+  .pc__cell.is-cmp ~ .pc__cell.is-cmp { padding-left: 8px; }
+  .pc__band, .pc__hband { display: none; }
+  .pc__tip { width: min(280px, calc(100vw - 48px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc *, .pc *::before, .pc *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+}
+</style>
+
+<script>
+(function () {
+  var Y = true, N = false;
+  var DATA = {
+    plans: [
+      { nom: 'Gratuit', d: 'Pour découvrir, seul ou à trois.', prix: '0 €', unite: 'pour toujours', cta: 'Créer un compte' },
+      { nom: 'Équipe', d: 'Pour les équipes qui s’organisent.', prix: '12 €', unite: '/ membre / mois', cta: 'Essai 14 jours', tag: 'Populaire' },
+      { nom: 'Business', d: 'Pour structurer plusieurs équipes.', prix: '29 €', unite: '/ membre / mois', cta: 'Essai 14 jours' },
+      { nom: 'Entreprise', d: 'Pour les exigences de sécurité.', prix: 'Sur devis', unite: '', cta: 'Nous contacter' }
+    ],
+    groups: [
+      { nom: 'Collaboration', rows: [
+        ['Membres', '3', 'Illimités', 'Illimités', 'Illimités'],
+        ['Espaces de travail', '1', '5', 'Illimités', 'Illimités'],
+        ['Invités externes', N, '10', '50', 'Illimités'],
+        ['Commentaires et mentions', Y, Y, Y, Y],
+        ['Modèles partagés', N, Y, Y, Y]
+      ] },
+      { nom: 'Stockage et données', rows: [
+        ['Stockage', '2 Go', '100 Go', '1 To', 'Sur mesure'],
+        ['Historique des versions', '7 jours', '90 jours', '1 an', 'Illimité'],
+        ['Export des données', Y, Y, Y, Y],
+        ['Sauvegarde quotidienne', Y, Y, Y, Y]
+      ] },
+      { nom: 'Automatisation', rows: [
+        ['Intégrations', '3', 'Illimitées', 'Illimitées', 'Illimitées'],
+        ['Automatisations par mois', '100', '5 000', '50 000', 'Sur mesure'],
+        ['API et webhooks', N, Y, Y, Y, 'Accès en lecture et écriture à vos espaces, avec clés par membre et journal des appels.'],
+        ['Assistant de rédaction IA', N, Y, Y, Y]
+      ] },
+      { nom: 'Sécurité et administration', rows: [
+        ['Double authentification', Y, Y, Y, Y],
+        ['Connexion unique (SSO)', N, N, Y, Y, 'Vos membres se connectent avec le compte de leur organisation (SAML 2.0 ou OpenID Connect).'],
+        ['Journal d’audit', N, N, '90 jours', 'Illimité', 'Qui a fait quoi et quand : connexions, partages, exports, changements de droits.'],
+        ['Rôles personnalisés', N, N, Y, Y],
+        ['Données hébergées en Europe', Y, Y, Y, Y]
+      ] },
+      { nom: 'Assistance', rows: [
+        ['Canal', 'Communauté', 'E-mail', 'Chat prioritaire', 'Responsable dédié'],
+        ['Délai de première réponse', N, '24 h', '4 h', '1 h'],
+        ['Accompagnement au démarrage', N, N, Y, Y]
+      ] }
+    ]
+  };
+  var CHECK = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 8.4 3 3 6-6.6"/></svg>';
+  var CHEV = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>';
+  var INFO = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25"/><path d="M8 7.25V11M8 5v.01"/></svg>';
+
+  function cellHTML(v) {
+    if (v === true) return '<span class="pc__yes">' + CHECK + '</span><span class="pc__sr">Inclus</span>';
+    if (v === false) return '<span class="pc__no" aria-hidden="true"></span><span class="pc__sr">Non inclus</span>';
+    return v;
+  }
+
+  function Comparatif(root) {
+    var head = root.querySelector('[data-pc-head]'), body = root.querySelector('[data-pc-body]'), band = root.querySelector('[data-pc-band]');
+    var diff = root.querySelector('[data-pc-diff]'), count = root.querySelector('[data-pc-count]'), sentinel = root.querySelector('[data-pc-sentinel]');
+    var plans = DATA.plans, n = plans.length, pick = [1, 2], hoverCol = -1, uid = Math.random().toString(36).slice(2, 7);
+    root.style.setProperty('--pc-n', n);
+
+    /* En-têtes */
+    var opts = plans.map(function (p, i) { return '<option value="' + i + '">' + p.nom + '</option>'; }).join('');
+    head.innerHTML = '<span class="pc__hband" aria-hidden="true"></span><div class="pc__hrow" role="row"><div class="pc__hcorner" role="columnheader"><p>Prix par membre et par mois, hors taxes.</p><span class="pc__sr">Fonction</span></div>' +
+      plans.map(function (p, i) {
+        return '<div class="pc__plan" role="columnheader" data-col="' + i + '">' +
+          '<span class="pc__plan-n">' + p.nom + (p.tag ? ' <span class="pc__plan-tag">' + p.tag + '</span>' : '') + '</span>' +
+          '<label class="pc__pick"><span class="pc__sr">Offre ' + (i + 1) + ' à comparer</span><select data-pick>' + opts + '</select>' + CHEV + '</label>' +
+          '<span class="pc__plan-d"><span>' + p.d + '</span></span>' +
+          '<span class="pc__plan-p"><strong>' + p.prix + '</strong>' + (p.unite ? '<span>' + p.unite + '</span>' : '') + '</span>' +
+          '<a class="pc__cta" href="#" aria-label="' + p.cta + ' : offre ' + p.nom + '">' + p.cta + '</a></div>';
+      }).join('') + '</div>';
+
+    /* Corps */
+    body.insertAdjacentHTML('beforeend', DATA.groups.map(function (g, gi) {
+      var id = 'pc-' + uid + '-g' + gi;
+      return '<div class="pc__group" data-group>' +
+        '<button type="button" class="pc__ghead" aria-expanded="true" aria-controls="' + id + '">' + CHEV + '<span>' + g.nom + '</span><small data-gcount></small></button>' +
+        '<div class="pc__rows" id="' + id + '"><div>' + g.rows.map(function (r) {
+          var vals = r.slice(1, n + 1), tip = r[n + 1];
+          return '<div class="pc__rwrap" data-vals="' + JSON.stringify(vals).replace(/"/g, '&quot;') + '"><div class="pc__row" role="row">' +
+            '<div class="pc__lab" role="rowheader">' + r[0] + (tip ? '<button type="button" class="pc__info" aria-expanded="false" aria-label="En savoir plus : ' + r[0] + '" data-tip="' + tip.replace(/"/g, '&quot;') + '">' + INFO + '</button>' : '') + '</div>' +
+            vals.map(function (v, i) { return '<div class="pc__cell" role="cell" data-col="' + i + '">' + cellHTML(v) + '</div>'; }).join('') +
+            '</div></div>';
+        }).join('') + '</div></div></div>';
+    }).join(''));
+    var groups = [].slice.call(body.querySelectorAll('[data-group]'));
+
+    function sync() {
+      var on = root.dataset.diff === 'true', feat = parseInt(root.dataset.featured, 10), mobile = window.matchMedia('(max-width: 767px)').matches, same = 0;
+      /* lignes identiques : sur les quatre offres, ou sur les deux comparées sur mobile */
+      [].forEach.call(body.querySelectorAll('.pc__rwrap'), function (w) {
+        var v = JSON.parse(w.dataset.vals), cols = mobile ? pick : v.map(function (_, i) { return i; });
+        var isSame = cols.every(function (c) { return v[c] === v[cols[0]]; }); w.classList.toggle('is-same', isSame); if (isSame) same++;
+      });
+      diff.checked = on;
+      count.textContent = on ? same + ' ligne' + (same > 1 ? 's' : '') + ' identique' + (same > 1 ? 's' : '') + ' masquée' + (same > 1 ? 's' : '') : '';
+      [].forEach.call(head.querySelectorAll('.pc__plan'), function (p, i) { p.classList.toggle('is-featured', i === feat); var t = p.querySelector('.pc__plan-tag'); if (t) t.hidden = i !== feat; });
+      groups.forEach(function (g) {
+        var rows = g.querySelectorAll('.pc__rwrap'), hidden = on ? g.querySelectorAll('.pc__rwrap.is-same').length : 0, all = hidden === rows.length;
+        g.querySelector('[data-gcount]').textContent = hidden ? (all ? 'identique partout' : hidden + ' masquée' + (hidden > 1 ? 's' : '')) : '';
+        [].forEach.call(g.querySelectorAll('.pc__row'), function (r) { r.setAttribute('aria-hidden', on && r.parentNode.classList.contains('is-same') ? 'true' : 'false'); });
+      });
+      /* mobile : offres choisies */
+      [].forEach.call(root.querySelectorAll('.pc__plan, .pc__cell'), function (c) { c.classList.toggle('is-cmp', pick.indexOf(+c.dataset.col) > -1); });
+      [].forEach.call(root.querySelectorAll('.pc__plan, .pc__cell'), function (c) { var k = pick.indexOf(+c.dataset.col); c.style.order = mobile && k > -1 ? String(k + 1) : ''; });
+      [].forEach.call(root.querySelectorAll('.pc__lab, .pc__hcorner'), function (c) { c.style.order = '0'; });
+      [].forEach.call(head.querySelectorAll('select[data-pick]'), function (s) { var col = +s.closest('.pc__plan').dataset.col, k = pick.indexOf(col); if (k > -1) s.value = String(col); });
+      moveBand(hoverCol);
+      measure();
+    }
+    function measure() {
+      root.style.setProperty('--pc-head-h', head.offsetHeight + 'px');
+      var lab = body.querySelector('.pc__lab'); if (lab) root.style.setProperty('--pc-label-w', (lab.offsetWidth) + 'px');
+    }
+    function moveBand(col) {
+      var feat = parseInt(root.dataset.featured, 10), c = col > -1 ? col : feat;
+      var ref = head.querySelector('.pc__plan[data-col="' + c + '"]');
+      root.classList.toggle('is-band-off', c < 0 || !ref); if (c < 0 || !ref) return;
+      var t = root.querySelector('[data-pc-table]').getBoundingClientRect(), r = ref.getBoundingClientRect();
+      root.style.setProperty('--pc-bx', (r.left - t.left) + 'px'); root.style.setProperty('--pc-bw', r.width + 'px');
+    }
+
+    diff.addEventListener('change', function () { root.dataset.diff = String(diff.checked); sync(); });
+    body.addEventListener('click', function (e) {
+      var gh = e.target.closest('.pc__ghead');
+      if (gh) { var g = gh.closest('[data-group]'), open = gh.getAttribute('aria-expanded') === 'true'; gh.setAttribute('aria-expanded', open ? 'false' : 'true'); g.classList.toggle('is-closed', open); return; }
+      var info = e.target.closest('.pc__info');
+      if (info) { var was = info.getAttribute('aria-expanded') === 'true'; closeTips(); if (!was) openTip(info); return; }
+    });
+    function openTip(btn) {
+      btn.setAttribute('aria-expanded', 'true');
+      var t = document.createElement('span'); t.className = 'pc__tip'; t.setAttribute('role', 'status'); t.textContent = btn.dataset.tip; root.appendChild(t);
+      var r = btn.getBoundingClientRect(), w = t.offsetWidth;
+      t.style.left = Math.max(12, Math.min(r.left - 8, innerWidth - w - 12)) + 'px'; t.style.top = (r.bottom + 6) + 'px';
+    }
+    window.addEventListener('scroll', function () { if (root.querySelector('.pc__tip')) closeTips(); }, { passive: true });
+    function closeTips() { [].forEach.call(root.querySelectorAll('.pc__tip'), function (t) { t.remove(); }); [].forEach.call(root.querySelectorAll('.pc__info[aria-expanded="true"]'), function (b) { b.setAttribute('aria-expanded', 'false'); }); }
+    document.addEventListener('click', function (e) { if (!e.target.closest('.pc__info')) closeTips(); });
+    root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && root.querySelector('.pc__tip')) { var b = root.querySelector('.pc__info[aria-expanded="true"]'); closeTips(); if (b) b.focus(); } });
+
+    /* Bande de surlignage : suit la colonne survolée ou focalisée */
+    function colAt(x) { var cols = head.querySelectorAll('.pc__plan'); for (var i = 0; i < cols.length; i++) { var r = cols[i].getBoundingClientRect(); if (x >= r.left && x < r.right) return +cols[i].dataset.col; } return -1; }
+    var hoverRaf = 0;
+    root.querySelector('[data-pc-table]').addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || root.dataset.band === 'false') return;
+      var x = e.clientX; cancelAnimationFrame(hoverRaf);
+      hoverRaf = requestAnimationFrame(function () { var c = colAt(x); if (c !== hoverCol) { hoverCol = c; moveBand(c); highlight(c); } });
+    });
+    root.querySelector('[data-pc-table]').addEventListener('pointerleave', function () { hoverCol = -1; moveBand(-1); highlight(-1); });
+    root.addEventListener('focusin', function (e) { var p = e.target.closest('[data-col]'); if (p && root.dataset.band !== 'false') { hoverCol = +p.dataset.col; moveBand(hoverCol); } });
+    function highlight(c) { [].forEach.call(body.querySelectorAll('.pc__cell'), function (x) { x.style.color = c > -1 && +x.dataset.col !== c ? 'var(--text)' : ''; }); }
+
+    /* Sélecteurs mobiles : choisir les deux offres à comparer */
+    head.addEventListener('change', function (e) {
+      var s = e.target.closest('select[data-pick]'); if (!s) return;
+      var slot = pick.indexOf(+s.closest('.pc__plan').dataset.col), v = +s.value; if (slot < 0) return;
+      var other = pick[1 - slot]; if (v === other) pick[1 - slot] = pick[slot];
+      pick[slot] = v; sync();
+      var ns = head.querySelector('.pc__plan[data-col="' + v + '"] select'); if (ns) ns.focus();
+    });
+
+    /* Collé : l'en-tête se compacte */
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { var stuck = !es[0].isIntersecting && es[0].boundingClientRect.top < 0; root.classList.toggle('is-stuck', stuck); setTimeout(measure, 450); }, { threshold: 0 }).observe(sentinel);
+    window.addEventListener('resize', function () { sync(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); moveBand(hoverCol); });
+
+    sync();
+    root._comparatif = { sync: sync, setPick: function (a, b) { pick = [a, b]; sync(); } };
+    return root._comparatif;
+  }
+  window.Comparatif = Comparatif;
+  [].forEach.call(document.querySelectorAll('[data-comparatif]'), function (el) { if (!el._comparatif) Comparatif(el); });
+})();
+</script>

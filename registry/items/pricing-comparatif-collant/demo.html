@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comparatif collant — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'encre');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>.is-thumb .pc { padding-top: 40px; }</style>
+</head>
+<body>
+<main id="mount"></main>
+<script>
+  var props = Socle.props({ differences: false, compacter: true, bande: true, miseEnAvant: '1', densite: 'confort' });
+  var root = null;
+  function apply(p) {
+    if (!root) return;
+    root.dataset.diff = String(!!p.differences);
+    root.dataset.compact = String(!!p.compacter);
+    root.dataset.band = String(!!p.bande);
+    root.dataset.featured = String(p.miseEnAvant);
+    root.dataset.density = p.densite;
+    if (root._comparatif) root._comparatif.sync();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-comparatif]');
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    apply(props);
+  });
+  Socle.onChange(apply);
+  /* Rejouer : défilement jusqu'au tableau (en-tête collé et compacté), bascule des différences, retour. */
+  Socle.onReplay(function () {
+    if (!root) return;
+    var sm = Socle.reducedMotion() ? 'auto' : 'smooth', y = root.querySelector('[data-pc-table]').getBoundingClientRect().top + scrollY + 420;
+    scrollTo({ top: y, behavior: sm });
+    setTimeout(function () { root.dataset.diff = 'true'; root._comparatif.sync(); }, 900);
+    setTimeout(function () { root.dataset.diff = String(!!props.differences); root._comparatif.sync(); }, 2600);
+    setTimeout(function () { scrollTo({ top: 0, behavior: sm }); }, 3400);
+  });
+</script>
+</body>
+</html>

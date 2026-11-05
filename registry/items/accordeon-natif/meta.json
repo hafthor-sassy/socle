@@ -1,0 +1,160 @@
+{
+  "id": "accordeon-natif",
+  "nom": "Accordéon natif",
+  "categorie": "faq",
+  "niveau": "essentiel",
+  "description": "Une FAQ bâtie sur details et summary : utilisable sans script, exclusive par l’attribut name, trouvée par la recherche du navigateur. La hauteur s’anime en CSS pur (::details-content et interpolate-size) quand le navigateur sait le faire, sinon par Web Animations avec la même courbe, interruptible à mi-course. Le plus se replie en moins en tournant, chaque question a son lien direct (#sinistre l’ouvre, la centre et l’éclaire) et un bouton pour le copier.",
+  "tags": [
+    "FAQ",
+    "Accordéon",
+    "details",
+    "Natif",
+    "Lien direct",
+    "Assurance",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 34,
+  "palette": "encre",
+  "logo_exemple": {
+    "nom": "Abri",
+    "secteur": "Assurance habitation en ligne",
+    "fichier": "logo.svg",
+    "palette": "encre",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1120
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent (icône ouverte, puces), surfaces, Geist"
+    },
+    {
+      "nom": "HTML natif",
+      "note": "details / summary, attribut name (exclusivité) : fonctionne sans JavaScript"
+    },
+    {
+      "nom": "CSS ::details-content + interpolate-size",
+      "note": "Animation sans script (Chrome 131+, Safari 18.4+) ; sinon repli Web Animations"
+    },
+    {
+      "nom": "≈ 2 ko de JS facultatif",
+      "note": "Repli d’animation, lien direct #id, copie du lien, « Tout ouvrir »"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, sans bibliothèque"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "exclusif",
+      "label": "Une seule réponse ouverte",
+      "type": "boolean",
+      "default": true,
+      "hint": "Désactivé : le bouton « Tout ouvrir » apparaît.",
+      "code": {
+        "html": "data-exclusif=\"{v}\"",
+        "react": "exclusive={{v}}"
+      }
+    },
+    {
+      "name": "icone",
+      "label": "Icône",
+      "type": "select",
+      "default": "plus",
+      "options": [
+        {
+          "value": "plus",
+          "label": "Plus"
+        },
+        {
+          "value": "chevron",
+          "label": "Chevron"
+        }
+      ],
+      "code": {
+        "html": "data-icone=\"{v}\"",
+        "react": "icon=\"{v}\""
+      },
+      "hint": "Plus : la barre verticale s’efface en tournant."
+    },
+    {
+      "name": "duree",
+      "label": "Durée",
+      "type": "number",
+      "default": 320,
+      "min": 120,
+      "max": 700,
+      "step": 20,
+      "unit": "ms",
+      "code": {
+        "html": "--an-duree: {v}ms",
+        "react": "duration={{v}}"
+      }
+    },
+    {
+      "name": "style",
+      "label": "Présentation",
+      "type": "select",
+      "default": "lignes",
+      "options": [
+        {
+          "value": "lignes",
+          "label": "Lignes"
+        },
+        {
+          "value": "cartes",
+          "label": "Cartes"
+        }
+      ],
+      "code": {
+        "html": "data-style=\"{v}\"",
+        "react": "variant=\"{v}\""
+      }
+    },
+    {
+      "name": "liens",
+      "label": "Lien direct par question",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-liens=\"{v}\"",
+        "react": "links={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/AccordeonNatif.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "FAQ de fin de page, aide d’un tunnel d’inscription, conditions détaillées. Donnez à chaque question un id lisible (#sinistre) : le support peut envoyer un lien qui ouvre la bonne réponse.",
+    "Gardez le mode exclusif pour une liste courte qu’on parcourt ; désactivez-le pour des réponses qu’on compare ou qu’on imprime (« Tout ouvrir »).",
+    "Les réponses restent dans le HTML : elles sont indexées par les moteurs et trouvées par Ctrl F, qui ouvre la bonne question tout seul."
+  ],
+  "accessibilite": [
+    "details / summary natifs : rôle bouton, état ouvert ou fermé annoncé, Entrée et Espace, aucun ARIA à maintenir. L’icône est décorative (aria-hidden).",
+    "Focus visible sur toute la ligne de la question, cible de 64 px de haut ; le bouton de copie du lien annonce « Lien copié » dans une région polie.",
+    "Avec « réduire les animations », ouverture instantanée et éclairage du lien direct coupé. Contraste AA du texte et de l’icône pleine (accent-fg sur accent) en clair et en sombre."
+  ]
+}

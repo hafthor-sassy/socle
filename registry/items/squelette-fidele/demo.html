@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Squelette fidèle — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; padding: 32px; }
+  @media (max-width: 719px) { .stage { padding: 16px; } }
+  .is-thumb .stage { padding: 32px 40px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ etat: 'auto', delai: 1800, reflet: 'sweep', vitesse: 1.6, arrivee: 'cascade' });
+  var mount = document.getElementById('mount'), root = null;
+  var STATE = { chargement: 'loading', contenu: 'ready', vide: 'empty', erreur: 'error' };
+  function apply(p) { root.dataset.shimmer = p.reflet; root.dataset.speed = String(p.vitesse); root.dataset.arrival = p.arrivee; }
+  function run(p) {
+    if (!root || !root.skeleton) return;
+    apply(p);
+    if (p.etat === 'auto') root.skeleton.load(p.delai);
+    else if (p.etat === 'vide') root.skeleton.load(p.delai, 'empty');
+    else root.skeleton.set(STATE[p.etat]);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-skeleton]');
+    delete root.dataset.autoload; /* la démo pilote le chargement elle-même */
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (Socle.thumb) return thumb();
+    run(props);
+  });
+  var lastEtat = props.etat;
+  Socle.onChange(function (p) {
+    if (!root) return;
+    apply(p);
+    if (p.etat !== lastEtat || p.etat !== 'auto') run(p);
+    else if (root.skeleton.state === 'loading') root.style.setProperty('--sk-speed', p.vitesse + 's');
+    lastEtat = p.etat;
+  });
+  Socle.onReplay(run);
+  /* Vignette : chargement puis contenu, en boucle, en pause hors écran. */
+  function thumb() {
+    var visible = true, n = 0;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(mount);
+    if (Socle.reducedMotion()) { root.skeleton.set('loading'); return; }
+    (function tick() { if (visible && !document.hidden) root.skeleton.load(1600); setTimeout(tick, 4200); })();
+  }
+</script>
+</body>
+</html>

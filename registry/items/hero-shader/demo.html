@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero shader interactif — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+.is-thumb .hsh__pause, .is-thumb .hsh__trust, .is-thumb .hsh__links { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  /* Props → attributs data-* et textes du composant ; son script est relancé à chaque réglage (le code copié est exactement celui affiché). */
+  var props = Socle.props({"titre": "Vos alertes de sécurité, triées avant le café.", "style": "soie", "force": 1, "vitesse": 1, "echelle": 1.4, "grain": 0.04, "voile": 0.75, "qualite": 0.75, "carte": true});
+  var src = null, mount = document.getElementById('mount');
+  function render(p) {
+    if (!src) return;
+    var old = mount.firstElementChild && mount.querySelector('[data-hero-shader]');
+    if (old && old._inst) old._inst.destroy();
+    mount.innerHTML = src.markup;
+    var root = mount.querySelector('[data-hero-shader]');
+    var h = root.querySelector('.hsh__title'); if (h && p.titre) h.textContent = p.titre;
+    root.dataset.style = p.style; root.dataset.force = p.force; root.dataset.speed = p.vitesse; root.dataset.scale = p.echelle;
+    root.dataset.grain = p.grain; root.dataset.veil = p.voile; root.dataset.quality = p.qualite; root.dataset.card = String(p.carte);
+    try { new Function(src.script)(); } catch (e) { console.error(e); }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props);
+
+  });
+  Socle.onChange(render);
+  Socle.onReplay(render);
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{
+  "id": "hero-typographique",
+  "nom": "Hero typographique",
+  "categorie": "hero",
+  "niveau": "essentiel",
+  "ordre": 10,
+  "description": "Un titre géant dans un vrai H1, découpé selon ses lignes réelles (elles changent avec la largeur) qui montent une à une derrière un masque, un mot accentué souligné d’un trait qui se dessine, puis une seule action. Sur téléphone, l’action passe juste sous le titre.",
+  "tags": ["Typographie", "Entrée en cascade", "Une seule action", "Éditorial", "Responsive"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1120 },
+  "palette": "brique",
+  "logo_exemple": { "nom": "Fugue", "secteur": "Agence de design de marque", "fichier": "logo.svg", "palette": "brique", "typo": "Geist SemiBold" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Neutres, accent, police Geist et Geist Mono" },
+    { "nom": "Script de découpe", "note": "≈ 2 ko intégré au HTML, sans bibliothèque : mots → lignes réelles, ResizeObserver, IntersectionObserver" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, aucune bibliothèque d’animation" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "titre", "label": "Titre (H1)", "type": "text", "default": "Des marques qui tiennent la distance.",
+      "code": { "html": "data-htp-title data-accent-word=\"distance\">{v}</h1>", "react": "titre=\"{v}\"" } },
+    { "name": "motAccent", "label": "Mot accentué", "type": "text", "default": "distance", "hint": "Un mot du titre, coloré à l’accent. Vide : aucun.",
+      "code": { "html": "data-accent-word=\"{v}\"", "react": "motAccent=\"{v}\"" } },
+    { "name": "entree", "label": "Entrée des lignes", "type": "select", "default": "montee",
+      "options": [{ "value": "montee", "label": "Montée" }, { "value": "bascule", "label": "Bascule" }, { "value": "flou", "label": "Netteté" }],
+      "code": { "html": "data-entree=\"{v}\"", "react": "entree=\"{v}\"" } },
+    { "name": "duree", "label": "Durée par ligne", "type": "number", "default": 1100, "min": 400, "max": 2000, "step": 50, "unit": "ms",
+      "code": { "html": "data-duree=\"{v}\"", "react": "duree={{v}}" } },
+    { "name": "decalage", "label": "Décalage entre lignes", "type": "number", "default": 110, "min": 0, "max": 300, "step": 10, "unit": "ms",
+      "code": { "html": "data-decalage=\"{v}\"", "react": "decalage={{v}}" } },
+    { "name": "align", "label": "Alignement", "type": "select", "default": "gauche",
+      "options": [{ "value": "gauche", "label": "À gauche" }, { "value": "centre", "label": "Centré" }],
+      "code": { "html": "data-align=\"{v}\"", "react": "align=\"{v}\"" } },
+    { "name": "trait", "label": "Trait sous le mot accentué", "type": "boolean", "default": true,
+      "code": { "html": "data-trait=\"{v}\"", "react": "trait={{v}}" } },
+    { "name": "cta", "label": "Action", "type": "text", "default": "Démarrer un projet",
+      "code": { "html": "<span class=\"htp__cta-label\">{v}</span>", "react": "cta=\"{v}\"" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/HeroTypographique.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour une marque qui parle d’abord par ses mots : agence, éditeur, cabinet, produit au positionnement fort. Le titre porte tout, gardez 4 à 8 mots.",
+    "Une seule action volontairement : le hero ne propose pas de second bouton. Les chiffres et la note sous le bouton rassurent sans détourner.",
+    "Les lignes sont celles que le navigateur calcule : changez le titre ou la largeur, la cascade suit (ResizeObserver, sans rejouer l’entrée).",
+    "Téléphone : titre à 52 px minimum, l’action pleine largeur (56 px de haut) remonte juste sous le titre, puis le chapô et les chiffres. Bureau : chapô, chiffres et action alignés sur une ligne de base.",
+    "Palette par défaut : Brique. Tout passe par les variables de tokens.css : changez de palette sans toucher au composant."
+  ],
+  "accessibilite": [
+    "Vrai H1 : le texte complet est lu d’un seul tenant (copie masquée), la version découpée en lignes est aria-hidden.",
+    "Sans JavaScript, tout est visible : les états de départ ne sont posés que par le script.",
+    "« Réduire les animations » : aucune entrée, trait déjà tracé, pastille fixe.",
+    "Lien d’action natif de 56 px, focus visible décalé de 3 px ; la flèche glisse aussi au focus clavier. Accent sur fond et texte sur accent ≥ 4,5:1 pour toutes les palettes du DS.",
+    "Aucune boucle continue : l’heure se met à jour à la minute par un simple minuteur."
+  ]
+}

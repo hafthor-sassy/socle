@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bento filtrable — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+html.bg-grid .bf { background: transparent; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  /* Props → attributs data-* et textes du composant ; son script est relancé à chaque réglage (le code copié est exactement celui affiché). */
+  var props = Socle.props({"filtre": "tout", "duree": 620, "decalage": 40, "compteurs": true, "mobile": "1"});
+  var src = null, mount = document.getElementById('mount');
+  function render(p) {
+    if (!src) return;
+    var old = mount.firstElementChild && mount.querySelector('[data-bento-filter]');
+    if (old && old._inst) old._inst.destroy();
+    mount.innerHTML = src.markup;
+    var root = mount.querySelector('[data-bento-filter]');
+    root.dataset.filtre = p.filtre; root.dataset.duree = p.duree; root.dataset.decalage = p.decalage;
+    root.dataset.compteurs = String(p.compteurs); root.dataset.mobile = p.mobile;
+    try { new Function(src.script)(); } catch (e) { console.error(e); }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props);
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var order = ['tout', 'creer', 'vendre', 'mesurer', 'publier'], k = 0, vis = true;
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { vis = e[0].isIntersecting; }).observe(document.body);
+      setInterval(function () { var r = mount.querySelector('[data-bento-filter]'); if (vis && r && r._inst) { k = (k + 1) % order.length; r._inst.filter(order[k]); } }, 2600);
+    }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(render);
+</script>
+</body>
+</html>

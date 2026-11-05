@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graphe d’activité — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 48px 24px; }
+  @media (max-width: 640px) { .stage { padding: 12px 10px 32px; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage"><div id="mount" style="display:contents"></div></main>
+<script>
+  var props = Socle.props({ vague: 'diagonale', vitesse: 14, annee: '2026', forme: 'carre', legende: true, resume: true });
+  var root = null;
+  function render(p) {
+    if (!root || !root._ga) return;
+    var yearChanged = root.dataset.annee !== String(p.annee);
+    root.dataset.vague = p.vague;
+    root.dataset.vitesse = String(p.vitesse);
+    root.dataset.forme = p.forme;
+    root.dataset.legende = String(!!p.legende);
+    root.dataset.resume = String(!!p.resume);
+    if (yearChanged) root._ga.year(String(p.annee)); else root._ga.rebuild();
+    if (Socle.thumb) setTimeout(function () { root._ga.show(-12); }, 900);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-graphe-activite]');
+    root.dataset.annee = String(props.annee);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    render(props);
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (root && root._ga) { root._ga.wave(); setTimeout(function () { root._ga.show(-40); }, 1400); } });
+</script>
+</body>
+</html>

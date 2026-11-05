@@ -1,0 +1,404 @@
+<!-- Globe des clients — HTML + CSS + JS intégré, WebGL1 maison sans bibliothèque (repli Canvas 2D). Nécessite tokens.css (Geist).
+     Marque fictive : Hélia (paiements internationaux pour PME). Villes réelles, chiffres fictifs.
+     Réglages sur la racine : data-vitesse (°/s de rotation auto), data-inclinaison (°), data-densite (points),
+     data-arcs, data-impulsions, data-region (index de départ, -1 = aucune). Terres : Natural Earth 110 m (domaine public). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="gc" data-globe-clients data-vitesse="6" data-inclinaison="18" data-densite="14000" data-arcs="true" data-impulsions="true" data-region="-1" aria-labelledby="gc-titre">
+  <div class="gc__text">
+    <a class="gc__brand" href="#accueil" aria-label="Hélia, accueil">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" class="gc__b1"/><circle cx="50" cy="50" r="27" class="gc__b2"/><ellipse cx="50" cy="50" rx="11" ry="27" class="gc__b2"/><path d="M23 50h54" class="gc__b2"/><circle cx="74" cy="29" r="9" class="gc__b3"/></svg>
+      <span>Hélia</span>
+    </a>
+    <p class="gc__eyebrow">Paiements internationaux</p>
+    <h2 class="gc__title" id="gc-titre"><span data-total>34 430</span> entreprises encaissent avec Hélia, dans 64&nbsp;pays.</h2>
+    <p class="gc__lead">Vos clients paient dans leur devise, vous recevez des euros le jour même. Choisissez une région pour voir où nous sommes déjà.</p>
+    <ul class="gc__regions" role="list" data-regions>
+      <li><button type="button" data-r="0" aria-pressed="false"><span class="gc__rn">Europe</span><span class="gc__rv">18 420</span><span class="gc__rs">29 pays · +14 %</span></button></li>
+      <li><button type="button" data-r="1" aria-pressed="false"><span class="gc__rn">Amérique du Nord</span><span class="gc__rv">6 210</span><span class="gc__rs">2 pays · +31 %</span></button></li>
+      <li><button type="button" data-r="4" aria-pressed="false"><span class="gc__rn">Asie-Pacifique</span><span class="gc__rv">4 870</span><span class="gc__rs">14 pays · +42 %</span></button></li>
+      <li><button type="button" data-r="3" aria-pressed="false"><span class="gc__rn">Afrique et Moyen-Orient</span><span class="gc__rv">3 340</span><span class="gc__rs">12 pays · +27 %</span></button></li>
+      <li><button type="button" data-r="2" aria-pressed="false"><span class="gc__rn">Amérique latine</span><span class="gc__rv">1 590</span><span class="gc__rs">7 pays · +19 %</span></button></li>
+    </ul>
+  </div>
+
+  <div class="gc__stage">
+    <div class="gc__globe" data-globe>
+      <div class="gc__disc" aria-hidden="true"></div>
+      <canvas class="gc__canvas" data-canvas role="img" aria-label="Globe : clients Hélia dans 64 pays, flux de paiement depuis Paris vers 17 villes. Le détail par région est dans la liste."></canvas>
+      <div class="gc__tip" data-tip aria-hidden="true"><strong data-tip-a></strong><span data-tip-b></span></div>
+      <p class="gc__chip" data-chip aria-live="polite"></p>
+    </div>
+    <p class="gc__help" aria-hidden="true">Glissez pour faire tourner le globe</p>
+  </div>
+
+  <table class="gc__sr">
+    <caption>Clients Hélia par ville</caption>
+    <thead><tr><th scope="col">Ville</th><th scope="col">Région</th><th scope="col">Clients</th></tr></thead>
+    <tbody data-table></tbody>
+  </table>
+</section>
+<!-- /SECTION -->
+
+<style>
+  /* ——— Globe des clients ——— */
+  .gc { position: relative; width: min(100%, 1200px); margin-inline: auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 48px; padding: 56px 32px 56px 64px; color: var(--text); font-family: var(--font-sans); background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; isolation: isolate; }
+  .gc__text { display: grid; gap: 16px; align-content: center; }
+  .gc__brand { display: inline-flex; align-items: center; gap: 8px; justify-self: start; min-height: 44px; color: var(--text-strong); text-decoration: none; font: 600 16px/24px var(--font-sans); letter-spacing: var(--track-snug); border-radius: 8px; }
+  .gc__brand svg { width: 24px; height: 24px; }
+  .gc__b1 { fill: var(--accent); }
+  .gc__b2 { fill: none; stroke: var(--accent-fg); stroke-width: 6; stroke-linecap: round; }
+  .gc__b3 { fill: var(--accent-fg); stroke: var(--accent); stroke-width: 5; }
+  .gc__eyebrow { margin: 8px 0 0; color: var(--text-muted); font: 500 13px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .gc__title { margin: 0; color: var(--text-strong); font: 600 clamp(28px, 1.8vw + 14px, 42px)/1.1 var(--font-sans); letter-spacing: -0.03em; text-wrap: balance; }
+  .gc__title [data-total] { font-variant-numeric: tabular-nums; }
+  .gc__lead { margin: 0; max-width: 46ch; color: var(--text-muted); font-size: 16px; line-height: 24px; text-wrap: pretty; }
+  .gc__regions { display: grid; gap: 0; margin: 16px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--border); }
+  .gc__regions li { border-bottom: 1px solid var(--border); }
+  .gc__regions button { position: relative; display: grid; grid-template-columns: 1fr auto; column-gap: 16px; align-items: baseline; width: 100%; min-height: 56px; padding: 10px 12px; margin: 0; border: 0; border-radius: 8px; background: none; color: var(--text); text-align: left; font: inherit; cursor: pointer; transition: background-color 200ms var(--ease-out); }
+  .gc__regions button::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 2px; border-radius: 2px; background: var(--accent); transform: scaleY(0); transition: transform 320ms cubic-bezier(.3, 1.4, .4, 1); }
+  .gc__regions button:hover { background: var(--state-hover); }
+  .gc__regions button[aria-pressed="true"]::before, .gc__regions button.is-on::before { transform: scaleY(1); }
+  .gc__rn { color: var(--text-strong); font-size: 16px; line-height: 22px; font-weight: 500; }
+  .gc__rv { grid-row: span 2; align-self: center; color: var(--text-strong); font: 600 20px/1 var(--font-sans); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .gc__rs { color: var(--text-muted); font-size: 14px; line-height: 20px; }
+
+  .gc__stage { position: relative; display: grid; justify-items: center; gap: 8px; }
+  .gc__globe { position: relative; width: min(100%, 600px); aspect-ratio: 1; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+  .gc__disc { position: absolute; inset: 10%; border-radius: 999px; border: 1px solid var(--border);
+    background: radial-gradient(circle at 34% 28%, color-mix(in oklab, var(--accent) 7%, var(--raised)), var(--surface) 72%);
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 10%, transparent), 0 0 96px -8px color-mix(in oklab, var(--accent) 22%, transparent); }
+  .gc__canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; }
+  .gc__globe.is-drag .gc__canvas { cursor: grabbing; }
+  .gc__tip { position: absolute; left: 0; top: 0; z-index: 2; display: grid; gap: 2px; padding: 8px 12px; border-radius: 12px; background: var(--text-strong); color: var(--surface); white-space: nowrap; pointer-events: none; opacity: 0; transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + 6px), 0) scale(.95); transform-origin: 50% 100%; transition: opacity 160ms var(--ease-out), transform 360ms cubic-bezier(.25, 1.3, .4, 1); }
+  .gc__tip.is-on { opacity: 1; transform: translate3d(var(--x, 0px), var(--y, 0px), 0) scale(1); }
+  .gc__tip.is-follow { transition: opacity 160ms var(--ease-out); }
+  .gc__tip strong { font: 600 15px/20px var(--font-sans); }
+  .gc__tip span { font: 400 13px/18px var(--font-sans); opacity: .8; font-variant-numeric: tabular-nums; }
+  .gc__chip { position: absolute; left: 50%; bottom: 4%; z-index: 2; margin: 0; padding: 8px 16px; border-radius: 999px; background: var(--raised); border: 1px solid var(--border); color: var(--text-strong); font: 500 14px/20px var(--font-sans); font-variant-numeric: tabular-nums; white-space: nowrap; transform: translate(-50%, 8px); opacity: 0; transition: opacity 200ms var(--ease-out), transform 420ms cubic-bezier(.3, 1.4, .4, 1); pointer-events: none; }
+  .gc__chip.is-on { opacity: 1; transform: translate(-50%, 0); }
+  .gc__chip b { font-weight: 600; }
+  .gc__help { margin: 0; color: var(--text-muted); font-size: 13px; line-height: 20px; }
+  .gc__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 900px) {
+    .gc { grid-template-columns: 1fr; padding: 40px 32px; gap: 24px; }
+    .gc__stage { order: 2; }
+    .gc__regions { order: 3; }
+  }
+  /* Mobile : texte, globe pleine largeur, puis régions en pastilles qui défilent */
+  @media (max-width: 640px) {
+    .gc { display: flex; flex-direction: column; align-items: stretch; padding: 32px 0 24px; gap: 8px; border-radius: 12px; }
+    .gc__text { display: contents; }
+    .gc__brand, .gc__eyebrow, .gc__title, .gc__lead { margin-inline: 20px; }
+    .gc__brand { align-self: flex-start; }
+    .gc__eyebrow { margin-top: 8px; }
+    .gc__title { font-size: 28px; line-height: 34px; margin-top: 4px; }
+    .gc__lead { font-size: 15px; line-height: 22px; margin-top: 8px; }
+    .gc__stage { order: 5; margin-top: 8px; }
+    .gc__globe { width: min(100%, 420px); }
+    .gc__help { order: -1; }
+    .gc__regions { order: 6; display: flex; gap: 8px; margin: 8px 0 0; padding: 4px 20px 8px; border: 0; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .gc__regions::-webkit-scrollbar { display: none; }
+    .gc__regions li { flex: none; border: 0; scroll-snap-align: start; scroll-margin-inline: 20px; }
+    .gc__regions button { grid-template-columns: auto; min-height: 64px; width: auto; min-width: 156px; padding: 10px 16px; border-radius: 12px; background: var(--raised); border: 1px solid var(--border); }
+    .gc__regions button::before { left: 16px; right: 16px; top: auto; bottom: -1px; width: auto; height: 2px; transform: scaleX(0); }
+    .gc__regions button[aria-pressed="true"]::before { transform: scaleX(1); }
+    .gc__regions button[aria-pressed="true"] { border-color: var(--border-strong); }
+    .gc__rv { grid-row: auto; font-size: 18px; margin-top: 4px; }
+    .gc__rn { font-size: 15px; }
+    .gc__chip { font-size: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gc__tip, .gc__chip, .gc__regions button::before { transition: opacity 120ms linear !important; }
+  }
+</style>
+
+<script>
+(function () {
+/* ENGINE */
+  /* Moteur du globe : WebGL1 sans bibliothèque, repli Canvas 2D. Terres : masque 200 × 100 (Natural Earth 110 m, domaine public). */
+  var LAND = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwD8AAAAAAAAAAAAAAAAAAAAAAAAAAPz/////HwAAAAAAAAAAAAAAAAAAAAAAAMD/n////wcA/AdAAACABwAAAAAAAAAAAGBs//P///8BAHgBAAAAADgAAAAAAAAAAACfuP/g////AQAAAADAAwD8BwACAAAAAACA8JF/APD//wEAAAAAOADw/wcADgAAAAAAwH/7/QPg//8AAAAAAA4M////DwwAAAF4AID94/0f4P//AAAAHgAG/v//////DwAA/////+9zfsD/fwAAwP8A4P7/////////B///////f/rB/wMAAPD/9////////////5///////x/+wf+ADwD8f/z///////////8A/v////93+IAfAAcA/v////////////9/AP//////AU4AHwAAgD//////////////fwD/+////wA+AAwAAIA/////////////4wcAfID///8A/gEAAACCPf7/////////B3EAAFgA/P//B/4DAAAABhv//////////wF8AAAAAPj//z//DwAAgA+m//////////8APAAAAAD0//9//x8AAICf////////////DxwAAAAA4P////8fAAAA/v///////////w8IAAAAAOD/////OQAAAPj///////////8LAAAAAACA/////3gAAAD8////////////CwAAAAAAgP////8HAAAA+P/ffv7//////wEAAAAAAID///+/AQAAAPj3Dz7///////8cAAAAAACA////HwAAAIA/3A94/v////8fDAAAAAAAgP///w8AAACAH/L///z/////DwQAAAAAAID///8HAAAAgA+Q+X/8////PwYGAAAAAAAA////AwAAAIDnC/n///////8MAwAAAAAAAP7//wMAAAAA/wNA//////9/7AMAAAAAAAD8//8AAAAAgP8HgP//////f3AAAAAAAAAA+P9/AAAAAMD/n7////////8QAAAAAAAAAPD/dwAAAADA////f///////AAAAAAAAAADwP8AAAAAA4P///3//////fwAAAAAAAAAAoD/AAAAAAPD//3//+P///38AAAAAAAAAAEA/AAAAAAD4/////g/+//+/AAAAAAAAAAAAPuABAAAA+P////4f/P//DwAAAAAAAAAAAD4MAwAAAPj////9H/iP/wIAAAAAAAAAAAB8BzgAAAD4////+Q/wB38DAAAAAAAAAAAA8AcAAAAA+P////sH8AP/gAAAAAAAAAAAAAA/AAAAAPz////zAeAB/MEAAAAAAAAAAAAAPAAAAAD8////fwDgAfyBAQAAAAAAAAAAADA4AAAA+P///48AwAHoAQIAAAAAAAAAAAAw/AMAAPD/////AMAAQAABAAAAAAAAAAAAwP8HAADg/////wAAAwgAAwAAAAAAAAAAAAD+HwAAwP///38AAAEYMAIAAAAAAAAAAAAA/n8AAICB//9/AAAANjgAAAAAAAAAAAAAAP//AAAAAP7/PwAAADw8AAAAAAAAAAAAAAD//wAAAAD+/x8AAAA4vwkAAAAAAAAAAACA//8HAAAA/v8PAAAAMN5gAAAAAAAAAAAAgP//PwAAAP7/BwAAAHDe6AcAAAAAAAAAAID//38AAAD8/wMAAABgwIEfAQAAAAAAAACA////AQAA+P8DAAAAwAAAvgQAAAAAAAAAAP///wEAAPj/AwAAAAAuAG4AAAAAAAAAAAD///8AAAD4/wMAAAAAAADAAAAAAAAAAAAA/v9/AAAA+P8HAAAAAABgCAAAAAAAAAAAAP7/fwAAAPj/hwAAAAAA8AwAAAAAAAAAAAD8/38AAAD8/8cAAAAAAP4cAAAAAAAAAAAA8P8/AAAA/P/zAAAAAAD/HwAAAAAAAAAAAOD/PwAAAPj/cAAAAACA/z8AAAAAAAAAAADg/z8AAAD4/3AAAAAA4P9/gAAAAAAAAAAA4P8fAAAA8P9wAAAAAPj//wAAAAAAAAAAAOD/AwAAAPD/MAAAAAD4//8BAAAAAAAAAADw/wEAAADwPwAAAAAA+P//AQAAAAAAAAAA8P8BAAAA4D8AAAAAAPj//wEAAAAAAAAAAPD/AAAAAOA/AAAAAADw//8BAAAAAAAAAADw/wAAAADAHwAAAAAA8P//AQAAAAAAAAAA8H8AAAAAwAcAAAAAAPCB/wAAAAAAAAAAAPAfAAAAAAAAAAAAAAAgAP8AEAAAAAAAAAD4HwAAAAAAAAAAAAAAAAD8ACAAAAAAAAAA+A8AAAAAAAAAAAAAAAAAOABgAAAAAAAAAPgBAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAD4AAAAAAAAAAAAAAAAAABgABgAAAAAAAAA+AAAAAAAAAAAAAAAAAAAAAAOAAAAAAAAAHwAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAB8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAADwMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABgAAIASAAAAAAAAAAAAAAMAAAAAAAAAA4L8D/v///z8AAAAAAAAAAADwAQAAAAAAwP3/x///////DwAAAAAAAAAA+AMAAED///////P///////8HAAAAAAA4DPgDAADw////////////////BwAAwP///v//AQAA/P///////////////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
+  function createGlobe(wrap, canvas, opts, cb) {
+    var bits = (function () { var s = atob(LAND), a = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return a; })();
+    function isLand(lat, lon) { var x = Math.floor((lon + 180) / 360 * 200) % 200, y = Math.min(99, Math.floor((90 - lat) / 180 * 100)), i = y * 200 + x; return (bits[i >> 3] >> (i & 7)) & 1; }
+    function xyz(lat, lon, h) { var a = lat * Math.PI / 180, o = lon * Math.PI / 180, r = 1 + (h || 0); return [r * Math.cos(a) * Math.sin(o), r * Math.sin(a), r * Math.cos(a) * Math.cos(o)]; }
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    var cities = opts.cities, hq = cities[0], SCALE = 0.8, TAU = Math.PI * 2;
+    var st = { yaw: -(opts.startLon !== undefined ? opts.startLon : 10) * Math.PI / 180, pitch: (opts.tilt || 18) * Math.PI / 180, vy: 0, vp: 0, target: null, sel: -1, hot: -1, drag: null, t: 0, last: 0, visible: true, raf: 0, size: 0, dpr: 1 };
+    var verts = [], counts = {};
+
+    function buildGeometry() {
+      verts = [];
+      var N = opts.density || 14000, land = 0;
+      for (var i = 0; i < N; i++) {
+        var y = 1 - 2 * (i + 0.5) / N, lat = Math.asin(y) * 180 / Math.PI, lon = ((i * 2.399963229728653 * 180 / Math.PI) % 360) - 180;
+        if (lat > -60 && isLand(lat, lon)) { var p = xyz(lat, lon); verts.push(p[0], p[1], p[2], 0, 0, -1); land++; }
+      }
+      var arcs = 0;
+      if (opts.arcs !== false) cities.forEach(function (c, ci) {
+        if (!ci) return;
+        var a = xyz(hq.lat, hq.lon), b = xyz(c.lat, c.lon), dot = a[0] * b[0] + a[1] * b[1] + a[2] * b[2], ang = Math.acos(Math.max(-1, Math.min(1, dot)));
+        var S = Math.max(24, Math.round(ang * 46)), sn = Math.sin(ang), lift = 0.05 + 0.2 * ang / Math.PI;
+        for (var s = 0; s <= S; s++) {
+          var t = s / S, k1 = Math.sin((1 - t) * ang) / sn, k2 = Math.sin(t * ang) / sn, h = 1 + lift * Math.sin(Math.PI * t);
+          verts.push((a[0] * k1 + b[0] * k2) * h, (a[1] * k1 + b[1] * k2) * h, (a[2] * k1 + b[2] * k2) * h, 1, ci + t * 0.999, c.region); arcs++;
+        }
+      });
+      cities.forEach(function (c, ci) { var p = xyz(c.lat, c.lon, 0.002); verts.push(p[0], p[1], p[2], 2, ci, c.region); });
+      counts = { land: land, arcs: arcs, cities: cities.length };
+      verts = new Float32Array(verts);
+    }
+
+    /* Couleurs relues dans tokens.css (palette et thème suivis par MutationObserver). */
+    var probe = document.createElement('canvas').getContext('2d'), col = {};
+    function rgb(v) { probe.fillStyle = '#000'; probe.fillStyle = v.trim() || '#000'; var s = probe.fillStyle; if (s[0] === '#') return [parseInt(s.slice(1, 3), 16) / 255, parseInt(s.slice(3, 5), 16) / 255, parseInt(s.slice(5, 7), 16) / 255]; var m = s.match(/[\d.]+/g); return [m[0] / 255, m[1] / 255, m[2] / 255]; }
+    function readColors() { var cs = getComputedStyle(wrap); col = { land: rgb(cs.getPropertyValue('--text-muted')), acc: rgb(cs.getPropertyValue('--accent-vivid') || cs.getPropertyValue('--accent')), bg: rgb(cs.getPropertyValue('--surface')), strong: rgb(cs.getPropertyValue('--text-strong')) }; }
+
+    var gl = null, prog, buf, U = {};
+    try { gl = canvas.getContext('webgl', { antialias: true, premultipliedAlpha: false, alpha: true }) || canvas.getContext('experimental-webgl'); } catch (e) { gl = null; }
+    var VS = 'attribute vec3 aPos;attribute vec3 aInfo;uniform mat3 uRot;uniform float uScale,uDpr,uPx,uTime,uSel,uHot,uPulse,uPt;varying float vA,vK,vR,vH;' +
+      'void main(){vec3 p=uRot*aPos;float k=aInfo.x;gl_Position=vec4(p.x*uScale,p.y*uScale,0.,1.);float hid=(p.z<0.&&length(p.xy)<1.)?0.:1.;float u=uPx/560.;vK=k;vR=0.;vH=0.;' +
+      'if(k<.5){vA=p.z>0.?(.3+.7*p.z):0.;gl_PointSize=uPt*uDpr*u*(.7+.5*p.z);}' +
+      'else if(k<1.5){float idx=floor(aInfo.y),t=fract(aInfo.y),ph=fract(idx*.618),head=fract(uTime*.2+ph)*1.5-.25,d=t-head;' +
+      'float tr=uPulse*smoothstep(-.22,0.,d)*(1.-smoothstep(0.,.025,d));float on=(uSel<0.||abs(aInfo.z-uSel)<.5)?1.:.22;' +
+      'vA=hid*on*(.6+.4*tr);vH=tr;gl_PointSize=(3.+3.*tr)*uDpr*u;}' +
+      'else{float on=(uSel<0.||abs(aInfo.z-uSel)<.5)?1.:.3;vA=(p.z>0.?1.:0.)*on;vR=fract(uTime*.55+aInfo.y*.37)*uPulse;vH=abs(aInfo.y-uHot)<.5?1.:0.;gl_PointSize=(30.+8.*vH)*uDpr*u;}}';
+    var FS = 'precision mediump float;uniform vec3 uLand,uAcc,uBg,uStrong;varying float vA,vK,vR,vH;' +
+      'void main(){vec2 c=gl_PointCoord*2.-1.;float r=length(c);if(vA<.003||r>1.)discard;vec3 col;float a;' +
+      'if(vK<.5){col=uLand;a=vA*(1.-smoothstep(.72,1.,r));}' +
+      'else if(vK<1.5){col=mix(uAcc,uStrong,vH*.3);a=vA*(1.-smoothstep(.7,1.,r));}' +
+      'else{float core=1.-smoothstep(.24,.31,r);float edge=1.-smoothstep(.31,.41,r);float ring=(1.-vR)*(1.-smoothstep(.0,.06,abs(r-mix(.32,.96,vR))))*.8;' +
+      'col=mix(uBg,uAcc,core);col=mix(col,uStrong,vH*core*.25);a=max(edge,ring*(1.-edge))*vA;col=mix(uAcc,col,edge);}' +
+      'gl_FragColor=vec4(col,a);}';
+    function compile(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+    if (gl) {
+      try {
+        prog = gl.createProgram(); gl.attachShader(prog, compile(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+        gl.useProgram(prog); buf = gl.createBuffer();
+        ['uRot', 'uScale', 'uDpr', 'uPx', 'uTime', 'uSel', 'uHot', 'uPulse', 'uPt', 'uLand', 'uAcc', 'uBg', 'uStrong'].forEach(function (n) { U[n] = gl.getUniformLocation(prog, n); });
+        gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      } catch (e) { console.warn('Globe : repli Canvas 2D', e); gl = null; }
+    }
+    var ctx = gl ? null : canvas.getContext('2d');
+    wrap.dataset.rendu = gl ? 'webgl' : '2d';
+
+    function upload() {
+      buildGeometry();
+      if (gl) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
+        var aP = gl.getAttribLocation(prog, 'aPos'), aI = gl.getAttribLocation(prog, 'aInfo');
+        gl.enableVertexAttribArray(aP); gl.vertexAttribPointer(aP, 3, gl.FLOAT, false, 24, 0);
+        gl.enableVertexAttribArray(aI); gl.vertexAttribPointer(aI, 3, gl.FLOAT, false, 24, 12);
+      }
+    }
+    function rot() {
+      var cy = Math.cos(st.yaw), sy = Math.sin(st.yaw), cp = Math.cos(st.pitch), sp = Math.sin(st.pitch);
+      /* R = Rx(pitch) · Ry(yaw), en colonnes pour WebGL */
+      return [cy, sp * sy, -cp * sy, 0, cp, sp, sy, -sp * cy, cp * cy];
+    }
+    function project(p, R) { var x = R[0] * p[0] + R[3] * p[1] + R[6] * p[2], y = R[1] * p[0] + R[4] * p[1] + R[7] * p[2], z = R[2] * p[0] + R[5] * p[1] + R[8] * p[2]; return [x, y, z]; }
+
+    function resize() {
+      var w = wrap.clientWidth; if (!w) return;
+      st.dpr = Math.min(2, window.devicePixelRatio || 1); st.size = w;
+      canvas.width = Math.round(w * st.dpr); canvas.height = Math.round(w * st.dpr);
+      if (gl) gl.viewport(0, 0, canvas.width, canvas.height);
+      draw();
+    }
+
+    function draw() {
+      var R = rot(), pulse = opts.pulses !== false && !reduce.matches ? 1 : 0, time = reduce.matches ? 0 : st.t;
+      if (gl) {
+        gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.uniformMatrix3fv(U.uRot, false, R); gl.uniform1f(U.uScale, SCALE); gl.uniform1f(U.uDpr, st.dpr); gl.uniform1f(U.uPx, st.size);
+        gl.uniform1f(U.uTime, time); gl.uniform1f(U.uSel, st.sel); gl.uniform1f(U.uHot, st.hot); gl.uniform1f(U.uPulse, pulse); gl.uniform1f(U.uPt, opts.point || 2.4);
+        gl.uniform3fv(U.uLand, col.land); gl.uniform3fv(U.uAcc, col.acc); gl.uniform3fv(U.uBg, col.bg); gl.uniform3fv(U.uStrong, col.strong);
+        gl.drawArrays(gl.POINTS, 0, verts.length / 6);
+        return;
+      }
+      /* Repli 2D : même projection orthographique, sans impulsions animées. */
+      var W = canvas.width, h = W / 2, k = h * SCALE, d = st.dpr * st.size / 560, css = function (c, a) { return 'rgba(' + Math.round(c[0] * 255) + ',' + Math.round(c[1] * 255) + ',' + Math.round(c[2] * 255) + ',' + a + ')'; };
+      ctx.clearRect(0, 0, W, W);
+      for (var i = 0; i < verts.length; i += 6) {
+        var p = project([verts[i], verts[i + 1], verts[i + 2]], R), kind = verts[i + 3], x = h + p[0] * k, y = h - p[1] * k;
+        if (kind === 0) { if (p[2] <= 0) continue; ctx.fillStyle = css(col.land, 0.3 + 0.7 * p[2]); var s = (opts.point || 2.4) * d * (0.75 + 0.45 * p[2]) * 0.8; ctx.fillRect(x - s / 2, y - s / 2, s, s); }
+        else if (kind === 1) { if (p[2] < 0 && Math.hypot(p[0], p[1]) < 1) continue; var on = st.sel < 0 || verts[i + 5] === st.sel; ctx.fillStyle = css(col.acc, on ? 0.45 : 0.12); ctx.fillRect(x - d, y - d, 2 * d, 2 * d); }
+        else { if (p[2] <= 0) continue; var on2 = st.sel < 0 || verts[i + 5] === st.sel, r = (verts[i + 4] === st.hot ? 5 : 4) * d; ctx.fillStyle = css(col.bg, on2 ? 1 : 0.3); ctx.beginPath(); ctx.arc(x, y, r + 1.5 * d, 0, TAU); ctx.fill(); ctx.fillStyle = css(col.acc, on2 ? 1 : 0.3); ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill(); }
+      }
+    }
+
+    function wrapPi(a) { return Math.atan2(Math.sin(a), Math.cos(a)); }
+    function frame(now) {
+      st.raf = 0; var dt = Math.min(0.05, (now - (st.last || now)) / 1000); st.last = now; st.t += dt;
+      var moving = false;
+      if (st.target && !st.drag) {
+        var k = 38, c = 2 * Math.sqrt(k) * 0.9, ey = wrapPi(st.target.yaw - st.yaw), ep = st.target.pitch - st.pitch;
+        st.vy += (k * ey - c * st.vy) * dt; st.vp += (k * ep - c * st.vp) * dt;
+        st.yaw += st.vy * dt; st.pitch += st.vp * dt;
+        moving = Math.abs(ey) > 0.0005 || Math.abs(st.vy) > 0.0005 || Math.abs(ep) > 0.0005;
+      } else if (!st.drag) {
+        var auto = st.hot >= 0 ? 0 : (opts.speed || 0) * Math.PI / 180;
+        st.vy += (auto - st.vy) * (1 - Math.exp(-dt * 1.6)); st.vp *= Math.exp(-dt * 3);
+        st.yaw += st.vy * dt; st.pitch = Math.max(-1.1, Math.min(1.1, st.pitch + st.vp * dt));
+        moving = Math.abs(st.vy) > 0.0005 || Math.abs(st.vp) > 0.0005;
+      }
+      draw(); if (cb.frame) cb.frame();
+      var pulsing = gl && opts.pulses !== false && !reduce.matches;
+      if (st.visible && !reduce.matches && (moving || pulsing || st.drag)) st.raf = requestAnimationFrame(frame);
+    }
+    function wake() { if (!st.raf && st.visible) { st.last = 0; st.raf = requestAnimationFrame(frame); } if (reduce.matches) draw(); }
+
+    /* Glisser pour tourner, avec inertie ; toucher vertical laissé au défilement (touch-action: pan-y). */
+    canvas.addEventListener('pointerdown', function (e) {
+      st.drag = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId, moved: 0 }; st.target = null; st.vy = st.vp = 0;
+      canvas.setPointerCapture(e.pointerId); wrap.classList.add('is-drag'); wake();
+    });
+    canvas.addEventListener('pointermove', function (e) {
+      var r = canvas.getBoundingClientRect();
+      if (st.drag && st.drag.id === e.pointerId) {
+        var now = performance.now(), dt = Math.max(1, now - st.drag.t) / 1000, R = r.width / 2 * SCALE;
+        var dy = (e.clientX - st.drag.x) / R, dp = (e.clientY - st.drag.y) / R;
+        st.yaw += dy; st.pitch = Math.max(-1.1, Math.min(1.1, st.pitch + dp));
+        st.vy = st.vy * 0.5 + (dy / dt) * 0.5; st.vp = st.vp * 0.5 + (dp / dt) * 0.5; st.drag.moved += Math.abs(dy) + Math.abs(dp);
+        st.drag.x = e.clientX; st.drag.y = e.clientY; st.drag.t = now; draw(); if (cb.frame) cb.frame();
+        return;
+      }
+      if (e.pointerType === 'mouse') pick(e.clientX - r.left, e.clientY - r.top);
+    });
+    function end(e) {
+      if (!st.drag || st.drag.id !== e.pointerId) return;
+      var tap = st.drag.moved < 0.02; st.drag = null; wrap.classList.remove('is-drag');
+      if (tap) { var r = canvas.getBoundingClientRect(); pick(e.clientX - r.left, e.clientY - r.top, true); }
+      wake();
+    }
+    canvas.addEventListener('pointerup', end); canvas.addEventListener('pointercancel', end);
+    canvas.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !st.drag) setHot(-1); });
+
+    function screenOf(ci) { var c = cities[ci], p = project(xyz(c.lat, c.lon), rot()), h = st.size / 2; return { x: h + p[0] * h * SCALE, y: h - p[1] * h * SCALE, z: p[2] }; }
+    function pick(x, y, tap) {
+      var best = -1, bd = tap ? 26 : 16;
+      cities.forEach(function (c, ci) { var s = screenOf(ci); if (s.z <= 0.05) return; var dd = Math.hypot(s.x - x, s.y - y); if (dd < bd) { bd = dd; best = ci; } });
+      if (best < 0 && tap) { setHot(-1); return; }
+      setHot(best);
+    }
+    function setHot(i) { if (st.hot === i) return; st.hot = i; canvas.style.cursor = i >= 0 ? 'pointer' : ''; if (cb.hot) cb.hot(i); wake(); }
+
+    function setRegion(i, center) {
+      st.sel = i; st.hot = -1; if (cb.hot) cb.hot(-1);
+      if (i >= 0 && center) {
+        var ty = -center[1] * Math.PI / 180, tp = center[0] * Math.PI / 180;
+        if (reduce.matches) { st.yaw = ty; st.pitch = tp; st.target = null; } else { st.target = { yaw: st.yaw + wrapPi(ty - st.yaw), pitch: tp }; }
+      } else st.target = null;
+      wake();
+    }
+
+    var io = new IntersectionObserver(function (en) { st.visible = en[0].isIntersecting; if (st.visible) wake(); });
+    io.observe(wrap);
+    var onVis = function () { st.visible = !document.hidden; if (st.visible) wake(); };
+    document.addEventListener('visibilitychange', onVis);
+    var ro = new ResizeObserver(resize); ro.observe(wrap);
+    var mo = new MutationObserver(function () { readColors(); wake(); draw(); });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'class', 'data-accent'] });
+    readColors(); upload(); resize(); wake();
+
+    return {
+      setRegion: setRegion, setHot: setHot, screenOf: screenOf, state: st, counts: function () { return counts; },
+      setOpts: function (o) { var geo = o.density !== opts.density || o.arcs !== opts.arcs; for (var k in o) opts[k] = o[k]; if (o.tilt !== undefined && !st.target && st.sel < 0) st.pitch = o.tilt * Math.PI / 180; if (geo) upload(); readColors(); wake(); draw(); },
+      destroy: function () { cancelAnimationFrame(st.raf); io.disconnect(); ro.disconnect(); mo.disconnect(); document.removeEventListener('visibilitychange', onVis); }
+    };
+  }
+/* /ENGINE */
+  var REGIONS = [
+    { nom: 'Europe', centre: [48, 10], clients: 18420, pays: 29 },
+    { nom: 'Amérique du Nord', centre: [40, -88], clients: 6210, pays: 2 },
+    { nom: 'Amérique latine', centre: [-8, -62], clients: 1590, pays: 7 },
+    { nom: 'Afrique et Moyen-Orient', centre: [14, 22], clients: 3340, pays: 12 },
+    { nom: 'Asie-Pacifique', centre: [12, 118], clients: 4870, pays: 14 },
+  ];
+  var CITIES = [
+    { nom: 'Paris', lat: 48.86, lon: 2.35, region: 0, clients: 7240, note: 'Siège · 21 % des clients' },
+    { nom: 'Berlin', lat: 52.52, lon: 13.4, region: 0, clients: 2140, note: '+18 % sur un an' },
+    { nom: 'Madrid', lat: 40.42, lon: -3.7, region: 0, clients: 1630, note: '+11 % sur un an' },
+    { nom: 'Stockholm', lat: 59.33, lon: 18.07, region: 0, clients: 860, note: '+24 % sur un an' },
+    { nom: 'Milan', lat: 45.46, lon: 9.19, region: 0, clients: 1270, note: '+9 % sur un an' },
+    { nom: 'Montréal', lat: 45.5, lon: -73.57, region: 1, clients: 1840, note: '+22 % sur un an' },
+    { nom: 'New York', lat: 40.71, lon: -74.0, region: 1, clients: 2650, note: '+35 % sur un an' },
+    { nom: 'San Francisco', lat: 37.77, lon: -122.42, region: 1, clients: 1720, note: '+33 % sur un an' },
+    { nom: 'São Paulo', lat: -23.55, lon: -46.63, region: 2, clients: 940, note: '+21 % sur un an' },
+    { nom: 'Mexico', lat: 19.43, lon: -99.13, region: 2, clients: 650, note: '+16 % sur un an' },
+    { nom: 'Casablanca', lat: 33.57, lon: -7.59, region: 3, clients: 1380, note: '+29 % sur un an' },
+    { nom: 'Dakar', lat: 14.72, lon: -17.47, region: 3, clients: 520, note: '+38 % sur un an' },
+    { nom: 'Dubaï', lat: 25.2, lon: 55.27, region: 3, clients: 990, note: '+24 % sur un an' },
+    { nom: 'Nairobi', lat: -1.29, lon: 36.82, region: 3, clients: 450, note: '+41 % sur un an' },
+    { nom: 'Singapour', lat: 1.35, lon: 103.82, region: 4, clients: 1610, note: '+44 % sur un an' },
+    { nom: 'Tokyo', lat: 35.68, lon: 139.69, region: 4, clients: 1350, note: '+37 % sur un an' },
+    { nom: 'Sydney', lat: -33.87, lon: 151.21, region: 4, clients: 1080, note: '+40 % sur un an' },
+    { nom: 'Bombay', lat: 19.08, lon: 72.88, region: 4, clients: 830, note: '+52 % sur un an' },
+  ];
+  var nf = new Intl.NumberFormat('fr-FR');
+
+  document.querySelectorAll('[data-globe-clients]').forEach(function (root) {
+    if (root._gc) return;
+    var wrap = root.querySelector('[data-globe]'), canvas = root.querySelector('[data-canvas]'), tip = root.querySelector('[data-tip]'), chip = root.querySelector('[data-chip]');
+    var btns = [].slice.call(root.querySelectorAll('[data-r]')), pinned = -1, hot = -1;
+    root.querySelector('[data-table]').innerHTML = CITIES.map(function (c) { return '<tr><td>' + c.nom + '</td><td>' + REGIONS[c.region].nom + '</td><td>' + nf.format(c.clients) + '</td></tr>'; }).join('');
+
+    function opts() {
+      return { cities: CITIES, speed: Number(root.dataset.vitesse) || 0, tilt: Number(root.dataset.inclinaison) || 0, density: Number(root.dataset.densite) || 14000,
+        arcs: root.dataset.arcs !== 'false', pulses: root.dataset.impulsions !== 'false', point: 3 };
+    }
+    function placeTip(follow) {
+      if (hot < 0) return;
+      var s = globe.screenOf(hot), tw = tip.offsetWidth, th = tip.offsetHeight, W = wrap.clientWidth;
+      if (s.z <= 0.02) { tip.classList.remove('is-on'); return; }
+      tip.classList.toggle('is-follow', !!follow);
+      tip.style.setProperty('--x', Math.max(0, Math.min(W - tw, s.x - tw / 2)).toFixed(1) + 'px');
+      tip.style.setProperty('--y', Math.max(0, s.y - th - 18).toFixed(1) + 'px');
+      tip.classList.add('is-on');
+    }
+    var globe = createGlobe(wrap, canvas, opts(), {
+      hot: function (i) {
+        hot = i;
+        if (i < 0) { tip.classList.remove('is-on'); return; }
+        var c = CITIES[i];
+        tip.querySelector('[data-tip-a]').textContent = c.nom;
+        tip.querySelector('[data-tip-b]').textContent = nf.format(c.clients) + ' clients · ' + c.note;
+        tip.classList.remove('is-follow'); placeTip(false);
+      },
+      frame: function () { if (hot >= 0) placeTip(true); }
+    });
+
+    function select(i, pin) {
+      if (pin !== undefined) pinned = pin ? i : -1;
+      btns.forEach(function (b) { var on = Number(b.dataset.r) === i; b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', String(pinned >= 0 && Number(b.dataset.r) === pinned)); });
+      if (i >= 0) {
+        var r = REGIONS[i];
+        chip.innerHTML = '<b>' + r.nom + '</b> · ' + nf.format(r.clients) + ' clients · ' + r.pays + ' pays';
+        chip.classList.add('is-on');
+        globe.setRegion(i, r.centre);
+      } else { chip.classList.remove('is-on'); globe.setRegion(-1); }
+    }
+    btns.forEach(function (b) {
+      var i = Number(b.dataset.r);
+      b.addEventListener('click', function () { if (pinned === i) select(-1, false); else select(i, true); });
+      b.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && pinned < 0) select(i); });
+      b.addEventListener('focus', function () { if (pinned < 0 && b.matches(':focus-visible')) select(i); });
+    });
+    root.querySelector('[data-regions]').addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && pinned < 0) select(-1); });
+    root.querySelector('[data-regions]').addEventListener('focusout', function (e) { if (pinned < 0 && !e.currentTarget.contains(e.relatedTarget)) select(-1); });
+    root.addEventListener('keydown', function (e) { if (e.key === 'Escape') { select(-1, false); } });
+
+    var start = Number(root.dataset.region);
+    if (start >= 0) select(start, true);
+    root._gc = {
+      update: function () { globe.setOpts(opts()); var r = Number(root.dataset.region); if (r !== pinned) select(r, r >= 0); },
+      select: select, hover: function (i) { globe.setHot(i); },
+      screen: function (i) { var s = globe.screenOf(i), r = canvas.getBoundingClientRect(); return [r.left + s.x, r.top + s.y, s.z]; },
+      rendu: function () { return wrap.dataset.rendu; }
+    };
+  });
+})();
+</script>

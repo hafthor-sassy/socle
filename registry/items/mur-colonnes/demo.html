@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mur en colonnes — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'miel');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>.stage { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; } .is-thumb .mc { padding: 40px; }</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ vitesse: 28, ralenti: 15, sens: 'alterne', colonnes: 3, masque: true, hauteur: 640 });
+  var root = null, lastCols = null;
+  function apply(p) {
+    if (!root) return;
+    root.dataset.speed = String(p.vitesse);
+    root.dataset.slow = String(p.ralenti / 100);
+    root.dataset.dir = p.sens;
+    root.dataset.cols = String(p.colonnes);
+    root.dataset.mask = String(!!p.masque);
+    root.style.setProperty('--mc-h', p.hauteur + 'px');
+    if (root._mur) { if (lastCols !== p.colonnes) root._mur.refresh(); else root._mur.setDir(); }
+    lastCols = p.colonnes;
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-mur-colonnes]');
+    if (Socle.thumb) props.hauteur = 520;
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    lastCols = props.colonnes;
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (root && root._mur) root._mur.nudge(-260); });
+</script>
+</body>
+</html>

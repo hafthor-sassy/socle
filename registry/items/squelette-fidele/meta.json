@@ -1,0 +1,183 @@
+{
+  "id": "squelette-fidele",
+  "nom": "Squelette fidèle",
+  "categorie": "chargements",
+  "niveau": "essentiel",
+  "ordre": 1,
+  "description": "Des squelettes qui sont la vraie mise en page : chaque texte, montant, icône ou barre devient un bloc de sa taille exacte, le reflet traverse toute la page d’un seul geste, puis le contenu arrive en cascade sans le moindre décalage. États chargement, contenu, vide et erreur. Démo : le tableau de bord d’une banque en ligne.",
+  "tags": [
+    "Squelette",
+    "Chargement",
+    "Tableau de bord",
+    "États",
+    "Sans décalage (CLS 0)",
+    "Accessible",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "difficulte": 1,
+  "technique": "Attribut [data-sk] sur les vrais éléments : pseudo-élément ::after couvrant la boîte, texte transparent ; reflet en background-attachment: fixed (une seule bande alignée sur l’écran) ; cascade par transition-delay de groupe ; barres du graphique qui poussent avec une courbe ressort",
+  "poids": "≈ 1 Ko gzip de CSS pour le squelette, aucune dépendance",
+  "palette": "sauge",
+  "thumb": {
+    "width": 1180
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces (--raised pour le bloc, mélange --border / --surface pour le reflet), teintes vert et rouge pour les états"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React : SkeletonScope et Sk"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React (darkMode: 'class')"
+    }
+  ],
+  "props": [
+    {
+      "name": "etat",
+      "label": "État",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "chargement",
+          "label": "Chargement"
+        },
+        {
+          "value": "contenu",
+          "label": "Contenu"
+        },
+        {
+          "value": "vide",
+          "label": "Vide"
+        },
+        {
+          "value": "erreur",
+          "label": "Erreur"
+        }
+      ],
+      "hint": "Auto : chargement pendant le délai, puis contenu. Vide : nouveau compte sans opération. Erreur : bandeau et bouton Réessayer.",
+      "code": {
+        "react": "state=\"{v}\""
+      }
+    },
+    {
+      "name": "delai",
+      "label": "Délai simulé",
+      "type": "number",
+      "default": 1800,
+      "min": 300,
+      "max": 5000,
+      "step": 100,
+      "unit": "ms",
+      "code": {
+        "react": "delay={{v}}"
+      }
+    },
+    {
+      "name": "reflet",
+      "label": "Reflet",
+      "type": "select",
+      "default": "sweep",
+      "options": [
+        {
+          "value": "sweep",
+          "label": "Balayage"
+        },
+        {
+          "value": "pulse",
+          "label": "Pulsation"
+        },
+        {
+          "value": "none",
+          "label": "Aucun"
+        }
+      ],
+      "hint": "Le balayage est synchronisé sur toute la page : une seule bande, pas un reflet par bloc.",
+      "code": {
+        "html": "data-shimmer=\"{v}\"",
+        "react": "shimmer=\"{v}\""
+      }
+    },
+    {
+      "name": "vitesse",
+      "label": "Durée du reflet",
+      "type": "number",
+      "default": 1.6,
+      "min": 0.8,
+      "max": 3,
+      "step": 0.1,
+      "unit": "s",
+      "code": {
+        "html": "data-speed=\"{v}\"",
+        "react": "speed={{v}}"
+      }
+    },
+    {
+      "name": "arrivee",
+      "label": "Arrivée du contenu",
+      "type": "select",
+      "default": "cascade",
+      "options": [
+        {
+          "value": "cascade",
+          "label": "En cascade"
+        },
+        {
+          "value": "together",
+          "label": "D’un bloc"
+        }
+      ],
+      "hint": "Cascade : 70 ms entre groupes, du solde vers la liste.",
+      "code": {
+        "html": "data-arrival=\"{v}\"",
+        "react": "arrival=\"{v}\""
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/SkeletonScope.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour tout écran dont la structure est connue avant les données : tableau de bord, fiche, liste, profil. Le squelette ne s’invente pas, il se déduit du vrai gabarit.",
+    "Rendez la vraie mise en page avec des valeurs fictives de même longueur (ou les dernières valeurs en cache), ajoutez data-sk aux éléments chargés et data-sk-group pour l’ordre d’arrivée ; data-sk=\"box\" ou \"round\" reprend le rayon de l’élément.",
+    "HTML : el.skeleton.load(fetch(…)) affiche le squelette jusqu’à la réponse (erreur si la promesse échoue) ; el.skeleton.set('empty') pour l’état vide.",
+    "React : <SkeletonScope state={status}> autour du gabarit, et <Sk group={2}> sur chaque élément chargé. PeculeDashboard montre les quatre états.",
+    "Sous 300 ms, n’affichez rien : un squelette qui clignote est pire qu’une attente."
+  ],
+  "accessibilite": [
+    "Pendant le chargement, le conteneur est aria-busy et le contenu factice est masqué aux lecteurs d’écran (aria-hidden) ; une région role=\"status\" annonce « Chargement de vos comptes… » puis « Comptes à jour ».",
+    "L’erreur est annoncée (role=\"alert\") avec un bouton Réessayer de 44 px ; l’état vide propose une action.",
+    "Contraste : le bloc de squelette est décoratif ; tout le texte final respecte AA en clair et en sombre (montants positifs en --up).",
+    "Avec « réduire les animations » : ni reflet, ni pulsation, ni cascade, ni compteur ; le contenu remplace le squelette d’un coup."
+  ],
+  "logo_exemple": {
+    "nom": "Pécule",
+    "secteur": "Banque en ligne",
+    "fichier": "logo.svg",
+    "palette": "sauge",
+    "typo": "Geist SemiBold"
+  }
+}

@@ -1,0 +1,300 @@
+<!-- Transitions de page natives — HTML + CSS + JS, sans bibliothèque. Nécessite tokens.css.
+     View Transitions API (document.startViewTransition) : la photo et le nom du produit passent
+     d'une page à l'autre, le reste glisse ou se fond. Sans l'API, la page change instantanément (repli invisible).
+     Balisage : un conteneur [data-vt] ; des pages [data-vt-page] ; des liens [data-vt-to="id"] ; [data-vt-back].
+     Réglages : data-duration (ms), data-ease (emphase | ressort | douce), data-style (glisse | fondu | profondeur), data-shared (true | false).
+     API : el.vt.go('id' | 'list', declencheur?) ; événement « vt:change » (detail.page). -->
+<link rel="stylesheet" href="tokens.css">
+
+<style>
+/* ---------- Mise en page ---------- */
+.ou { container: ou / inline-size; --ou-dark: var(--text-strong); --ou-gap: 24px; max-width: 1120px; margin: 0 auto; font-family: var(--font-sans); color: var(--text); }
+.dark .ou { --ou-dark: var(--bg); }
+.ou *, .ou *::before, .ou *::after { box-sizing: border-box; }
+.ou__bar { display: flex; align-items: center; gap: 24px; height: 64px; padding: 0 4px; border-bottom: 1px solid var(--border); }
+.ou__brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--text-strong); text-decoration: none; font-weight: 600; font-size: 17px; letter-spacing: -0.02em; border-radius: 8px; }
+.ou__brand svg { width: 28px; height: 28px; flex: none; }
+.ou__nav { display: flex; gap: 4px; margin-right: auto; }
+.ou__nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 14px; }
+.ou__nav a:hover { color: var(--text-strong); background: var(--state-hover); }
+.ou__nav a[aria-current] { color: var(--text-strong); }
+.ou__cart { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-strong); font: 500 14px/1 var(--font-sans); cursor: pointer; }
+.ou__cart:hover { background: var(--raised); }
+.ou__cart-n { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: 600 12px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+.ou__cart-n.is-bump { animation: ou-bump 520ms linear(0, 0.029, 0.09, 0.183, 0.291, 0.403, 0.502, 0.606, 0.701, 0.775, 0.846, 0.905, 0.947, 0.984, 1.011, 1.028, 1.041, 1.048, 1.051, 1.05, 1.047, 1.043, 1.038, 1.033, 1.027, 1.021, 1.017, 1.013, 1.009, 1.006, 1.003, 1); }
+@keyframes ou-bump { 0% { transform: scale(.6); } 100% { transform: scale(1); } }
+
+.ou__view { view-transition-name: ou-view; padding: 40px 4px 48px; }
+.ou__page[hidden] { display: none; }
+
+/* ---------- Liste ---------- */
+.ou__head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+.ou__eyebrow { margin: 0 0 8px; color: var(--text-muted); font: 500 13px/1.4 var(--font-mono); letter-spacing: 0.02em; text-transform: uppercase; }
+.ou__h1 { margin: 0; color: var(--text-strong); font-size: clamp(32px, 4.2vw, 52px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance; }
+.ou [tabindex="-1"]:focus { outline: none; }
+.ou__sub { margin: 0; max-width: 34ch; color: var(--text-muted); font-size: 15px; line-height: 1.5; }
+.ou__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ou-gap); }
+.ou__card { display: block; color: inherit; text-decoration: none; border-radius: 16px; }
+.ou__card:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 4px; }
+.ou__ph { position: relative; margin: 0; aspect-ratio: 4 / 5; border-radius: 16px; overflow: hidden; background: var(--ou-bg); }
+.ou__ph svg { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform 600ms cubic-bezier(.2, 0, 0, 1); }
+.ou__card:hover .ou__ph svg { transform: scale(1.04) translateY(-1.5%); }
+.ou__tag { position: absolute; left: 12px; top: 12px; z-index: 1; padding: 4px 10px; border-radius: 999px; background: var(--surface); color: var(--text-strong); font: 500 12px/18px var(--font-sans); }
+.ou__meta { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 14px 2px 0; }
+.ou__name { margin: 0; width: fit-content; color: var(--text-strong); font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+.ou__price { color: var(--text-strong); font: 500 15px/1.4 var(--font-sans); font-variant-numeric: tabular-nums; }
+.ou__color { grid-column: 1 / -1; color: var(--text-muted); font-size: 14px; }
+
+/* ---------- Fiche ---------- */
+.ou__detail { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.ou__back { grid-column: 1 / -1; justify-self: start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin: -16px 0 -24px -12px; padding: 0 12px; border: 0; border-radius: 8px; background: none; color: var(--text-muted); font: 500 14px/1 var(--font-sans); cursor: pointer; }
+.ou__back:hover { color: var(--text-strong); background: var(--state-hover); }
+.ou__detail .ou__ph { aspect-ratio: 4 / 5; border-radius: 16px; }
+.ou__detail .ou__name { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 600; }
+.ou__dprice { margin: 12px 0 0; color: var(--text-strong); font: 500 18px/1.4 var(--font-sans); font-variant-numeric: tabular-nums; }
+.ou__desc { margin: 20px 0 0; max-width: 46ch; color: var(--text); font-size: 15px; line-height: 1.6; }
+.ou__fs { margin: 28px 0 0; padding: 0; border: 0; }
+.ou__legend { display: flex; justify-content: space-between; width: 100%; margin-bottom: 10px; padding: 0; color: var(--text-strong); font-size: 14px; font-weight: 500; }
+.ou__legend span { color: var(--text-muted); font-weight: 400; }
+.ou__sizes { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.ou__size { position: relative; }
+.ou__size input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.ou__size span { display: grid; place-items: center; height: 48px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text-strong); font: 500 14px/1 var(--font-mono); transition: border-color 160ms, background-color 160ms, color 160ms; }
+.ou__size input:hover + span { border-color: var(--border-strong); }
+.ou__size input:checked + span { border-color: var(--text-strong); box-shadow: inset 0 0 0 1px var(--text-strong); }
+.ou__size input:focus-visible + span { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 2px; }
+.ou__size input:disabled + span { color: var(--text-disabled); background: var(--raised); text-decoration: line-through; }
+.ou__size input:disabled { cursor: not-allowed; }
+.ou__add { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; height: 52px; margin-top: 16px; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: 600 15px/1 var(--font-sans); cursor: pointer; transition: background-color 160ms, transform 160ms; }
+.ou__add:hover { background: var(--accent-hover); }
+.ou__add:active { transform: scale(.985); }
+.ou__specs { margin: 28px 0 0; padding: 0; border-top: 1px solid var(--border); }
+.ou__specs div { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.ou__specs dt { color: var(--text-muted); }
+.ou__specs dd { margin: 0; color: var(--text); }
+.ou__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@container ou (max-width: 900px) { .ou__meta { grid-template-columns: 1fr; } .ou__name, .ou__price { font-size: 14px; } }
+
+/* ---------- Mobile : vraie mise en page téléphone ---------- */
+@media (max-width: 719px) {
+  .ou { --ou-gap: 12px; }
+  .ou__bar { gap: 8px; height: 56px; }
+  .ou__nav { display: none; }
+  .ou__brand { margin-right: auto; }
+  .ou__view { padding: 24px 0 32px; }
+  .ou__head { display: block; margin-bottom: 20px; }
+  .ou__sub { margin-top: 12px; }
+  .ou__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 20px; }
+  .ou__ph { border-radius: 12px; }
+  .ou__meta { grid-template-columns: 1fr; padding-top: 10px; }
+  .ou__name, .ou__price { font-size: 14px; }
+  .ou__color { display: none; }
+  .ou__detail { grid-template-columns: 1fr; gap: 20px; }
+  .ou__detail .ou__ph { aspect-ratio: 1 / 1; border-radius: 12px; }
+  .ou__back { margin: -12px 0 -8px -12px; }
+  .ou__sizes { gap: 6px; }
+  .ou__specs div { grid-template-columns: 104px 1fr; }
+}
+
+/* ---------- Transitions (pseudo-éléments sur <html>) ---------- */
+::view-transition-group(*) { animation-duration: var(--ou-vt-dur, 420ms); animation-timing-function: var(--ou-vt-ease, cubic-bezier(.2, 0, 0, 1)); }
+::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+::view-transition-old(ou-view), ::view-transition-new(ou-view) { animation-duration: var(--ou-vt-dur, 420ms); animation-timing-function: cubic-bezier(.2, 0, 0, 1); animation-fill-mode: both; }
+/* La photo garde ses proportions pendant le voyage. */
+::view-transition-old(ou-img), ::view-transition-new(ou-img) { height: 100%; width: 100%; object-fit: cover; animation-duration: var(--ou-vt-dur, 420ms); }
+::view-transition-old(ou-title), ::view-transition-new(ou-title) { height: 100%; width: auto; object-fit: none; object-position: left top; }
+html[data-ou-style="glisse"][data-ou-dir="fwd"]::view-transition-old(ou-view) { animation-name: ou-out-left; }
+html[data-ou-style="glisse"][data-ou-dir="fwd"]::view-transition-new(ou-view) { animation-name: ou-in-right; }
+html[data-ou-style="glisse"][data-ou-dir="back"]::view-transition-old(ou-view) { animation-name: ou-out-right; }
+html[data-ou-style="glisse"][data-ou-dir="back"]::view-transition-new(ou-view) { animation-name: ou-in-left; }
+html[data-ou-style="profondeur"][data-ou-dir="fwd"]::view-transition-old(ou-view) { animation-name: ou-sink; }
+html[data-ou-style="profondeur"][data-ou-dir="fwd"]::view-transition-new(ou-view) { animation-name: ou-rise; }
+html[data-ou-style="profondeur"][data-ou-dir="back"]::view-transition-old(ou-view) { animation-name: ou-fade-out; }
+html[data-ou-style="profondeur"][data-ou-dir="back"]::view-transition-new(ou-view) { animation-name: ou-unsink; }
+html[data-ou-style="fondu"]::view-transition-old(ou-view) { animation-name: ou-fade-out; }
+html[data-ou-style="fondu"]::view-transition-new(ou-view) { animation-name: ou-fade-in; }
+@keyframes ou-out-left { to { opacity: 0; transform: translateX(-48px); } }
+@keyframes ou-in-right { from { opacity: 0; transform: translateX(48px); } }
+@keyframes ou-out-right { to { opacity: 0; transform: translateX(48px); } }
+@keyframes ou-in-left { from { opacity: 0; transform: translateX(-48px); } }
+@keyframes ou-sink { to { opacity: 0; transform: scale(.94); filter: blur(4px); } }
+@keyframes ou-rise { from { opacity: 0; transform: translateY(24px); } }
+@keyframes ou-unsink { from { opacity: 0; transform: scale(.94); filter: blur(4px); } }
+@keyframes ou-fade-out { to { opacity: 0; } }
+@keyframes ou-fade-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  .ou__ph svg, .ou__cart-n.is-bump { transition: none; animation: none; }
+}
+</style>
+
+<!-- SECTION -->
+<div class="ou" data-vt data-duration="420" data-ease="emphase" data-style="glisse" data-shared="true">
+  <header class="ou__bar">
+    <a class="ou__brand" href="#ou-liste" data-vt-back aria-label="Ourlet, accueil">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M20 0H64L100 36V80A20 20 0 0 1 80 100H20A20 20 0 0 1 0 80V20A20 20 0 0 1 20 0Z" style="fill:var(--accent)"/><path d="M64 0L100 36H74A10 10 0 0 1 64 26Z" style="fill:var(--accent-fg)" opacity=".5"/><path d="M18 72H82" style="stroke:var(--accent-fg)" stroke-width="6" stroke-linecap="round" stroke-dasharray="6 8" fill="none"/></svg>
+      Ourlet
+    </a>
+    <nav class="ou__nav" aria-label="Rayons">
+      <a href="#ou-liste" aria-current="page">Été</a><a href="#ou-liste">Maille</a><a href="#ou-liste">Journal</a>
+    </nav>
+    <button class="ou__cart" type="button" aria-label="Panier, 0 article" data-vt-cart>Panier <span class="ou__cart-n" aria-hidden="true">0</span></button>
+  </header>
+
+  <main class="ou__view" id="ou-liste">
+    <section class="ou__page" data-vt-page="list" aria-labelledby="ou-h-list">
+      <div class="ou__head">
+        <div>
+          <p class="ou__eyebrow">Collection été · 4 pièces</p>
+          <h2 class="ou__h1" id="ou-h-list" tabindex="-1">Le lin, coupé large.</h2>
+        </div>
+        <p class="ou__sub">Des pièces tissées en Normandie, lavées à la pierre et cousues dans notre atelier de Roubaix.</p>
+      </div>
+      <ul class="ou__grid" data-vt-grid></ul>
+    </section>
+
+    <section class="ou__page ou__detail" data-vt-page="detail" aria-labelledby="ou-h-detail" hidden>
+      <button class="ou__back" type="button" data-vt-back><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Toute la collection</button>
+
+      <figure class="ou__ph" data-vt-dimg></figure>
+      <div>
+        <h2 class="ou__name" id="ou-h-detail" tabindex="-1" data-vt-dname></h2>
+        <p class="ou__dprice" data-vt-dprice></p>
+        <p class="ou__desc" data-vt-ddesc></p>
+        <fieldset class="ou__fs">
+          <legend class="ou__legend">Taille <span>Guide des tailles</span></legend>
+          <div class="ou__sizes" data-vt-sizes></div>
+        </fieldset>
+        <button class="ou__add" type="button" data-vt-add>Ajouter au panier</button>
+        <dl class="ou__specs" data-vt-specs></dl>
+      </div>
+    </section>
+  </main>
+  <p class="ou__sr" aria-live="polite" data-vt-live></p>
+</div>
+<!-- /SECTION -->
+
+<script>
+(function () {
+  /* Catalogue d'exemple : remplacez par vos données. Les illustrations ne prennent que des variables de tokens.css. */
+  var G = {
+    veste: '<path d="M70 54L44 72l-10 92 24 4 8-64z" style="fill:var(--ou-sh)"/><path d="M130 54l26 18 10 92-24 4-8-64z" style="fill:var(--ou-sh)"/><path d="M70 54l30-10 30 10 4 160H66z" style="fill:var(--ou-c)"/><path d="M88 48h24l-12 72z" style="fill:var(--ou-c2)" opacity=".35"/><path d="M88 48l-8 8 14 44 6 20zM112 48l8 8-14 44-6 20z" style="fill:var(--ou-sh)"/><path d="M100 120v94" style="stroke:var(--ou-sh)" stroke-width="2"/><circle cx="104" cy="140" r="3" style="fill:var(--ou-c2)"/><circle cx="104" cy="166" r="3" style="fill:var(--ou-c2)"/><rect x="72" y="152" width="20" height="24" rx="3" fill="none" style="stroke:var(--ou-sh)" stroke-width="2"/><rect x="108" y="152" width="20" height="24" rx="3" fill="none" style="stroke:var(--ou-sh)" stroke-width="2"/>',
+    chemise: '<path d="M74 52L46 72l-8 84 22 4 8-56z" style="fill:var(--ou-sh)"/><path d="M126 52l28 20 8 84-22 4-8-56z" style="fill:var(--ou-sh)"/><path d="M74 52l26-8 26 8 6 162H68z" style="fill:var(--ou-c)"/><path d="M84 47l16 13-8 14-12-20zM116 47l-16 13 8 14 12-20z" style="fill:var(--ou-sh)"/><path d="M100 60v154" style="stroke:var(--ou-sh)" stroke-width="2"/><circle cx="100" cy="88" r="2.5" style="fill:var(--ou-c2)"/><circle cx="100" cy="114" r="2.5" style="fill:var(--ou-c2)"/><circle cx="100" cy="140" r="2.5" style="fill:var(--ou-c2)"/><circle cx="100" cy="166" r="2.5" style="fill:var(--ou-c2)"/><path d="M110 86h18v16a3 3 0 0 1-3 3h-12a3 3 0 0 1-3-3z" fill="none" style="stroke:var(--ou-sh)" stroke-width="2"/><path d="M38 156l22 4M162 156l-22 4" style="stroke:var(--ou-c2)" stroke-width="3" opacity=".35"/>',
+    pantalon: '<path d="M68 44h64l8 170h-32l-8-116-8 116H60z" style="fill:var(--ou-c)"/><path d="M100 98l-8 116h-6l10-118zM100 98l8 116h6l-10-118z" style="fill:var(--ou-sh)"/><path d="M68 44h64v12H68z" style="fill:var(--ou-sh)"/><path d="M80 44v12M120 44v12" style="stroke:var(--ou-c2)" stroke-width="2" opacity=".5"/><path d="M100 56v36" style="stroke:var(--ou-sh)" stroke-width="2"/><path d="M84 58v40M116 58v40" style="stroke:var(--ou-sh)" stroke-width="1.5"/><path d="M70 60q6 20 16 22M130 60q-6 20-16 22" fill="none" style="stroke:var(--ou-sh)" stroke-width="2"/>',
+    pull: '<path d="M68 54L44 72l-10 94 24 4 8-64z" style="fill:var(--ou-sh)"/><path d="M132 54l24 18 10 94-24 4-8-64z" style="fill:var(--ou-sh)"/><path d="M68 54q32-14 64 0l2 150H66z" style="fill:var(--ou-c)"/><path d="M82 49q18 14 36 0" fill="none" style="stroke:var(--ou-sh)" stroke-width="7" stroke-linecap="round"/><path d="M66 196h68v10H66zM34 160l24 4-1 9-24-4zM166 160l-24 4 1 9 24-4z" style="fill:var(--ou-sh)"/><path d="M76 196v10M86 196v10M96 196v10M106 196v10M116 196v10M126 196v10" style="stroke:var(--ou-c)" stroke-width="1.5" opacity=".6"/>'
+  };
+  var PRODUCTS = [
+    { id: 'veste', name: 'Veste Rivage', price: '189\u00a0€', color: 'Lin terre cuite', tag: 'Nouveau', bg: 'var(--accent-subtle)', c: 'var(--accent)', c2: 'var(--accent-fg)',
+      desc: 'Veste de travail déstructurée en lin lavé, épaules tombantes et trois poches plaquées. Elle se porte ouverte sur un t-shirt ou fermée comme une surchemise.',
+      sizes: ['XS', 'S', 'M', 'L', 'XL'], out: ['XS'], specs: [['Composition', '100 % lin, tissé en Normandie'], ['Coupe', 'Ample, prendre sa taille habituelle'], ['Livraison', 'Offerte dès 120 €, sous 48 h']] },
+    { id: 'chemise', name: 'Chemise Écume', price: '119\u00a0€', color: 'Gris ardoise', tag: '', bg: 'var(--raised)', c: 'color-mix(in oklab, var(--text-strong) 82%, var(--bg))', c2: 'var(--bg)',
+      desc: 'Chemise oversize au col cubain, en voile de lin très léger. Coutures anglaises et boutons en corozo.',
+      sizes: ['XS', 'S', 'M', 'L', 'XL'], out: [], specs: [['Composition', '100 % lin, 140 g/m²'], ['Coupe', 'Oversize, prendre une taille en dessous'], ['Livraison', 'Offerte dès 120 €, sous 48 h']] },
+    { id: 'pantalon', name: 'Pantalon Grève', price: '139\u00a0€', color: 'Sable', tag: '', bg: 'color-mix(in oklab, var(--accent-subtle) 55%, var(--raised))', c: 'var(--border-strong)', c2: 'var(--surface)',
+      desc: 'Pantalon large à pinces, taille haute et ceinture élastiquée au dos. Tombé fluide, longueur cheville.',
+      sizes: ['34', '36', '38', '40', '42'], out: ['42'], specs: [['Composition', '55 % lin, 45 % coton bio'], ['Coupe', 'Large, taille haute'], ['Livraison', 'Offerte dès 120 €, sous 48 h']] },
+    { id: 'pull', name: 'Pull Marée', price: '149\u00a0€', color: 'Encre', tag: 'Dernières pièces', bg: 'var(--tint-neutral-bg)', c: 'var(--accent-hover)', c2: 'var(--accent-fg)',
+      desc: 'Pull col rond en maille de lin et coton, point mousse aux finitions. Frais le jour, assez chaud le soir.',
+      sizes: ['XS', 'S', 'M', 'L', 'XL'], out: ['XS', 'XL'], specs: [['Composition', '60 % lin, 40 % coton'], ['Coupe', 'Droite, légèrement courte'], ['Livraison', 'Offerte dès 120 €, sous 48 h']] }
+  ];
+  var EASE = {
+    emphase: 'cubic-bezier(.2, 0, 0, 1)',
+    douce: 'cubic-bezier(.4, 0, .2, 1)',
+    ressort: 'linear(0, 0.029, 0.09, 0.183, 0.291, 0.403, 0.502, 0.606, 0.701, 0.775, 0.846, 0.905, 0.947, 0.984, 1.011, 1.028, 1.041, 1.048, 1.051, 1.05, 1.047, 1.043, 1.038, 1.033, 1.027, 1.021, 1.017, 1.013, 1.009, 1.006, 1.003, 1)'
+  };
+  function art(p) {
+    return '<svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid meet" aria-hidden="true" style="--ou-c:' + p.c + ';--ou-c2:' + p.c2 + ';--ou-sh:color-mix(in oklab, var(--ou-c) 74%, var(--ou-dark))">' +
+      '<ellipse cx="100" cy="226" rx="62" ry="6" style="fill:var(--ou-dark)" opacity=".1"/><g transform="translate(0 4)">' + G[p.id] + '</g></svg>';
+  }
+
+  document.querySelectorAll('[data-vt]').forEach(function (root) {
+    if (root.vt) return;
+    var html = document.documentElement;
+    var grid = root.querySelector('[data-vt-grid]');
+    var pages = { list: root.querySelector('[data-vt-page="list"]'), detail: root.querySelector('[data-vt-page="detail"]') };
+    var dimg = root.querySelector('[data-vt-dimg]'), dname = root.querySelector('[data-vt-dname]');
+    var live = root.querySelector('[data-vt-live]');
+    var cartN = root.querySelector('.ou__cart-n'), cartBtn = root.querySelector('[data-vt-cart]');
+    var current = 'list', lastTrigger = null, busy = null, cart = 0;
+
+    grid.innerHTML = PRODUCTS.map(function (p) {
+      return '<li><a class="ou__card" href="#' + p.id + '" data-vt-to="' + p.id + '">' +
+        '<figure class="ou__ph" style="--ou-bg:' + p.bg + '">' + (p.tag ? '<span class="ou__tag">' + p.tag + '</span>' : '') + art(p) + '</figure>' +
+        '<div class="ou__meta"><p class="ou__name">' + p.name + '</p><span class="ou__price">' + p.price + '</span><span class="ou__color">' + p.color + '</span></div></a></li>';
+    }).join('');
+
+    function fill(p) {
+      dimg.style.setProperty('--ou-bg', p.bg);
+      dimg.innerHTML = art(p);
+      dname.textContent = p.name;
+      root.querySelector('[data-vt-dprice]').textContent = p.price + ' · ' + p.color;
+      root.querySelector('[data-vt-ddesc]').textContent = p.desc;
+      root.querySelector('[data-vt-sizes]').innerHTML = p.sizes.map(function (s, i) {
+        var off = p.out.indexOf(s) > -1;
+        return '<label class="ou__size"><input type="radio" name="ou-size" value="' + s + '"' + (off ? ' disabled' : '') + (i === 2 ? ' checked' : '') + ' aria-label="Taille ' + s + (off ? ', épuisée' : '') + '"><span aria-hidden="true">' + s + '</span></label>';
+      }).join('');
+      root.querySelector('[data-vt-specs]').innerHTML = p.specs.map(function (s) { return '<div><dt>' + s[0] + '</dt><dd>' + s[1] + '</dd></div>'; }).join('');
+    }
+    function cardOf(id) { return grid.querySelector('[data-vt-to="' + id + '"]'); }
+    function name(el, n) { if (el) el.style.viewTransitionName = n || ''; }
+    function shared(id, on) {
+      if (root.dataset.shared === 'false') return;
+      var c = cardOf(id); if (!c) return;
+      var target = current === 'list' ? [c.querySelector('.ou__ph'), c.querySelector('.ou__name')] : [dimg, dname];
+      name(target[0], on ? 'ou-img' : ''); name(target[1], on ? 'ou-title' : '');
+    }
+    function swap(to) {
+      var id = current === 'list' ? null : current;
+      if (to === 'list') { pages.detail.hidden = true; pages.list.hidden = false; }
+      else { fill(PRODUCTS.filter(function (p) { return p.id === to; })[0]); pages.list.hidden = true; pages.detail.hidden = false; }
+      current = to;
+      return id;
+    }
+    function go(to, trigger) {
+      if (to === current || busy) return;
+      var fwd = to !== 'list', fromId = current;
+      if (fwd) lastTrigger = trigger || cardOf(to);
+      var dur = Math.max(120, +root.dataset.duration || 420);
+      var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var after = function () {
+        var p = PRODUCTS.filter(function (x) { return x.id === to; })[0];
+        live.textContent = fwd ? p.name + ', fiche produit' : 'Toute la collection';
+        if (fwd && trigger) dname.focus({ preventScroll: true });
+        else if (lastTrigger) lastTrigger.focus({ preventScroll: true });
+        if (fwd && root.getBoundingClientRect().top < 0) root.scrollIntoView({ block: 'start' });
+        root.dispatchEvent(new CustomEvent('vt:change', { detail: { page: to } }));
+      };
+      if (!document.startViewTransition || reduce) { swap(to); after(); return; }
+      html.style.setProperty('--ou-vt-dur', dur + 'ms');
+      html.style.setProperty('--ou-vt-ease', EASE[root.dataset.ease] || EASE.emphase);
+      html.dataset.ouStyle = root.dataset.style || 'glisse';
+      html.dataset.ouDir = fwd ? 'fwd' : 'back';
+      var sid = fwd ? to : fromId;
+      shared(sid, true);
+      var t = document.startViewTransition(function () { shared(sid, false); swap(to); shared(sid, true); });
+      busy = t;
+      t.finished.finally(function () {
+        shared(sid, false); busy = null;
+        delete html.dataset.ouStyle; delete html.dataset.ouDir;
+      });
+      t.updateCallbackDone.then(after);
+    }
+
+    root.addEventListener('click', function (e) {
+      var a = e.target.closest('[data-vt-to]');
+      if (a && root.contains(a)) { e.preventDefault(); go(a.dataset.vtTo, a); return; }
+      var b = e.target.closest('[data-vt-back]');
+      if (b && root.contains(b)) { e.preventDefault(); go('list', b); return; }
+      if (e.target.closest('[data-vt-add]')) {
+        cart++;
+        cartN.textContent = cart; cartBtn.setAttribute('aria-label', 'Panier, ' + cart + ' article' + (cart > 1 ? 's' : ''));
+        cartN.classList.remove('is-bump'); void cartN.offsetWidth; cartN.classList.add('is-bump');
+        live.textContent = dname.textContent + ' ajouté au panier';
+      }
+    });
+    root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && current !== 'list') go('list'); });
+    root.vt = { go: go, get page() { return current; }, products: PRODUCTS };
+  });
+})();
+</script>

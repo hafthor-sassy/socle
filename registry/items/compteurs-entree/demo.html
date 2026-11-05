@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compteurs à l’entrée — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 48px 24px; }
+  @media (max-width: 640px) { .stage { padding: 12px 10px 32px; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage"><div id="mount" style="display:contents"></div></main>
+<script>
+  var props = Socle.props({ duree: 1800, decalage: 120, courbe: 'expo', depart: 'zero', trait: true });
+  var src = null, first = true;
+  function mount(p) {
+    var m = document.getElementById('mount');
+    m.innerHTML = src.mk;
+    var root = m.querySelector('[data-compteurs-entree]');
+    root.dataset.duree = String(p.duree);
+    root.dataset.decalage = String(p.decalage);
+    root.dataset.courbe = p.courbe;
+    root.dataset.depart = p.depart;
+    root.dataset.trait = String(!!p.trait);
+    try { new Function(src.js)(); } catch (e) { console.error(e); }
+    return root;
+  }
+  function render(p) {
+    if (!src) return;
+    var root = mount(p);
+    if (Socle.thumb) root._ce.final();
+    else if (!first) root._ce.replay();
+    first = false;
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { mk: mk ? mk[1] : '', js: js ? js[1] : '' };
+    render(props);
+  });
+  /* Un réglage modifié rejoue le comptage avec les nouvelles valeurs. */
+  Socle.onChange(render);
+  Socle.onReplay(function (p) { first = false; render(p); });
+</script>
+</body>
+</html>

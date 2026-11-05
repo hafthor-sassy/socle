@@ -1,0 +1,186 @@
+{
+  "id": "graphe-activite",
+  "nom": "Graphe d’activité",
+  "categorie": "stats",
+  "niveau": "premium",
+  "description": "Une année en cases, façon contributions : une case par jour, cinq niveaux tirés de l’accent. À l’entrée, la grille se remplit en vague (diagonale, par colonnes ou depuis aujourd’hui) sur un ressort ; une bulle suit le pointeur avec la distance, l’allure et la date, le mois s’allume, la légende filtre un niveau. Navigation complète au clavier (grille ARIA), changement d’année à pastille glissante, résumé qui recompte. Sur mobile : frise horizontale calée sur aujourd’hui et fiche du jour avec ‹ ›.",
+  "tags": [
+    "Graphe",
+    "Calendrier",
+    "Données",
+    "Vague",
+    "Ressort",
+    "Clavier",
+    "Sport",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 32,
+  "palette": "sauge",
+  "logo_exemple": {
+    "nom": "Foulée",
+    "secteur": "Application de course à pied",
+    "fichier": "logo.svg",
+    "palette": "sauge",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1200
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1100
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent et raised mélangés en color-mix (oklab) pour les cinq niveaux : suivent toute palette"
+    },
+    {
+      "nom": "≈ 6 ko de JS",
+      "note": "371 cases en DOM, délais de vague en variable CSS, aucun rAF en continu"
+    },
+    {
+      "nom": "CSS linear()",
+      "note": "Ressort de la vague ; repli cubic-bezier (@supports)"
+    },
+    {
+      "nom": "Intl.DateTimeFormat",
+      "note": "« Mardi 14 octobre 2026 », semaines du lundi au dimanche"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, sans bibliothèque d’animation"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "vague",
+      "label": "Forme de la vague",
+      "type": "select",
+      "default": "diagonale",
+      "options": [
+        {
+          "value": "diagonale",
+          "label": "Diagonale"
+        },
+        {
+          "value": "colonnes",
+          "label": "Semaines"
+        },
+        {
+          "value": "radiale",
+          "label": "Radiale"
+        }
+      ],
+      "code": {
+        "html": "data-vague=\"{v}\"",
+        "react": "wave=\"{v}\""
+      },
+      "hint": "Radiale : la vague part d’aujourd’hui."
+    },
+    {
+      "name": "vitesse",
+      "label": "Délai par semaine",
+      "type": "number",
+      "default": 14,
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "ms",
+      "hint": "0 : toute la grille apparaît d’un coup, sur le ressort.",
+      "code": {
+        "html": "data-vitesse=\"{v}\"",
+        "react": "speed={{v}}"
+      }
+    },
+    {
+      "name": "annee",
+      "label": "Année",
+      "type": "select",
+      "default": "2026",
+      "options": [
+        {
+          "value": "2026",
+          "label": "2026"
+        },
+        {
+          "value": "2025",
+          "label": "2025"
+        }
+      ],
+      "code": {
+        "html": "data-annee=\"{v}\"",
+        "react": "year={{v}}"
+      }
+    },
+    {
+      "name": "forme",
+      "label": "Forme des cases",
+      "type": "select",
+      "default": "carre",
+      "options": [
+        {
+          "value": "carre",
+          "label": "Carrés"
+        },
+        {
+          "value": "rond",
+          "label": "Pastilles"
+        }
+      ],
+      "code": {
+        "html": "data-forme=\"{v}\"",
+        "react": "shape=\"{v}\""
+      }
+    },
+    {
+      "name": "legende",
+      "label": "Légende filtrante",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-legende=\"{v}\"",
+        "react": "legend={{v}}"
+      }
+    },
+    {
+      "name": "resume",
+      "label": "Résumé chiffré",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-resume=\"{v}\"",
+        "react": "summary={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/GrapheActivite.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Régularité dans le temps : entraînements, contributions, publications, ventes par jour, présence. Le graphe montre des rythmes (week-ends, vacances, montée en charge) qu’une courbe écrase.",
+    "Branchez vos données en remplaçant data(annee) par un objet { \"AAAA-MM-JJ\": valeur } et adaptez les seuils de level(). Gardez cinq niveaux : au-delà, l’œil ne distingue plus les teintes.",
+    "La date de référence de l’exemple est fixée (TODAY) ; en production, utilisez new Date(). Les jours à venir restent en pointillés, non sélectionnables."
+  ],
+  "accessibilite": [
+    "Grille ARIA (role=grid, 7 rangées de jours) à tabulation itinérante : une seule case dans l’ordre de tabulation, flèches pour jour / semaine, Début et Fin pour la semaine, Échap pour fermer la bulle. Chaque case a un nom complet (« mardi 14 octobre 2026, 12,4 km »), aujourd’hui porte aria-current.",
+    "La couleur n’est jamais seule : la distance est dans le nom de la case, la bulle et la fiche du jour ; la légende est faite de boutons à état (aria-pressed). Sélecteur d’année en radiogroup, flèches comprises.",
+    "Avec « réduire les animations », pas de vague ni de rebond : la grille est affichée d’emblée, la bulle apparaît en fondu. Sur mobile, la fiche du jour (région polie) et ses boutons ‹ › de 44 px remplacent la bulle."
+  ]
+}

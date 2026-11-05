@@ -1,0 +1,386 @@
+<!-- Avatar vidéo — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Une rangée de portraits ronds : au toucher, le portrait s'agrandit sur un ressort jusqu'au lecteur vidéo sous-titré,
+     puis revient exactement à sa place (fin de lecture, Échap, clic hors du lecteur). La « vidéo » est un portrait animé
+     dessiné en canvas aux couleurs de la palette (pas de fichier) ; data-src sur un portrait remplace l'animation par
+     une vraie vidéo (libre de droits, muette, sous-titres conservés). Anneau de progression : ce qui a déjà été écouté.
+     Réglages sur la racine : data-captions, data-autoclose, data-chain, data-ratio (16/9 | 4/5 | 1/1), data-stiffness.
+     Marque fictive : Nacre, banque en ligne pour indépendants. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="av" data-avatar-video data-captions="true" data-autoclose="true" data-chain="false" data-ratio="16/9" data-stiffness="220" aria-labelledby="av-title">
+  <header class="av__head">
+    <span class="av__brand">
+      <svg class="av__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="av__logo-bg"/><path class="av__logo-mk" d="M26 66c8-26 40-34 48-12-14-6-30 0-36 14Z"/><circle class="av__logo-mk" cx="62" cy="36" r="7"/></svg>
+      <span class="av__word">nacre</span>
+    </span>
+    <h2 class="av__title" id="av-title">Ils ont ouvert leur compte pro. Écoutez-les.</h2>
+    <p class="av__lead">Cinq indépendants racontent leur premier mois avec Nacre, en moins de quinze secondes chacun.</p>
+  </header>
+
+  <ul class="av__row" role="list" data-av-row>
+    <li data-name="Margaux Fontaine" data-role="Céramiste · Nantes" data-tint="amber" data-hair="bun"
+        data-cues="J’ai ouvert mon compte un dimanche soir, entre deux cuissons.|Le lendemain, ma carte était dans l’appli : j’encaissais au marché.|Ce qui a tout changé : les factures se rapprochent seules des paiements.|Je passe une heure par mois sur ma compta, plus une journée."></li>
+    <li data-name="Karim Haddad" data-role="Food truck · Lille" data-tint="green" data-hair="short" data-beard="true"
+        data-cues="En food truck, je bouge tous les jours : tout passe par le téléphone.|Le terminal est relié au compte, je vois la recette du midi en direct.|Et quand la TVA tombe, l’argent est déjà mis de côté."></li>
+    <li data-name="Chloé Martin" data-role="Photographe · Lyon" data-tint="violet" data-hair="long"
+        data-cues="Je facture des clients en Suisse et en Belgique.|Avant, chaque virement me coûtait des frais et trois jours d’attente.|Maintenant c’est instantané, avec le taux affiché avant de valider.|Mon comptable a accès à tout, sans me demander un seul relevé."></li>
+    <li data-name="Paul Girard" data-role="Kinésithérapeute · Bordeaux" data-tint="blue" data-hair="short" data-glasses="true"
+        data-cues="J’ai repris un cabinet avec deux associés.|Chacun a sa carte, avec ses propres plafonds.|Les dépenses communes sont réparties toutes seules en fin de mois.|Et le conseiller m’a rappelé dans l’heure, le jour de l’ouverture."></li>
+    <li data-name="Awa Diop" data-role="Studio de yoga · Montpellier" data-tint="pink" data-hair="curly"
+        data-cues="Mes élèves paient par lien, même pour un cours d’essai.|Les abonnements se renouvellent seuls, je suis prévenue en cas d’échec.|Je vois enfin ce que je gagne vraiment, chaque semaine."></li>
+  </ul>
+  <p class="av__hint" data-av-hint>Touchez un portrait pour l’écouter</p>
+
+  <div class="av__scrim" data-av-scrim hidden></div>
+  <div class="av__player" data-av-player role="dialog" aria-modal="true" aria-labelledby="av-p-name" hidden>
+    <div class="av__media" data-av-media><canvas data-av-canvas aria-hidden="true"></canvas></div>
+    <div class="av__ui" data-av-ui>
+      <div class="av__top">
+        <span class="av__who"><strong id="av-p-name" data-av-name></strong><span data-av-role></span></span>
+        <button type="button" class="av__btn" data-av-close aria-label="Fermer et revenir aux portraits"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <p class="av__cap" data-av-cap aria-hidden="true"></p>
+      <div class="av__ctrl">
+        <button type="button" class="av__btn av__btn--play" data-av-play aria-label="Pause">
+          <svg class="av__i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+          <svg class="av__i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5Z"/></svg>
+        </button>
+        <div class="av__bar" role="slider" tabindex="0" aria-label="Position de lecture" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0:00" data-av-bar><i data-av-fill></i></div>
+        <span class="av__time" data-av-time aria-hidden="true">0:00 / 0:00</span>
+        <button type="button" class="av__btn" data-av-cc aria-pressed="true" aria-label="Sous-titres"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="3"/><path d="M10.5 10.2a2 2 0 1 0 0 3.6M16.5 10.2a2 2 0 1 0 0 3.6"/></svg></button>
+      </div>
+      <p class="av__sr" data-av-transcript></p>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+.av { --av-size: 96px; width: 100%; min-width: 0; max-width: 1120px; margin: 0 auto; padding: 72px 40px 64px; font-family: var(--font-sans); color: var(--text); }
+.av *, .av *::before, .av *::after { box-sizing: border-box; }
+.av :where(button) { font: inherit; color: inherit; }
+.av__head { display: grid; justify-items: center; text-align: center; }
+.av__brand { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px; color: var(--text-strong); }
+.av__logo { width: 28px; height: 28px; } .av__logo-bg { fill: var(--accent); } .av__logo-mk { fill: var(--accent-fg); }
+.av__word { font-weight: 600; font-size: 18px; letter-spacing: -0.03em; }
+.av__title { margin: 0; max-width: 20ch; font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem); line-height: 1.08; letter-spacing: -0.035em; font-weight: 600; color: var(--text-strong); text-wrap: balance; }
+.av__lead { margin: 16px 0 0; max-width: 50ch; font-size: 17px; line-height: 1.55; color: var(--text-muted); text-wrap: pretty; }
+
+/* Portraits */
+.av__row { list-style: none; margin: 48px 0 0; padding: 0; display: flex; justify-content: center; gap: 16px; }
+.av__item { display: grid; justify-items: center; align-content: start; gap: 12px; width: 176px; text-align: center; }
+.av__face { position: relative; width: var(--av-size); height: var(--av-size); padding: 0; border: 0; border-radius: 999px; background: none; cursor: pointer; transition: transform 420ms cubic-bezier(.34, 1.56, .64, 1), opacity 260ms var(--ease-out); -webkit-tap-highlight-color: transparent; }
+.av__face canvas { position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px); border-radius: 999px; }
+.av__face:hover { transform: scale(1.06); }
+.av__face:active { transform: scale(.97); }
+.av__face:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 2px; }
+.av__ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.av__ring circle { fill: none; stroke-width: 2.5; }
+.av__ring .av__ring-t { stroke: var(--border); }
+.av__ring .av__ring-p { stroke: var(--accent); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--seen, 0) * 100); transition: stroke-dashoffset 600ms var(--ease-out); }
+.dark .av__ring .av__ring-p { stroke: var(--accent-vivid); }
+.av__face:not(.has-seen) .av__ring-p { opacity: 0; }
+.av__badge { position: absolute; right: 2px; bottom: 2px; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 999px; background: var(--accent); color: var(--accent-fg); border: 3px solid var(--bg); transition: transform 420ms cubic-bezier(.34, 1.56, .64, 1); }
+.av__badge svg { width: 12px; height: 12px; fill: currentColor; }
+.av__face:hover .av__badge { transform: scale(1.12); }
+.av__face.is-seen .av__badge { background: var(--surface); color: var(--text-strong); box-shadow: inset 0 0 0 1px var(--border); }
+.av__face.is-away { opacity: 0; transform: scale(.9); }
+.av__nm { display: grid; gap: 2px; }
+.av__nm strong { font-size: 15px; font-weight: 600; color: var(--text-strong); }
+.av__nm span { font-size: 14px; line-height: 1.35; color: var(--text-muted); }
+.av__dur { display: inline-block; margin-top: 2px; font: 500 12px/1 var(--font-mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.av__hint { margin: 32px 0 0; text-align: center; font-size: 14px; color: var(--text-muted); }
+
+/* Lecteur */
+.av__scrim { position: fixed; inset: 0; z-index: 40; background: var(--scrim); opacity: 0; transition: opacity 320ms var(--ease-out); }
+.av__scrim.is-on { opacity: 1; }
+.av__scrim[hidden], .av__player[hidden] { display: none; }
+.av__player { position: fixed; z-index: 41; left: 0; top: 0; overflow: hidden; background: var(--raised); isolation: isolate; will-change: left, top, width, height, border-radius; }
+.av__player:focus { outline: none; }
+.av__media, .av__media canvas, .av__media video { position: absolute; inset: 0; width: 100%; height: 100%; }
+.av__media canvas, .av__media video { object-fit: cover; display: block; }
+.av__ui { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; opacity: 0; transition: opacity 260ms var(--ease-out); }
+.av__player.is-open .av__ui { opacity: 1; }
+.av__top, .av__ctrl { position: relative; z-index: 0; display: flex; align-items: center; gap: 8px; padding: 12px; }
+.av__top { justify-content: space-between; padding-left: 20px; }
+.av__top::before, .av__ctrl::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.av__top::before { background: linear-gradient(var(--scrim), transparent), linear-gradient(var(--scrim), transparent 70%); inset: 0 0 -32px; }
+.av__ctrl::before { background: linear-gradient(transparent, var(--scrim)), linear-gradient(transparent 30%, var(--scrim)); inset: -40px 0 0; }
+.av__who { display: grid; text-shadow: 0 1px 2px var(--scrim); }
+.av__who strong { font-size: 16px; font-weight: 600; color: var(--surface); }
+.av__who span { font-size: 14px; color: color-mix(in srgb, var(--surface) 82%, transparent); }
+.dark .av__who strong { color: var(--text-strong); } .dark .av__who span { color: var(--text); }
+.av__btn { flex: none; width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: 999px; background: color-mix(in srgb, var(--surface) 18%, transparent); color: var(--surface); cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background var(--motion-fast), transform 300ms cubic-bezier(.34, 1.56, .64, 1); }
+.dark .av__btn { color: var(--text-strong); background: color-mix(in srgb, var(--text-strong) 14%, transparent); }
+.av__btn:hover { background: color-mix(in srgb, var(--surface) 30%, transparent); }
+.dark .av__btn:hover { background: color-mix(in srgb, var(--text-strong) 24%, transparent); }
+.av__btn:active { transform: scale(.92); }
+.av__btn:focus-visible, .av__bar:focus-visible { outline: 2px solid var(--surface); outline-offset: 2px; }
+.dark .av__btn:focus-visible, .dark .av__bar:focus-visible { outline-color: var(--text-strong); }
+.av__btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.av__btn--play svg { fill: currentColor; stroke-width: 1.5; }
+.av__i-play { display: none; } .av__player.is-paused .av__i-play { display: block; } .av__player.is-paused .av__i-pause { display: none; }
+.av__btn[data-av-cc][aria-pressed="false"] { opacity: .6; }
+.av__bar { position: relative; flex: 1; height: 44px; cursor: pointer; touch-action: none; }
+.av__bar::before, .av__bar i { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 4px; margin-top: -2px; border-radius: 999px; }
+.av__bar::before { background: color-mix(in srgb, var(--surface) 35%, transparent); }
+.dark .av__bar::before { background: color-mix(in srgb, var(--text-strong) 25%, transparent); }
+.av__bar i { right: auto; width: calc(var(--p, 0) * 100%); background: var(--surface); }
+.dark .av__bar i { background: var(--text-strong); }
+.av__bar i::after { content: ""; position: absolute; right: -6px; top: -4px; width: 12px; height: 12px; border-radius: 999px; background: inherit; transform: scale(0); transition: transform 200ms cubic-bezier(.34, 1.56, .64, 1); }
+.av__bar:hover i::after, .av__bar:focus-visible i::after { transform: scale(1); }
+.av__time { flex: none; min-width: 84px; font: 500 13px/1 var(--font-mono); color: var(--surface); text-align: right; font-variant-numeric: tabular-nums; }
+.dark .av__time { color: var(--text-strong); }
+.av__cap { align-self: center; max-width: min(86%, 620px); margin: auto 0 4px; padding: 6px 12px; border-radius: 8px; background: color-mix(in srgb, var(--text-strong) 78%, transparent); color: var(--bg); font-size: 18px; line-height: 1.45; text-align: center; text-wrap: balance; opacity: 0; transform: translateY(6px); transition: opacity 220ms var(--ease-out), transform 320ms cubic-bezier(.34, 1.4, .64, 1); }
+.dark .av__cap { background: color-mix(in srgb, var(--bg) 78%, transparent); color: var(--text-strong); }
+.av__cap.is-on { opacity: 1; transform: none; }
+.av[data-captions="false"] .av__cap { display: none; }
+.av__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 767px) {
+  .av { --av-size: 80px; padding: 48px 0 40px; }
+  .av__head { padding: 0 20px; }
+  .av__lead { font-size: 16px; }
+  .av__row { justify-content: flex-start; gap: 4px; margin-top: 32px; padding: 4px 20px 8px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 20px; scrollbar-width: none; }
+  .av__row::-webkit-scrollbar { display: none; }
+  .av__item { flex: none; width: 128px; scroll-snap-align: start; }
+  .av__hint { margin-top: 20px; padding: 0 20px; }
+  .av__cap { font-size: 16px; max-width: 92%; }
+  .av__time { min-width: 0; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .av__face, .av__badge, .av__cap, .av__ring .av__ring-p, .av__scrim, .av__ui { transition: none !important; }
+}
+</style>
+
+<script>
+(function () {
+  var TINTS = ['amber', 'green', 'violet', 'blue', 'pink'];
+  function css(el, n) { return getComputedStyle(el).getPropertyValue(n).trim(); }
+  /* même couleur, alpha 0 : un dégradé vers « transparent » passerait par le noir */
+  var probe = document.createElement('canvas').getContext('2d');
+  function clear(c) { probe.fillStyle = '#000'; probe.fillStyle = c; var v = probe.fillStyle; if (v[0] === '#') { var n = parseInt(v.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + (n >> 8 & 255) + ',' + (n & 255) + ',0)'; } return v.replace(/rgba?\(([^,]+),([^,]+),([^,)]+).*$/, 'rgba($1,$2,$3,0)'); }
+  function fmt(s) { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+
+  /* Portrait dessiné : même fonction pour la vignette ronde (fixe) et la « vidéo » (animée) */
+  function draw(ctx, w, h, p, C, t, amp, scene) {
+    var k = C.tint[p.tint], s = Math.min(w, h), cx = w / 2, r = s * (scene ? .17 : .26);
+    var sway = scene ? Math.sin(t * .9) * .035 + amp * .02 : 0, bob = scene ? Math.sin(t * 1.7) * r * .03 : 0;
+    var cy = (scene ? h * .44 : h * .47) + bob;
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = k.bg; ctx.fillRect(0, 0, w, h);
+    if (scene) {
+      /* lumière de fenêtre et bokeh, couleurs de la palette */
+      var g = ctx.createRadialGradient(w * .2, h * .1, 0, w * .2, h * .1, w * .7);
+      g.addColorStop(0, C.subtle); g.addColorStop(1, C.subtle0); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+      for (var i = 0; i < 9; i++) {
+        var bx = ((i * 0.37 + Math.sin(t * .07 + i) * .04) % 1) * w, by = (0.12 + ((i * 0.53) % .6)) * h, br = s * (.04 + (i % 3) * .03);
+        ctx.globalAlpha = .28 + (i % 2) * .14; ctx.fillStyle = i % 3 ? k.border : C.subtle; ctx.beginPath(); ctx.arc(bx, by, br, 0, 6.283); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    ctx.save(); ctx.translate(cx, cy + r * 1.4); ctx.rotate(sway); ctx.translate(-cx, -(cy + r * 1.4));
+    /* cheveux arrière */
+    ctx.fillStyle = k.fg;
+    if (p.hair === 'long') { ctx.beginPath(); rr(ctx, cx - r * 1.12, cy - r * 1.05, r * 2.24, r * 2.6, r * .9); ctx.fill(); }
+    if (p.hair === 'bun') { ctx.beginPath(); ctx.arc(cx + r * .1, cy - r * 1.18, r * .44, 0, 6.283); ctx.fill(); }
+    if (p.hair === 'curly') { for (var a = 0; a < 14; a++) { var an = Math.PI * (0.95 + a / 13 * 1.1); ctx.beginPath(); ctx.arc(cx + Math.cos(an) * r * 1.02, cy - r * .1 + Math.sin(an) * r * 1.08, r * .34, 0, 6.283); ctx.fill(); } }
+    /* corps */
+    ctx.fillStyle = C.accent; ctx.beginPath();
+    ctx.moveTo(cx - r * 2.5, h + 2); ctx.bezierCurveTo(cx - r * 2.4, cy + r * 1.75, cx - r * 1.4, cy + r * 1.55, cx, cy + r * 1.55);
+    ctx.bezierCurveTo(cx + r * 1.4, cy + r * 1.55, cx + r * 2.4, cy + r * 1.75, cx + r * 2.5, h + 2); ctx.closePath(); ctx.fill();
+    /* cou et col */
+    ctx.fillStyle = k.border; ctx.beginPath(); rr(ctx, cx - r * .36, cy + r * .55, r * .72, r * 1.1, r * .3); ctx.fill();
+    ctx.fillStyle = C.accentFg; ctx.globalAlpha = .9; ctx.beginPath(); ctx.moveTo(cx - r * .5, cy + r * 1.56); ctx.lineTo(cx, cy + r * 2.05); ctx.lineTo(cx + r * .5, cy + r * 1.56); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
+    ctx.fillStyle = k.border; ctx.beginPath(); ctx.moveTo(cx - r * .36, cy + r * 1.5); ctx.lineTo(cx, cy + r * 1.9); ctx.lineTo(cx + r * .36, cy + r * 1.5); ctx.closePath(); ctx.fill();
+    /* tête */
+    ctx.beginPath(); ctx.ellipse(cx, cy, r * .9, r * 1.06, 0, 0, 6.283); ctx.fill();
+    /* oreilles */
+    ctx.beginPath(); ctx.ellipse(cx - r * .9, cy + r * .08, r * .14, r * .22, 0, 0, 6.283); ctx.ellipse(cx + r * .9, cy + r * .08, r * .14, r * .22, 0, 0, 6.283); ctx.fill();
+    /* cheveux avant */
+    ctx.fillStyle = k.fg; ctx.beginPath();
+    if (p.hair === 'short') { ctx.ellipse(cx, cy - r * .55, r * .96, r * .62, 0, Math.PI * 1.02, Math.PI * 1.98); ctx.lineTo(cx + r * .92, cy - r * .25); ctx.quadraticCurveTo(cx + r * .3, cy - r * .7, cx - r * .92, cy - r * .3); ctx.closePath(); }
+    else if (p.hair === 'curly') { ctx.ellipse(cx, cy - r * .5, r * .95, r * .62, 0, Math.PI, 0); ctx.quadraticCurveTo(cx, cy - r * .62, cx - r * .95, cy - r * .5); }
+    else { ctx.ellipse(cx, cy - r * .42, r * .96, r * .72, 0, Math.PI, 0); ctx.quadraticCurveTo(cx + r * .1, cy - r * .9, cx - r * .25, cy - r * .55); ctx.quadraticCurveTo(cx - r * .7, cy - r * .2, cx - r * .96, cy - r * .42); }
+    ctx.fill();
+    if (p.beard) { ctx.beginPath(); ctx.moveTo(cx - r * .88, cy + r * .1); ctx.quadraticCurveTo(cx - r * .8, cy + r * 1.12, cx, cy + r * 1.12); ctx.quadraticCurveTo(cx + r * .8, cy + r * 1.12, cx + r * .88, cy + r * .1); ctx.quadraticCurveTo(cx + r * .5, cy + r * .5, cx, cy + r * .42); ctx.quadraticCurveTo(cx - r * .5, cy + r * .5, cx - r * .88, cy + r * .1); ctx.fill(); }
+    /* yeux (clignent), sourcils, joues, bouche */
+    var blink = scene && (t % 3.7) < .13 ? .12 : 1, lift = amp * r * .06;
+    ctx.beginPath(); ctx.ellipse(cx - r * .34, cy + r * .06, r * .085, r * .1 * blink, 0, 0, 6.283); ctx.ellipse(cx + r * .34, cy + r * .06, r * .085, r * .1 * blink, 0, 0, 6.283); ctx.fill();
+    ctx.lineCap = 'round'; ctx.strokeStyle = k.fg; ctx.lineWidth = r * .07;
+    ctx.beginPath(); ctx.moveTo(cx - r * .48, cy - r * .2 - lift); ctx.quadraticCurveTo(cx - r * .34, cy - r * .28 - lift, cx - r * .2, cy - r * .2 - lift);
+    ctx.moveTo(cx + r * .2, cy - r * .2 - lift); ctx.quadraticCurveTo(cx + r * .34, cy - r * .28 - lift, cx + r * .48, cy - r * .2 - lift); ctx.stroke();
+    if (p.glasses) { ctx.lineWidth = r * .055; ctx.beginPath(); rr(ctx, cx - r * .6, cy - r * .1, r * .5, r * .36, r * .12); rr(ctx, cx + r * .1, cy - r * .1, r * .5, r * .36, r * .12); ctx.moveTo(cx - r * .1, cy + r * .02); ctx.lineTo(cx + r * .1, cy + r * .02); ctx.stroke(); }
+    if (!p.beard) { ctx.globalAlpha = .35; ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(cx - r * .55, cy + r * .4, r * .13, 0, 6.283); ctx.arc(cx + r * .55, cy + r * .4, r * .13, 0, 6.283); ctx.fill(); ctx.globalAlpha = 1; }
+    var mh = r * (.07 + amp * .2), mw = r * (.34 - amp * .06);
+    ctx.fillStyle = p.beard ? k.border : k.fg; ctx.beginPath(); rr(ctx, cx - mw / 2, cy + r * .5 - mh / 2, mw, mh, Math.min(mh, mw) / 2); ctx.fill();
+    if (p.beard) { ctx.fillStyle = C.accent; ctx.globalAlpha = .9; ctx.beginPath(); rr(ctx, cx - mw / 2 + 1, cy + r * .5 - mh / 2 + 1, mw - 2, Math.max(1, mh - 2), Math.min(mh, mw) / 2); ctx.fill(); ctx.globalAlpha = 1; }
+    ctx.restore();
+  }
+  function rr(ctx, x, y, w, h, r) { ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+
+  function AvatarVideo(root) {
+    var row = root.querySelector('[data-av-row]'), player = root.querySelector('[data-av-player]'), scrim = root.querySelector('[data-av-scrim]');
+    var media = root.querySelector('[data-av-media]'), canvas = root.querySelector('[data-av-canvas]'), cap = root.querySelector('[data-av-cap]');
+    var playBtn = root.querySelector('[data-av-play]'), bar = root.querySelector('[data-av-bar]'), fill = root.querySelector('[data-av-fill]'), time = root.querySelector('[data-av-time]'), cc = root.querySelector('[data-av-cc]');
+    var nameEl = root.querySelector('[data-av-name]'), roleEl = root.querySelector('[data-av-role]'), transcript = root.querySelector('[data-av-transcript]');
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+    var C = null, people = [], cur = null, pos = 0, playing = false, raf = 0, last = 0, morph = null, mx = 0, mv = 0, video = null, visible = true;
+
+    function colors() {
+      var el = document.documentElement, t = {};
+      TINTS.forEach(function (n) { t[n] = { bg: css(el, '--tint-' + n + '-bg'), fg: css(el, '--tint-' + n + '-fg'), border: css(el, '--tint-' + n + '-border') }; });
+      C = { tint: t, accent: css(el, '--accent'), accentFg: css(el, '--accent-fg'), subtle: css(el, '--accent-subtle') };
+      C.subtle0 = clear(C.subtle);
+    }
+    colors();
+
+    /* Construction des portraits */
+    [].forEach.call(row.children, function (li, i) {
+      var cues = (li.dataset.cues || '').split('|').filter(Boolean), at = 0;
+      var tl = cues.map(function (c) { var d = Math.max(2.4, Math.min(4.2, c.length * .058)); var o = { t0: at, t1: at + d, text: c }; at += d + .35; return o; });
+      var p = { name: li.dataset.name, role: li.dataset.role, tint: li.dataset.tint || 'blue', hair: li.dataset.hair || 'short', beard: li.dataset.beard === 'true', glasses: li.dataset.glasses === 'true', src: li.dataset.src || '', cues: tl, dur: at, seen: 0, li: li };
+      li.className = 'av__item';
+      li.innerHTML = '<button type="button" class="av__face" aria-label="Écouter ' + p.name + ', ' + p.role + ' (' + fmt(p.dur) + ')"><svg class="av__ring" viewBox="0 0 36 36" aria-hidden="true"><circle class="av__ring-t" cx="18" cy="18" r="16.4" pathLength="100"/><circle class="av__ring-p" cx="18" cy="18" r="16.4" pathLength="100"/></svg><canvas aria-hidden="true"></canvas><span class="av__badge" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.5 2.2v7.6L10 6Z"/></svg></span></button>' +
+        '<span class="av__nm"><strong>' + p.name + '</strong><span>' + p.role + '</span><span class="av__dur" aria-hidden="true">' + fmt(p.dur) + '</span></span>';
+      p.btn = li.querySelector('.av__face'); p.thumb = li.querySelector('canvas');
+      p.btn.addEventListener('click', function () { open(p); });
+      people.push(p);
+    });
+    function paintThumbs() {
+      people.forEach(function (p) {
+        var c = p.thumb, d = Math.min(2, window.devicePixelRatio || 1), sz = c.clientWidth || 84;
+        c.width = sz * d; c.height = sz * d; draw(c.getContext('2d'), c.width, c.height, p, C, 0, 0, false);
+      });
+    }
+    paintThumbs();
+    new MutationObserver(function () { colors(); paintThumbs(); if (cur) frame(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'style', 'data-accent'] });
+
+    /* Géométrie du lecteur */
+    function target() {
+      var vw = innerWidth, vh = innerHeight, mobile = vw < 768, ratio = mobile ? 4 / 5 : ({ '16/9': 16 / 9, '4/5': 4 / 5, '1/1': 1 }[root.dataset.ratio] || 16 / 9);
+      var maxW = mobile ? vw - 24 : Math.min(860, vw - 96), maxH = vh - (mobile ? 48 : 96), w = maxW, h = w / ratio;
+      if (h > maxH) { h = maxH; w = h * ratio; }
+      return { x: (vw - w) / 2, y: (vh - h) / 2, w: w, h: h, r: mobile ? 16 : 16 };
+    }
+    function from(p) { var b = p.btn.getBoundingClientRect(), inset = 6; return { x: b.left + inset, y: b.top + inset, w: b.width - inset * 2, h: b.height - inset * 2, r: (b.width - inset * 2) / 2 }; }
+    function place(a, b, k) {
+      var x = a.x + (b.x - a.x) * k, y = a.y + (b.y - a.y) * k, w = a.w + (b.w - a.w) * k, h = a.h + (b.h - a.h) * k, r = a.r + (b.r - a.r) * Math.min(1, Math.max(0, k));
+      player.style.left = x + 'px'; player.style.top = y + 'px'; player.style.width = Math.max(1, w) + 'px'; player.style.height = Math.max(1, h) + 'px'; player.style.borderRadius = Math.min(r, Math.min(w, h) / 2) + 'px';
+    }
+    function sizeCanvas() { var b = target(), d = Math.min(2, window.devicePixelRatio || 1); canvas.width = Math.round(b.w * d); canvas.height = Math.round(b.h * d); }
+    /* Ressort amorti (masse 1) : progression de 0 à 1 ou de 1 à 0 */
+    function spring(toOpen, done) {
+      var k = parseFloat(root.dataset.stiffness) || 220, c = 2 * Math.sqrt(k) * .78, goal = toOpen ? 1 : 0, lt = 0;
+      if (!morph) { mv = 0; mx = toOpen ? 0 : 1; }      /* sinon : on repart de la position et de la vitesse actuelles */
+      if (reduce.matches) mx = goal;
+      morph = function (now) {
+        var dt = Math.min(.032, (now - (lt || now)) / 1000) || .016; lt = now;
+        for (var i = 0; i < 2; i++) { mv += (-k * (mx - goal) - c * mv) * dt / 2; mx += mv * dt / 2; }
+        var A = from(cur), B = target();
+        place(A, B, mx);
+        scrim.classList.toggle('is-on', toOpen);
+        if (Math.abs(mx - goal) < .001 && Math.abs(mv) < .01 || reduce.matches) { mx = goal; mv = 0; place(A, B, goal); morph = null; done(); return false; }
+        return true;
+      };
+    }
+
+    function open(p) {
+      if (cur && cur !== p) { close(true); }
+      if (cur === p && player.classList.contains('is-open')) return;
+      cur = p; pos = 0; playing = true;
+      nameEl.textContent = p.name; roleEl.textContent = p.role;
+      transcript.textContent = 'Transcription : ' + p.cues.map(function (c) { return c.text; }).join(' ');
+      bar.setAttribute('aria-valuetext', '0:00 sur ' + fmt(p.dur));
+      if (video) { video.remove(); video = null; }
+      if (p.src) { video = document.createElement('video'); video.src = p.src; video.muted = true; video.playsInline = true; video.setAttribute('aria-hidden', 'true'); media.appendChild(video); canvas.hidden = true; video.play().catch(function () {}); }
+      else canvas.hidden = false;
+      sizeCanvas(); player.hidden = false; scrim.hidden = false; player.classList.remove('is-open', 'is-paused');
+      p.btn.classList.add('is-away');
+      people.forEach(function (q) { q.btn.tabIndex = -1; });
+      spring(true, function () { player.classList.add('is-open'); playBtn.focus({ preventScroll: true }); });
+      start();
+    }
+    function close(instant) {
+      if (!cur) return;
+      var p = cur; playing = false; player.classList.remove('is-open'); cap.classList.remove('is-on');
+      var finish = function () {
+        player.hidden = true; scrim.hidden = true; scrim.classList.remove('is-on'); p.btn.classList.remove('is-away');
+        people.forEach(function (q) { q.btn.tabIndex = 0; });
+        if (video) { video.pause(); }
+        cur = null; if (!instant) p.btn.focus({ preventScroll: true });
+      };
+      if (instant) { morph = null; finish(); return; }
+      spring(false, finish); start();
+    }
+    function setPlaying(on) { playing = on; player.classList.toggle('is-paused', !on); playBtn.setAttribute('aria-label', on ? 'Pause' : 'Lecture'); if (video) on ? video.play().catch(function () {}) : video.pause(); if (on) start(); }
+    function seek(f) { if (!cur) return; pos = Math.max(0, Math.min(cur.dur, f * cur.dur)); if (video && video.duration) video.currentTime = pos % video.duration; frame(); }
+
+    function amp(p, t) {
+      var c = p.cues.filter(function (q) { return t >= q.t0 && t < q.t1; })[0]; if (!c) return { a: 0, c: null };
+      var edge = Math.min(1, (t - c.t0) * 6, (c.t1 - t) * 6), syl = .5 + .5 * Math.sin(t * 17 + Math.sin(t * 5.3) * 2.2);
+      return { a: Math.max(0, edge) * (.25 + .75 * syl * syl), c: c };
+    }
+    var lastCue = null;
+    function frame() {
+      if (!cur) return;
+      var A = amp(cur, pos), still = reduce.matches;
+      if (!video) draw(canvas.getContext('2d'), canvas.width, canvas.height, cur, C, still ? 0 : pos, still ? 0 : A.a, true);
+      if (A.c !== lastCue) { lastCue = A.c; cap.classList.remove('is-on'); if (A.c) { cap.textContent = A.c.text; cap.offsetWidth; cap.classList.add('is-on'); } }
+      var f = pos / cur.dur; fill.style.setProperty('--p', f); bar.setAttribute('aria-valuenow', String(Math.round(f * 100))); bar.setAttribute('aria-valuetext', fmt(pos) + ' sur ' + fmt(cur.dur));
+      time.textContent = fmt(pos) + ' / ' + fmt(cur.dur);
+      cur.seen = Math.max(cur.seen, f); cur.btn.style.setProperty('--seen', cur.seen.toFixed(3)); cur.btn.classList.toggle('is-seen', cur.seen > .98); cur.btn.classList.toggle('has-seen', cur.seen > .005);
+    }
+    function tick(now) {
+      raf = 0;
+      var dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
+      var keep = false;
+      if (morph) keep = morph(now) || keep;
+      if (cur && playing && visible && player.classList.contains('is-open')) {
+        pos += dt; keep = true;
+        if (pos >= cur.dur) { pos = cur.dur; frame(); return ended(); }
+      }
+      if (cur) { frame(); keep = keep || (cur && playing); }
+      if (keep && visible && !document.hidden) raf = requestAnimationFrame(tick);
+    }
+    function start() { if (!raf) { last = 0; raf = requestAnimationFrame(tick); } }
+    function ended() {
+      setPlaying(false);
+      var p = cur, i = people.indexOf(p), chain = root.dataset.chain === 'true' && i < people.length - 1;
+      if (chain) { setTimeout(function () { if (cur === p) { close(true); open(people[i + 1]); } }, 700); return; }
+      if (root.dataset.autoclose === 'true') setTimeout(function () { if (cur === p) close(); }, 700);
+    }
+
+    playBtn.addEventListener('click', function () { if (cur && pos >= cur.dur) { pos = 0; } setPlaying(!playing); });
+    root.querySelector('[data-av-close]').addEventListener('click', function () { close(); });
+    scrim.addEventListener('click', function () { close(); });
+    cc.addEventListener('click', function () { var on = root.dataset.captions !== 'true'; root.dataset.captions = String(on); cc.setAttribute('aria-pressed', String(on)); });
+    function barSeek(e) { var r = bar.getBoundingClientRect(); seek((e.clientX - r.left) / r.width); }
+    bar.addEventListener('pointerdown', function (e) { bar.setPointerCapture(e.pointerId); barSeek(e); bar._drag = true; });
+    bar.addEventListener('pointermove', function (e) { if (bar._drag) barSeek(e); });
+    bar.addEventListener('pointerup', function () { bar._drag = false; });
+    player.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+      if (e.target === bar && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { e.preventDefault(); seek((pos + (e.key === 'ArrowRight' ? 2 : -2)) / cur.dur); return; }
+      if ((e.key === ' ' || e.key === 'k') && e.target.tagName !== 'BUTTON') { e.preventDefault(); setPlaying(!playing); }
+      if (e.key === 'Tab') { /* focus gardé dans le lecteur */
+        var f = [].slice.call(player.querySelectorAll('button, [tabindex="0"]')), i = f.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    window.addEventListener('resize', function () { paintThumbs(); if (cur && !morph) { sizeCanvas(); place(from(cur), target(), 1); frame(); } });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting || !!cur; if (visible) start(); }).observe(root);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) start(); });
+
+    root._av = {
+      open: function (i) { open(people[i || 0]); }, close: function () { close(); },
+      refresh: function () { cc.setAttribute('aria-pressed', root.dataset.captions === 'true' ? 'true' : 'false'); if (cur && !morph) { sizeCanvas(); place(from(cur), target(), 1); frame(); } },
+      freeze: function (i, at) { /* vignette : lecteur ouvert, figé */ open(people[i || 0]); morph = null; mx = 1; place(from(cur), target(), 1); scrim.classList.add('is-on'); player.classList.add('is-open'); pos = at || 3; frame(); playing = false; }
+    };
+    return root._av;
+  }
+  window.AvatarVideo = AvatarVideo;
+  [].forEach.call(document.querySelectorAll('[data-avatar-video]'), function (el) { if (!el._av) AvatarVideo(el); });
+})();
+</script>

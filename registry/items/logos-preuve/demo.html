@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logos à preuve — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 48px 24px; }
+  @media (max-width: 640px) { .stage { padding: 12px 10px 32px; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage"><div id="mount" style="display:contents"></div></main>
+<script>
+  var props = Socle.props({ duree: 42, rangees: '2', sens: 'gauche', freinage: 6, estompe: true, couleur: true, carte: 'flottante', titre: '1 400 entreprises du bâtiment ont repris la main sur leurs délais.' });
+  var root = null;
+  function render(p) {
+    if (!root || !root._lp) return;
+    root.style.setProperty('--lp-duree', p.duree);
+    root.dataset.rangees = String(p.rangees);
+    root.dataset.sens = p.sens;
+    root.dataset.freinage = String(p.freinage);
+    root.dataset.estompe = String(!!p.estompe);
+    root.dataset.couleur = String(!!p.couleur);
+    root.dataset.carte = p.carte;
+    root.querySelector('[data-titre]').textContent = p.titre;
+    root._lp.refresh();
+    if (Socle.thumb) setTimeout(function () { root._lp.show(3); }, 400);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-logos-preuve]');
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    render(props);
+  });
+  Socle.onChange(render);
+  /* Rejouer : la rangée repart, puis deux logos montrent leur résultat. */
+  Socle.onReplay(function () {
+    if (!root || !root._lp) return;
+    root._lp.refresh();
+    setTimeout(function () { root._lp.show(1); }, 900);
+    setTimeout(function () { root._lp.show(4); }, 2600);
+    setTimeout(function () { root._lp.hide(); }, 4400);
+  });
+</script>
+</body>
+</html>

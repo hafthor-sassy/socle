@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avatar vidéo — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'rubis');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>.stage { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; }</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ sousTitres: true, fermetureAuto: true, enchainer: false, format: '16/9', raideur: 220 });
+  var root = null;
+  function apply(p) {
+    if (!root) return;
+    root.dataset.captions = String(!!p.sousTitres);
+    root.dataset.autoclose = String(!!p.fermetureAuto);
+    root.dataset.chain = String(!!p.enchainer);
+    root.dataset.ratio = p.format;
+    root.dataset.stiffness = String(p.raideur);
+    if (root._av) root._av.refresh();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-avatar-video]');
+    apply(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (Socle.thumb) setTimeout(function () { root._av.freeze(0, 2.1); }, 60);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (!root || !root._av) return; root._av.close(); setTimeout(function () { root._av.open(2); }, 500); });
+</script>
+</body>
+</html>

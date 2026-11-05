@@ -1,0 +1,52 @@
+{
+  "id": "avatar-video",
+  "nom": "Avatar vidéo",
+  "categorie": "temoignages",
+  "niveau": "premium",
+  "description": "Des témoignages vidéo qui partent d’un simple portrait rond : au toucher, l’avatar s’agrandit sur un ressort jusqu’au lecteur sous-titré (élément partagé, le rayon suit la taille), puis revient exactement à sa place à la fin, à Échap ou d’un clic à côté. La vidéo est un portrait animé en canvas aux couleurs de la palette (clignements, bouche synchronisée aux sous-titres, bokeh), sans aucun fichier ; une vraie vidéo libre de droits peut la remplacer par URL. Un anneau autour de chaque portrait garde ce qui a déjà été écouté. Démontré sur Nacre, banque en ligne pour indépendants.",
+  "tags": ["Témoignages", "Vidéo", "Élément partagé", "Ressort", "Canvas", "Sous-titres", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 34,
+  "palette": "rubis",
+  "logo_exemple": { "nom": "Nacre", "secteur": "Banque en ligne pour indépendants", "fichier": "logo.svg", "palette": "rubis", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1180 },
+  "stage": { "width": "desktop", "desktopMin": 1100 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Teintes des portraits, accent, voile (--scrim). Le canvas relit les couleurs quand la palette ou le thème change (MutationObserver)" },
+    { "nom": "≈ 8 ko de JS", "note": "Inclus dans l’onglet HTML : dessin des portraits, ressort de l’élément partagé, lecteur (rAF arrêté au repos et hors écran)" },
+    { "nom": "Vidéo facultative", "note": "data-src=\"…mp4\" sur un portrait : vidéo muette (playsinline), sous-titres et barre de lecture conservés. Aucune vidéo n’est chargée dans la démo" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, sans bibliothèque d’animation" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "sousTitres", "label": "Sous-titres", "type": "boolean", "default": true,
+      "code": { "html": "data-captions=\"{v}\"", "react": "captions={{v}}" } },
+    { "name": "fermetureAuto", "label": "Revenir au portrait à la fin", "type": "boolean", "default": true,
+      "code": { "html": "data-autoclose=\"{v}\"", "react": "autoClose={{v}}" } },
+    { "name": "enchainer", "label": "Enchaîner les témoignages", "type": "boolean", "default": false,
+      "hint": "À la fin, le portrait suivant s’ouvre.",
+      "code": { "html": "data-chain=\"{v}\"", "react": "chain={{v}}" } },
+    { "name": "format", "label": "Format du lecteur (bureau)", "type": "select", "default": "16/9",
+      "options": [ { "value": "16/9", "label": "16:9" }, { "value": "4/5", "label": "4:5" }, { "value": "1/1", "label": "Carré" } ],
+      "hint": "Sur mobile, toujours 4:5 (vidéo verticale).",
+      "code": { "html": "data-ratio=\"{v}\"", "react": "ratio=\"{v}\"" } },
+    { "name": "raideur", "label": "Raideur du ressort", "type": "number", "default": 220, "min": 80, "max": 500, "step": 20,
+      "hint": "Bas : ouverture ample et souple ; haut : vive.",
+      "code": { "html": "data-stiffness=\"{v}\"", "react": "stiffness={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/AvatarVideo.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour des témoignages courts (10 à 20 s) qui gagnent à être vus et entendus : clients, membres d’une communauté, équipe qui recrute. Chaque portrait se décrit en attributs : nom, rôle, teinte, coiffure, sous-titres séparés par « | ».",
+    "Sans vidéo, le portrait animé suffit pour une maquette, un lancement ou une marque qui n’a pas encore tourné ; avec data-src, la même mise en scène lit une vraie vidéo et garde les sous-titres.",
+    "Sur mobile (< 768 px), les portraits défilent en rangée aimantée et le lecteur s’ouvre en 4:5, presque plein écran, boutons de 44 px."
+  ],
+  "accessibilite": [
+    "Chaque portrait est un bouton qui annonce le nom, le métier et la durée ; le lecteur est un dialog nommé, le focus y entre sur Lecture et revient au portrait à la fermeture, Tab reste dans le lecteur.",
+    "Commandes clavier : Espace ou K lecture / pause, flèches sur la barre (role=\"slider\" avec valeur en texte), Échap pour fermer. Sous-titres activables, transcription complète lue par les lecteurs d’écran.",
+    "Avec « réduire les animations », le lecteur apparaît sans ressort et le portrait reste immobile ; la lecture et les sous-titres continuent. Animation arrêtée hors écran et onglet masqué.",
+    "Textes sur voile sombre en clair et en sombre (AA), sous-titres de 16–18 px."
+  ]
+}

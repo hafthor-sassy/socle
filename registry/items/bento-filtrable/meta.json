@@ -1,0 +1,53 @@
+{
+  "id": "bento-filtrable",
+  "nom": "Bento filtrable",
+  "categorie": "bento",
+  "niveau": "essentiel",
+  "ordre": 10,
+  "description": "Des filtres en pastille glissante réarrangent le bento : les cases qui restent glissent et changent de taille (FLIP, contenu contre-étiré), la grille est recomposée pour rester pleine et les cases agrandies montrent plus de détails. Sur téléphone, une colonne avec son propre ordre et des filtres en ruban.",
+  "tags": ["Bento", "Filtres", "FLIP", "Mise en page animée", "Requêtes de conteneur", "Responsive"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1120 },
+  "palette": "peche",
+  "logo_exemple": { "nom": "Gabarit", "secteur": "Création de sites sans code", "fichier": "logo.svg", "palette": "peche", "typo": "Geist SemiBold" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, accent, teintes vert, rayons" },
+    { "nom": "Script FLIP", "note": "≈ 3 ko intégré au HTML, API Web Animations, aucune bibliothèque" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, même FLIP fait main" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "filtre", "label": "Filtre au départ", "type": "select", "default": "tout",
+      "options": [{ "value": "tout", "label": "Tout" }, { "value": "creer", "label": "Créer" }, { "value": "publier", "label": "Publier" }, { "value": "vendre", "label": "Vendre" }, { "value": "mesurer", "label": "Mesurer" }],
+      "code": { "html": "data-filtre=\"{v}\"", "react": "filtre=\"{v}\"" } },
+    { "name": "duree", "label": "Durée du réarrangement", "type": "number", "default": 620, "min": 200, "max": 1400, "step": 20, "unit": "ms",
+      "code": { "html": "data-duree=\"{v}\"", "react": "duree={{v}}" } },
+    { "name": "decalage", "label": "Décalage entre cases", "type": "number", "default": 40, "min": 0, "max": 120, "step": 10, "unit": "ms",
+      "hint": "0 : tout bouge d’un bloc. 60 et plus : vague visible.",
+      "code": { "html": "data-decalage=\"{v}\"", "react": "decalage={{v}}" } },
+    { "name": "compteurs", "label": "Compteurs dans les filtres", "type": "boolean", "default": true,
+      "code": { "html": "data-compteurs=\"{v}\"", "react": "compteurs={{v}}" } },
+    { "name": "mobile", "label": "Colonnes sur téléphone", "type": "select", "default": "1",
+      "options": [{ "value": "1", "label": "1" }, { "value": "2", "label": "2" }],
+      "code": { "html": "data-mobile=\"{v}\"", "react": "mobile=\"{v}\"" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/BentoFiltrable.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Page produit qui couvre plusieurs usages (créer, publier, vendre, mesurer…) : le visiteur filtre ce qui le concerne au lieu de tout faire défiler.",
+    "Chaque case déclare ses filtres (data-cats), sa taille dans « Tout » (data-tout=\"4x2\"), sa place sur téléphone (--om) et, si besoin, le filtre qu’elle ouvre (data-rang=\"mesurer:0\"). Les compositions filtrées sont choisies selon le nombre de cases pour que la grille reste pleine (6 colonnes, 4 sur tablette).",
+    "Une case agrandie montre plus : liste de publication, enregistrements DNS, contrôles SEO, indicateurs (requêtes de conteneur, dès 380 px de haut).",
+    "Téléphone : une colonne (ou deux), ordre pensé à part pour raconter l’essentiel d’abord (éditeur, publication, modèles, boutique…), filtres en ruban défilant de 44 px avec fondu au bord.",
+    "Palette par défaut : Pêche. Uniquement des variables de tokens.css : changez de palette sans toucher au composant."
+  ],
+  "accessibilite": [
+    "Filtres en barre d’outils (role=\"toolbar\") de boutons aria-pressed, un seul arrêt de tabulation ; flèches, Début et Fin pour passer d’un filtre à l’autre.",
+    "Le nombre de cases affichées est annoncé (role=\"status\") ; les cases qui sortent sont retirées de l’arbre d’accessibilité dès le clic.",
+    "Les illustrations sont décoratives (aria-hidden) : chaque case garde un titre H3 et une phrase.",
+    "« Réduire les animations » : le filtrage est instantané, aucune boucle d’illustration. Les petites boucles sont en pause hors écran (IntersectionObserver).",
+    "Contraste AA en clair et en sombre : texte sur surface, texte sur accent dans le filtre actif."
+  ]
+}

@@ -1,0 +1,260 @@
+<!-- Squelette fidèle — HTML + CSS + JS, sans bibliothèque. Nécessite tokens.css.
+     Le squelette EST la vraie mise en page : chaque élément marqué [data-sk] devient un bloc de chargement
+     de sa taille exacte. Le reflet est synchronisé sur toute la page (une seule bande, fixée à l'écran),
+     puis le contenu arrive en cascade, sans aucun décalage de mise en page.
+     Réglages : data-state (loading | ready | empty | error), data-autoload (ms, chargement simulé pour l'essai), data-shimmer (sweep | pulse | none),
+     data-speed (s), data-arrival (cascade | together).
+     API : el.skeleton.load(promise | ms) ; el.skeleton.set('ready') ; événement « skeleton:state » (detail.state). -->
+<link rel="stylesheet" href="tokens.css">
+
+<style>
+.pe { --sk-speed: 1.6s; --sk-base: var(--raised); --sk-hi: color-mix(in oklab, var(--border) 70%, var(--surface)); max-width: 1120px; margin: 0 auto; font-family: var(--font-sans); color: var(--text); }
+.dark .pe { --sk-hi: color-mix(in oklab, var(--border) 90%, var(--text-muted) 10%); }
+.pe *, .pe *::before, .pe *::after { box-sizing: border-box; }
+.pe__top { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.pe__logo { display: inline-flex; align-items: center; gap: 8px; margin-right: auto; color: var(--text-strong); font-weight: 600; font-size: 17px; letter-spacing: -0.02em; }
+.pe__logo svg { width: 28px; height: 28px; }
+.pe__hello { display: grid; text-align: right; font-size: 14px; color: var(--text-muted); }
+.pe__hello b { color: var(--text-strong); font-weight: 500; }
+.pe__avatar { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; background: var(--accent-subtle); color: var(--accent); font-weight: 600; font-size: 14px; }
+
+.pe__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pe__card { position: relative; padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); min-width: 0; }
+.pe__card--wide { grid-column: span 2; }
+.pe__card--chart { display: flex; flex-direction: column; }
+.pe__label { display: inline-block; margin: 0; color: var(--text-muted); font-size: 14px; font-weight: 500; }
+.pe__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.pe__link { min-height: 44px; display: inline-flex; align-items: center; margin: -12px -8px; padding: 0 8px; border-radius: 8px; color: var(--text-strong); font-size: 14px; font-weight: 500; text-decoration: none; }
+.pe__link:hover { background: var(--state-hover); }
+
+.pe__balance { display: inline-block; margin: 8px 0 0; color: var(--text-strong); font-size: clamp(36px, 4.4vw, 52px); line-height: 1.1; font-weight: 600; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.pe__balance small { font-size: .5em; letter-spacing: -0.02em; color: var(--text-muted); font-weight: 500; }
+.pe__delta { display: inline-flex; align-items: center; gap: 4px; margin-top: 12px; padding: 4px 10px; border-radius: 999px; background: var(--tint-green-bg); color: var(--tint-green-fg); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.pe__accounts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 24px 0 0; padding: 20px 0 0; border-top: 1px solid var(--border); }
+.pe__accounts div { display: grid; gap: 4px; min-width: 0; }
+.pe__accounts dt { font-size: 14px; color: var(--text-muted); }
+.pe__accounts dt, .pe__accounts dd { width: fit-content; }
+.pe__accounts dd { margin: 0; color: var(--text-strong); font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; }
+
+.pe__bankcard { position: relative; aspect-ratio: 1.586; margin-top: 16px; padding: 16px; border-radius: 12px; background: var(--accent); color: var(--accent-fg); display: grid; align-content: space-between; overflow: hidden; }
+.pe__bankcard svg { position: absolute; right: -24px; bottom: -24px; width: 140px; height: 140px; opacity: .16; }
+.pe__bankcard b { font: 500 15px/1 var(--font-mono); letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+.pe__bankcard span { font-size: 13px; opacity: .85; }
+.pe__limit { margin-top: 16px; display: grid; gap: 8px; font-size: 14px; }
+.pe__limit-row { display: flex; justify-content: space-between; gap: 8px; color: var(--text-muted); }
+.pe__limit-row b { color: var(--text-strong); font-weight: 500; font-variant-numeric: tabular-nums; }
+.pe__meter { height: 8px; border-radius: 999px; background: var(--raised); overflow: hidden; }
+.pe__meter i { display: block; height: 100%; width: var(--v, 0%); border-radius: inherit; background: var(--accent); transition: width 900ms cubic-bezier(.2, 0, 0, 1); }
+
+.pe__chart { flex: 1; display: flex; align-items: flex-end; gap: 8px; min-height: 168px; margin-top: 20px; padding-bottom: 28px; position: relative; }
+.pe__chart::before { content: ""; position: absolute; left: 0; right: 0; bottom: 28px; border-top: 1px solid var(--border); }
+.pe__bar { position: relative; flex: 1; height: var(--h); min-height: 4px; border-radius: 6px 6px 2px 2px; background: color-mix(in oklab, var(--accent) 22%, var(--raised)); transition: height 720ms linear(0, 0.029, 0.09, 0.183, 0.291, 0.403, 0.502, 0.606, 0.701, 0.775, 0.846, 0.905, 0.947, 0.984, 1.011, 1.028, 1.041, 1.048, 1.051, 1.05, 1.047, 1.043, 1.038, 1.033, 1.027, 1.021, 1.017, 1.013, 1.009, 1.006, 1.003, 1); }
+.pe__bar.is-now { background: var(--accent); }
+.pe__bar span { position: absolute; left: 50%; bottom: -26px; transform: translateX(-50%); color: var(--text-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.pe__sum { display: inline-block; color: var(--text-strong); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+
+.pe__list { list-style: none; margin: 12px 0 0; padding: 0; }
+.pe__tx { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 60px; border-bottom: 1px solid var(--border); }
+.pe__tx:last-child { border-bottom: 0; }
+.pe__ic { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--raised); color: var(--text-strong); }
+.pe__tx p { margin: 0; display: grid; gap: 2px; min-width: 0; }
+.pe__tx p b, .pe__tx p span { width: fit-content; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pe__tx b { color: var(--text-strong); font-weight: 500; font-size: 15px; }
+.pe__tx p span { color: var(--text-muted); font-size: 13px; }
+.pe__amt { color: var(--text-strong); font-size: 15px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.pe__amt.is-in { color: var(--up); }
+
+/* ---------- Le squelette : mêmes boîtes, contenu masqué ---------- */
+.pe [data-sk] { position: relative; transition: color 320ms var(--ease-out); transition-delay: var(--sk-d, 0ms); }
+.pe [data-sk]::after { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: var(--sk-r, 6px); background: var(--sk-base); opacity: 0; pointer-events: none; transition: opacity 320ms var(--ease-out); transition-delay: var(--sk-d, 0ms); }
+.pe [data-sk="round"]::after, .pe [data-sk="box"]::after { border-radius: inherit; }
+.pe[data-state="loading"] [data-sk], .pe[data-state="error"] [data-sk] { color: transparent; transition-delay: 0ms; }
+.pe[data-state="loading"] [data-sk] > *, .pe[data-state="error"] [data-sk] > * { opacity: 0; }
+.pe [data-sk] > * { transition: opacity 320ms var(--ease-out); transition-delay: var(--sk-d, 0ms); }
+.pe[data-state="loading"] [data-sk]::after, .pe[data-state="error"] [data-sk]::after { opacity: 1; transition-delay: 0ms; }
+/* Reflet : une seule bande fixée à l'écran, donc alignée d'un bloc à l'autre. */
+.pe[data-state="loading"][data-shimmer="sweep"] [data-sk]::after { background: linear-gradient(100deg, transparent 0%, var(--sk-hi) 50%, transparent 100%) -40vw 0 / 40vw 100% no-repeat fixed, var(--sk-base); animation: pe-sweep var(--sk-speed) cubic-bezier(.4, 0, .2, 1) infinite; }
+.pe[data-state="loading"][data-shimmer="pulse"] [data-sk]::after { animation: pe-pulse var(--sk-speed) ease-in-out infinite; }
+@keyframes pe-sweep { to { background-position: 100vw 0, 0 0; } }
+@keyframes pe-pulse { 50% { opacity: .5; } }
+.pe[data-state="loading"] .pe__bar, .pe[data-state="error"] .pe__bar { height: var(--sk-h); }
+.pe[data-state="loading"] .pe__meter i, .pe[data-state="error"] .pe__meter i { width: 0%; }
+.pe[data-state="loading"] .pe__bar span, .pe[data-state="error"] .pe__bar span { opacity: 0; }
+
+/* Erreur et vide */
+.pe__banner { display: none; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px 12px 12px 16px; border: 1px solid var(--tint-red-border); border-radius: 12px; background: var(--tint-red-bg); color: var(--tint-red-fg); font-size: 14px; }
+.pe[data-state="error"] .pe__banner { display: flex; }
+.pe__banner p { margin: 0 auto 0 0; }
+.pe__banner button { min-height: 44px; padding: 0 16px; border: 1px solid var(--tint-red-border); border-radius: 999px; background: var(--surface); color: var(--text-strong); font: 500 14px/1 var(--font-sans); cursor: pointer; }
+.pe__empty { display: none; justify-items: center; gap: 8px; padding: 32px 8px 16px; text-align: center; color: var(--text-muted); font-size: 14px; }
+.pe__empty svg { color: var(--text-muted); }
+.pe__empty b { color: var(--text-strong); font-weight: 500; font-size: 15px; }
+.pe__empty a { margin-top: 8px; min-height: 44px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); text-decoration: none; font-weight: 600; font-size: 14px; }
+.pe[data-state="empty"] .pe__empty { display: grid; }
+.pe[data-state="empty"] .pe__list, .pe[data-state="empty"] .pe__delta { display: none; }
+.pe[data-state="empty"] .pe__bar { height: 4px; }
+.pe[data-state="empty"] .pe__meter i { width: 0%; }
+.pe__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 899px) {
+  .pe__grid { grid-template-columns: 1fr; }
+  .pe__card--wide { grid-column: auto; }
+  .pe__bankcard { max-width: 360px; }
+}
+@media (max-width: 719px) {
+  .pe__top { margin-bottom: 16px; }
+  .pe__hello span { display: none; }
+  .pe__grid { gap: 12px; }
+  .pe__card { padding: 20px 16px; border-radius: 12px; }
+  .pe__accounts { grid-template-columns: 1fr 1fr; gap: 16px 12px; }
+  .pe__accounts div:last-child { grid-column: 1 / -1; }
+  .pe__chart { gap: 5px; min-height: 148px; }
+  .pe__bankcard { aspect-ratio: 2.2; max-width: none; }
+  .pe__bar span { font-size: 11px; }
+  .pe__bar:nth-child(odd):not(.is-now) span { visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pe [data-sk], .pe [data-sk]::after, .pe [data-sk] > *, .pe__bar, .pe__meter i { transition: none !important; }
+  .pe[data-state] [data-sk]::after { animation: none !important; }
+}
+</style>
+
+<!-- SECTION -->
+<div class="pe" data-skeleton data-state="loading" data-shimmer="sweep" data-speed="1.6" data-arrival="cascade" data-autoload="1800">
+  <header class="pe__top">
+    <span class="pe__logo"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="56" r="44" style="fill:var(--accent)"/><rect x="30" y="40" width="40" height="9" rx="4.5" style="fill:var(--accent-fg)"/><circle cx="50" cy="17" r="15" style="fill:var(--accent)" opacity=".55"/></svg>Pécule</span>
+    <span class="pe__hello"><span>Jeudi 5 novembre</span><b>Bonjour Claire</b></span>
+    <span class="pe__avatar" aria-hidden="true">CM</span>
+  </header>
+
+  <div class="pe__banner" role="alert">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg>
+    <p>Impossible de joindre votre banque. Vos derniers chiffres datent d’il y a 2 h.</p>
+    <button type="button" data-sk-retry>Réessayer</button>
+  </div>
+  <p class="pe__sr" role="status" data-sk-live></p>
+
+  <div class="pe__grid" data-sk-content>
+    <section class="pe__card pe__card--wide" aria-labelledby="pe-h1">
+      <h2 class="pe__label" id="pe-h1">Solde total</h2>
+      <div><p class="pe__balance" data-sk data-sk-group="1" data-count="12480.52">12 480,52 <small>€</small></p></div>
+      <span class="pe__delta" data-sk="round" data-sk-group="1">+3,2 % depuis octobre</span>
+      <dl class="pe__accounts">
+        <div><dt data-sk data-sk-group="2">Compte courant</dt><dd data-sk data-sk-group="2" data-empty="0,00 €">2 140,18 €</dd></div>
+        <div><dt data-sk data-sk-group="2">Livret Pécule</dt><dd data-sk data-sk-group="2" data-empty="0,00 €">8 930,34 €</dd></div>
+        <div><dt data-sk data-sk-group="2">Objectif « Japon »</dt><dd data-sk data-sk-group="2" data-empty="0,00 €">1 410,00 €</dd></div>
+      </dl>
+    </section>
+
+    <section class="pe__card" aria-labelledby="pe-h2">
+      <div class="pe__head"><h2 class="pe__label" id="pe-h2">Carte</h2><a class="pe__link" href="#carte">Gérer</a></div>
+      <div class="pe__bankcard" data-sk="box" data-sk-group="1">
+        <span>Pécule Visa</span>
+        <b>•••• 4821</b>
+        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="56" r="44" style="fill:var(--accent-fg)"/></svg>
+      </div>
+      <div class="pe__limit">
+        <div class="pe__limit-row"><span data-sk data-sk-group="3">Plafond mensuel</span><b data-sk data-sk-group="3" data-empty="0 € / 2 000 €">612 € / 2 000 €</b></div>
+        <div class="pe__meter" data-sk="round" data-sk-group="3"><i style="--v: 30.6%"></i></div>
+      </div>
+    </section>
+
+    <section class="pe__card pe__card--wide pe__card--chart" aria-labelledby="pe-h3">
+      <div class="pe__head"><h2 class="pe__label" id="pe-h3">Dépenses de novembre</h2><span class="pe__sum" data-sk data-sk-group="3" data-empty="0 €">1 286 €</span></div>
+      <div class="pe__chart" data-sk-bars></div>
+    </section>
+
+    <section class="pe__card" aria-labelledby="pe-h4">
+      <div class="pe__head"><h2 class="pe__label" id="pe-h4">Dernières opérations</h2><a class="pe__link" href="#operations">Tout voir</a></div>
+      <ul class="pe__list" data-sk-tx></ul>
+      <div class="pe__empty">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg>
+        <b>Aucune opération ce mois-ci</b>
+        <span>Vos paiements apparaîtront ici en temps réel.</span>
+        <a href="#alimenter">Alimenter mon compte</a>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- /SECTION -->
+
+<script>
+(function () {
+  var TX = [
+    ['M4 7h16l-1.5 9.5a2 2 0 0 1-2 1.5h-9a2 2 0 0 1-2-1.5zM9 7V5.5a3 3 0 0 1 6 0V7', 'Biocoop Saint-Cyprien', 'Courses · aujourd’hui', '−42,80 €'],
+    ['M3 12h18M12 3v18', 'Virement de Julien M.', 'Remboursement · hier', '+35,00 €', 1],
+    ['M5 18V8l7-4 7 4v10M9 18v-5h6v5', 'Loyer novembre', 'Logement · 1er nov.', '−780,00 €'],
+    ['M5 17h14M7 17V9h10v8M9 9V6h6v3', 'SNCF Connect', 'Transport · 31 oct.', '−64,00 €'],
+    ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM9 10h.01M15 10h.01M9 15c1.5 1.2 4.5 1.2 6 0', 'Cinéma ABC', 'Loisirs · 30 oct.', '−19,50 €']
+  ];
+  var BARS = [38, 22, 64, 30, 46, 18, 72, 40, 28, 54, 34, 86];
+  var DAYS = ['1', '3', '6', '8', '10', '13', '15', '17', '20', '22', '24', '26'];
+  var fmt = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  document.querySelectorAll('[data-skeleton]').forEach(function (root) {
+    if (root.skeleton) return;
+    var live = root.querySelector('[data-sk-live]'), content = root.querySelector('[data-sk-content]');
+    var bars = root.querySelector('[data-sk-bars]'), list = root.querySelector('[data-sk-tx]');
+    var bal = root.querySelector('[data-count]'), timer = 0, raf = 0, token = 0;
+    bars.innerHTML = BARS.map(function (h, i) {
+      var sk = 26 + 22 * Math.sin(i * .9 + 1);
+      return '<div class="pe__bar' + (i === BARS.length - 1 ? ' is-now' : '') + '" style="--h:' + h + '%;--sk-h:' + sk.toFixed(0) + '%" data-sk="box" data-sk-group="4"><span>' + DAYS[i] + '</span></div>';
+    }).join('');
+    bars.setAttribute('role', 'img');
+    bars.setAttribute('aria-label', 'Dépenses par jour en novembre, 1 286 € au total, pic le 26 novembre');
+    list.innerHTML = TX.map(function (t, i) {
+      return '<li class="pe__tx"><span class="pe__ic" data-sk="box" data-sk-group="' + (5 + i) + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + t[0] + '"/></svg></span>' +
+        '<p><b data-sk data-sk-group="' + (5 + i) + '">' + t[1] + '</b><span data-sk data-sk-group="' + (5 + i) + '">' + t[2] + '</span></p>' +
+        '<span class="pe__amt' + (t[4] ? ' is-in' : '') + '" data-sk data-sk-group="' + (5 + i) + '">' + t[3] + '</span></li>';
+    }).join('');
+
+    function stagger() {
+      var cascade = root.dataset.arrival !== 'together';
+      root.querySelectorAll('[data-sk]').forEach(function (el) {
+        var g = +el.dataset.skGroup || 0;
+        el.style.setProperty('--sk-d', cascade ? (g * 70) + 'ms' : '0ms');
+      });
+    }
+    function countUp() {
+      var to = +bal.dataset.count, t0 = 0, dur = 900, small = bal.querySelector('small').outerHTML;
+      var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      cancelAnimationFrame(raf);
+      if (reduce) return;
+      (function f(t) {
+        if (!t0) t0 = t;
+        var k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 4);
+        bal.innerHTML = fmt.format(to * e).replace(/\u202f/g, '\u00a0') + ' ' + small;
+        if (k < 1) raf = requestAnimationFrame(f);
+      })(performance.now());
+    }
+    function set(state) {
+      root.style.setProperty('--sk-speed', (+root.dataset.speed || 1.6) + 's');
+      stagger();
+      var was = root.dataset.state;
+      root.dataset.state = state;
+      var busy = state === 'loading';
+      root.setAttribute('aria-busy', String(busy));
+      if (busy || state === 'error') content.setAttribute('aria-hidden', 'true'); else content.removeAttribute('aria-hidden');
+      root.querySelectorAll('[data-empty]').forEach(function (el) { if (!el.dataset.full) el.dataset.full = el.textContent; el.textContent = state === 'empty' ? el.dataset.empty : el.dataset.full; });
+      if (state === 'empty') bal.innerHTML = '0,00 <small>€</small>';
+      else if (bal.dataset.count) bal.innerHTML = fmt.format(+bal.dataset.count).replace(/\u202f/g, '\u00a0') + ' <small>€</small>';
+      if (state === 'ready' && was !== 'ready') countUp();
+      live.textContent = { loading: 'Chargement de vos comptes…', ready: 'Comptes à jour', empty: 'Comptes à jour, aucune opération ce mois-ci', error: '' }[state];
+      root.dispatchEvent(new CustomEvent('skeleton:state', { detail: { state: state } }));
+    }
+    /* load(ms) simule une requête ; load(promise) suit une vraie requête (résolue : prêt, rejetée : erreur). */
+    function load(src, then) {
+      var my = ++token;
+      clearTimeout(timer);
+      set('loading');
+      var p = typeof src === 'number' ? new Promise(function (r) { timer = setTimeout(r, src); }) : Promise.resolve(src);
+      p.then(function () { if (my === token) set(then || 'ready'); }, function () { if (my === token) set('error'); });
+    }
+    root.addEventListener('click', function (e) { if (e.target.closest('[data-sk-retry]')) load(1200); });
+    set(root.dataset.state || 'loading');
+    /* data-autoload : chargement simulé (ms) pour l'essai ; retirez-le et appelez el.skeleton.load(fetch(…)). */
+    if (root.dataset.autoload) load(+root.dataset.autoload);
+    root.skeleton = { load: load, set: set, get state() { return root.dataset.state; } };
+  });
+})();
+</script>

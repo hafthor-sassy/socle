@@ -1,0 +1,63 @@
+{
+  "id": "hero-shader",
+  "nom": "Hero shader interactif",
+  "categorie": "hero",
+  "niveau": "premium",
+  "ordre": 2,
+  "description": "Un fluide WebGL maison (déformation de domaine, plis de soie ou verre cannelé) aux couleurs de la palette, qui tourbillonne sous le curseur ou le doigt et lance une onde au clic. Voile de lecture calé sur le texte, carte d’incident en verre qui se coche en direct, bouton pause. Sur téléphone, une fenêtre de fluide pur ouvre l’écran avant le titre.",
+  "tags": ["WebGL", "Shader", "Curseur", "Tactile", "Verre", "Agents IA", "Responsive"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1280 },
+  "stage": { "width": "desktop", "desktopMin": 1120 },
+  "palette": "neon-lime",
+  "logo_exemple": { "nom": "Vigie", "secteur": "Cybersécurité (tri des alertes par agents IA)", "fichier": "logo.svg", "palette": "neon-lime", "typo": "Geist SemiBold" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "--bg, --accent-subtle, --accent, --accent-vivid lus par le shader ; surfaces, teintes et textes pour le reste" },
+    { "nom": "WebGL 1", "note": "Shader maison de ≈ 3 ko, aucune bibliothèque, aucun CDN ; repli en dégradés CSS sans WebGL" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, même moteur, aucune autre bibliothèque" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement (variantes arbitraires [.is-in_&])" }
+  ],
+  "props": [
+    { "name": "titre", "label": "Titre (H1)", "type": "text", "default": "Vos alertes de sécurité, triées avant le café.",
+      "code": { "html": "<h1 id=\"hsh-title\" class=\"hsh__title\">{v}</h1>", "react": "titre=\"{v}\"" } },
+    { "name": "style", "label": "Matière", "type": "select", "default": "soie",
+      "options": [{ "value": "soie", "label": "Soie" }, { "value": "verre", "label": "Verre cannelé" }],
+      "code": { "html": "data-style=\"{v}\"", "react": "style=\"{v}\"" } },
+    { "name": "force", "label": "Réaction au curseur", "type": "number", "default": 1, "min": 0, "max": 2, "step": 0.1,
+      "hint": "0 : le fluide ignore le pointeur. 2 : tourbillon marqué.",
+      "code": { "html": "data-force=\"{v}\"", "react": "force={{v}}" } },
+    { "name": "vitesse", "label": "Vitesse", "type": "number", "default": 1, "min": 0, "max": 2, "step": 0.1,
+      "code": { "html": "data-speed=\"{v}\"", "react": "vitesse={{v}}" } },
+    { "name": "echelle", "label": "Taille des volutes", "type": "number", "default": 1.4, "min": 0.6, "max": 3, "step": 0.1,
+      "hint": "Petit : grandes nappes. Grand : volutes serrées.",
+      "code": { "html": "data-scale=\"{v}\"", "react": "echelle={{v}}" } },
+    { "name": "grain", "label": "Grain", "type": "number", "default": 0.04, "min": 0, "max": 0.15, "step": 0.01,
+      "code": { "html": "data-grain=\"{v}\"", "react": "grain={{v}}" } },
+    { "name": "voile", "label": "Voile de lecture", "type": "number", "default": 0.75, "min": 0, "max": 1, "step": 0.05,
+      "hint": "Atténue le fluide sous le texte. Sous 0,6, vérifiez le contraste avec votre palette.",
+      "code": { "html": "data-veil=\"{v}\"", "react": "voile={{v}}" } },
+    { "name": "qualite", "label": "Résolution du rendu", "type": "number", "default": 0.75, "min": 0.4, "max": 1, "step": 0.05,
+      "hint": "Part de la résolution de l’écran. 0,75 est net et léger ; le grain masque la différence.",
+      "code": { "html": "data-quality=\"{v}\"", "react": "qualite={{v}}" } },
+    { "name": "carte", "label": "Carte d’incident", "type": "boolean", "default": true,
+      "code": { "html": "data-card=\"{v}\"", "react": "carte={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/HeroShaderInteractif.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Premier écran d’un produit qui veut une signature visuelle forte (sécurité, IA, data, fintech, lancement) sans vidéo ni image lourde : tout le fond tient dans un shader de quelques kilo-octets.",
+    "Survolez ou glissez le doigt : le fluide tourbillonne autour du pointeur et suit l’élan du geste ; un clic ou un tap lance une onde. Sans interaction depuis 2,5 s, le point d’attraction se promène seul, le fond vit donc aussi sur téléphone.",
+    "Téléphone (< 600 px) : une fenêtre de fluide pur (30 % de la hauteur d’écran) ouvre la page, puis titre, actions pleine largeur de 52 px et carte d’incident à pleine largeur. Bureau : texte à gauche, carte en verre à droite.",
+    "Soie pour une ambiance organique, Verre cannelé pour un rendu plus architectural : chaque cannelure de 72 px (56 px sur téléphone) agrandit sa tranche de fluide.",
+    "Palette par défaut : Neon lime. Les quatre couleurs du shader sont relues dans tokens.css à chaque changement de palette ou de thème (MutationObserver sur <html>) : aucune couleur codée en dur."
+  ],
+  "accessibilite": [
+    "Vrai H1 et liens natifs ; le canvas est décoratif (aria-hidden) et ne capte aucun clic : le texte reste sélectionnable.",
+    "Voile de lecture calculé à partir de la boîte du texte : plein dessous, fondu au-delà. Avec le voile par défaut, texte ≥ 4,5:1 en clair et en sombre sur les palettes du DS.",
+    "Bouton pause de 44 px (critère WCAG 2.2.2 sur le contenu animé de plus de 5 s) ; il arrête aussi la carte d’incident.",
+    "« Réduire les animations » : une seule image fixe du fluide, aucun suivi du pointeur, carte entièrement cochée. Sans WebGL ou si le contexte est perdu : repli en dégradés CSS aux couleurs de la palette.",
+    "Boucle rAF arrêtée hors écran (IntersectionObserver) et onglet masqué ; rendu à 75 % de la résolution, densité plafonnée à 1,25 (1,5 sur téléphone). Défilement tactile intact (écouteurs passifs, touch-action: pan-y)."
+  ]
+}

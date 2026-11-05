@@ -1,0 +1,158 @@
+{
+  "id": "transitions-natives",
+  "nom": "Transitions de page natives",
+  "categorie": "transitions",
+  "niveau": "essentiel",
+  "ordre": 2,
+  "description": "Navigation liste → fiche avec la View Transitions API du navigateur : la photo et le nom du produit voyagent d’une page à l’autre pendant que le reste glisse, se fond ou s’enfonce. Aucune bibliothèque ; sans l’API, la page change simplement (repli invisible). Démo sur une boutique de mode.",
+  "tags": [
+    "View Transitions",
+    "Élément partagé",
+    "Navigation",
+    "E-commerce",
+    "Sans bibliothèque",
+    "Accessible",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "difficulte": 2,
+  "technique": "document.startViewTransition, view-transition-name posé à la volée sur l’élément cliqué, ::view-transition-* pilotés par variables CSS, courbe ressort en linear()",
+  "poids": "≈ 2 Ko gzip de script (hors catalogue d’exemple), aucune dépendance",
+  "palette": "aubergine",
+  "thumb": {
+    "width": 1180
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Couleurs, rayons, focus : uniquement des variables, la palette choisie s’applique partout (illustrations comprises)"
+    },
+    {
+      "nom": "View Transitions API (même document)",
+      "note": "Chrome et Edge 111+, Safari 18+, Firefox 144+ ; ailleurs, changement instantané sans erreur"
+    },
+    {
+      "nom": "react ≥ 18 et react-dom",
+      "note": "Onglet React : flushSync rend la mise à jour synchrone pendant la capture"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React (darkMode: 'class')"
+    }
+  ],
+  "props": [
+    {
+      "name": "style",
+      "label": "Reste de la page",
+      "type": "select",
+      "default": "glisse",
+      "options": [
+        {
+          "value": "glisse",
+          "label": "Glisse"
+        },
+        {
+          "value": "fondu",
+          "label": "Fondu"
+        },
+        {
+          "value": "profondeur",
+          "label": "Profondeur"
+        }
+      ],
+      "hint": "Glisse suit le sens de navigation ; Profondeur enfonce la liste. Changer de style joue une navigation.",
+      "code": {
+        "html": "data-style=\"{v}\"",
+        "react": "style=\"{v}\""
+      }
+    },
+    {
+      "name": "duree",
+      "label": "Durée",
+      "type": "number",
+      "default": 420,
+      "min": 160,
+      "max": 1200,
+      "step": 20,
+      "unit": "ms",
+      "hint": "300 à 500 ms : assez pour suivre la photo, sans ralentir la navigation.",
+      "code": {
+        "html": "data-duration=\"{v}\"",
+        "react": "duration={{v}}"
+      }
+    },
+    {
+      "name": "courbe",
+      "label": "Courbe",
+      "type": "select",
+      "default": "emphase",
+      "options": [
+        {
+          "value": "emphase",
+          "label": "Emphase"
+        },
+        {
+          "value": "ressort",
+          "label": "Ressort"
+        },
+        {
+          "value": "douce",
+          "label": "Douce"
+        }
+      ],
+      "code": {
+        "html": "data-ease=\"{v}\"",
+        "react": "ease=\"{v}\""
+      },
+      "hint": "Courbe de la photo et du titre partagés ; Ressort ajoute un léger rebond."
+    },
+    {
+      "name": "partage",
+      "label": "Photo et titre partagés",
+      "type": "boolean",
+      "default": true,
+      "hint": "Désactivé : seule la page change, sans voyage de la photo.",
+      "code": {
+        "html": "data-shared=\"{v}\"",
+        "react": "shared={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/PageTransitions.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour une navigation entre une liste et un détail (boutique, portfolio, annuaire, articles) où l’on veut garder le fil : l’objet cliqué devient la page.",
+    "HTML : un conteneur [data-vt], des liens [data-vt-to=\"id\"] et des boutons [data-vt-back] ; el.vt.go('id') navigue par script, l’événement « vt:change » permet de mettre à jour l’URL (history.pushState) ou de charger la suite.",
+    "React : useViewTransition({ style, duration, ease }) renvoie navigate(update, { direction, shared }). update change l’état (setPage) ; shared renvoie les paires [élément, nom] de la page affichée, appelée avant et après la mise à jour. OurletShop montre l’usage complet.",
+    "Un view-transition-name doit être unique dans la page : il n’est posé que sur l’élément cliqué, le temps de la transition.",
+    "Pour une application multipage (MPA), la même CSS fonctionne avec @view-transition { navigation: auto; } sur les deux pages."
+  ],
+  "accessibilite": [
+    "Les cartes sont de vrais liens ; Entrée ouvre la fiche, Échap ou « Toute la collection » revient, et le focus retourne sur la carte d’origine.",
+    "À l’ouverture, le focus passe sur le titre de la fiche (sans défilement) et une région aria-live annonce « Veste Rivage, fiche produit ».",
+    "Tailles en boutons radio natifs (flèches du clavier), tailles épuisées désactivées et annoncées « épuisée » ; cibles de 48 px.",
+    "Avec « réduire les animations » ou sans l’API, aucune animation : la page change instantanément, rien ne tourne en boucle."
+  ],
+  "logo_exemple": {
+    "nom": "Ourlet",
+    "secteur": "E-commerce mode",
+    "fichier": "logo.svg",
+    "palette": "aubergine",
+    "typo": "Geist SemiBold"
+  }
+}

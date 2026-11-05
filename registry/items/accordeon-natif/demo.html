@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accordéon natif — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 48px 24px; }
+  @media (max-width: 640px) { .stage { padding: 12px 10px 32px; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage"><div id="mount" style="display:contents"></div></main>
+<script>
+  var props = Socle.props({ exclusif: true, icone: 'plus', duree: 320, style: 'lignes', liens: true });
+  var root = null;
+  function render(p) {
+    if (!root || !root._an) return;
+    root.dataset.exclusif = String(!!p.exclusif);
+    root.dataset.icone = p.icone;
+    root.dataset.style = p.style;
+    root.dataset.liens = String(!!p.liens);
+    root.style.setProperty('--an-duree', p.duree + 'ms');
+    root._an.refresh();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-accordeon]');
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    render(props);
+  });
+  Socle.onChange(render);
+  /* Rejouer : deux questions s'ouvrent l'une après l'autre, puis un lien direct vers « sinistre ». */
+  Socle.onReplay(function () {
+    if (!root || !root._an) return;
+    root._an.closeAll();
+    setTimeout(function () { root._an.open(1); }, 250);
+    setTimeout(function () { root._an.open(4); }, 1300);
+    setTimeout(function () { root._an.target('sinistre'); }, 2500);
+  });
+</script>
+</body>
+</html>

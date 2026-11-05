@@ -1,0 +1,259 @@
+<!-- Préchargeur en tuiles — HTML + CSS + JS, sans bibliothèque. Nécessite tokens.css.
+     L'écran est couvert de colonnes ; un compteur roule de 000 à 100 au rythme du chargement réel,
+     puis les colonnes s'ouvrent une à une sur la page, dont les titres montent ligne par ligne.
+     Réglages : data-columns (3 à 12), data-duration (ms, durée minimale du chargement simulé),
+     data-exit (up | down | alternate), data-order (left | center | random), data-counter (large | small | none),
+     data-tone (accent | ink | relief), data-autostart (true | false), data-scope (container | page : plein écran en position fixe).
+     API : el.preloader.start(promises?) ; el.preloader.set(0..1) ; el.preloader.finish() ; événement « preloader:done ». -->
+<link rel="stylesheet" href="tokens.css">
+
+<style>
+.cj { --cj-ink: var(--text-strong); --cj-c1: var(--accent); --cj-c2: color-mix(in oklab, var(--accent) 90%, var(--text-strong)); --cj-fg: var(--accent-fg); position: relative; overflow: hidden; min-height: 640px; border-radius: 16px; background: var(--bg); font-family: var(--font-sans); color: var(--text); isolation: isolate; }
+.dark .cj { --cj-ink: var(--bg); --cj-c2: color-mix(in oklab, var(--accent) 90%, var(--bg)); }
+.cj[data-tone="ink"] { --cj-c1: var(--text-strong); --cj-c2: var(--text-strong); --cj-fg: var(--bg); }
+.cj[data-tone="accent"] { --cj-c2: var(--accent); }
+.cj *, .cj *::before, .cj *::after { box-sizing: border-box; }
+.cj[data-scope="page"] .cj__loader { position: fixed; }
+
+/* ---------- La page révélée ---------- */
+.cj__page { padding: 24px 40px 40px; transform: scale(1.04); transform-origin: 50% 0; transition: transform 1100ms cubic-bezier(.16, 1, .3, 1); }
+.cj.is-done .cj__page { transform: none; }
+.cj__nav { display: flex; align-items: center; gap: 24px; height: 56px; }
+.cj__brand { display: inline-flex; align-items: center; gap: 10px; margin-right: auto; color: var(--text-strong); font-weight: 600; font-size: 17px; letter-spacing: -0.02em; text-decoration: none; border-radius: 8px; }
+.cj__brand svg { width: 28px; height: 28px; }
+.cj__links { display: flex; gap: 4px; }
+.cj__links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 8px; color: var(--text-muted); font-size: 14px; text-decoration: none; }
+.cj__links a:hover { color: var(--text-strong); background: var(--state-hover); }
+.cj__btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: 600 14px/1 var(--font-sans); text-decoration: none; border: 0; transition: background-color 160ms; }
+.cj__btn:hover { background: var(--accent-hover); }
+.cj__btn--ghost { background: var(--surface); color: var(--text-strong); border: 1px solid var(--border); }
+.cj__btn--ghost:hover { background: var(--raised); }
+.cj__hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; padding-top: 40px; }
+.cj__eyebrow { margin: 0 0 20px; color: var(--text-muted); font: 500 13px/1.4 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
+.cj__h1 { margin: 0; color: var(--text-strong); font-size: clamp(44px, 6.6vw, 92px); line-height: .95; letter-spacing: -0.05em; font-weight: 600; }
+.cj__line { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
+.cj__line > span { display: block; transform: translateY(105%); transition: transform 900ms cubic-bezier(.16, 1, .3, 1); transition-delay: calc(var(--i, 0) * 90ms + 120ms); }
+.cj.is-done .cj__line > span { transform: none; }
+.cj__fade { opacity: 0; transform: translateY(12px); transition: opacity 700ms var(--ease-out), transform 700ms cubic-bezier(.16, 1, .3, 1); transition-delay: calc(var(--i, 0) * 90ms + 200ms); }
+.cj.is-done .cj__fade { opacity: 1; transform: none; }
+.cj__lead { margin: 24px 0 0; max-width: 40ch; color: var(--text); font-size: 17px; line-height: 1.55; }
+.cj__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.cj__photo { position: relative; margin: 0; aspect-ratio: 4 / 5; border-radius: 16px; overflow: hidden; background: var(--accent-subtle); }
+.cj__photo svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: scale(1.12); transition: transform 1600ms cubic-bezier(.16, 1, .3, 1) 100ms; }
+.cj.is-done .cj__photo svg { transform: none; }
+.cj__credit { position: absolute; left: 12px; bottom: 12px; padding: 6px 10px; border-radius: 999px; background: var(--surface); color: var(--text-strong); font-size: 12px; line-height: 1; }
+
+/* ---------- Le préchargeur ---------- */
+.cj__loader { position: absolute; inset: 0; z-index: 5; color: var(--cj-fg); pointer-events: auto; }
+.cj__loader[hidden] { display: none; }
+.cj__tiles { position: absolute; inset: 0; display: flex; }
+.cj__tile { flex: 1; height: 100%; background: var(--cj-c1); will-change: transform; }
+.cj__tile:nth-child(even) { background: var(--cj-c2); }
+.cj__tile + .cj__tile { box-shadow: inset 1px 0 0 color-mix(in oklab, var(--cj-fg) 10%, transparent); }
+.cj__ui { position: absolute; inset: 0; display: grid; grid-template-rows: auto 1fr auto; padding: 28px 40px; transition: opacity 360ms var(--ease-out), transform 520ms cubic-bezier(.7, 0, .84, 0); }
+.cj.is-leaving .cj__ui { opacity: 0; transform: translateY(-24px); }
+.cj__ui-top, .cj__ui-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 14px; }
+.cj__ui-top .cj__brand { color: inherit; }
+.cj__meta { font: 500 13px/1.4 var(--font-mono); letter-spacing: .02em; opacity: .85; font-variant-numeric: tabular-nums; }
+.cj__center { align-self: center; justify-self: center; display: grid; justify-items: center; gap: 12px; }
+.cj__count { display: flex; align-items: flex-start; font-size: clamp(96px, 17vw, 240px); line-height: 1; font-weight: 600; letter-spacing: -0.06em; font-variant-numeric: tabular-nums; }
+.cj[data-counter="small"] .cj__count { font-size: clamp(48px, 7vw, 88px); }
+.cj[data-counter="none"] .cj__count { display: none; }
+.cj__digit { display: block; height: 1em; overflow: hidden; margin: 0 -.02em; }
+.cj__digit.is-lead { opacity: .32; transition: opacity 300ms; }
+.cj__strip { display: grid; transition: transform 520ms linear(0, 0.029, 0.09, 0.183, 0.291, 0.403, 0.502, 0.606, 0.701, 0.775, 0.846, 0.905, 0.947, 0.984, 1.011, 1.028, 1.041, 1.048, 1.051, 1.05, 1.047, 1.043, 1.038, 1.033, 1.027, 1.021, 1.017, 1.013, 1.009, 1.006, 1.003, 1); transform: translateY(calc(var(--d, 0) * -1em)); }
+.cj__strip span { display: block; height: 1em; }
+.cj__digit:nth-child(3) .cj__strip { transition: none; } /* les unités changent trop vite pour rouler : seules dizaines et centaines roulent */
+.cj__pct { margin: .16em 0 0 .08em; font-size: .22em; letter-spacing: 0; opacity: .8; }
+.cj__step { min-height: 22px; font: 500 14px/22px var(--font-mono); letter-spacing: .02em; text-transform: uppercase; opacity: .9; }
+.cj__step span { display: inline-block; animation: cj-step 420ms cubic-bezier(.16, 1, .3, 1); }
+@keyframes cj-step { from { opacity: 0; transform: translateY(8px); } }
+.cj__bar { width: min(320px, 60vw); height: 2px; background: color-mix(in oklab, var(--cj-fg) 22%, transparent); border-radius: 999px; overflow: hidden; }
+.cj__bar i { display: block; height: 100%; background: var(--cj-fg); transform: scaleX(var(--p, 0)); transform-origin: left; transition: transform 200ms linear; }
+.cj[data-counter="large"] .cj__bar { display: none; }
+.cj__skip { min-height: 44px; padding: 0 16px; border: 1px solid color-mix(in oklab, var(--cj-fg) 35%, transparent); border-radius: 999px; background: none; color: inherit; font: 500 14px/1 var(--font-sans); cursor: pointer; }
+.cj__skip:hover { background: color-mix(in oklab, var(--cj-fg) 10%, transparent); }
+.cj__skip:focus-visible { outline-color: var(--cj-fg); }
+.cj__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 899px) {
+  .cj__hero { grid-template-columns: 1fr; gap: 28px; padding-top: 24px; }
+  .cj__photo { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 719px) {
+  .cj { border-radius: 12px; min-height: 720px; }
+  .cj__page { padding: 12px 16px 24px; }
+  .cj__links { display: none; }
+  .cj__h1 { font-size: clamp(44px, 13.5vw, 60px); }
+  .cj__lead { font-size: 16px; margin-top: 16px; }
+  .cj__ctas { margin-top: 24px; }
+  .cj__ctas .cj__btn { flex: 1 1 auto; white-space: nowrap; padding: 0 16px; }
+  .cj__ui { padding: 16px 20px 20px; }
+  .cj__ui-top .cj__meta { display: none; }
+  .cj__count { font-size: clamp(104px, 34vw, 150px); }
+  .cj__ui-bottom .cj__meta { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cj__page, .cj__line > span, .cj__fade, .cj__photo svg, .cj__strip, .cj__ui, .cj__bar i { transition: none !important; transform: none !important; }
+  .cj__fade { opacity: 1; }
+  .cj__step span { animation: none; }
+}
+</style>
+
+<!-- SECTION -->
+<div class="cj" data-preloader data-columns="6" data-duration="2600" data-exit="up" data-order="left" data-counter="large" data-tone="relief" data-scope="container" data-autostart="true">
+  <div class="cj__page" aria-busy="true">
+    <header class="cj__nav">
+      <a class="cj__brand" href="#accueil" aria-label="Contrejour, accueil">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="64" cy="36" r="30" style="fill:var(--accent)" opacity=".55"/><rect y="24" width="76" height="76" rx="18" style="fill:var(--accent)"/></svg>Contrejour
+      </a>
+      <nav class="cj__links" aria-label="Festival"><a href="#programme">Programme</a><a href="#lieux">Lieux</a><a href="#infos">Infos pratiques</a></nav>
+      <a class="cj__btn" href="#billets">Billets</a>
+    </header>
+    <section class="cj__hero" aria-labelledby="cj-h1">
+      <div>
+        <p class="cj__eyebrow cj__fade" style="--i:0">Rencontres photographiques · 9ᵉ édition</p>
+        <h1 class="cj__h1" id="cj-h1"><span class="cj__line" style="--i:0"><span>La lumière</span></span><span class="cj__line" style="--i:1"><span>par derrière.</span></span></h1>
+        <p class="cj__lead cj__fade" style="--i:2">41 expositions, 214 photographes et 16 lieux à Toulouse, du 12 au 28 juin 2027. Entrée libre dans la moitié des lieux.</p>
+        <div class="cj__ctas cj__fade" style="--i:3"><a class="cj__btn" href="#programme">Voir le programme</a><a class="cj__btn cj__btn--ghost" href="#billets">Pass festival · 24&nbsp;€</a></div>
+      </div>
+      <figure class="cj__photo cj__fade" style="--i:1" aria-label="Affiche 2027 : une silhouette à contre-jour devant un soleil bas">
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <circle cx="250" cy="210" r="120" style="fill:var(--accent)"/>
+          <circle cx="250" cy="210" r="160" fill="none" style="stroke:var(--accent)" stroke-width="2" opacity=".35"/>
+          <circle cx="250" cy="210" r="205" fill="none" style="stroke:var(--accent)" stroke-width="1.5" opacity=".2"/>
+          <path d="M0 360q110-40 220-10t180-6v156H0Z" style="fill:color-mix(in oklab, var(--accent) 45%, var(--accent-subtle))"/>
+          <path d="M140 500v-96q0-34 30-48l18-8q-20-16-20-44 0-38 34-38t34 38q0 28-20 44l18 8q30 14 30 48v96Z" style="fill:color-mix(in oklab, var(--accent) 30%, var(--cj-ink))"/>
+          <circle cx="96" cy="120" r="14" style="fill:var(--accent)" opacity=".25"/><circle cx="60" cy="86" r="6" style="fill:var(--accent)" opacity=".3"/>
+        </svg>
+        <figcaption class="cj__credit">© Inès Barrault · « Garonne, 6 h 12 »</figcaption>
+      </figure>
+    </section>
+  </div>
+
+  <div class="cj__loader">
+    <div class="cj__tiles" aria-hidden="true"></div>
+    <div class="cj__ui">
+      <div class="cj__ui-top">
+        <span class="cj__brand"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="64" cy="36" r="30" style="fill:var(--cj-fg)" opacity=".5"/><rect y="24" width="76" height="76" rx="18" style="fill:var(--cj-fg)"/></svg>Contrejour</span>
+        <span class="cj__meta">Toulouse · 12.06 → 28.06.2027</span>
+      </div>
+      <div class="cj__center" role="progressbar" aria-label="Chargement du festival" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="cj__count" aria-hidden="true"><span class="cj__digit is-lead"><span class="cj__strip"></span></span><span class="cj__digit"><span class="cj__strip"></span></span><span class="cj__digit"><span class="cj__strip"></span></span><span class="cj__pct">%</span></div>
+        <div class="cj__bar" aria-hidden="true"><i></i></div>
+        <div class="cj__step" aria-hidden="true"><span>Chargement des tirages</span></div>
+      </div>
+      <div class="cj__ui-bottom">
+        <span class="cj__meta">f/8 · 1/125 s · ISO 400</span>
+        <button class="cj__skip" type="button">Passer</button>
+      </div>
+    </div>
+  </div>
+  <p class="cj__sr" aria-live="polite"></p>
+</div>
+<!-- /SECTION -->
+
+<script>
+(function () {
+  var STEPS = [[0, 'Chargement des tirages'], [.34, 'Développement'], [.72, 'Accrochage'], [1, 'Bienvenue']];
+  var OUT = 'cubic-bezier(.76, 0, .24, 1)';
+  document.querySelectorAll('[data-preloader]').forEach(function (root) {
+    if (root.preloader) return;
+    var loader = root.querySelector('.cj__loader'), tilesEl = root.querySelector('.cj__tiles');
+    var strips = root.querySelectorAll('.cj__strip'), digits = root.querySelectorAll('.cj__digit');
+    var pbar = root.querySelector('.cj__center'), step = root.querySelector('.cj__step'), bar = root.querySelector('.cj__bar'), page = root.querySelector('.cj__page');
+    var live = root.querySelector('.cj__sr'), skip = root.querySelector('.cj__skip');
+    var p = 0, shown = -1, stepIdx = 0, raf = 0, run = 0, anims = [];
+    var reduce = function () { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; };
+    strips.forEach(function (s) { s.innerHTML = '0123456789'.split('').map(function (d) { return '<span>' + d + '</span>'; }).join('') + '<span>0</span>'; });
+
+    function buildTiles() {
+      var n = Math.max(3, Math.min(12, +root.dataset.columns || 6));
+      tilesEl.innerHTML = new Array(n + 1).join('<div class="cj__tile"></div>');
+    }
+    function show(v) {
+      p = Math.max(p, Math.min(1, v));
+      var n = Math.round(p * 100);
+      if (n !== shown) {
+        shown = n;
+        var s = String(n).padStart(3, '0');
+        /* 100 : les unités et dizaines passent par la case « 10 » (le 0 du bas) pour finir en roulant vers le bas. */
+        strips[0].style.setProperty('--d', s[0]);
+        strips[1].style.setProperty('--d', n === 100 ? 10 : s[1]);
+        strips[2].style.setProperty('--d', n === 100 ? 10 : s[2]);
+        digits[0].classList.toggle('is-lead', n < 100);
+        digits[1].classList.toggle('is-lead', n < 10);
+        bar.style.setProperty('--p', p);
+        if (n % 10 === 0) pbar.setAttribute('aria-valuenow', n);
+      }
+      var k = 0; for (var i = 0; i < STEPS.length; i++) if (p >= STEPS[i][0]) k = i;
+      if (k !== stepIdx) { stepIdx = k; step.innerHTML = '<span>' + STEPS[k][1] + '</span>'; }
+    }
+    function order(n) {
+      var idx = [], i, mode = root.dataset.order;
+      for (i = 0; i < n; i++) idx.push(i);
+      if (mode === 'center') return idx.map(function (i) { return Math.abs(i - (n - 1) / 2); }).map(function (d) { return Math.floor(d); });
+      if (mode === 'random') { var r = idx.slice().sort(function () { return Math.random() - .5; }); return idx.map(function (i) { return r.indexOf(i); }); }
+      return idx;
+    }
+    function finish() {
+      if (root.classList.contains('is-leaving')) return;
+      cancelAnimationFrame(raf); show(1);
+      var my = run;
+      var tiles = [].slice.call(tilesEl.children), ord = order(tiles.length), exit = root.dataset.exit || 'up';
+      var done = function () {
+        if (my !== run) return;
+        loader.hidden = true; page.removeAttribute('aria-busy');
+        live.textContent = 'Page chargée';
+        root.dispatchEvent(new CustomEvent('preloader:done'));
+      };
+      if (reduce()) {
+        root.classList.add('is-done');
+        loader.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: 'forwards' }).finished.then(done);
+        return;
+      }
+      setTimeout(function () {
+        if (my !== run) return;
+        root.classList.add('is-leaving');
+        var last = null;
+        anims = tiles.map(function (t, i) {
+          var dir = exit === 'down' ? 1 : exit === 'alternate' ? (i % 2 ? 1 : -1) : -1;
+          last = t.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(' + (dir * 101) + '%)' }], { duration: 820, delay: 260 + ord[i] * 70, easing: OUT, fill: 'forwards' });
+          return last;
+        });
+        setTimeout(function () { if (my === run) root.classList.add('is-done'); }, 520);
+        Promise.all(anims.map(function (a) { return a.finished; })).then(done, function () {});
+      }, 260);
+    }
+    /* Progression simulée : rapide, une hésitation, puis la fin — jamais linéaire. Les promesses fournies plafonnent l'avance. */
+    function start(promises) {
+      run++; var my = run;
+      anims.forEach(function (a) { a.cancel(); }); anims = [];
+      root.classList.remove('is-leaving', 'is-done');
+      loader.hidden = false; loader.getAnimations().forEach(function (a) { a.cancel(); });
+      page.setAttribute('aria-busy', 'true');
+      live.textContent = 'Chargement du festival';
+      buildTiles(); p = 0; shown = -1; stepIdx = -1;
+      strips.forEach(function (s) { s.style.transition = 'none'; s.style.setProperty('--d', 0); void s.offsetWidth; s.style.transition = ''; });
+      show(0);
+      var list = promises && promises.length ? promises : null, settled = 0, real = list ? 0 : 1;
+      if (list) list.forEach(function (pr) { Promise.resolve(pr).finally(function () { settled++; real = settled / list.length; }); });
+      var dur = Math.max(800, +root.dataset.duration || 2600), t0 = performance.now();
+      cancelAnimationFrame(raf);
+      (function tick(t) {
+        if (my !== run) return;
+        var k = Math.min(1, (t - t0) / dur);
+        var curve = k < .45 ? .62 * (1 - Math.pow(1 - k / .45, 2)) : k < .62 ? .62 + .06 * (k - .45) / .17 : .68 + .32 * Math.pow((k - .62) / .38, 1.6);
+        show(Math.min(curve, real === 1 ? 1 : .98 * real + .02));
+        if (p >= 1 && real === 1) return finish();
+        raf = requestAnimationFrame(tick);
+      })(t0);
+    }
+    skip.addEventListener('click', function () { finish(); });
+    buildTiles();
+    root.preloader = { start: start, set: show, finish: finish, get progress() { return p; } };
+    /* data-autostart : lance un chargement simulé ; passez-le à false et appelez el.preloader.start([promesses]). */
+    if (root.dataset.autostart !== 'false') start();
+  });
+})();
+</script>

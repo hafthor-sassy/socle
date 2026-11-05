@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "total": 63,
+  "total": 83,
   "items": [
     {
       "id": "bouton-magnetique",
@@ -198,6 +198,35 @@
       }
     },
     {
+      "id": "squelette-fidele",
+      "nom": "Squelette fidèle",
+      "categorie": "chargements",
+      "niveau": "essentiel",
+      "palette": "sauge",
+      "description": "Des squelettes qui sont la vraie mise en page : chaque texte, montant, icône ou barre devient un bloc de sa taille exacte, le reflet traverse toute la page d’un seul geste, puis le contenu arrive en cascade sans le moindre décalage. États chargement, contenu, vide et erreur. Démo : le tableau de bord d’une banque en ligne.",
+      "tags": [
+        "Squelette",
+        "Chargement",
+        "Tableau de bord",
+        "États",
+        "Sans décalage (CLS 0)",
+        "Accessible",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 1,
+      "logo_exemple": {
+        "nom": "Pécule",
+        "secteur": "Banque en ligne",
+        "fichier": "registry/items/squelette-fidele/logo.svg",
+        "palette": "sauge",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "tags-pile-physique",
       "nom": "Tags en pile physique",
       "categorie": "badges",
@@ -277,6 +306,35 @@
       }
     },
     {
+      "id": "bento-extensible",
+      "nom": "Bento extensible",
+      "categorie": "bento",
+      "niveau": "premium",
+      "palette": "lavande",
+      "description": "Une case touchée s’agrandit sur toute la largeur et révèle son détail (hypnogramme, courbes, jauges) ; les autres se réorganisent autour. Chaque case suit un vrai ressort intégré pas à pas : la vitesse est conservée si l’on change d’avis en plein vol, et le contenu est contre-étiré pour ne jamais se déformer.",
+      "tags": [
+        "Bento",
+        "Ressort",
+        "Shared layout",
+        "FLIP",
+        "Données",
+        "Santé",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 2,
+      "logo_exemple": {
+        "nom": "Mésange",
+        "secteur": "Santé connectée (suivi du sommeil)",
+        "fichier": "registry/items/bento-extensible/logo.svg",
+        "palette": "lavande",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "bouton-texte-roulant",
       "nom": "Bouton à texte qui roule",
       "categorie": "boutons",
@@ -320,6 +378,35 @@
       }
     },
     {
+      "id": "hero-shader",
+      "nom": "Hero shader interactif",
+      "categorie": "hero",
+      "niveau": "premium",
+      "palette": "neon-lime",
+      "description": "Un fluide WebGL maison (déformation de domaine, plis de soie ou verre cannelé) aux couleurs de la palette, qui tourbillonne sous le curseur ou le doigt et lance une onde au clic. Voile de lecture calé sur le texte, carte d’incident en verre qui se coche en direct, bouton pause. Sur téléphone, une fenêtre de fluide pur ouvre l’écran avant le titre.",
+      "tags": [
+        "WebGL",
+        "Shader",
+        "Curseur",
+        "Tactile",
+        "Verre",
+        "Agents IA",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 2,
+      "logo_exemple": {
+        "nom": "Vigie",
+        "secteur": "Cybersécurité (tri des alertes par agents IA)",
+        "fichier": "registry/items/hero-shader/logo.svg",
+        "palette": "neon-lime",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "onglets-pastille",
       "nom": "Onglets à pastille glissante",
       "categorie": "navigation",
@@ -343,6 +430,35 @@
         "secteur": "Éducation en ligne",
         "fichier": "registry/items/onglets-pastille/logo.svg",
         "palette": "azur",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "prechargeur-tuiles",
+      "nom": "Préchargeur en tuiles",
+      "categorie": "chargements",
+      "niveau": "premium",
+      "palette": "moutarde",
+      "description": "Un écran d’entrée en colonnes : un compteur roule de 000 à 100 au rythme du chargement réel, les étapes défilent, puis les colonnes s’ouvrent une à une (gauche → droite, depuis le centre ou au hasard) sur la page, dont le titre monte ligne par ligne et la photo se pose. Démo : un festival de photographie.",
+      "tags": [
+        "Préchargeur",
+        "Intro",
+        "Compteur",
+        "Web Animations",
+        "Page d’accueil",
+        "Accessible",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 2,
+      "logo_exemple": {
+        "nom": "Contrejour",
+        "secteur": "Festival de photographie",
+        "fichier": "registry/items/prechargeur-tuiles/logo.svg",
+        "palette": "moutarde",
         "typo": "Geist SemiBold"
       }
     },
@@ -376,6 +492,35 @@
       }
     },
     {
+      "id": "transitions-natives",
+      "nom": "Transitions de page natives",
+      "categorie": "transitions",
+      "niveau": "essentiel",
+      "palette": "aubergine",
+      "description": "Navigation liste → fiche avec la View Transitions API du navigateur : la photo et le nom du produit voyagent d’une page à l’autre pendant que le reste glisse, se fond ou s’enfonce. Aucune bibliothèque ; sans l’API, la page change simplement (repli invisible). Démo sur une boutique de mode.",
+      "tags": [
+        "View Transitions",
+        "Élément partagé",
+        "Navigation",
+        "E-commerce",
+        "Sans bibliothèque",
+        "Accessible",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 2,
+      "logo_exemple": {
+        "nom": "Ourlet",
+        "secteur": "E-commerce mode",
+        "fichier": "registry/items/transitions-natives/logo.svg",
+        "palette": "aubergine",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "texte-decodage",
       "nom": "Décodage",
       "categorie": "texte-anime",
@@ -403,6 +548,36 @@
       }
     },
     {
+      "id": "ia-reflechit",
+      "nom": "L’IA réfléchit",
+      "categorie": "chargements",
+      "niveau": "premium",
+      "palette": "menthe",
+      "description": "L’indicateur d’un agent IA au travail : une orbe WebGL qui respire pendant la réflexion, s’entoure d’arcs qui tournent quand un outil tourne, pulse au rythme des mots pendant la réponse, se pose une fois terminé et rougit en cas d’erreur. Libellé à fondu flou et reflet, chronologie des étapes repliable, réponse écrite en direct. Démo : un agent d’analyse de contrats.",
+      "tags": [
+        "IA",
+        "Agent",
+        "WebGL",
+        "Shader",
+        "Chargement",
+        "Streaming",
+        "Accessible",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 960
+      },
+      "ordre": 3,
+      "logo_exemple": {
+        "nom": "Lucide",
+        "secteur": "Agent IA d’analyse de documents",
+        "fichier": "registry/items/ia-reflechit/logo.svg",
+        "palette": "menthe",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "bouton-maintenir",
       "nom": "Maintenir pour confirmer",
       "categorie": "boutons",
@@ -418,6 +593,35 @@
         "width": 640
       },
       "ordre": 3
+    },
+    {
+      "id": "passage-masque",
+      "nom": "Passage par masque",
+      "categorie": "transitions",
+      "niveau": "premium",
+      "palette": "brique",
+      "description": "Au défilement, la section suivante apparaît à travers une forme (hublot, cercle, arche, losange) qui grandit depuis le centre, cerclée d’un fin liseré, pendant que la scène de départ recule et que celle d’arrivée se recadre. Horloge et arrêts suivent la progression. Démo : un train de nuit Paris → Vienne.",
+      "tags": [
+        "Défilement",
+        "Masque CSS",
+        "Storytelling",
+        "Section",
+        "rAF",
+        "Accessible",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 3,
+      "logo_exemple": {
+        "nom": "Hublot",
+        "secteur": "Voyage (trains de nuit)",
+        "fichier": "registry/items/passage-masque/logo.svg",
+        "palette": "brique",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "pile-dialogues",
@@ -642,6 +846,61 @@
       "ordre": 5
     },
     {
+      "id": "bento-filtrable",
+      "nom": "Bento filtrable",
+      "categorie": "bento",
+      "niveau": "essentiel",
+      "palette": "peche",
+      "description": "Des filtres en pastille glissante réarrangent le bento : les cases qui restent glissent et changent de taille (FLIP, contenu contre-étiré), la grille est recomposée pour rester pleine et les cases agrandies montrent plus de détails. Sur téléphone, une colonne avec son propre ordre et des filtres en ruban.",
+      "tags": [
+        "Bento",
+        "Filtres",
+        "FLIP",
+        "Mise en page animée",
+        "Requêtes de conteneur",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 10,
+      "logo_exemple": {
+        "nom": "Gabarit",
+        "secteur": "Création de sites sans code",
+        "fichier": "registry/items/bento-filtrable/logo.svg",
+        "palette": "peche",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "hero-typographique",
+      "nom": "Hero typographique",
+      "categorie": "hero",
+      "niveau": "essentiel",
+      "palette": "brique",
+      "description": "Un titre géant dans un vrai H1, découpé selon ses lignes réelles (elles changent avec la largeur) qui montent une à une derrière un masque, un mot accentué souligné d’un trait qui se dessine, puis une seule action. Sur téléphone, l’action passe juste sous le titre.",
+      "tags": [
+        "Typographie",
+        "Entrée en cascade",
+        "Une seule action",
+        "Éditorial",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 10,
+      "logo_exemple": {
+        "nom": "Fugue",
+        "secteur": "Agence de design de marque",
+        "fichier": "registry/items/hero-typographique/logo.svg",
+        "palette": "brique",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "icones-dessinees",
       "nom": "Icônes qui se dessinent",
       "categorie": "icones",
@@ -665,6 +924,34 @@
         "secteur": "Voyage ferroviaire (réservation de billets)",
         "fichier": "registry/items/icones-dessinees/logo.svg",
         "palette": "lagon",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "liste-collante",
+      "nom": "Liste collante synchronisée",
+      "categorie": "fonctionnalites",
+      "niveau": "essentiel",
+      "palette": "miel",
+      "description": "Une liste d’étapes qu’on fait défiler, et un visuel unique collant (un écran d’app dessiné en HTML) qui change de scène selon l’étape lue, avec une barre de progression liée au défilement. Sur téléphone, le visuel se colle en haut de l’écran et la liste défile dessous.",
+      "tags": [
+        "Défilement",
+        "Sticky",
+        "Scrollspy",
+        "Capture d’app",
+        "Étapes",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 10,
+      "logo_exemple": {
+        "nom": "Comptoir",
+        "secteur": "Logiciel de caisse pour restaurants",
+        "fichier": "registry/items/liste-collante/logo.svg",
+        "palette": "miel",
         "typo": "Geist SemiBold"
       }
     },
@@ -1267,6 +1554,65 @@
       }
     },
     {
+      "id": "demo-jouable",
+      "nom": "Démo jouable",
+      "categorie": "fonctionnalites",
+      "niveau": "premium",
+      "palette": "sauge",
+      "description": "Une section de fonctionnalité qui montre le produit au lieu de le décrire : un curseur fantôme nommé réserve une salle dans une vraie mini-interface (créneau, glisser pour la durée, titre tapé, invités, visio, confirmation), les étapes du texte avancent avec lui, puis le visiteur prend la main sur la même interface, entièrement fonctionnelle (conflits, modification, annulation). Démontré sur Alcôve, réservation d’espaces de coworking.",
+      "tags": [
+        "Fonctionnalités",
+        "Démo produit",
+        "Curseur",
+        "Scénario",
+        "Interactif",
+        "Ressort",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "ordre": 30,
+      "logo_exemple": {
+        "nom": "Alcôve",
+        "secteur": "Réservation d’espaces de coworking",
+        "fichier": "registry/items/demo-jouable/logo.svg",
+        "palette": "sauge",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "logos-preuve",
+      "nom": "Logos à preuve",
+      "categorie": "temoignages",
+      "niveau": "premium",
+      "palette": "braise",
+      "description": "Deux rangées de logos clients qui défilent en sens opposés. Au survol, la rangée freine en douceur (inertie, pas d’arrêt sec), le logo se colore et une carte monte sur un ressort avec un résultat chiffré, le client et un lien vers son étude de cas ; la carte suit le logo pendant qu’il finit de glisser. Au clavier, le focus arrête la rangée et ramène le logo dans la zone visible ; au toucher, la carte s’ancre sous les rangées.",
+      "tags": [
+        "Logos",
+        "Preuve sociale",
+        "Défilement",
+        "Inertie",
+        "Ressort",
+        "Survol",
+        "BTP",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 30,
+      "logo_exemple": {
+        "nom": "Charpente",
+        "secteur": "Logiciel de suivi de chantiers (BTP)",
+        "fichier": "registry/items/logos-preuve/logo.svg",
+        "palette": "braise",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "toasts-eventail",
       "nom": "Pile en éventail",
       "categorie": "notifications",
@@ -1291,6 +1637,240 @@
         "secteur": "Logiciel RH",
         "fichier": "registry/items/toasts-eventail/logo.svg",
         "palette": "orchidee",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "pricing-bascule",
+      "nom": "Bascule à chiffres roulants",
+      "categorie": "pricing",
+      "niveau": "essentiel",
+      "palette": "aubergine",
+      "description": "Trois offres d’abonnement classiques (Starter, Pro, Équipe) avec une bascule Mensuel / Annuel : la pastille glisse sur un ressort, chaque chiffre du prix roule dans sa colonne, les unités d’abord, et l’économie annuelle apparaît en badge sous le prix. Les tarifs annuels sont calculés depuis le mensuel et la remise. Sur mobile, les offres passent en carrousel aimanté avec onglets synchronisés.",
+      "tags": [
+        "Pricing",
+        "Abonnement",
+        "Mensuel / annuel",
+        "Chiffres",
+        "Ressort",
+        "Carrousel",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 31,
+      "logo_exemple": {
+        "nom": "Volute",
+        "secteur": "Logiciel collaboratif (SaaS)",
+        "fichier": "registry/items/pricing-bascule/logo.svg",
+        "palette": "aubergine",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "compteurs-entree",
+      "nom": "Compteurs à l’entrée",
+      "categorie": "stats",
+      "niveau": "essentiel",
+      "palette": "menthe",
+      "description": "Une rangée de chiffres clés qui roulent une seule fois jusqu’à leur valeur quand la section entre à l’écran, en décalé, avec un trait d’accent qui se remplit au même rythme. Chiffres tabulaires et valeur finale réservée en fantôme : rien ne bouge autour pendant le comptage. Formats français (espace fine, virgule), suffixes discrets, quatre colonnes qui passent à deux sur mobile.",
+      "tags": [
+        "Chiffres",
+        "Statistiques",
+        "Défilement",
+        "IntersectionObserver",
+        "Intl",
+        "Voyage",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 31,
+      "logo_exemple": {
+        "nom": "Escale",
+        "secteur": "Agence de voyages sur mesure",
+        "fichier": "registry/items/compteurs-entree/logo.svg",
+        "palette": "menthe",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "pricing-comparatif-collant",
+      "nom": "Comparatif collant",
+      "categorie": "pricing",
+      "niveau": "premium",
+      "palette": "encre",
+      "description": "Le tableau qui suit les cartes de prix : quatre offres d’abonnement classiques comparées ligne par ligne. Les en-têtes d’offres restent collés et se compactent au défilement (fond dépoli), les intitulés de groupe se collent dessous et se replient, une bande glisse sur un ressort vers la colonne survolée, et « Seulement les différences » replie les lignes identiques en les comptant. Sur mobile, on choisit deux offres à mettre côte à côte.",
+      "tags": [
+        "Pricing",
+        "Comparatif",
+        "Tableau",
+        "Sticky",
+        "Filtre",
+        "Ressort",
+        "Mobile",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1240
+      },
+      "ordre": 32,
+      "logo_exemple": {
+        "nom": "Prisme",
+        "secteur": "Plateforme SaaS B2B",
+        "fichier": "registry/items/pricing-comparatif-collant/logo.svg",
+        "palette": "encre",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "graphe-activite",
+      "nom": "Graphe d’activité",
+      "categorie": "stats",
+      "niveau": "premium",
+      "palette": "sauge",
+      "description": "Une année en cases, façon contributions : une case par jour, cinq niveaux tirés de l’accent. À l’entrée, la grille se remplit en vague (diagonale, par colonnes ou depuis aujourd’hui) sur un ressort ; une bulle suit le pointeur avec la distance, l’allure et la date, le mois s’allume, la légende filtre un niveau. Navigation complète au clavier (grille ARIA), changement d’année à pastille glissante, résumé qui recompte. Sur mobile : frise horizontale calée sur aujourd’hui et fiche du jour avec ‹ ›.",
+      "tags": [
+        "Graphe",
+        "Calendrier",
+        "Données",
+        "Vague",
+        "Ressort",
+        "Clavier",
+        "Sport",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 32,
+      "logo_exemple": {
+        "nom": "Foulée",
+        "secteur": "Application de course à pied",
+        "fichier": "registry/items/graphe-activite/logo.svg",
+        "palette": "sauge",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "globe-clients",
+      "nom": "Globe des clients",
+      "categorie": "stats",
+      "niveau": "premium",
+      "palette": "aubergine",
+      "description": "Un globe en points dessiné en WebGL maison (aucune bibliothèque, repli Canvas 2D) : les terres en trame, des arcs pointillés partent du siège vers chaque ville avec une impulsion qui voyage, les villes pulsent. Il tourne seul, se fait glisser avec inertie, et chaque région de la liste le fait pivoter sur un ressort jusqu’à elle en allumant ses villes et ses flux ; une bulle donne le chiffre de la ville survolée. Couleurs relues dans les tokens : il suit la palette et le thème en direct.",
+      "tags": [
+        "Globe",
+        "WebGL",
+        "Carte",
+        "Données",
+        "Ressort",
+        "Inertie",
+        "Fintech",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 33,
+      "logo_exemple": {
+        "nom": "Hélia",
+        "secteur": "Paiements internationaux pour PME (fintech)",
+        "fichier": "registry/items/globe-clients/logo.svg",
+        "palette": "aubergine",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "mur-colonnes",
+      "nom": "Mur en colonnes",
+      "categorie": "temoignages",
+      "niveau": "essentiel",
+      "palette": "miel",
+      "description": "Un mur de témoignages en colonnes qui défilent en sens opposés, sans fin. Sous la souris, la colonne ralentit en douceur (vitesse lissée, pas d’arrêt sec) pour qu’on lise ; le défilement se met en pause hors écran, au focus clavier ou avec le bouton Pause. Sur mobile, le mur devient deux rangées horizontales qu’on tient et fait glisser au doigt. Démontré sur Escale, voyages en train.",
+      "tags": [
+        "Témoignages",
+        "Avis",
+        "Défilement infini",
+        "Ticker",
+        "Tactile",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1200
+      },
+      "ordre": 33,
+      "logo_exemple": {
+        "nom": "Escale",
+        "secteur": "Voyages en train",
+        "fichier": "registry/items/mur-colonnes/logo.svg",
+        "palette": "miel",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "accordeon-natif",
+      "nom": "Accordéon natif",
+      "categorie": "faq",
+      "niveau": "essentiel",
+      "palette": "encre",
+      "description": "Une FAQ bâtie sur details et summary : utilisable sans script, exclusive par l’attribut name, trouvée par la recherche du navigateur. La hauteur s’anime en CSS pur (::details-content et interpolate-size) quand le navigateur sait le faire, sinon par Web Animations avec la même courbe, interruptible à mi-course. Le plus se replie en moins en tournant, chaque question a son lien direct (#sinistre l’ouvre, la centre et l’éclaire) et un bouton pour le copier.",
+      "tags": [
+        "FAQ",
+        "Accordéon",
+        "details",
+        "Natif",
+        "Lien direct",
+        "Assurance",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1120
+      },
+      "ordre": 34,
+      "logo_exemple": {
+        "nom": "Abri",
+        "secteur": "Assurance habitation en ligne",
+        "fichier": "registry/items/accordeon-natif/logo.svg",
+        "palette": "encre",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "avatar-video",
+      "nom": "Avatar vidéo",
+      "categorie": "temoignages",
+      "niveau": "premium",
+      "palette": "rubis",
+      "description": "Des témoignages vidéo qui partent d’un simple portrait rond : au toucher, l’avatar s’agrandit sur un ressort jusqu’au lecteur sous-titré (élément partagé, le rayon suit la taille), puis revient exactement à sa place à la fin, à Échap ou d’un clic à côté. La vidéo est un portrait animé en canvas aux couleurs de la palette (clignements, bouche synchronisée aux sous-titres, bokeh), sans aucun fichier ; une vraie vidéo libre de droits peut la remplacer par URL. Un anneau autour de chaque portrait garde ce qui a déjà été écouté. Démontré sur Nacre, banque en ligne pour indépendants.",
+      "tags": [
+        "Témoignages",
+        "Vidéo",
+        "Élément partagé",
+        "Ressort",
+        "Canvas",
+        "Sous-titres",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 34,
+      "logo_exemple": {
+        "nom": "Nacre",
+        "secteur": "Banque en ligne pour indépendants",
+        "fichier": "registry/items/avatar-video/logo.svg",
+        "palette": "rubis",
         "typo": "Geist SemiBold"
       }
     },

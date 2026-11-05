@@ -1,0 +1,164 @@
+{
+  "id": "compteurs-entree",
+  "nom": "Compteurs à l’entrée",
+  "categorie": "stats",
+  "niveau": "essentiel",
+  "description": "Une rangée de chiffres clés qui roulent une seule fois jusqu’à leur valeur quand la section entre à l’écran, en décalé, avec un trait d’accent qui se remplit au même rythme. Chiffres tabulaires et valeur finale réservée en fantôme : rien ne bouge autour pendant le comptage. Formats français (espace fine, virgule), suffixes discrets, quatre colonnes qui passent à deux sur mobile.",
+  "tags": [
+    "Chiffres",
+    "Statistiques",
+    "Défilement",
+    "IntersectionObserver",
+    "Intl",
+    "Voyage",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 31,
+  "palette": "menthe",
+  "logo_exemple": {
+    "nom": "Escale",
+    "secteur": "Agence de voyages sur mesure",
+    "fichier": "logo.svg",
+    "palette": "menthe",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1200
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent du trait, surfaces, Geist (chiffres tabulaires) et Geist Mono"
+    },
+    {
+      "nom": "≈ 1,5 ko de JS",
+      "note": "IntersectionObserver (une fois, seuil 40 %), un rAF pendant le comptage seulement"
+    },
+    {
+      "nom": "Intl.NumberFormat",
+      "note": "Natif : 38 600 avec espace fine insécable, 4,9 avec virgule"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, sans bibliothèque d’animation"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "duree",
+      "label": "Durée du comptage",
+      "type": "number",
+      "default": 1800,
+      "min": 400,
+      "max": 4000,
+      "step": 100,
+      "unit": "ms",
+      "code": {
+        "html": "data-duree=\"{v}\"",
+        "react": "duration={{v}}"
+      }
+    },
+    {
+      "name": "decalage",
+      "label": "Décalage entre chiffres",
+      "type": "number",
+      "default": 120,
+      "min": 0,
+      "max": 400,
+      "step": 20,
+      "unit": "ms",
+      "code": {
+        "html": "data-decalage=\"{v}\"",
+        "react": "stagger={{v}}"
+      }
+    },
+    {
+      "name": "courbe",
+      "label": "Courbe",
+      "type": "select",
+      "default": "expo",
+      "options": [
+        {
+          "value": "expo",
+          "label": "Expo"
+        },
+        {
+          "value": "doux",
+          "label": "Douce"
+        },
+        {
+          "value": "lineaire",
+          "label": "Linéaire"
+        }
+      ],
+      "code": {
+        "html": "data-courbe=\"{v}\"",
+        "react": "curve=\"{v}\""
+      },
+      "hint": "Expo : rapide puis se pose. Douce : cubique."
+    },
+    {
+      "name": "depart",
+      "label": "Départ",
+      "type": "select",
+      "default": "zero",
+      "options": [
+        {
+          "value": "zero",
+          "label": "Zéro"
+        },
+        {
+          "value": "proche",
+          "label": "82 %"
+        }
+      ],
+      "hint": "« Plus sobre » : le chiffre ne fait que finir sa course, utile pour de très grands nombres.",
+      "code": {
+        "html": "data-depart=\"{v}\"",
+        "react": "start=\"{v}\""
+      }
+    },
+    {
+      "name": "trait",
+      "label": "Trait d’accent synchronisé",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-trait=\"{v}\"",
+        "react": "line={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/CompteursEntree.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Bande de preuve sous un hero ou au milieu d’une page « À propos » : trois ou quatre chiffres vraiment parlants, chacun avec une phrase qui dit d’où il vient.",
+    "Le comptage ne se joue qu’une fois par visite : un chiffre qui recompte à chaque passage fatigue vite. Pour un nombre qui change en direct, préférez le Compteur qui roule.",
+    "Chaque valeur se règle dans le balisage : data-count, data-decimals, data-prefix, data-suffix. La largeur est réservée par la valeur finale, la grille ne saute pas."
+  ],
+  "accessibilite": [
+    "Liste de définitions (dl / dt / dd) : chaque chiffre est lu avec son libellé. Le chiffre qui roule est masqué aux lecteurs d’écran ; la valeur finale formatée est toujours présente en texte, aucune annonce intermédiaire.",
+    "Avec « réduire les animations », les valeurs finales s’affichent directement, trait plein.",
+    "Libellés et notes AA en clair et en sombre ; sur mobile, notes en 14 px et libellés en 13 px, deux colonnes lisibles."
+  ]
+}

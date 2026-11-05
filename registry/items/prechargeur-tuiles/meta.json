@@ -1,0 +1,205 @@
+{
+  "id": "prechargeur-tuiles",
+  "nom": "Préchargeur en tuiles",
+  "categorie": "chargements",
+  "niveau": "premium",
+  "ordre": 2,
+  "description": "Un écran d’entrée en colonnes : un compteur roule de 000 à 100 au rythme du chargement réel, les étapes défilent, puis les colonnes s’ouvrent une à une (gauche → droite, depuis le centre ou au hasard) sur la page, dont le titre monte ligne par ligne et la photo se pose. Démo : un festival de photographie.",
+  "tags": [
+    "Préchargeur",
+    "Intro",
+    "Compteur",
+    "Web Animations",
+    "Page d’accueil",
+    "Accessible",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "difficulte": 2,
+  "technique": "Web Animations API (colonnes, décalage par rang), compteur à rouleaux CSS (dizaines et centaines sur ressort linear()), progression simulée non linéaire plafonnée par l’avancée de vraies promesses, révélation de la page par transitions CSS en cascade",
+  "poids": "≈ 2,5 Ko gzip de script, aucune dépendance",
+  "palette": "moutarde",
+  "thumb": {
+    "width": 1180
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent, accent-fg, text-strong, bg : les tuiles, le compteur et l’affiche suivent la palette"
+    },
+    {
+      "nom": "Web Animations API",
+      "note": "Native partout (Chrome 84+, Safari 13.1+, Firefox 75+)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React (darkMode: 'class')"
+    }
+  ],
+  "props": [
+    {
+      "name": "colonnes",
+      "label": "Colonnes",
+      "type": "number",
+      "default": 6,
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "code": {
+        "html": "data-columns=\"{v}\"",
+        "react": "columns={{v}}"
+      }
+    },
+    {
+      "name": "duree",
+      "label": "Durée minimale",
+      "type": "number",
+      "default": 2600,
+      "min": 1200,
+      "max": 6000,
+      "step": 100,
+      "unit": "ms",
+      "hint": "Le compteur ne dépasse jamais l’avancée réelle des tâches fournies ; cette durée évite un flash quand tout est déjà en cache.",
+      "code": {
+        "html": "data-duration=\"{v}\"",
+        "react": "duration={{v}}"
+      }
+    },
+    {
+      "name": "sortie",
+      "label": "Sortie des colonnes",
+      "type": "select",
+      "default": "up",
+      "options": [
+        {
+          "value": "up",
+          "label": "Vers le haut"
+        },
+        {
+          "value": "down",
+          "label": "Vers le bas"
+        },
+        {
+          "value": "alternate",
+          "label": "Alternée"
+        }
+      ],
+      "code": {
+        "html": "data-exit=\"{v}\"",
+        "react": "exit=\"{v}\""
+      }
+    },
+    {
+      "name": "ordre",
+      "label": "Ordre d’ouverture",
+      "type": "select",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "De gauche à droite"
+        },
+        {
+          "value": "center",
+          "label": "Depuis le centre"
+        },
+        {
+          "value": "random",
+          "label": "Au hasard"
+        }
+      ],
+      "code": {
+        "html": "data-order=\"{v}\"",
+        "react": "order=\"{v}\""
+      }
+    },
+    {
+      "name": "compteur",
+      "label": "Compteur",
+      "type": "select",
+      "default": "large",
+      "options": [
+        {
+          "value": "large",
+          "label": "Grand"
+        },
+        {
+          "value": "small",
+          "label": "Discret + barre"
+        },
+        {
+          "value": "none",
+          "label": "Barre seule"
+        }
+      ],
+      "code": {
+        "html": "data-counter=\"{v}\"",
+        "react": "counter=\"{v}\""
+      }
+    },
+    {
+      "name": "teinte",
+      "label": "Teinte des colonnes",
+      "type": "select",
+      "default": "relief",
+      "options": [
+        {
+          "value": "relief",
+          "label": "Accent en relief"
+        },
+        {
+          "value": "accent",
+          "label": "Accent uni"
+        },
+        {
+          "value": "ink",
+          "label": "Encre"
+        }
+      ],
+      "code": {
+        "html": "data-tone=\"{v}\"",
+        "react": "tone=\"{v}\""
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/TilePreloader.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour une première visite qui doit marquer : festival, portfolio, lancement, site événementiel. À éviter sur une application ou un site visité chaque jour : ne le montrez qu’une fois par session.",
+    "HTML : el.preloader.start([document.fonts.ready, imageHero.decode()]) ; le compteur suit ces promesses, avec la durée minimale comme plancher. data-scope=\"page\" le passe en plein écran (position fixe). L’événement « preloader:done » signale la fin.",
+    "React : <TilePreloader tasks={[…]} onDone={…}>{(done) => <Page revealed={done} />}</TilePreloader> ; la fonction enfant reçoit done pour lancer la révélation de la page. ContrejourDemo montre la page complète.",
+    "Le bouton « Passer » termine tout de suite ; gardez-le, c’est ce qui rend l’écran acceptable pour un visiteur pressé."
+  ],
+  "accessibilite": [
+    "Le préchargeur est un role=\"progressbar\" (aria-valuenow par pas de 10) ; la page sous-jacente est aria-busy jusqu’à la fin, puis « Page chargée » est annoncé.",
+    "« Passer » est un vrai bouton de 44 px, atteignable au clavier dès l’ouverture ; le préchargeur disparaît du DOM accessible (hidden) une fois ouvert.",
+    "Contraste AA : accent-fg sur accent (ou bg sur encre) pour le compteur et les libellés, en clair comme en sombre.",
+    "Avec « réduire les animations » : pas de rouleaux ni de colonnes en mouvement ; un fondu de 200 ms découvre la page, déjà en place. Rien ne tourne une fois la page ouverte."
+  ],
+  "logo_exemple": {
+    "nom": "Contrejour",
+    "secteur": "Festival de photographie",
+    "fichier": "logo.svg",
+    "palette": "moutarde",
+    "typo": "Geist SemiBold"
+  }
+}

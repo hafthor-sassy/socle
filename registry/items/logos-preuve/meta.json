@@ -1,0 +1,204 @@
+{
+  "id": "logos-preuve",
+  "nom": "Logos à preuve",
+  "categorie": "temoignages",
+  "niveau": "premium",
+  "description": "Deux rangées de logos clients qui défilent en sens opposés. Au survol, la rangée freine en douceur (inertie, pas d’arrêt sec), le logo se colore et une carte monte sur un ressort avec un résultat chiffré, le client et un lien vers son étude de cas ; la carte suit le logo pendant qu’il finit de glisser. Au clavier, le focus arrête la rangée et ramène le logo dans la zone visible ; au toucher, la carte s’ancre sous les rangées.",
+  "tags": [
+    "Logos",
+    "Preuve sociale",
+    "Défilement",
+    "Inertie",
+    "Ressort",
+    "Survol",
+    "BTP",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "ordre": 30,
+  "palette": "braise",
+  "logo_exemple": {
+    "nom": "Charpente",
+    "secteur": "Logiciel de suivi de chantiers (BTP)",
+    "fichier": "logo.svg",
+    "palette": "braise",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1200
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent (logo actif, halo), surfaces, Geist et Geist Mono"
+    },
+    {
+      "nom": "≈ 4 ko de JS",
+      "note": "Un rAF partagé par les rangées, arrêté au repos, hors écran et onglet caché ; ResizeObserver pour les clones"
+    },
+    {
+      "nom": "CSS linear()",
+      "note": "Ressort de la carte ; repli cubic-bezier automatique (@supports)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, sans bibliothèque d’animation"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "duree",
+      "label": "Durée d’un tour",
+      "type": "number",
+      "default": 42,
+      "min": 12,
+      "max": 90,
+      "step": 1,
+      "unit": "s",
+      "hint": "Temps pour qu’un logo traverse toute la rangée. Plus long = plus calme.",
+      "code": {
+        "html": "--lp-duree: {v}",
+        "react": "duration={{v}}"
+      }
+    },
+    {
+      "name": "rangees",
+      "label": "Rangées",
+      "type": "select",
+      "default": "2",
+      "options": [
+        {
+          "value": "1",
+          "label": "Une"
+        },
+        {
+          "value": "2",
+          "label": "Deux"
+        }
+      ],
+      "code": {
+        "html": "data-rangees=\"{v}\"",
+        "react": "rows={{v}}"
+      }
+    },
+    {
+      "name": "sens",
+      "label": "Sens de la 1re rangée",
+      "type": "select",
+      "default": "gauche",
+      "options": [
+        {
+          "value": "gauche",
+          "label": "Gauche"
+        },
+        {
+          "value": "droite",
+          "label": "Droite"
+        }
+      ],
+      "code": {
+        "html": "data-sens=\"{v}\"",
+        "react": "direction=\"{v}\""
+      },
+      "hint": "Sens de la première rangée ; la seconde va à l’inverse."
+    },
+    {
+      "name": "freinage",
+      "label": "Vivacité du freinage",
+      "type": "number",
+      "default": 6,
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "hint": "Bas : la rangée glisse longtemps avant de s’arrêter. Haut : arrêt presque net.",
+      "code": {
+        "html": "data-freinage=\"{v}\"",
+        "react": "braking={{v}}"
+      }
+    },
+    {
+      "name": "carte",
+      "label": "Carte de résultat",
+      "type": "select",
+      "default": "flottante",
+      "options": [
+        {
+          "value": "flottante",
+          "label": "Flottante"
+        },
+        {
+          "value": "ancree",
+          "label": "Ancrée"
+        }
+      ],
+      "hint": "Sur mobile, la carte est toujours ancrée.",
+      "code": {
+        "html": "data-carte=\"{v}\"",
+        "react": "card=\"{v}\""
+      }
+    },
+    {
+      "name": "couleur",
+      "label": "Logo coloré au survol",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-couleur=\"{v}\"",
+        "react": "colorize={{v}}"
+      }
+    },
+    {
+      "name": "estompe",
+      "label": "Bords estompés",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-estompe=\"{v}\"",
+        "react": "fadeEdges={{v}}"
+      }
+    },
+    {
+      "name": "titre",
+      "label": "Titre",
+      "type": "text",
+      "default": "1 400 entreprises du bâtiment ont repris la main sur leurs délais.",
+      "code": {
+        "html": "data-titre>{v}<",
+        "react": "title=\"{v}\""
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/LogosPreuve.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Sous un hero ou avant le pricing, quand vous avez des résultats vérifiables : chaque logo porte un chiffre (data-n), sa légende (data-l), le client et son secteur. Un logo sans preuve n’a pas sa place ici ; utilisez alors un simple bandeau de logos.",
+    "Six logos par rangée suffisent : les clones sont créés automatiquement selon la largeur. Gardez des chiffres courts (« −32 % », « ×2,4 », « 11 h ») et une légende de moins de 50 caractères.",
+    "Remplacez les marques fictives par les logos SVG de vos clients en monochrome currentColor : ils prennent le gris au repos et l’accent au survol, quelle que soit la palette."
+  ],
+  "accessibilite": [
+    "Chaque logo est un vrai lien (nom lisible), les clones sont aria-hidden et hors tabulation : un lecteur d’écran entend douze clients, pas cinquante. Le résultat est annoncé une fois dans une région aria-live polie.",
+    "Au clavier, le focus fige la rangée et y replace le logo ; Échap referme la carte. Au toucher, le premier appui montre le résultat, le second suit le lien ; la carte ancrée a un lien de 44 px atteignable.",
+    "Avec « réduire les animations », plus de défilement : les logos passent en grille centrée, la carte apparaît en fondu. Hors écran ou onglet caché, la boucle s’arrête.",
+    "Logos au repos en text-muted (AA sur la surface), logo actif en text-strong ; le halo et la teinte d’accent ne portent aucune information seuls."
+  ]
+}

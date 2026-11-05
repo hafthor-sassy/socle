@@ -1,0 +1,52 @@
+{
+  "id": "pricing-comparatif-collant",
+  "nom": "Comparatif collant",
+  "categorie": "pricing",
+  "niveau": "premium",
+  "description": "Le tableau qui suit les cartes de prix : quatre offres d’abonnement classiques comparées ligne par ligne. Les en-têtes d’offres restent collés et se compactent au défilement (fond dépoli), les intitulés de groupe se collent dessous et se replient, une bande glisse sur un ressort vers la colonne survolée, et « Seulement les différences » replie les lignes identiques en les comptant. Sur mobile, on choisit deux offres à mettre côte à côte.",
+  "tags": ["Pricing", "Comparatif", "Tableau", "Sticky", "Filtre", "Ressort", "Mobile", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 32,
+  "palette": "encre",
+  "logo_exemple": { "nom": "Prisme", "secteur": "Plateforme SaaS B2B", "fichier": "logo.svg", "palette": "encre", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1240 },
+  "stage": { "width": "desktop", "desktopMin": 1180 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Fond, surfaces, accent atténué pour la bande et les coches" },
+    { "nom": "≈ 5 ko de JS", "note": "Inclus dans l’onglet HTML : rendu depuis un objet DATA, IntersectionObserver (en-tête collé), bande, filtres. Le collage lui-même est du CSS (position: sticky)" },
+    { "nom": "grid-template-rows 0fr → 1fr", "note": "Repli animé des lignes et des groupes, sans mesure de hauteur" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, sans bibliothèque d’animation" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "differences", "label": "Seulement les différences", "type": "boolean", "default": false,
+      "code": { "html": "data-diff=\"{v}\"", "react": "onlyDiff={{v}}" } },
+    { "name": "compacter", "label": "Compacter l’en-tête collé", "type": "boolean", "default": true,
+      "hint": "Faites défiler la démo : description masquée, prix et bouton réduits.",
+      "code": { "html": "data-compact=\"{v}\"", "react": "compactOnStick={{v}}" } },
+    { "name": "bande", "label": "Bande qui suit la colonne", "type": "boolean", "default": true,
+      "code": { "html": "data-band=\"{v}\"", "react": "band={{v}}" } },
+    { "name": "miseEnAvant", "label": "Offre mise en avant", "type": "select", "default": "1",
+      "options": [ { "value": "0", "label": "Gratuit" }, { "value": "1", "label": "Équipe" }, { "value": "2", "label": "Business" }, { "value": "3", "label": "Entreprise" }, { "value": "-1", "label": "Aucune" } ],
+      "code": { "html": "data-featured=\"{v}\"", "react": "featured={{v}}" } },
+    { "name": "densite", "label": "Densité", "type": "select", "default": "confort",
+      "options": [ { "value": "confort", "label": "Confort" }, { "value": "compacte", "label": "Compacte" } ],
+      "code": { "html": "data-density=\"{v}\"", "react": "density=\"{v}\"" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/ComparatifCollant.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Sous les cartes de prix, pour les visiteurs qui hésitent entre deux offres : tout logiciel par abonnement, offre bancaire, forfait, adhésion. Offres et lignes se décrivent dans un seul objet (DATA) : true = inclus, false = non inclus, texte = valeur.",
+    "Les lignes identiques partout sont repérées automatiquement : « Seulement les différences » les replie et indique leur nombre par groupe.",
+    "L’en-tête doit coller au conteneur qui défile (la page, en général) : n’enveloppez pas le tableau dans un parent en overflow: hidden.",
+    "Sur mobile (≤ 767 px), le tableau ne rétrécit pas : deux listes déroulantes natives choisissent les offres comparées, l’intitulé passe au-dessus des deux valeurs, et le bouton d’action se replie une fois l’en-tête collé."
+  ],
+  "accessibilite": [
+    "Rôles table / row / columnheader / rowheader / cell : chaque valeur est annoncée avec sa fonction et son offre ; coches et tirets ont un texte « Inclus » / « Non inclus ».",
+    "Groupes repliables par boutons aria-expanded / aria-controls ; bulles d’aide ouvertes au clic ou au clavier, fermées par Échap, focus rendu au bouton.",
+    "La bande suit aussi le focus clavier ; les lignes repliées sont retirées de l’arbre d’accessibilité (aria-hidden) et le nombre de lignes masquées est annoncé (aria-live).",
+    "Interrupteur natif (role=\"switch\"), listes déroulantes natives sur mobile, cibles de 44 px, textes ≥ 14 px, AA en clair et en sombre. Avec « réduire les animations », replis et bande sans mouvement."
+  ]
+}

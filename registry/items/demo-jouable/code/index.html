@@ -1,0 +1,652 @@
+<!-- Démo jouable — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Une mini-interface scénarisée : un curseur fantôme réserve une salle (choix du créneau, glisser pour la durée,
+     invités, visio, confirmation), puis le visiteur prend la main sur la même interface, entièrement fonctionnelle.
+     Réglages sur la racine : data-speed (0.5–2), data-loop, data-pointer (auto | fleche | doigt), data-steps,
+     data-label (nom sur le curseur). Exemple : Alcôve, réservation d'espaces de coworking (marque fictive). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="dj" data-demo-jouable data-speed="1" data-loop="true" data-pointer="auto" data-steps="true" data-label="Camille" aria-labelledby="dj-title">
+  <div class="dj__copy">
+    <span class="dj__brand">
+      <svg class="dj__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="dj__logo-bg"/><path class="dj__logo-arch" d="M28 80V48a22 22 0 0 1 44 0v32Z"/><path class="dj__logo-seat" d="M40 80V62a10 10 0 0 1 20 0v18Z"/></svg>
+      <span class="dj__word">alcôve</span>
+    </span>
+    <p class="dj__eyebrow">Réservation de salles</p>
+    <h2 class="dj__title" id="dj-title">Une salle libre, trois clics, aucun aller-retour.</h2>
+    <p class="dj__lead">Alcôve affiche les disponibilités en direct, bloque le créneau et prévient les invités. Regardez la démo, puis essayez vous-même : c’est la vraie interface.</p>
+    <ol class="dj__steps" data-dj-steps>
+      <li class="dj__step" data-step="0"><span class="dj__step-n" aria-hidden="true">1</span><span class="dj__step-t"><strong>Choisir un créneau</strong><span>Les salles libres s’affichent en direct ; glissez pour régler la durée.</span></span><span class="dj__step-bar" aria-hidden="true"><i></i></span></li>
+      <li class="dj__step" data-step="1"><span class="dj__step-n" aria-hidden="true">2</span><span class="dj__step-t"><strong>Inviter l’équipe</strong><span>Titre, invités et visio se règlent dans la même fenêtre.</span></span><span class="dj__step-bar" aria-hidden="true"><i></i></span></li>
+      <li class="dj__step" data-step="2"><span class="dj__step-n" aria-hidden="true">3</span><span class="dj__step-t"><strong>Confirmer</strong><span>La salle est bloquée, les invitations partent aussitôt.</span></span><span class="dj__step-bar" aria-hidden="true"><i></i></span></li>
+    </ol>
+    <div class="dj__actions">
+      <button type="button" class="dj__btn dj__btn--primary" data-dj-take>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12m0-1.5a1.5 1.5 0 0 1 3 0V12m0-1a1.5 1.5 0 0 1 3 0v4a6 6 0 0 1-6 6h-1a6 6 0 0 1-4.6-2.2L4.3 16a1.6 1.6 0 0 1 2.4-2.1L8 15"/></svg>
+        <span data-dj-take-label>Prendre la main</span>
+      </button>
+      <button type="button" class="dj__btn dj__btn--ghost" data-dj-replay>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg>
+        Revoir la démo
+      </button>
+    </div>
+  </div>
+
+  <div class="dj__app" data-dj-app role="group" aria-label="Interface Alcôve : planning des salles du jeudi 13 novembre">
+    <div class="dj__glow" aria-hidden="true"></div>
+    <header class="dj__bar">
+      <div class="dj__date">
+        <button type="button" class="dj__icon" aria-label="Jour précédent" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
+        <span class="dj__day"><strong>Jeu. 13 nov.</strong><span>Lyon · Part-Dieu, 3ᵉ étage</span></span>
+        <button type="button" class="dj__icon" aria-label="Jour suivant" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
+      </div>
+      <span class="dj__mode" data-dj-mode><i aria-hidden="true"></i><span data-dj-mode-label>Démo en cours</span></span>
+    </header>
+
+    <div class="dj__tabs" role="tablist" aria-label="Salle" data-dj-tabs></div>
+
+    <div class="dj__plan" data-dj-plan>
+      <div class="dj__heads" data-dj-heads aria-hidden="true"></div>
+      <div class="dj__body">
+        <div class="dj__hours" aria-hidden="true" data-dj-hours></div>
+        <div class="dj__cols" data-dj-cols role="grid" aria-label="Créneaux par salle, de 9 h à 13 h"></div>
+      </div>
+      <p class="dj__hint" data-dj-hint hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3M5.6 5.6l2.1 2.1M3 12h3m12.4-6.4-2.1 2.1M12 21l-2.5-8.5L18 15l-3.6 1.4Z"/></svg><span>À vous : choisissez un créneau libre, ou glissez sur plusieurs.</span></p>
+    </div>
+
+    <form class="dj__pop" data-dj-pop hidden aria-labelledby="dj-pop-title" novalidate>
+      <div class="dj__pop-head">
+        <div>
+          <p class="dj__pop-k" data-dj-pop-room>Verrière · 8 places</p>
+          <h3 class="dj__pop-title" id="dj-pop-title" data-dj-pop-time>10:00 – 11:30</h3>
+        </div>
+        <button type="button" class="dj__icon" data-dj-close aria-label="Fermer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      <label class="dj__field"><span>Titre</span><input type="text" data-dj-input placeholder="Ex. Point produit" maxlength="40" autocomplete="off"></label>
+      <fieldset class="dj__field">
+        <legend>Durée</legend>
+        <div class="dj__seg" data-dj-dur></div>
+      </fieldset>
+      <fieldset class="dj__field">
+        <legend>Invités</legend>
+        <div class="dj__people" data-dj-people></div>
+      </fieldset>
+      <label class="dj__switch"><span><strong>Écran et visio</strong><small>Lien ajouté à l’invitation</small></span><input type="checkbox" role="switch" data-dj-visio><i aria-hidden="true"></i></label>
+      <p class="dj__err" data-dj-err role="alert" hidden></p>
+      <div class="dj__pop-foot">
+        <button type="button" class="dj__btn dj__btn--ghost dj__btn--sm" data-dj-cancel>Annuler</button>
+        <button type="submit" class="dj__btn dj__btn--primary dj__btn--sm" data-dj-submit><span class="dj__spin" aria-hidden="true"></span><span data-dj-submit-label>Réserver</span></button>
+      </div>
+    </form>
+
+    <div class="dj__toast" data-dj-toast role="status" aria-live="polite"></div>
+
+    <div class="dj__ghost" data-dj-ghost aria-hidden="true">
+      <svg class="dj__ghost-arrow" viewBox="0 0 24 24"><path d="M5 3.5 19 11l-6.2 1.6L9.6 19Z"/></svg>
+      <span class="dj__ghost-touch"></span>
+      <span class="dj__ghost-name" data-dj-ghost-name>Camille</span>
+    </div>
+  </div>
+  <p class="dj__sr" aria-live="polite" data-dj-live></p>
+</section>
+<!-- /SECTION -->
+
+<style>
+.dj { --dj-row: 48px; --dj-ink: var(--text-strong); container-type: inline-size; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; width: 100%; max-width: 1200px; margin: 0 auto; padding: 64px 40px; font-family: var(--font-sans); color: var(--text); }
+.dj *, .dj *::before, .dj *::after { box-sizing: border-box; }
+.dj :where(button, input) { font: inherit; color: inherit; }
+.dj svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* Texte */
+.dj__brand { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 32px; color: var(--text-strong); }
+.dj .dj__logo { width: 28px; height: 28px; stroke: none; }
+.dj__logo-bg { fill: var(--accent); } .dj__logo-arch { fill: var(--accent-fg); } .dj__logo-seat { fill: var(--accent); }
+.dj__word { font-weight: 600; font-size: 18px; letter-spacing: -0.03em; }
+.dj__eyebrow { margin: 0 0 12px; font-size: var(--t-label); line-height: var(--t-label-lh); font-weight: 500; color: var(--accent); }
+.dark .dj__eyebrow { color: var(--accent-vivid); }
+.dj__title { margin: 0; font-size: clamp(2rem, 1.4rem + 1.8vw, 2.75rem); line-height: 1.08; letter-spacing: -0.035em; font-weight: 600; color: var(--text-strong); text-wrap: balance; }
+.dj__lead { margin: 16px 0 0; max-width: 46ch; font-size: 17px; line-height: 1.55; color: var(--text-muted); text-wrap: pretty; }
+
+.dj__steps { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 4px; }
+.dj__step { position: relative; display: grid; grid-template-columns: 32px 1fr; gap: 12px; padding: 12px 16px 14px 12px; border-radius: 12px; transition: background var(--motion-slow) var(--ease-out); }
+.dj__step-n { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 999px; border: 1px solid var(--border); font: 500 13px/1 var(--font-mono); color: var(--text-muted); background: var(--surface); transition: background var(--motion-slow) var(--ease-out), color var(--motion-slow) var(--ease-out), border-color var(--motion-slow) var(--ease-out); }
+.dj__step-t { display: grid; gap: 2px; padding-top: 5px; }
+.dj__step-t strong { font-weight: 600; font-size: 15px; color: var(--text-strong); }
+.dj__step-t span { font-size: 14px; line-height: 1.45; color: var(--text-muted); }
+.dj__step-bar { position: absolute; left: 56px; right: 16px; bottom: 4px; height: 2px; border-radius: 999px; background: var(--border); overflow: hidden; opacity: 0; transition: opacity var(--motion-base); }
+.dj__step-bar i { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(var(--p, 0)); }
+.dj__step.is-active { background: var(--raised); }
+.dj__step.is-active .dj__step-bar { opacity: 1; }
+.dj__step.is-active .dj__step-n { border-color: var(--accent); color: var(--accent); }
+.dark .dj__step.is-active .dj__step-n { color: var(--accent-vivid); border-color: var(--accent-vivid); }
+.dj__step.is-done .dj__step-n { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+.dj[data-steps="false"] .dj__steps { display: none; }
+
+.dj__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+.dj__btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid transparent; font-weight: 500; font-size: 15px; cursor: pointer; white-space: nowrap; transition: background var(--motion-fast) var(--ease-out), transform 300ms cubic-bezier(.34,1.56,.64,1), border-color var(--motion-fast); -webkit-tap-highlight-color: transparent; }
+.dj__btn:active { transform: scale(.97); }
+.dj__btn[hidden] { display: none; }
+.dj__btn--primary { background: var(--accent); color: var(--accent-fg); }
+.dj__btn--primary:hover { background: var(--accent-hover); }
+.dj__btn--ghost { background: var(--surface); border-color: var(--border); color: var(--text-strong); }
+.dj__btn--ghost:hover { background: var(--raised); }
+.dj__btn--sm { min-height: 40px; padding: 0 14px; font-size: 14px; }
+.dj__btn:focus-visible, .dj__icon:focus-visible, .dj__cell:focus-visible, .dj__blk:focus-visible, .dj__tab:focus-visible, .dj__chip:focus-visible, .dj__seg button:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+/* Fenêtre d'application */
+.dj__app { position: relative; isolation: isolate; container-type: inline-size; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.dj__glow { position: absolute; inset: -40% -20% auto; height: 80%; z-index: -1; background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 9%, transparent), transparent); pointer-events: none; }
+.dj__bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 12px 12px 8px; border-bottom: 1px solid var(--border); }
+.dj__date { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.dj__day { display: grid; min-width: 0; padding: 0 4px; }
+.dj__day strong { font-size: 15px; font-weight: 600; color: var(--text-strong); }
+.dj__day span { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dj__icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 8px; border: 0; background: transparent; color: var(--text-muted); cursor: pointer; }
+.dj__icon:hover:not(:disabled) { background: var(--state-hover); color: var(--text-strong); }
+.dj__icon:disabled { cursor: default; opacity: .55; }
+.dj__mode { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 999px; background: var(--raised); border: 1px solid var(--border); font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; }
+.dj__mode i { width: 8px; height: 8px; border-radius: 999px; background: var(--text-muted); }
+.dj__mode.is-live i { background: var(--accent); animation: dj-pulse 1.6s var(--ease-out) infinite; }
+.dj__mode.is-you { background: var(--accent-subtle); border-color: var(--accent-subtle-border); color: var(--text-strong); }
+.dj__mode.is-you i { background: var(--up); }
+@keyframes dj-pulse { 0% { box-shadow: 0 0 0 0 var(--accent-subtle-border); } 70% { box-shadow: 0 0 0 6px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+.dj__tabs { display: none; gap: 4px; padding: 8px; border-bottom: 1px solid var(--border); }
+.dj__tab { flex: 1; min-height: 44px; border: 0; border-radius: 8px; background: transparent; color: var(--text-muted); font-size: 14px; font-weight: 500; cursor: pointer; display: grid; place-items: center; line-height: 1.15; }
+.dj__tab small { font-size: 12px; font-weight: 400; color: var(--text-muted); }
+.dj__tab[aria-selected="true"] { background: var(--raised); color: var(--text-strong); box-shadow: inset 0 0 0 1px var(--border); }
+
+.dj__plan { position: relative; padding: 0 12px 16px 0; }
+.dj__heads { display: grid; grid-template-columns: 56px repeat(var(--dj-n, 3), minmax(0, 1fr)); gap: 0 8px; height: 52px; align-items: center; }
+.dj__head { display: grid; line-height: 1.2; }
+.dj__head strong { font-size: 14px; font-weight: 600; color: var(--text-strong); }
+.dj__head span { font-size: 12px; color: var(--text-muted); }
+.dj__body { display: grid; grid-template-columns: 56px 1fr; }
+.dj__hours { position: relative; }
+.dj__hour { height: var(--dj-row); font: 500 12px/1 var(--font-mono); color: var(--text-muted); text-align: right; padding-right: 12px; transform: translateY(-6px); font-variant-numeric: tabular-nums; }
+.dj__cols { display: grid; grid-template-columns: repeat(var(--dj-n, 3), minmax(0, 1fr)); gap: 8px; }
+.dj__col { position: relative; display: grid; grid-auto-rows: var(--dj-row); border-radius: 8px; background-image: linear-gradient(var(--border) 1px, transparent 1px); background-size: 100% calc(var(--dj-row) * 2); }
+.dj__cell { position: relative; border: 0; margin: 0; padding: 0; background: transparent; border-radius: 8px; cursor: pointer; color: var(--text-muted); }
+.dj__cell::after { content: "+"; position: absolute; inset: 3px; display: grid; place-items: center; border-radius: 6px; border: 1px dashed var(--border-control); font-size: 18px; font-weight: 300; opacity: 0; transform: scale(.96); transition: opacity var(--motion-fast) var(--ease-out), transform var(--motion-base) var(--ease-out); }
+.dj__cell:hover::after, .dj__cell.is-hover::after, .dj__cell:focus-visible::after { opacity: 1; transform: none; }
+.dj__cell[aria-disabled="true"] { cursor: default; pointer-events: none; }
+
+.dj__blk { position: absolute; left: 3px; right: 3px; border-radius: 8px; padding: 6px 10px; border: 1px solid var(--tint-neutral-border); background: var(--tint-neutral-bg); color: var(--tint-neutral-fg); display: grid; align-content: start; gap: 1px; overflow: hidden; text-align: left; cursor: default; font-size: 13px; line-height: 1.3; z-index: 1; transition: top 380ms cubic-bezier(.34,1.3,.64,1), height 380ms cubic-bezier(.34,1.3,.64,1), background var(--motion-slow), color var(--motion-slow), border-color var(--motion-slow); }
+.dj__blk strong { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dj__blk span { font: 500 11.5px/1.3 var(--font-mono); opacity: .9; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dj__blk[data-tint="blue"] { background: var(--tint-blue-bg); color: var(--tint-blue-fg); border-color: var(--tint-blue-border); }
+.dj__blk[data-tint="amber"] { background: var(--tint-amber-bg); color: var(--tint-amber-fg); border-color: var(--tint-amber-border); }
+.dj__blk[data-tint="green"] { background: var(--tint-green-bg); color: var(--tint-green-fg); border-color: var(--tint-green-border); }
+.dj__blk[data-tint="violet"] { background: var(--tint-violet-bg); color: var(--tint-violet-fg); border-color: var(--tint-violet-border); }
+.dj__blk.is-draft { background: var(--accent-subtle); border: 1.5px dashed var(--accent); color: var(--text-strong); z-index: 2; }
+.dark .dj__blk.is-draft { border-color: var(--accent-vivid); }
+.dj__blk.is-draft.is-bad { border-color: var(--down); background: var(--tint-red-bg); color: var(--tint-red-fg); }
+.dj__blk.is-mine { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); cursor: pointer; z-index: 2; }
+.dj__blk.is-pop { animation: dj-pop 560ms cubic-bezier(.34,1.56,.64,1); }
+.dj__blk .dj__grip { position: absolute; left: 50%; bottom: 4px; width: 24px; height: 4px; margin-left: -12px; border-radius: 999px; background: currentColor; opacity: .35; }
+@keyframes dj-pop { 0% { transform: scale(.94); } 55% { transform: scale(1.03); } 100% { transform: none; } }
+
+.dj__hint { position: absolute; left: 50%; top: 8px; z-index: 3; width: max-content; max-width: calc(100% - 24px); transform: translateX(-50%); display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: var(--text-strong); color: var(--bg); font-size: 14px; box-shadow: var(--shadow-toast); animation: dj-drop 460ms cubic-bezier(.34,1.4,.64,1); pointer-events: none; }
+@keyframes dj-drop { from { opacity: 0; transform: translate(-50%, -10px); } to { opacity: 1; transform: translateX(-50%); } }
+.dj__hint[hidden] { display: none; }
+.dj__hint svg { width: 18px; height: 18px; }
+
+/* Fenêtre de réservation */
+.dj__pop { position: absolute; z-index: 5; width: 304px; margin: 0; padding: 16px; display: grid; gap: 12px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-popover); transform-origin: var(--dj-origin, left top); animation: dj-in 380ms cubic-bezier(.34,1.4,.64,1); }
+.dj__pop[hidden] { display: none; }
+.dj__pop.is-out { animation: dj-out 200ms var(--ease-in) forwards; }
+@keyframes dj-in { from { opacity: 0; transform: scale(.92) translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes dj-out { to { opacity: 0; transform: scale(.96); } }
+@keyframes dj-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.dj__pop-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-right: -6px; margin-top: -4px; }
+.dj__pop-k { margin: 0; font-size: 13px; color: var(--text-muted); }
+.dj__pop-title { margin: 2px 0 0; font-size: 18px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-strong); font-variant-numeric: tabular-nums; }
+.dj__field { display: grid; gap: 6px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.dj__field > span, .dj__field > legend { padding: 0; font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
+.dj__field > span { margin-bottom: 0; }
+.dj__field input { height: 40px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-control); background: var(--surface); color: var(--text-strong); font-size: var(--t-input); outline: none; user-select: text; -webkit-user-select: text; }
+.dj__field input:focus { border-color: var(--focus-ring); box-shadow: 0 0 0 3px var(--accent-subtle); }
+.dj__field input.is-typing { border-color: var(--focus-ring); box-shadow: 0 0 0 3px var(--accent-subtle); }
+.dj__seg { display: grid; grid-template-columns: repeat(4, 1fr); padding: 3px; gap: 2px; border-radius: 10px; background: var(--raised); border: 1px solid var(--border); }
+.dj__seg button { min-height: 34px; border: 0; border-radius: 8px; background: transparent; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; font-variant-numeric: tabular-nums; transition: background var(--motion-fast), color var(--motion-fast); }
+.dj__seg button[aria-checked="true"] { background: var(--surface); color: var(--text-strong); box-shadow: 0 0 0 1px var(--border), var(--shadow-overlay); }
+.dj__seg button:disabled { opacity: .45; cursor: not-allowed; }
+.dj__people { display: flex; flex-wrap: wrap; gap: 6px; }
+.dj__chip { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px 0 4px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); font-size: 13px; color: var(--text); cursor: pointer; transition: background var(--motion-fast), border-color var(--motion-fast), transform 300ms cubic-bezier(.34,1.56,.64,1); }
+.dj__chip b { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 999px; background: var(--raised); font: 600 11px/1 var(--font-sans); color: var(--text-muted); transition: background var(--motion-fast), color var(--motion-fast); }
+.dj__chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-subtle); color: var(--text-strong); }
+.dj__chip[aria-pressed="true"] b { background: var(--accent); color: var(--accent-fg); }
+.dj__chip:active { transform: scale(.95); }
+.dj__switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; min-height: 44px; }
+.dj__switch span { display: grid; }
+.dj__switch strong { font-size: 14px; font-weight: 500; color: var(--text-strong); }
+.dj__switch small { font-size: 13px; color: var(--text-muted); }
+.dj__switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.dj__switch i { position: relative; flex: none; width: 40px; height: 24px; border-radius: 999px; background: var(--border-control); transition: background var(--motion-base) var(--ease-out); }
+.dj__switch i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 999px; background: var(--surface); transition: transform 360ms cubic-bezier(.34,1.56,.64,1); }
+.dj__switch input:checked + i { background: var(--accent); }
+.dj__switch input:checked + i::after { transform: translateX(16px); background: var(--accent-fg); }
+.dj__switch input:focus-visible + i { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+.dj__err { margin: -4px 0 0; padding: 8px 10px; border-radius: 8px; background: var(--tint-red-bg); color: var(--tint-red-fg); font-size: 13px; line-height: 1.4; }
+.dj__err[hidden] { display: none; }
+.dj__pop-foot { display: flex; justify-content: flex-end; gap: 8px; padding-top: 2px; }
+.dj__spin { display: none; width: 16px; height: 16px; border-radius: 999px; border: 2px solid currentColor; border-right-color: transparent; animation: dj-spin 700ms linear infinite; }
+.dj__btn.is-loading .dj__spin { display: block; }
+.dj__btn:disabled { opacity: .5; cursor: not-allowed; }
+.dj__btn.is-loading:disabled { opacity: 1; }
+@keyframes dj-spin { to { transform: rotate(1turn); } }
+
+.dj__toast { position: absolute; left: 50%; bottom: 16px; z-index: 6; width: max-content; display: flex; align-items: center; gap: 10px; max-width: calc(100% - 32px); padding: 10px 10px 10px 14px; border-radius: 12px; background: var(--text-strong); color: var(--bg); font-size: 14px; box-shadow: var(--shadow-toast); transform: translate(-50%, calc(100% + 24px)); opacity: 0; transition: transform 460ms cubic-bezier(.34,1.4,.64,1), opacity 200ms; pointer-events: none; }
+.dj__toast.is-on { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+.dj__toast svg { width: 18px; height: 18px; color: var(--bg); }
+.dj__toast button { min-height: 32px; padding: 0 10px; border: 0; border-radius: 8px; background: transparent; color: var(--bg); font-weight: 600; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.dj__toast button:focus-visible { outline: 2px solid var(--bg); outline-offset: 1px; }
+
+/* Curseur fantôme */
+.dj__ghost { position: absolute; left: 0; top: 0; z-index: 9; pointer-events: none; opacity: 0; transition: opacity 260ms var(--ease-out); will-change: transform; }
+.dj__ghost.is-on { opacity: 1; }
+.dj__ghost-arrow { display: block; width: 22px !important; height: 22px !important; margin: -3px 0 0 -4px; fill: var(--text-strong) !important; stroke: var(--surface) !important; stroke-width: 1.5 !important; transition: transform 160ms var(--ease-out); filter: drop-shadow(0 2px 3px var(--scrim)); }
+.dj__ghost-touch { display: none; width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 999px; background: color-mix(in srgb, var(--text-strong) 20%, transparent); border: 2px solid color-mix(in srgb, var(--text-strong) 65%, transparent); transition: transform 160ms var(--ease-out); }
+.dj__ghost-name { position: absolute; left: 14px; top: 16px; padding: 3px 8px; border-radius: 999px 999px 999px 4px; background: var(--accent); color: var(--accent-fg); font-size: 12px; font-weight: 600; white-space: nowrap; }
+.dj__ghost.is-touch .dj__ghost-arrow { display: none; }
+.dj__ghost.is-touch .dj__ghost-touch { display: block; }
+.dj__ghost.is-touch .dj__ghost-name { left: 18px; top: 14px; }
+.dj__ghost.is-down .dj__ghost-arrow { transform: scale(.86); }
+.dj__ghost.is-down .dj__ghost-touch { transform: scale(.78); }
+.dj__ghost[data-label=""] .dj__ghost-name { display: none; }
+.dj__ripple { position: absolute; z-index: 8; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 999px; border: 2px solid var(--accent); pointer-events: none; animation: dj-ripple 520ms var(--ease-out) forwards; }
+@keyframes dj-ripple { from { transform: scale(.3); opacity: .9; } to { transform: scale(1.4); opacity: 0; } }
+
+.dj__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Compact : une salle à la fois (onglets), fenêtre en feuille du bas */
+@container (max-width: 559px) {
+  .dj__tabs { display: flex; }
+  .dj__heads { display: none; }
+  .dj__plan { padding-top: 12px; }
+  .dj__cols { grid-template-columns: 1fr; }
+  .dj__col:not(.is-shown) { display: none; }
+  .dj__pop { left: 0 !important; right: 0; top: auto !important; bottom: 0; width: auto; border-radius: 16px 16px 0 0; border-width: 1px 0 0; animation-name: dj-sheet; }
+  .dj__pop.is-out { animation: dj-sheet-out 220ms var(--ease-in) forwards; }
+  .dj__mode { padding: 0 10px; }
+  .dj__day span { max-width: 140px; }
+  .dj__blk { font-size: 14px; }
+}
+@keyframes dj-sheet { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes dj-sheet-out { to { transform: translateY(100%); } }
+
+@media (max-width: 899px) {
+  .dj { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 40px 16px; align-items: start; }
+  .dj__copy { display: contents; }
+  .dj__brand { margin-bottom: 24px; justify-self: start; }
+  .dj__app { order: 5; margin-top: 32px; }
+  .dj__steps { order: 6; }
+  .dj__actions { order: 7; }
+  .dj__lead { font-size: 16px; }
+  .dj__steps { margin-top: 24px; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .dj__step { grid-template-columns: 1fr; gap: 8px; padding: 12px 10px 16px; background: var(--surface); border: 1px solid var(--border); }
+  .dj__step.is-active { background: var(--raised); }
+  .dj__step-t span { display: none; }
+  .dj__step-t { padding-top: 0; }
+  .dj__step-t strong { font-size: 14px; line-height: 1.3; }
+  .dj__step-n { width: 28px; height: 28px; }
+  .dj__step-bar { left: 10px; right: 10px; }
+  .dj__actions { margin-top: 16px; flex-wrap: nowrap; }
+  .dj__actions .dj__btn { flex: 1 1 0; min-width: 0; padding: 0 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dj *, .dj *::before, .dj *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+}
+</style>
+
+<script>
+(function () {
+  var ROOMS = [
+    { id: 'atelier', nom: 'Atelier', places: 4 },
+    { id: 'verriere', nom: 'Verrière', places: 8 },
+    { id: 'biblio', nom: 'Bibliothèque', places: 2 }
+  ];
+  var START = 9 * 60, STEP = 30, ROWS = 8; /* 9:00 → 13:00 par demi-heures */
+  var BASE = [
+    { room: 'atelier', s: 0, n: 3, titre: 'Revue design', tint: 'blue' },
+    { room: 'biblio', s: 1, n: 1, titre: 'Appel client', tint: 'amber' },
+    { room: 'atelier', s: 5, n: 2, titre: 'Déjeuner d’équipe', tint: 'green' },
+    { room: 'biblio', s: 4, n: 3, titre: 'Session focus', tint: 'violet' },
+    { room: 'verriere', s: 6, n: 2, titre: 'Atelier client', tint: '' }
+  ];
+  var PEOPLE = [{ i: 'IM', n: 'Inès' }, { i: 'TB', n: 'Théo' }, { i: 'SL', n: 'Sacha' }, { i: 'NK', n: 'Nora' }];
+  var DURS = [1, 2, 3, 4];
+
+  function fmt(slot) { var m = START + slot * STEP; return Math.floor(m / 60) + ':' + String(m % 60).padStart(2, '0'); }
+  function durLabel(n) { var m = n * STEP; return m < 60 ? m + ' min' : Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + (m % 60) : ''); }
+  function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
+  function DemoJouable(root) {
+    var app = root.querySelector('[data-dj-app]');
+    var cols = root.querySelector('[data-dj-cols]'), heads = root.querySelector('[data-dj-heads]'), hours = root.querySelector('[data-dj-hours]'), tabs = root.querySelector('[data-dj-tabs]');
+    var pop = root.querySelector('[data-dj-pop]'), input = root.querySelector('[data-dj-input]'), durBox = root.querySelector('[data-dj-dur]'), peopleBox = root.querySelector('[data-dj-people]'), visio = root.querySelector('[data-dj-visio]');
+    var err = root.querySelector('[data-dj-err]'), submit = root.querySelector('[data-dj-submit]'), submitLabel = root.querySelector('[data-dj-submit-label]');
+    var toast = root.querySelector('[data-dj-toast]'), ghost = root.querySelector('[data-dj-ghost]'), ghostName = root.querySelector('[data-dj-ghost-name]');
+    var hint = root.querySelector('[data-dj-hint]'), mode = root.querySelector('[data-dj-mode]'), modeLabel = root.querySelector('[data-dj-mode-label]');
+    var steps = [].slice.call(root.querySelectorAll('.dj__step')), live = root.querySelector('[data-dj-live]');
+    var takeBtn = root.querySelector('[data-dj-take]'), takeLabel = root.querySelector('[data-dj-take-label]'), replayBtn = root.querySelector('[data-dj-replay]');
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+
+    var bookings, draft = null, shownRoom = 'verriere', state = 'idle', token = 0, visible = true, gate = null, toastTimer = 0, loopTimer = 0, interacted = false, gx = 0, gy = 0, focusCell = null;
+    root.style.setProperty('--dj-n', ROOMS.length);
+
+    /* ---------- Construction ---------- */
+    hours.innerHTML = Array.from({ length: ROWS }, function (_, i) { return '<div class="dj__hour">' + (i % 2 ? '' : fmt(i)) + '</div>'; }).join('');
+    heads.innerHTML = '<span></span>' + ROOMS.map(function (r) { return '<span class="dj__head"><strong>' + r.nom + '</strong><span>' + r.places + ' places</span></span>'; }).join('');
+    tabs.innerHTML = ROOMS.map(function (r) { return '<button type="button" role="tab" class="dj__tab" data-room="' + r.id + '" aria-selected="false">' + r.nom + '<small>' + r.places + ' pl.</small></button>'; }).join('');
+    cols.innerHTML = ROOMS.map(function (r) {
+      return '<div class="dj__col" role="row" data-col="' + r.id + '" aria-label="' + r.nom + '">' + Array.from({ length: ROWS }, function (_, i) {
+        return '<button type="button" role="gridcell" class="dj__cell" tabindex="-1" data-room="' + r.id + '" data-slot="' + i + '" aria-label="' + r.nom + ', ' + fmt(i) + ', libre"></button>';
+      }).join('') + '</div>';
+    }).join('');
+    durBox.innerHTML = DURS.map(function (n) { return '<button type="button" role="radio" aria-checked="false" data-dur="' + n + '">' + durLabel(n) + '</button>'; }).join('');
+    durBox.setAttribute('role', 'radiogroup'); durBox.setAttribute('aria-label', 'Durée');
+    peopleBox.innerHTML = PEOPLE.map(function (p) { return '<button type="button" class="dj__chip" aria-pressed="false" data-person="' + p.i + '"><b aria-hidden="true">' + p.i + '</b>' + p.n + '</button>'; }).join('');
+
+    function room(id) { return ROOMS.filter(function (r) { return r.id === id; })[0]; }
+    function col(id) { return cols.querySelector('[data-col="' + id + '"]'); }
+    function cell(id, s) { return cols.querySelector('[data-room="' + id + '"][data-slot="' + s + '"]'); }
+    function compact() { return app.clientWidth < 560; }
+    function speed() { return Math.max(.25, parseFloat(root.dataset.speed) || 1); }
+    function conflict(r, s, n, ignore) { return bookings.filter(function (b) { return b !== ignore && b.room === r && b.s < s + n && s < b.s + b.n; })[0]; }
+    function say(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); }
+
+    /* ---------- Rendu du planning ---------- */
+    function renderBlocks() {
+      [].forEach.call(cols.querySelectorAll('.dj__blk'), function (b) { if (!b._keep) b.remove(); });
+      [].forEach.call(cols.querySelectorAll('.dj__cell'), function (c) {
+        var b = conflict(c.dataset.room, +c.dataset.slot, 1);
+        c.setAttribute('aria-disabled', b ? 'true' : 'false');
+        c.setAttribute('aria-label', room(c.dataset.room).nom + ', ' + fmt(+c.dataset.slot) + (b ? ', occupé : ' + b.titre : ', libre'));
+      });
+      bookings.forEach(function (b) {
+        var el = document.createElement(b.mine ? 'button' : 'div');
+        el.className = 'dj__blk' + (b.mine ? ' is-mine' : '') + (b.fresh ? ' is-pop' : '');
+        if (b.mine) { el.type = 'button'; el.setAttribute('aria-label', b.titre + ', ' + fmt(b.s) + ' – ' + fmt(b.s + b.n) + ', votre réservation : modifier'); el.addEventListener('click', function () { if (state === 'demo') return; openForm(b); }); }
+        else el.setAttribute('aria-hidden', 'true');
+        el.dataset.tint = b.tint || '';
+        place(el, b.s, b.n);
+        el.innerHTML = '<strong>' + b.titre + '</strong>' + (b.n > 1 ? '<span>' + fmt(b.s) + ' – ' + fmt(b.s + b.n) + '</span>' : '');
+        b.fresh = false;
+        col(b.room).appendChild(el);
+      });
+    }
+    function place(el, s, n) { var row = parseFloat(getComputedStyle(root).getPropertyValue('--dj-row')) || 44; el.style.top = (s * row + 2) + 'px'; el.style.height = (n * row - 4) + 'px'; }
+    function drawDraft() {
+      var old = cols.querySelector('.dj__blk.is-draft');
+      if (!draft) { if (old) old.remove(); return; }
+      var el = old;
+      if (!el || el.parentNode !== col(draft.room)) { if (el) el.remove(); el = document.createElement('div'); el.className = 'dj__blk is-draft'; el._keep = true; el.setAttribute('aria-hidden', 'true'); col(draft.room).appendChild(el); }
+      var bad = conflict(draft.room, draft.s, draft.n, draft.edit);
+      el.classList.toggle('is-bad', !!bad);
+      place(el, draft.s, draft.n);
+      el.innerHTML = '<strong>' + (input.value.trim() || 'Nouvelle réservation') + '</strong><span>' + fmt(draft.s) + ' – ' + fmt(draft.s + draft.n) + '</span><i class="dj__grip"></i>';
+      return el;
+    }
+    function showRoom(id) {
+      shownRoom = id;
+      [].forEach.call(tabs.children, function (t) { var on = t.dataset.room === id; t.setAttribute('aria-selected', on ? 'true' : 'false'); t.tabIndex = on ? 0 : -1; });
+      [].forEach.call(cols.children, function (c) { c.classList.toggle('is-shown', c.dataset.col === id); });
+      if (!focusCell || (compact() && focusCell.dataset.room !== id)) { if (focusCell) focusCell.tabIndex = -1; focusCell = cell(id, 0); focusCell.tabIndex = 0; }
+    }
+
+    /* ---------- Fenêtre de réservation ---------- */
+    function openForm(edit) {
+      if (edit) { draft = { room: edit.room, s: edit.s, n: edit.n, edit: edit }; input.value = edit.titre; visio.checked = !!edit.visio; setPeople(edit.invites || []); }
+      if (!draft) return;
+      pop.hidden = false; pop.classList.remove('is-out');
+      root.querySelector('[data-dj-pop-room]').textContent = room(draft.room).nom + ' · ' + room(draft.room).places + ' places';
+      root.querySelector('[data-dj-cancel]').textContent = draft.edit ? 'Supprimer' : 'Annuler';
+      submitLabel.textContent = draft.edit ? 'Enregistrer' : 'Réserver';
+      syncForm(); positionPop();
+    }
+    function positionPop() {
+      if (pop.hidden || !draft || compact()) return;
+      var a = app.getBoundingClientRect(), c = col(draft.room).getBoundingClientRect();
+      var row = parseFloat(getComputedStyle(root).getPropertyValue('--dj-row')) || 44, w = pop.offsetWidth, h = pop.offsetHeight;
+      var right = c.right - a.left + 8, left = c.left - a.left - w - 8;
+      var x = right + w <= a.width - 8 ? right : Math.max(8, left);
+      var y = Math.min(Math.max(8, c.top - a.top + draft.s * row - 8), a.height - h - 8);
+      pop.style.left = x + 'px'; pop.style.top = Math.max(8, y) + 'px';
+      pop.style.setProperty('--dj-origin', (x === right ? 'left' : 'right') + ' top');
+    }
+    function closeForm(keepDraft) {
+      if (pop.hidden) return;
+      pop.classList.add('is-out');
+      setTimeout(function () { pop.hidden = true; pop.classList.remove('is-out'); }, 210);
+      if (!keepDraft) { draft = null; drawDraft(); input.value = ''; visio.checked = false; setPeople([]); }
+    }
+    function setPeople(list) { [].forEach.call(peopleBox.children, function (c) { c.setAttribute('aria-pressed', list.indexOf(c.dataset.person) > -1 ? 'true' : 'false'); }); }
+    function invites() { return [].filter.call(peopleBox.children, function (c) { return c.getAttribute('aria-pressed') === 'true'; }).map(function (c) { return c.dataset.person; }); }
+    function syncForm() {
+      if (!draft) return;
+      root.querySelector('[data-dj-pop-time]').textContent = fmt(draft.s) + ' – ' + fmt(draft.s + draft.n);
+      [].forEach.call(durBox.children, function (b) { var n = +b.dataset.dur; b.setAttribute('aria-checked', n === draft.n ? 'true' : 'false'); b.tabIndex = n === draft.n ? 0 : -1; b.disabled = draft.s + n > ROWS; });
+      var bad = conflict(draft.room, draft.s, draft.n, draft.edit);
+      err.hidden = !bad;
+      if (bad) err.textContent = 'Chevauche « ' + bad.titre + ' » (' + fmt(bad.s) + ' – ' + fmt(bad.s + bad.n) + '). Raccourcissez la durée.';
+      submit.disabled = !!bad;
+      drawDraft(); positionPop();
+    }
+    function startDraft(r, s, n) { draft = { room: r, s: s, n: n || 1 }; input.value = ''; visio.checked = false; setPeople([]); drawDraft(); }
+    function confirm(cb) {
+      if (!draft || conflict(draft.room, draft.s, draft.n, draft.edit)) return;
+      submit.classList.add('is-loading'); submit.disabled = true; submitLabel.textContent = draft.edit ? 'Enregistrement…' : 'Réservation…';
+      setTimeout(function () {
+        submit.classList.remove('is-loading'); submit.disabled = false;
+        var d = draft, b = d.edit || { mine: true, tint: '' };
+        b.room = d.room; b.s = d.s; b.n = d.n; b.titre = input.value.trim() || 'Réservation'; b.visio = visio.checked; b.invites = invites(); b.mine = true; b.fresh = true;
+        if (!d.edit) bookings.push(b);
+        draft = null; closeForm(true); drawDraft(); renderBlocks(); input.value = '';
+        var nb = b.invites.length, msg = room(b.room).nom + ' réservée · ' + fmt(b.s) + ' – ' + fmt(b.s + b.n) + (nb ? ' · ' + nb + ' invitation' + (nb > 1 ? 's' : '') + ' envoyée' + (nb > 1 ? 's' : '') : '');
+        showToast(msg, function () { bookings.splice(bookings.indexOf(b), 1); renderBlocks(); showToast('Réservation annulée'); });
+        say(msg);
+        if (cb) cb();
+      }, 650 / (state === 'demo' ? speed() : 1));
+    }
+    function showToast(msg, undo) {
+      clearTimeout(toastTimer);
+      toast.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>' + msg + '</span>' + (undo && state !== 'demo' ? '<button type="button">Annuler</button>' : '');
+      if (undo) { var u = toast.querySelector('button'); if (u) u.onclick = function () { clearTimeout(toastTimer); toast.classList.remove('is-on'); undo(); }; }
+      toast.classList.add('is-on');
+      toastTimer = setTimeout(function () { toast.classList.remove('is-on'); }, 4200);
+    }
+
+    /* ---------- Interactions du visiteur ---------- */
+    var drag = null;
+    cols.addEventListener('pointerdown', function (e) {
+      var c = e.target.closest('.dj__cell'); if (!c || c.getAttribute('aria-disabled') === 'true') return;
+      takeOver();
+      if (!pop.hidden) closeForm();
+      drag = { room: c.dataset.room, s: +c.dataset.slot, id: e.pointerId, moved: false };
+      startDraft(drag.room, drag.s, 1);
+      if (e.pointerType === 'mouse') cols.setPointerCapture(e.pointerId);
+    });
+    cols.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id || e.pointerType !== 'mouse') return;
+      var r = col(drag.room).getBoundingClientRect(), row = r.height / ROWS;
+      var end = Math.max(drag.s, Math.min(ROWS - 1, Math.floor((e.clientY - r.top) / row)));
+      var n = end - drag.s + 1; if (n !== draft.n) { draft.n = n; drawDraft(); drag.moved = true; }
+    });
+    function endDrag(e) { if (!drag || e.pointerId !== drag.id) return; drag = null; openForm(); setTimeout(function () { input.focus({ preventScroll: true }); }, 60); }
+    cols.addEventListener('pointerup', endDrag); cols.addEventListener('pointercancel', function () { drag = null; });
+    cols.addEventListener('keydown', function (e) {
+      var c = e.target.closest('.dj__cell'); if (!c) return;
+      var ri = ROOMS.map(function (r) { return r.id; }).indexOf(c.dataset.room), s = +c.dataset.slot, k = e.key;
+      if (k === 'Enter' || k === ' ') { e.preventDefault(); if (c.getAttribute('aria-disabled') === 'true') return; takeOver(); startDraft(c.dataset.room, s, 1); openForm(); input.focus({ preventScroll: true }); return; }
+      var d = { ArrowDown: [0, 1], ArrowUp: [0, -1], ArrowRight: [1, 0], ArrowLeft: [-1, 0], Home: [0, -99], End: [0, 99] }[k]; if (!d) return;
+      e.preventDefault();
+      if (compact()) d[0] = 0;
+      var nr = Math.max(0, Math.min(ROOMS.length - 1, ri + d[0])), ns = Math.max(0, Math.min(ROWS - 1, s + d[1]));
+      focusOn(cell(ROOMS[nr].id, ns));
+    });
+    function focusOn(c) { if (focusCell) focusCell.tabIndex = -1; focusCell = c; c.tabIndex = 0; c.focus({ preventScroll: true }); }
+    tabs.addEventListener('click', function (e) { var t = e.target.closest('.dj__tab'); if (!t) return; if (state === 'demo' && e.isTrusted) takeOver(); showRoom(t.dataset.room); });
+    tabs.addEventListener('keydown', function (e) { var i = ROOMS.map(function (r) { return r.id; }).indexOf(shownRoom), d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!d) return; e.preventDefault(); var n = ROOMS[(i + d + ROOMS.length) % ROOMS.length].id; showRoom(n); tabs.querySelector('[data-room="' + n + '"]').focus(); });
+    durBox.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b || !draft) return; draft.n = +b.dataset.dur; syncForm(); });
+    durBox.addEventListener('keydown', function (e) { if (!draft) return; var d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0; if (!d) return; e.preventDefault(); var i = DURS.indexOf(draft.n), n = DURS[Math.max(0, Math.min(DURS.length - 1, i + d))]; if (draft.s + n > ROWS) return; draft.n = n; syncForm(); durBox.querySelector('[data-dur="' + n + '"]').focus(); });
+    peopleBox.addEventListener('click', function (e) { var c = e.target.closest('.dj__chip'); if (!c) return; c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); });
+    input.addEventListener('input', drawDraft);
+    pop.addEventListener('submit', function (e) { e.preventDefault(); if (state !== 'demo') confirm(function () { setTimeout(function () { var c = cell(shownRoom, 0); if (c && document.activeElement === document.body) c.focus(); }, 0); }); });
+    root.querySelector('[data-dj-close]').addEventListener('click', function () { closeForm(); });
+    root.querySelector('[data-dj-cancel]').addEventListener('click', function () {
+      if (draft && draft.edit) { var b = draft.edit; bookings.splice(bookings.indexOf(b), 1); draft = null; closeForm(); renderBlocks(); showToast('Réservation supprimée', function () { bookings.push(b); b.fresh = true; renderBlocks(); }); }
+      else closeForm();
+    });
+    pop.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.stopPropagation(); closeForm(); var c = focusCell || cell(shownRoom, 0); if (c) c.focus(); } });
+    /* Toute action réelle du visiteur dans l'interface met fin à la démo */
+    app.addEventListener('pointerdown', function (e) { if (e.isTrusted && state === 'demo') takeOver(); }, true);
+    app.addEventListener('keydown', function (e) { if (e.isTrusted && state === 'demo' && e.key !== 'Tab') takeOver(); }, true);
+    app.addEventListener('focusin', function (e) { if (e.target.closest('[data-dj-cols]') && state === 'demo') takeOver(); });
+    takeBtn.addEventListener('click', function () { var had = document.activeElement === takeBtn; takeOver(); var c = cell(shownRoom, 0); if (c) { if (focusCell) focusCell.tabIndex = -1; focusCell = c; c.tabIndex = 0; if (had) replayBtn.focus(); } });
+    replayBtn.addEventListener('click', function () { play(); });
+    window.addEventListener('resize', positionPop);
+
+    /* ---------- Curseur fantôme ---------- */
+    function ghostTouch() { var p = root.dataset.pointer || 'auto'; return p === 'doigt' || (p === 'auto' && (compact() || matchMedia('(pointer: coarse)').matches)); }
+    function sleep(ms, t) {
+      return new Promise(function (res, rej) {
+        var left = ms / speed(), last = performance.now();
+        (function tick() {
+          if (t !== token) return rej('stop');
+          var now = performance.now(); if (visible) left -= now - last; last = now;
+          if (left <= 0) return res();
+          setTimeout(tick, Math.min(60, Math.max(8, left)));
+        })();
+      });
+    }
+    function center(el, fy) { var a = app.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: r.left - a.left + r.width / 2, y: r.top - a.top + r.height * (fy == null ? .5 : fy) }; }
+    function setGhost(x, y) { gx = x; gy = y; ghost.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)'; }
+    function move(to, t, dur, onStep) {
+      var fx = gx, fy = gy, dist = Math.hypot(to.x - fx, to.y - fy), d = (dur || Math.min(1100, 380 + dist * 1.1)) / speed();
+      var bend = Math.min(60, dist * .18) * (fx < to.x ? -1 : 1), el = 0, last = performance.now();
+      return new Promise(function (res, rej) {
+        (function f(now) {
+          if (t !== token) return rej('stop');
+          if (visible) el += now - last; last = now;
+          var k = Math.min(1, el / d), e = ease(k), arc = Math.sin(Math.PI * e) * bend;
+          var nx = fx + (to.x - fx) * e, ny = fy + (to.y - fy) * e;
+          var len = dist || 1, px = -(to.y - fy) / len, py = (to.x - fx) / len;
+          setGhost(nx + px * arc, ny + py * arc);
+          if (onStep) onStep(e);
+          if (k < 1) requestAnimationFrame(f); else res();
+        })(last);
+      });
+    }
+    function ripple() { var r = document.createElement('span'); r.className = 'dj__ripple'; r.style.left = gx + 'px'; r.style.top = gy + 'px'; app.appendChild(r); setTimeout(function () { r.remove(); }, 560); }
+    async function click(el, t, fy) {
+      await move(center(el, fy), t);
+      el.classList.add('is-hover'); await sleep(120, t);
+      ghost.classList.add('is-down'); ripple(); await sleep(110, t);
+      ghost.classList.remove('is-down'); el.classList.remove('is-hover');
+    }
+    async function type(text, t) {
+      input.classList.add('is-typing');
+      for (var i = 1; i <= text.length; i++) { input.value = text.slice(0, i); drawDraft(); await sleep(text[i - 1] === ' ' ? 90 : 48 + Math.random() * 46, t); }
+      input.classList.remove('is-typing');
+    }
+    function setStep(i, p) { steps.forEach(function (s, k) { s.classList.toggle('is-active', k === i); s.classList.toggle('is-done', k < i || i === 3); if (k === i) s.style.setProperty('--p', p || 0); }); }
+    function progress(i, from, to, ms, t) { return new Promise(function (res, rej) { var el = 0, last = performance.now(), d = ms / speed(); (function f(now) { if (t !== token) return rej('stop'); if (visible) el += now - last; last = now; var k = Math.min(1, el / d); steps[i].style.setProperty('--p', from + (to - from) * k); if (k < 1) requestAnimationFrame(f); else res(); })(last); }); }
+
+    async function script(t) {
+      var target = 'verriere', s0 = 2, n = 3;
+      ghost.classList.toggle('is-touch', ghostTouch());
+      setGhost(app.clientWidth * .82, app.clientHeight * .9); ghost.classList.add('is-on');
+      await sleep(500, t);
+      setStep(0, 0); progress(0, 0, 1, 3000, t).catch(function () {});
+      if (compact() && shownRoom !== target) { await click(tabs.querySelector('[data-room="' + target + '"]'), t); showRoom(target); await sleep(260, t); }
+      var c = cell(target, s0);
+      await move(center(c), t); c.classList.add('is-hover'); await sleep(260, t);
+      ghost.classList.add('is-down'); ripple(); c.classList.remove('is-hover');
+      startDraft(target, s0, 1); await sleep(160, t);
+      var endC = cell(target, s0 + n - 1), lastN = 1;
+      await move(center(endC, .82), t, 900, function (e) { var k = Math.min(n, 1 + Math.floor(e * n + .2)); if (k !== lastN) { lastN = k; draft.n = k; drawDraft(); } });
+      draft.n = n; drawDraft();
+      ghost.classList.remove('is-down'); await sleep(140, t);
+      openForm(); await sleep(420, t);
+      setStep(1, 0); progress(1, 0, 1, 4200, t).catch(function () {});
+      await click(input, t); await type('Point produit', t); await sleep(220, t);
+      var chips = peopleBox.children;
+      await click(chips[0], t); chips[0].setAttribute('aria-pressed', 'true'); await sleep(200, t);
+      await click(chips[2], t); chips[2].setAttribute('aria-pressed', 'true'); await sleep(220, t);
+      await click(visio.parentNode.querySelector('i'), t); visio.checked = true; await sleep(380, t);
+      setStep(2, 0); progress(2, 0, 1, 1400, t).catch(function () {});
+      await click(submit, t);
+      await new Promise(function (res) { confirm(res); });
+      await sleep(700, t);
+      setStep(3);
+      await move({ x: app.clientWidth + 40, y: app.clientHeight * .7 }, t, 700);
+      ghost.classList.remove('is-on');
+      handOver(true);
+    }
+
+    /* ---------- États ---------- */
+    function setMode(m) {
+      state = m;
+      mode.classList.toggle('is-live', m === 'demo'); mode.classList.toggle('is-you', m === 'you');
+      modeLabel.textContent = m === 'demo' ? 'Démo en cours' : 'À vous de jouer';
+      takeBtn.hidden = m !== 'demo';
+      replayBtn.classList.toggle('dj__btn--primary', m !== 'demo'); replayBtn.classList.toggle('dj__btn--ghost', m === 'demo');
+    }
+    function reset() {
+      token++; clearTimeout(loopTimer); clearTimeout(toastTimer); toast.classList.remove('is-on');
+      bookings = BASE.map(function (b) { return Object.assign({}, b); });
+      draft = null; pop.hidden = true; input.value = ''; visio.checked = false; setPeople([]);
+      renderBlocks(); drawDraft(); showRoom('verriere'); hint.hidden = true;
+      ghost.classList.remove('is-on', 'is-down'); setStep(-1);
+      steps.forEach(function (s) { s.classList.remove('is-done', 'is-active'); s.style.setProperty('--p', 0); });
+      interacted = false;
+    }
+    function handOver(fromScript) {
+      token++; setMode('you'); ghost.classList.remove('is-on', 'is-down');
+      hint.hidden = false; setTimeout(function () { hint.hidden = true; }, 5200);
+      say('Démo terminée. À vous de jouer : choisissez un créneau libre avec les flèches puis Entrée.');
+      if (fromScript && root.dataset.loop === 'true') {
+        clearTimeout(loopTimer);
+        loopTimer = setTimeout(function wait() { if (interacted) return; if (!visible) { loopTimer = setTimeout(wait, 1000); return; } play(); }, 9000);
+      }
+    }
+    function takeOver() {
+      interacted = true; clearTimeout(loopTimer);
+      if (state !== 'demo') return;
+      token++; ghost.classList.remove('is-on', 'is-down');
+      [].forEach.call(root.querySelectorAll('.is-hover,.is-typing'), function (x) { x.classList.remove('is-hover', 'is-typing'); });
+      steps.forEach(function (s) { s.classList.remove('is-active'); });
+      setMode('you'); hint.hidden = true;
+      if (draft && pop.hidden) { draft = null; drawDraft(); }
+      say('Vous avez la main.');
+    }
+    function play() {
+      reset();
+      if (reduce && reduce.matches) { setMode('you'); steps.forEach(function (s) { s.classList.add('is-done'); }); hint.hidden = false; return; }
+      setMode('demo');
+      var t = token;
+      script(t).catch(function () {});
+    }
+    function snapshot() { /* état figé (vignette) : fenêtre ouverte, prête à confirmer */
+      reset(); setMode('demo'); token++;
+      startDraft('verriere', 2, 3); input.value = 'Point produit'; setPeople(['IM', 'SL']); visio.checked = true; openForm(); setStep(1, .7);
+      steps[0].classList.add('is-done');
+      ghost.classList.toggle('is-touch', ghostTouch()); ghost.classList.add('is-on');
+      requestAnimationFrame(function () { positionPop(); var p = center(submit); setGhost(p.x + 6, p.y + 4); pop.style.animation = 'none'; });
+    }
+    function refresh() { ghostName.textContent = root.dataset.label || ''; ghost.dataset.label = root.dataset.label || ''; ghost.classList.toggle('is-touch', ghostTouch()); positionPop(); }
+
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }, { threshold: .15 }).observe(app);
+    refresh();
+    root._demo = { play: play, takeOver: takeOver, snapshot: snapshot, refresh: refresh };
+    if (!root.hasAttribute('data-manual')) {
+      if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); play(); } }, { threshold: .35 }); io.observe(app); } else play();
+    } else reset();
+    return root._demo;
+  }
+  window.DemoJouable = DemoJouable;
+  [].forEach.call(document.querySelectorAll('[data-demo-jouable]'), function (el) { if (!el._demo) DemoJouable(el); });
+})();
+</script>

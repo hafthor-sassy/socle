@@ -1,0 +1,227 @@
+<!-- Mur en colonnes — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Colonnes de témoignages qui défilent en sens opposés, ralentissent en douceur sous la souris (vitesse lissée,
+     pas d'arrêt sec), se mettent en pause hors écran, au focus ou par le bouton Pause. Sur mobile : deux rangées
+     horizontales qu'on peut faire glisser au doigt. Réglages sur la racine : data-speed (px/s), data-slow (0–1),
+     data-dir (alterne | meme), data-cols (2–4), data-mask, --mc-h (hauteur). Marque fictive : Escale. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="mc" data-mur-colonnes data-speed="28" data-slow="0.15" data-dir="alterne" data-cols="3" data-mask="true" style="--mc-h: 640px" aria-labelledby="mc-title">
+  <header class="mc__head">
+    <span class="mc__brand">
+      <svg class="mc__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="mc__logo-bg"/><path class="mc__logo-mk" d="M30 70c0-14 40-12 40-28 0-8-6-12-12-12"/><circle class="mc__logo-dot" cx="30" cy="70" r="8"/><circle class="mc__logo-dot" cx="58" cy="30" r="8"/></svg>
+      <span class="mc__word">escale</span>
+    </span>
+    <h2 class="mc__title" id="mc-title">Ils sont partis en train, ils racontent</h2>
+    <div class="mc__score">
+      <span class="mc__stars" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="is-part"></i></span>
+      <span><strong>4,8 / 5</strong> · 12 400 avis de voyageurs vérifiés</span>
+    </div>
+  </header>
+
+  <div class="mc__wall" data-mc-wall>
+    <ul class="mc__src" data-mc-src hidden>
+      <li data-who="Claire Dumas" data-trip="Paris → Vienne · en couple" data-tint="blue">Le train de nuit pour Vienne était <b>parfaitement calé avec l’hôtel</b>. On n’a rien eu à gérer, juste à profiter.</li>
+      <li data-who="Thomas Lebrun" data-trip="Lille → Turin · déplacement pro" data-tint="amber">J’ai changé mes billets la veille à cause d’une grève : <b>nouvel itinéraire en vingt minutes</b>, sans frais.</li>
+      <li data-who="Samira Aït-Ali" data-trip="Lyon → Barcelone · en famille" data-tint="green">Avec deux enfants, chaque correspondance compte. Escale nous a proposé des trajets directs que je n’avais jamais trouvés.</li>
+      <li data-who="Julien Martel" data-trip="Nantes → Amsterdam" data-tint="violet">Le carnet de voyage sur le téléphone est génial : billets, adresses et horaires au même endroit, <b>même hors ligne</b>.</li>
+      <li data-who="Élise Garnier" data-trip="Grenoble → Bolzano · randonnée" data-tint="pink">Une semaine dans les Dolomites sans prendre l’avion, et <b>un bilan carbone divisé par six</b>. On recommence l’an prochain.</li>
+      <li data-who="Marc Olivier" data-trip="Bordeaux → Madrid" data-tint="blue">Service client joignable un dimanche soir, avec une vraie personne au bout du fil. Rare.</li>
+      <li data-who="Nadia Benali" data-trip="Office manager · séminaire à Berlin" data-tint="green">Nos quatorze collaborateurs sont arrivés à Berlin à la même heure, <b>places côte à côte</b>. Organisation impeccable.</li>
+      <li data-who="Hugo Perrin" data-trip="Marseille → Genève" data-tint="amber">Les suggestions d’étapes m’ont fait découvrir Annecy sur la route de Genève. Meilleure pause du voyage.</li>
+      <li data-who="Inès Laurent" data-trip="Rennes → Londres" data-tint="violet"><b>Prix affiché, prix payé.</b> Pas de frais de dossier qui apparaissent à la dernière étape.</li>
+      <li data-who="Léa Moreau" data-trip="Toulouse → Rome · en solo" data-tint="pink">Premier voyage seule en Italie : j’étais rassurée par les alertes de quai et de retard en temps réel.</li>
+      <li data-who="Antoine Roy" data-trip="Strasbourg → Prague" data-tint="blue">Le comparatif train, bus et covoiturage pour le dernier kilomètre m’a évité un taxi hors de prix.</li>
+      <li data-who="Camille et Yanis" data-trip="Montpellier → Séville · road-trip" data-tint="green">On a construit le sud de l’Espagne en trois soirs, étape par étape. <b>L’appli s’adaptait à nos envies.</b></li>
+    </ul>
+  </div>
+
+  <div class="mc__bar">
+    <button type="button" class="mc__pause" data-mc-pause aria-pressed="false">
+      <svg class="mc__i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+      <svg class="mc__i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5Z"/></svg>
+      <span data-mc-pause-label>Mettre en pause</span>
+    </button>
+    <a class="mc__link" href="#">Lire les 12 400 avis</a>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+.mc { width: 100%; min-width: 0; max-width: 1200px; margin: 0 auto; padding: 72px 40px; font-family: var(--font-sans); color: var(--text); }
+.mc *, .mc *::before, .mc *::after { box-sizing: border-box; }
+.mc :where(button, a) { font: inherit; color: inherit; }
+.mc__head { display: grid; justify-items: center; text-align: center; }
+.mc__brand { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px; color: var(--text-strong); }
+.mc__logo { width: 28px; height: 28px; }
+.mc__logo-bg { fill: var(--accent); } .mc__logo-mk { fill: none; stroke: var(--accent-fg); stroke-width: 7; stroke-linecap: round; } .mc__logo-dot { fill: var(--accent-fg); }
+.mc__word { font-weight: 600; font-size: 18px; letter-spacing: -0.03em; }
+.mc__title { margin: 0; max-width: 20ch; font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem); line-height: 1.08; letter-spacing: -0.035em; font-weight: 600; color: var(--text-strong); text-wrap: balance; }
+.mc__score { display: inline-flex; align-items: center; gap: 10px; margin-top: 20px; font-size: 15px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.mc__score strong { color: var(--text-strong); font-weight: 600; }
+.mc__stars { display: inline-flex; gap: 2px; }
+.mc__stars i { width: 16px; height: 16px; background: var(--accent); clip-path: polygon(50% 4%, 61.8% 36%, 96% 38%, 69% 59%, 79% 93%, 50% 74%, 21% 93%, 31% 59%, 4% 38%, 38.2% 36%); }
+.dark .mc__stars i { background: var(--accent-vivid); }
+.mc__stars i.is-part { background: linear-gradient(90deg, var(--accent) 80%, var(--border-control) 80%); }
+.dark .mc__stars i.is-part { background: linear-gradient(90deg, var(--accent-vivid) 80%, var(--border-control) 80%); }
+
+/* Mur */
+.mc__wall { position: relative; display: grid; grid-template-columns: repeat(var(--mc-cols, 3), minmax(0, 1fr)); gap: 16px; height: var(--mc-h); margin-top: 48px; overflow: hidden; }
+.mc[data-mask="true"] .mc__wall { -webkit-mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(transparent, #000 14%, #000 86%, transparent); }
+.mc__col { position: relative; min-width: 0; overflow: hidden; touch-action: pan-x; }
+.mc__track { display: flex; flex-direction: column; gap: 16px; will-change: transform; }
+.mc__copy { display: flex; flex-direction: column; gap: 16px; list-style: none; margin: 0; padding: 0; }
+.mc__card { display: grid; gap: 16px; padding: 22px 24px 20px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); transition: border-color var(--motion-base) var(--ease-out), background var(--motion-base); }
+.mc__col:hover .mc__card:hover { border-color: var(--border-control); }
+.mc__card blockquote { margin: 0; font-size: 16px; line-height: 1.55; color: var(--text); text-wrap: pretty; }
+.mc__card blockquote b { font-weight: 600; color: var(--text-strong); }
+.mc__who { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.mc__av { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: .02em; border: 1px solid; }
+.mc__av[data-tint="blue"] { background: var(--tint-blue-bg); color: var(--tint-blue-fg); border-color: var(--tint-blue-border); }
+.mc__av[data-tint="green"] { background: var(--tint-green-bg); color: var(--tint-green-fg); border-color: var(--tint-green-border); }
+.mc__av[data-tint="amber"] { background: var(--tint-amber-bg); color: var(--tint-amber-fg); border-color: var(--tint-amber-border); }
+.mc__av[data-tint="violet"] { background: var(--tint-violet-bg); color: var(--tint-violet-fg); border-color: var(--tint-violet-border); }
+.mc__av[data-tint="pink"] { background: var(--tint-pink-bg); color: var(--tint-pink-fg); border-color: var(--tint-pink-border); }
+.mc__who figcaption, .mc__who > span { display: grid; min-width: 0; }
+.mc__who strong { font-size: 15px; font-weight: 600; color: var(--text-strong); }
+.mc__trip { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mc__trip svg { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.mc__bar { display: flex; align-items: center; justify-content: center; gap: 8px 24px; flex-wrap: wrap; margin-top: 32px; }
+.mc__pause { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text-strong); font-size: 15px; font-weight: 500; cursor: pointer; transition: background var(--motion-fast); }
+.mc__pause:hover { background: var(--raised); }
+.mc__pause svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.mc__i-play { display: none; } .mc__pause[aria-pressed="true"] .mc__i-play { display: block; } .mc__pause[aria-pressed="true"] .mc__i-pause { display: none; }
+.mc__link { font-size: 15px; font-weight: 500; color: var(--text-strong); text-underline-offset: 3px; text-decoration-color: var(--border-control); }
+.mc__link:hover { text-decoration-color: currentColor; }
+.mc__pause:focus-visible, .mc__link:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+/* Rangées horizontales (mobile) */
+.mc.is-rows .mc__wall { display: grid; grid-template-columns: 1fr; gap: 12px; height: auto; margin: 32px -16px 0; }
+.mc.is-rows[data-mask="true"] .mc__wall { -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.mc.is-rows .mc__col { touch-action: pan-y; cursor: grab; }
+.mc.is-rows .mc__col.is-drag { cursor: grabbing; }
+.mc.is-rows .mc__track, .mc.is-rows .mc__copy { flex-direction: row; gap: 12px; width: max-content; }
+.mc.is-rows .mc__card { width: 284px; padding: 18px 18px 16px; gap: 14px; align-content: space-between; }
+.mc.is-rows .mc__card blockquote { font-size: 15px; }
+
+/* Repli statique */
+.mc.is-static .mc__wall { height: auto; -webkit-mask-image: none; mask-image: none; }
+.mc.is-static .mc__copy[aria-hidden="true"] { display: none; }
+.mc.is-static.is-rows .mc__wall { margin: 32px 0 0; }
+.mc.is-static.is-rows .mc__col { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; }
+.mc.is-static.is-rows .mc__card { scroll-snap-align: start; }
+.mc.is-static .mc__pause { display: none; }
+
+@media (max-width: 639px) {
+  .mc { padding: 48px 16px 40px; }
+  .mc__brand { margin-bottom: 20px; }
+  .mc__score { flex-direction: column; gap: 6px; }
+  .mc__bar { margin-top: 24px; }
+}
+</style>
+
+<script>
+(function () {
+  var TRAIN = '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="2" width="9" height="9.5" rx="2.5"/><path d="M3.5 7.5h9M6 14l-1.5-2.5M10 14l1.5-2.5M6 9.75h.01M10 9.75h.01"/></svg>';
+  function initials(n) { return n.split(/\s+/).filter(function (w) { return /^[A-ZÀ-Ý]/.test(w); }).slice(0, 2).map(function (w) { return w[0]; }).join(''); }
+
+  function MurColonnes(root) {
+    var wall = root.querySelector('[data-mc-wall]'), src = root.querySelector('[data-mc-src]'), pauseBtn = root.querySelector('[data-mc-pause]'), pauseLabel = root.querySelector('[data-mc-pause-label]');
+    var items = [].slice.call(src.children).map(function (li) { return { who: li.dataset.who, trip: li.dataset.trip, tint: li.dataset.tint || 'blue', html: li.innerHTML }; });
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)'), mqRows = matchMedia('(max-width: 639px)');
+    var cols = [], visible = true, paused = false, focusIn = false, raf = 0, last = 0, layoutKey = '';
+
+    function card(t) {
+      return '<li class="mc__card"><figure style="margin:0;display:contents"><blockquote>' + t.html + '</blockquote>' +
+        '<figcaption class="mc__who"><span class="mc__av" data-tint="' + t.tint + '" aria-hidden="true">' + initials(t.who) + '</span>' +
+        '<span><strong>' + t.who + '</strong><span class="mc__trip">' + TRAIN + t.trip + '</span></span></figcaption></figure></li>';
+    }
+    function build() {
+      var rows = mqRows.matches, n = rows ? 2 : Math.max(1, Math.min(4, parseInt(root.dataset.cols, 10) || 3));
+      var key = n + (rows ? 'r' : 'c') + (reduce.matches ? 's' : '');
+      if (key === layoutKey) return; layoutKey = key;
+      root.classList.toggle('is-rows', rows); root.classList.toggle('is-static', reduce.matches);
+      root.style.setProperty('--mc-cols', n);
+      var buckets = Array.from({ length: n }, function () { return []; });
+      items.forEach(function (t, i) { buckets[i % n].push(t); });
+      [].forEach.call(wall.querySelectorAll('.mc__col'), function (c) { c.remove(); });
+      cols = buckets.map(function (b, i) {
+        var col = document.createElement('div'); col.className = 'mc__col';
+        var list = b.map(card).join('');
+        col.innerHTML = '<div class="mc__track"><ul class="mc__copy" role="list">' + list + '</ul><ul class="mc__copy" role="list" aria-hidden="true">' + list + '</ul></div>';
+        [].forEach.call(col.querySelectorAll('[aria-hidden="true"] .mc__card'), function (c) { c.setAttribute('inert', ''); });
+        wall.appendChild(col);
+        var c = { el: col, track: col.firstChild, off: 0, f: 1, target: 1, size: 0, dir: dirOf(i), drag: null };
+        c.off = reduce.matches ? 0 : (i * 137) % 400; /* départs décalés (aucun en mode statique) */
+        bind(c); return c;
+      });
+      measure(); if (reduce.matches) cols.forEach(function (c) { c.track.style.transform = ''; }); else paint();
+    }
+    function dirOf(i) { return root.dataset.dir === 'meme' ? -1 : (i % 2 ? 1 : -1); }
+    function measure() { cols.forEach(function (c) { var copy = c.track.firstChild, gap = 16 - (mqRows.matches ? 4 : 0); c.size = (mqRows.matches ? copy.offsetWidth : copy.offsetHeight) + gap; }); }
+    function paint() {
+      cols.forEach(function (c) {
+        if (!c.size) return;
+        var o = ((c.off % c.size) + c.size) % c.size;
+        c.track.style.transform = mqRows.matches ? 'translate3d(' + (-o).toFixed(2) + 'px,0,0)' : 'translate3d(0,' + (-o).toFixed(2) + 'px,0)';
+      });
+    }
+    function bind(c) {
+      c.el.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') c.target = parseFloat(root.dataset.slow); });
+      c.el.addEventListener('pointerleave', function () { c.target = 1; });
+      /* glisser au doigt (ou à la souris) : on tient la rangée, elle suit, puis repart en douceur */
+      c.el.addEventListener('pointerdown', function (e) {
+        if (reduce.matches || (e.pointerType === 'mouse' && !mqRows.matches)) return;
+        c.drag = { id: e.pointerId, start: mqRows.matches ? e.clientX : e.clientY, off: c.off, moved: false }; c.target = 0; c.f = 0;
+      });
+      c.el.addEventListener('pointermove', function (e) {
+        var d = c.drag; if (!d || e.pointerId !== d.id) return;
+        var p = mqRows.matches ? e.clientX : e.clientY, delta = p - d.start;
+        if (!d.moved && Math.abs(delta) > 6) { d.moved = true; c.el.classList.add('is-drag'); try { c.el.setPointerCapture(e.pointerId); } catch (er) {} }
+        if (d.moved) { c.off = d.off - delta; paint(); }
+      });
+      function up(e) { var d = c.drag; if (!d || e.pointerId !== d.id) return; c.drag = null; c.el.classList.remove('is-drag'); c.target = 1; }
+      c.el.addEventListener('pointerup', up); c.el.addEventListener('pointercancel', up);
+    }
+    function tick(now) {
+      raf = 0;
+      var dt = Math.min(0.05, (now - (last || now)) / 1000); last = now;
+      var v = parseFloat(root.dataset.speed) || 28, hold = paused || focusIn;
+      cols.forEach(function (c) {
+        if (c.drag) return;
+        var t = hold ? 0 : c.target;
+        c.f += (t - c.f) * Math.min(1, dt * 4.5);            /* vitesse lissée : ralentit et repart sans à-coup */
+        c.off -= c.dir * v * c.f * dt;
+      });
+      paint();
+      if (running()) raf = requestAnimationFrame(tick);
+    }
+    function running() { return visible && !reduce.matches && !document.hidden; }
+    function start() { if (!raf && running()) { last = 0; raf = requestAnimationFrame(tick); } }
+    function stop() { if (raf) cancelAnimationFrame(raf); raf = 0; }
+
+    pauseBtn.addEventListener('click', function () {
+      paused = !paused; pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      pauseLabel.textContent = paused ? 'Reprendre le défilement' : 'Mettre en pause';
+    });
+    wall.addEventListener('focusin', function () { focusIn = true; });
+    wall.addEventListener('focusout', function () { focusIn = false; });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; visible ? start() : stop(); }).observe(wall);
+    document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+    if ('ResizeObserver' in window) new ResizeObserver(function () { measure(); paint(); }).observe(wall);
+    mqRows.addEventListener('change', function () { build(); start(); });
+    reduce.addEventListener('change', function () { build(); reduce.matches ? stop() : start(); });
+
+    build(); start();
+    root._mur = {
+      refresh: function () { layoutKey = ''; build(); cols.forEach(function (c, i) { c.dir = dirOf(i); }); start(); },
+      setDir: function () { cols.forEach(function (c, i) { c.dir = dirOf(i); }); },
+      nudge: function (px) { cols.forEach(function (c) { c.off += px * (c.dir < 0 ? 1 : -1); }); paint(); }
+    };
+    return root._mur;
+  }
+  window.MurColonnes = MurColonnes;
+  [].forEach.call(document.querySelectorAll('[data-mur-colonnes]'), function (el) { if (!el._mur) MurColonnes(el); });
+})();
+</script>

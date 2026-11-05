@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passage par masque — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { padding: 16px; }
+  @media (max-width: 719px) { .stage { padding: 8px; } }
+  .is-thumb .stage { padding: 0; }
+  .after { display: grid; gap: 8px; max-width: 640px; margin: 0 auto; padding: 64px 24px 96px; text-align: center; }
+  .after p { color: var(--text-muted); font-size: 15px; }
+  .after h3 { font-size: 22px; letter-spacing: -0.02em; }
+  .is-thumb .after, .after[hidden] { display: none; }
+</style>
+</head>
+<body>
+<main class="stage">
+  <div id="mount"></div>
+  <section class="after" aria-label="Suite de la page" hidden>
+    <h3>La suite de la page reprend ici.</h3>
+    <p>Le passage libère le défilement dès que la forme couvre l’écran : rien n’est bloqué, il suffit de continuer.</p>
+  </section>
+</main>
+<script>
+  var props = Socle.props({ forme: 'hublot', longueur: 220, inertie: 0.12, lisere: true, recadrage: true });
+  var MAP = { forme: 'shape', longueur: 'length', inertie: 'smooth', lisere: 'ring', recadrage: 'zoom' };
+  var mount = document.getElementById('mount'), root = null, last = {};
+  function apply(p) { Object.keys(MAP).forEach(function (k) { root.dataset[MAP[k]] = String(p[k]); }); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-mask]');
+    document.querySelector('.after').hidden = false;
+    apply(props); last = Object.assign({}, props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (Socle.thumb) root.mask.play({ loop: true, duration: 1800 });
+  });
+  /* Forme, liseré ou recadrage changés : on rejoue le passage pour le montrer. */
+  Socle.onChange(function (p) {
+    if (!root) return;
+    var show = ['forme', 'lisere', 'recadrage'].some(function (k) { return last[k] !== p[k]; });
+    apply(p); last = Object.assign({}, p);
+    root.mask.refresh();
+    if (show && window.scrollY < 40) root.mask.play();
+  });
+  Socle.onReplay(function () { if (!root) return; window.scrollTo(0, 0); root.mask.play(); });
+</script>
+</body>
+</html>

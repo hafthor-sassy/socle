@@ -1,0 +1,189 @@
+{
+  "id": "ia-reflechit",
+  "nom": "L’IA réfléchit",
+  "categorie": "chargements",
+  "niveau": "premium",
+  "ordre": 3,
+  "description": "L’indicateur d’un agent IA au travail : une orbe WebGL qui respire pendant la réflexion, s’entoure d’arcs qui tournent quand un outil tourne, pulse au rythme des mots pendant la réponse, se pose une fois terminé et rougit en cas d’erreur. Libellé à fondu flou et reflet, chronologie des étapes repliable, réponse écrite en direct. Démo : un agent d’analyse de contrats.",
+  "tags": [
+    "IA",
+    "Agent",
+    "WebGL",
+    "Shader",
+    "Chargement",
+    "Streaming",
+    "Accessible",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "difficulte": 2,
+  "technique": "Shader WebGL 1 maison (bruit fbm, déformation de bord périodique, lumière intérieure, halo, arcs et ondes en composition prémultipliée), uniformes lissés vers des cibles par étape (transition sans à-coup), couleurs relues dans tokens.css par MutationObserver ; repli canvas 2D ; libellé par Web Animations",
+  "poids": "≈ 4 Ko gzip (shader compris), aucune dépendance",
+  "palette": "menthe",
+  "thumb": {
+    "width": 960
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "--accent, --accent-vivid, --down, --surface / --text-strong : l’orbe relit ces couleurs à chaque changement de thème ou de palette"
+    },
+    {
+      "nom": "WebGL 1",
+      "note": "Natif partout ; repli canvas 2D automatique (ou forcé par la prop Rendu) si le contexte est indisponible ou perdu"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React : ThinkingOrb, ThinkingLabel et la démo LucideAgent"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React (darkMode: 'class')"
+    }
+  ],
+  "props": [
+    {
+      "name": "etape",
+      "label": "Étape",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Scénario"
+        },
+        {
+          "value": "think",
+          "label": "Réflexion"
+        },
+        {
+          "value": "tool",
+          "label": "Outil"
+        },
+        {
+          "value": "answer",
+          "label": "Réponse"
+        },
+        {
+          "value": "done",
+          "label": "Terminé"
+        },
+        {
+          "value": "error",
+          "label": "Erreur"
+        }
+      ],
+      "hint": "Scénario : lecture → recherche → vérification → réponse, environ 10 s. Les autres figent une étape.",
+      "code": {
+        "html": "data-step=\"{v}\"",
+        "react": "step=\"{v}\""
+      }
+    },
+    {
+      "name": "taille",
+      "label": "Taille de l’orbe",
+      "type": "number",
+      "default": 96,
+      "min": 48,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "hint": "Réduite de 28 % sur mobile.",
+      "code": {
+        "html": "data-size=\"{v}\"",
+        "react": "size={{v}}"
+      }
+    },
+    {
+      "name": "vitesse",
+      "label": "Vitesse",
+      "type": "number",
+      "default": 1,
+      "min": 0.5,
+      "max": 2,
+      "step": 0.1,
+      "code": {
+        "html": "data-speed=\"{v}\"",
+        "react": "speed={{v}}"
+      }
+    },
+    {
+      "name": "intensite",
+      "label": "Déformation",
+      "type": "number",
+      "default": 0.6,
+      "min": 0,
+      "max": 1,
+      "step": 0.05,
+      "hint": "0 : sphère presque lisse ; 1 : bord très vivant pendant la réflexion.",
+      "code": {
+        "html": "data-energy=\"{v}\"",
+        "react": "energy={{v}}"
+      }
+    },
+    {
+      "name": "rendu",
+      "label": "Rendu",
+      "type": "select",
+      "default": "webgl",
+      "options": [
+        {
+          "value": "webgl",
+          "label": "WebGL"
+        },
+        {
+          "value": "canvas",
+          "label": "Canvas 2D"
+        }
+      ],
+      "hint": "Canvas 2D : le repli utilisé si WebGL manque.",
+      "code": {
+        "html": "data-render=\"{v}\"",
+        "react": "render=\"{v}\""
+      }
+    },
+    {
+      "name": "reflet",
+      "label": "Reflet sur le libellé",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-shimmer=\"{v}\"",
+        "react": "shimmer={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/ThinkingOrb.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour toute attente d’un agent ou d’un modèle de plus d’une seconde : assistant, recherche, génération de document, analyse. Le libellé doit dire ce que fait l’agent, pas « Chargement… ».",
+    "HTML : branchez votre flux sur el.thinking.setStep('tool', 'Recherche dans le bail…') à chaque événement de l’agent ; 'answer' pendant le streaming, 'done' à la fin, 'error' en cas d’échec. el.thinking.play() joue le scénario d’exemple.",
+    "React : <ThinkingOrb step={step} beat={nbMots} /> (incrémentez beat à chaque mot reçu pour faire pulser l’orbe) et <ThinkingLabel text={libellé} />. LucideAgent montre la conversation complète avec chronologie repliable.",
+    "Une seule orbe animée par écran : pour une liste de tâches en parallèle, gardez l’orbe sur la tâche active et des pastilles pour les autres."
+  ],
+  "accessibilite": [
+    "L’orbe est décorative (aria-hidden) ; une région role=\"status\" annonce chaque étape (« L’agent utilise un outil », « Réponse prête ») sans lire le texte au fil de l’eau, qui reste lisible une fois écrit.",
+    "La chronologie est une liste ordonnée ; le bouton « Afficher le raisonnement » porte aria-expanded et aria-controls. Boutons de 44 px sur mobile.",
+    "Contraste AA du libellé et des étapes en clair et en sombre ; le reflet ne descend jamais sous --text-muted ; l’erreur est dite en toutes lettres, pas seulement par la couleur.",
+    "Avec « réduire les animations » : orbe figée sur une image (mise à jour à chaque étape), libellé sans fondu ni reflet, réponse affichée d’un bloc. La boucle rAF s’arrête hors écran et onglet masqué."
+  ],
+  "logo_exemple": {
+    "nom": "Lucide",
+    "secteur": "Agent IA d’analyse de documents",
+    "fichier": "logo.svg",
+    "palette": "menthe",
+    "typo": "Geist SemiBold"
+  }
+}
