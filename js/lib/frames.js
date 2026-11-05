@@ -1,5 +1,5 @@
 /* Aperçus live : URL de démo, vignettes à l'échelle, diffusion du thème. */
-import { itemPath, currentTheme } from './store.js';
+import { itemPath, currentTheme, loadMeta } from './store.js';
 import { esc } from './dom.js';
 import { icon } from './icons.js';
 
@@ -11,9 +11,15 @@ import { icon } from './icons.js';
 */
 export const SANDBOX = 'allow-scripts';
 
-export function demoURL(id, { theme = currentTheme(), bg = '', thumb = false, props = null } = {}) {
+/*
+  accent : id d'une palette de data/palettes.json (attribut data-accent de la démo).
+  palette : { id, light, dark } — variables surchargées dès le chargement (palette personnalisée).
+*/
+export function demoURL(id, { theme = currentTheme(), bg = '', thumb = false, props = null, accent = '', palette = null } = {}) {
   const q = new URLSearchParams();
   q.set('theme', theme);
+  if (accent) q.set('accent', accent);
+  if (palette) q.set('pv', JSON.stringify(palette));
   if (bg) q.set('bg', bg);
   if (thumb) q.set('thumb', '1');
   if (props) Object.entries(props).forEach(([k, v]) => q.set(k, String(v)));
@@ -32,7 +38,7 @@ export const premiumBadge = () => `<span class="badge badge--premium">${icon('sp
 export function thumbHTML(item) {
   const w = (item.thumb && item.thumb.width) || 1024;
   const h = Math.round(w * 0.75);
-  return `<div class="shot__frame" data-thumb-w="${w}" data-thumb-h="${h}">
+  return `<div class="shot__frame" data-thumb-w="${w}" data-thumb-h="${h}" data-thumb-id="${esc(item.id)}"${item.palette ? ` data-thumb-pal="${esc(item.palette)}"` : ''}>
     ${isPremium(item) ? `<span class="shot__lvl" aria-hidden="true">${premiumBadge()}</span>` : ''}
     <iframe data-demo data-src="${esc(demoURL(item.id, { thumb: true }))}" title="Aperçu de ${esc(item.nom)}" tabindex="-1" aria-hidden="true" sandbox="${SANDBOX}" width="${w}" height="${h}"></iframe>
   </div>`;
@@ -55,7 +61,19 @@ export function mountThumbs(root = document) {
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
         const ifr = e.target.querySelector('iframe[data-src]');
-        if (ifr && !ifr.getAttribute('src')) ifr.src = ifr.dataset.src.replace(/theme=\w+/, 'theme=' + currentTheme());
+        if (ifr && !ifr.getAttribute('src')) {
+          /* Vignette : toujours la palette par défaut du design (champ « palette » de meta.json). */
+          const id = e.target.dataset.thumbId;
+          const load = (pal) => {
+            if (ifr.getAttribute('src')) return;
+            let src = ifr.dataset.src.replace(/theme=\w+/, 'theme=' + currentTheme());
+            if (pal && !/[?&]accent=/.test(src)) src += '&accent=' + encodeURIComponent(pal);
+            ifr.src = src;
+          };
+          if (e.target.dataset.thumbPal) load(e.target.dataset.thumbPal);
+          else if (id) loadMeta(id).then((m) => load(m && m.palette), () => load(''));
+          else load('');
+        }
         io.unobserve(e.target);
       });
     }, { rootMargin: '200px' });

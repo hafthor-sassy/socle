@@ -61,5 +61,6 @@
     "Avec « réduire les animations », chaque case s’affiche directement dans son état final, sans boucle ni transition.",
     "Horloge propre à chaque case : rien ne tourne hors écran ni onglet masqué (IntersectionObserver + visibilitychange).",
     "Contrastes AA mesurés en clair et en sombre ; noms des curseurs et alertes en paires teinte fond / texte du DS, jamais la couleur seule."
-  ]
+  ],
+  "logo_exemple": {"nom": "Sillage", "secteur": "Agents vocaux", "fichier": "logo.svg", "palette": "indigo", "typo": "Geist SemiBold"}
 }

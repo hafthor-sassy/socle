@@ -4,59 +4,213 @@
   "categorie": "hero",
   "ordre": 1,
   "niveau": "premium",
-  "description": "Un vrai H1, puis la capture d’app (une fausse interface SaaS dessinée en HTML et CSS, sans image) qui arrive inclinée en 3D, s’aplatit au défilement et se détache en couches légendées : indicateurs, graphiques, assistant. Repli statique propre.",
-  "tags": ["Défilement", "3D CSS", "Capture d’app", "SaaS", "Responsive"],
+  "description": "Un vrai H1, puis la capture d’app (une fausse interface SaaS dessinée en HTML et CSS, sans image) qui arrive inclinée en 3D, s’aplatit au défilement et se détache en couches légendées : indicateurs, graphiques, assistant. Sur téléphone et tablette, une vraie app mobile à taille réelle prend le relais : ses couches se soulèvent l’une après l’autre, la notification tombe, l’assistant monte en feuille. Repli statique propre.",
+  "tags": [
+    "Défilement",
+    "3D CSS",
+    "Capture d’app",
+    "App mobile",
+    "SaaS",
+    "Responsive"
+  ],
   "date": "2026-11-05",
-  "thumb": { "width": 1024 },
-  "stage": { "width": "desktop", "desktopMin": 1120 },
+  "thumb": {
+    "width": 1280
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1120
+  },
+  "palette": "cobalt",
+  "logo_exemple": {
+    "nom": "Cadran",
+    "secteur": "Fintech",
+    "fichier": "logo.svg",
+    "palette": "cobalt",
+    "typo": "Geist SemiBold"
+  },
   "dependances": [
-    { "nom": "tokens.css", "note": "Neutres, accent, teintes, couleurs de graphique, ombres et halo" },
-    { "nom": "CSS 3D", "note": "perspective, preserve-3d et calc() sur variables : aucune bibliothèque" },
-    { "nom": "react ≥ 18", "note": "Onglet React seulement, aucune autre bibliothèque" },
-    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+    {
+      "nom": "tokens.css",
+      "note": "Neutres, accent, teintes, couleurs de graphique, ombres et halo"
+    },
+    {
+      "nom": "CSS 3D",
+      "note": "perspective, preserve-3d et calc() sur variables : aucune bibliothèque"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, aucune autre bibliothèque"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
   ],
   "props": [
-    { "name": "title", "label": "Titre (H1)", "type": "text", "default": "Vos revenus SaaS, lisibles d’un coup d’œil.",
-      "code": { "html": "<h1 id=\"hpd-title\">{v}</h1>", "react": "title = '{v}'" } },
-    { "name": "intensity", "label": "Intensité du détachement", "type": "number", "default": 1, "min": 0, "max": 2, "step": 0.1,
+    {
+      "name": "title",
+      "label": "Titre (H1)",
+      "type": "text",
+      "default": "Vos revenus SaaS, lisibles d’un coup d’œil.",
+      "code": {
+        "html": "<h1 id=\"hpd-title\">{v}</h1>",
+        "react": "title = '{v}'"
+      }
+    },
+    {
+      "name": "intensity",
+      "label": "Intensité du détachement",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "max": 2,
+      "step": 0.1,
       "hint": "0 : la capture s’aplatit sans se détacher. 2 : vue éclatée prononcée.",
-      "code": { "html": "data-intensity=\"{v}\"", "react": "intensity = {v}" } },
-    { "name": "tilt", "label": "Inclinaison de départ", "type": "number", "default": 28, "min": 0, "max": 45, "step": 1, "unit": "°",
-      "code": { "html": "data-tilt=\"{v}\"", "react": "tilt = {v}" } },
-    { "name": "layers", "label": "Couches qui se détachent", "type": "number", "default": 3, "min": 0, "max": 3, "step": 1,
+      "code": {
+        "html": "data-intensity=\"{v}\"",
+        "react": "intensity = {v}"
+      }
+    },
+    {
+      "name": "tilt",
+      "label": "Inclinaison de départ",
+      "type": "number",
+      "default": 28,
+      "min": 0,
+      "max": 45,
+      "step": 1,
+      "unit": "°",
+      "code": {
+        "html": "data-tilt=\"{v}\"",
+        "react": "tilt = {v}"
+      }
+    },
+    {
+      "name": "layers",
+      "label": "Couches qui se détachent",
+      "type": "number",
+      "default": 3,
+      "min": 0,
+      "max": 3,
+      "step": 1,
       "hint": "1 : indicateurs. 2 : + graphiques et tableau. 3 : + assistant et notification.",
-      "code": { "html": "data-layers=\"{v}\"", "react": "layers = {v}" } },
-    { "name": "perspective", "label": "Perspective", "type": "number", "default": 1400, "min": 600, "max": 2400, "step": 100, "unit": "px",
+      "code": {
+        "html": "data-layers=\"{v}\"",
+        "react": "layers = {v}"
+      }
+    },
+    {
+      "name": "perspective",
+      "label": "Perspective",
+      "type": "number",
+      "default": 1400,
+      "min": 600,
+      "max": 2400,
+      "step": 100,
+      "unit": "px",
       "hint": "Courte : effet grand-angle. Longue : effet téléobjectif.",
-      "code": { "html": "data-perspective=\"{v}\"", "react": "perspective = {v}" } },
-    { "name": "length", "label": "Longueur du défilement", "type": "number", "default": 180, "min": 100, "max": 300, "step": 20, "unit": "vh",
-      "code": { "html": "data-length=\"{v}\"", "react": "length = {v}" } },
-    { "name": "smoothing", "label": "Amorti", "type": "number", "default": 0.86, "min": 0, "max": 0.95, "step": 0.01,
+      "code": {
+        "html": "data-perspective=\"{v}\"",
+        "react": "perspective = {v}"
+      }
+    },
+    {
+      "name": "length",
+      "label": "Longueur du défilement",
+      "type": "number",
+      "default": 180,
+      "min": 100,
+      "max": 300,
+      "step": 20,
+      "unit": "vh",
+      "code": {
+        "html": "data-length=\"{v}\"",
+        "react": "length = {v}"
+      }
+    },
+    {
+      "name": "smoothing",
+      "label": "Amorti",
+      "type": "number",
+      "default": 0.86,
+      "min": 0,
+      "max": 0.95,
+      "step": 0.01,
       "hint": "0 : suit la molette au pixel près. 0,9 : glisse et se pose.",
-      "code": { "html": "data-smoothing=\"{v}\"", "react": "smoothing = {v}" } },
-    { "name": "labels", "label": "Légendes des couches", "type": "boolean", "default": true,
-      "code": { "html": "data-labels=\"{v}\"", "react": "labels = {v}" } },
-    { "name": "glow", "label": "Halo", "type": "boolean", "default": true,
-      "code": { "html": "data-glow=\"{v}\"", "react": "glow = {v}" } },
-    { "name": "mode", "label": "Mode", "type": "select", "default": "scroll",
-      "options": [{ "value": "scroll", "label": "Défilement" }, { "value": "static", "label": "Statique" }],
+      "code": {
+        "html": "data-smoothing=\"{v}\"",
+        "react": "smoothing = {v}"
+      }
+    },
+    {
+      "name": "labels",
+      "label": "Légendes des couches",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-labels=\"{v}\"",
+        "react": "labels = {v}"
+      }
+    },
+    {
+      "name": "glow",
+      "label": "Halo",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-glow=\"{v}\"",
+        "react": "glow = {v}"
+      }
+    },
+    {
+      "name": "mode",
+      "label": "Mode",
+      "type": "select",
+      "default": "scroll",
+      "options": [
+        {
+          "value": "scroll",
+          "label": "Défilement"
+        },
+        {
+          "value": "static",
+          "label": "Statique"
+        }
+      ],
       "hint": "Statique : le repli utilisé avec « réduire les animations ».",
-      "code": { "html": "data-mode=\"{v}\"", "react": "mode = '{v}'" } }
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "mode = '{v}'"
+      }
+    }
   ],
   "code": [
-    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
-    { "id": "react", "label": "React + Tailwind", "file": "code/ProductScrollHero.jsx", "lang": "jsx" }
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/ProductScrollHero.jsx",
+      "lang": "jsx"
+    }
   ],
   "usage": [
-    "Premier écran d’une page produit SaaS : le texte promet, la capture prouve. Faites défiler l’aperçu pour voir les trois temps (inclinée, à plat, éclatée).",
-    "La capture est un vrai balisage dans un espace fixe de 1200 × 760 px mis à l’échelle : remplacez les textes et chiffres par ceux de votre produit, la mise en page tient à toutes les largeurs.",
+    "Premier écran d’une page produit : le texte promet, la capture prouve. Faites défiler l’aperçu pour voir les trois temps (inclinée, à plat, éclatée).",
+    "Bureau (≥ 1100 px) : la capture est un vrai balisage dans un espace fixe de 1200 × 760 px mis à l’échelle. Remplacez textes et chiffres par ceux de votre produit.",
+    "Téléphone (< 720 px) : l’app mobile s’affiche à taille réelle (texte de 14 px minimum), monte sous le titre puis ses couches se soulèvent une à une ; une carte de légende en bas raconte l’étape. Tablette (720 – 1099 px) : l’app se place à gauche et les trois étapes à droite.",
     "Gardez 2 à 3 couches et une intensité entre 0,6 et 1,2 : au-delà, la vue éclatée devient décorative plutôt qu’explicative.",
-    "Sur mobile, la capture tient d’abord en largeur puis passe en gros plan recadré quand le texte s’efface."
+    "Palette par défaut : Cobalt. Tout passe par les variables de tokens.css (accent, surfaces, textes, teintes) : changez de palette sans toucher au composant."
   ],
   "accessibilite": [
-    "Vrai H1 et liens d’action natifs, focus visible ; ils restent cliquables tant que le texte est lisible, puis sortent du parcours du pointeur.",
-    "La capture est une image pour les lecteurs d’écran (role=\"img\" et description complète), son détail est masqué.",
-    "Avec « réduire les animations » : aucun défilement épinglé, capture à plat et nette, graphique déjà tracé, rien ne bouge.",
+    "Vrai H1 et liens d’action natifs (48 px de haut, pleine largeur sur téléphone), focus visible ; ils restent cliquables tant que le texte est lisible, puis sortent du parcours du pointeur.",
+    "Chaque capture (bureau ou mobile) est une image pour les lecteurs d’écran (role=\"img\" et description complète) ; seule celle affichée est exposée. Les légendes d’étapes sont une vraie liste ordonnée.",
+    "Sur téléphone, le défilement reste natif (section épinglée en position: sticky) : seules des transformations et opacités sont animées, aucune interception du toucher.",
+    "Avec « réduire les animations » : aucun défilement épinglé, capture à plat et nette, graphique déjà tracé ; sur mobile, l’app entière suivie des trois étapes en liste.",
     "Une seule boucle rAF, lancée au défilement et arrêtée dès que la position est atteinte ; écoute coupée hors écran (IntersectionObserver)."
   ]
 }

@@ -58,5 +58,6 @@
     "Au clavier, le focus passe sur le titre de la nouvelle page (sans défilement) ; au pointeur, il reste où il était.",
     "Le rideau est aria-hidden et ne capte le pointeur que pendant la transition ; l’étiquette respecte le contraste AA sur chaque couleur (pastille sur fond de surface pour les pixels et le duo).",
     "Avec « réduire les animations », aucun rideau : la page change par un fondu de 160 ms. Rien ne tourne au repos, aucune boucle à mettre en pause."
-  ]
+  ],
+  "logo_exemple": {"nom": "Atelier Nord", "secteur": "Architecture", "fichier": "logo.svg", "palette": "terracotta", "typo": "Geist SemiBold"}
 }

@@ -181,5 +181,6 @@
     "Clavier : Tab parcourt les apps et sélectionne leur flux au focus, Échap désélectionne. Au tactile, toucher fixe la sélection (aria-pressed).",
     "L’état « en pause » est dit par le texte et la puce, pas seulement par la couleur ; contrastes AA en clair et en sombre.",
     "« Réduire les animations » : faisceaux figés à mi-course, sans pulsation ; animation suspendue hors écran et onglet masqué."
-  ]
+  ],
+  "logo_exemple": {"nom": "Maillon", "secteur": "Intégrations", "fichier": "logo.svg", "palette": "violet", "typo": "Geist SemiBold"}
 }

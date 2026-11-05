@@ -335,5 +335,6 @@
     "Le texte repose sur la zone calme, sans trame : contraste du thème (≥ 4,5:1 en clair et en sombre).",
     "« Réduire les animations » : image fixe, sans onde, sans loupe ni intro. Rendu en pause hors écran et onglet masqué ; arrêt complet quand rien ne bouge.",
     "Au tactile, toucher et glisser déplace la loupe sans bloquer le défilement vertical."
-  ]
+  ],
+  "logo_exemple": {"nom": "Vélin", "secteur": "Outil créatif", "fichier": "logo.svg", "palette": "graphite", "typo": "Geist SemiBold"}
 }

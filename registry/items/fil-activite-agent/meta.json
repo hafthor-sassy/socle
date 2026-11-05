@@ -221,5 +221,6 @@
     "Approuver et Refuser sont des boutons natifs de 44 px (36 px visibles sur bureau, zone étendue) ; les repliables ont aria-expanded et aria-controls ; la vitesse est un groupe de boutons aria-pressed.",
     "L’état ne repose jamais sur la couleur seule : icône, badge texte (« En cours », « Échec », « En attente ») et libellé masqué pour les lecteurs d’écran.",
     "Avec « réduire les animations », le fil s’affiche d’un coup jusqu’à la validation puis jusqu’à la fin, sans écriture progressive, rotation ni ressort. Horloge en pause hors écran et onglet masqué."
-  ]
+  ],
+  "logo_exemple": {"nom": "Cabinet des Carmes", "secteur": "Santé", "fichier": "logo.svg", "palette": "sarcelle", "typo": "Geist SemiBold"}
 }

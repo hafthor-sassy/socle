@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "total": 23,
+  "total": 19,
   "items": [
     {
       "id": "bouton-magnetique",
@@ -54,7 +54,14 @@
       "thumb": {
         "width": 900
       },
-      "ordre": 1
+      "ordre": 1,
+      "logo_exemple": {
+        "nom": "Cabinet des Carmes",
+        "secteur": "Santé",
+        "fichier": "registry/items/fil-activite-agent/logo.svg",
+        "palette": "sarcelle",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "graphique-brossage",
@@ -74,26 +81,42 @@
       "thumb": {
         "width": 1180
       },
-      "ordre": 1
+      "ordre": 1,
+      "logo_exemple": {
+        "nom": "Ondine",
+        "secteur": "Standard vocal IA",
+        "fichier": "registry/items/graphique-brossage/logo.svg",
+        "palette": "lagon",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "hero-produit-defilement",
       "nom": "Hero produit au défilement",
       "categorie": "hero",
       "niveau": "premium",
-      "description": "Un vrai H1, puis la capture d’app (une fausse interface SaaS dessinée en HTML et CSS, sans image) qui arrive inclinée en 3D, s’aplatit au défilement et se détache en couches légendées : indicateurs, graphiques, assistant. Repli statique propre.",
+      "palette": "cobalt",
+      "description": "Un vrai H1, puis la capture d’app (une fausse interface SaaS dessinée en HTML et CSS, sans image) qui arrive inclinée en 3D, s’aplatit au défilement et se détache en couches légendées : indicateurs, graphiques, assistant. Sur téléphone et tablette, une vraie app mobile à taille réelle prend le relais : ses couches se soulèvent l’une après l’autre, la notification tombe, l’assistant monte en feuille. Repli statique propre.",
       "tags": [
         "Défilement",
         "3D CSS",
         "Capture d’app",
+        "App mobile",
         "SaaS",
         "Responsive"
       ],
       "date": "2026-11-05",
       "thumb": {
-        "width": 1024
+        "width": 1280
       },
-      "ordre": 1
+      "ordre": 1,
+      "logo_exemple": {
+        "nom": "Cadran",
+        "secteur": "Fintech",
+        "fichier": "registry/items/hero-produit-defilement/logo.svg",
+        "palette": "cobalt",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "mega-menu-fluide",
@@ -112,25 +135,14 @@
       "thumb": {
         "width": 1200
       },
-      "ordre": 1
-    },
-    {
-      "id": "pricing-recharge-curseur",
-      "nom": "Recharge au curseur",
-      "categorie": "pricing",
-      "niveau": "essentiel",
-      "description": "Une seule section de prix prépayé : un grand montant au centre piloté par un curseur et des paliers rapides, les minutes incluses, le prix effectif à la minute et le bonus des grosses recharges calculés en direct.",
-      "tags": [
-        "Prépayé",
-        "Curseur",
-        "SaaS",
-        "Responsive"
-      ],
-      "date": "2026-11-05",
-      "thumb": {
-        "width": 900
-      },
-      "ordre": 1
+      "ordre": 1,
+      "logo_exemple": {
+        "nom": "Sillage",
+        "secteur": "Agents vocaux",
+        "fichier": "registry/items/mega-menu-fluide/logo.svg",
+        "palette": "indigo",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "rideaux",
@@ -150,7 +162,14 @@
       "thumb": {
         "width": 1180
       },
-      "ordre": 1
+      "ordre": 1,
+      "logo_exemple": {
+        "nom": "Atelier Nord",
+        "secteur": "Architecture",
+        "fichier": "registry/items/rideaux/logo.svg",
+        "palette": "terracotta",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "bento-cases-vivantes",
@@ -168,7 +187,14 @@
       "thumb": {
         "width": 1200
       },
-      "ordre": 2
+      "ordre": 2,
+      "logo_exemple": {
+        "nom": "Sillage",
+        "secteur": "Agents vocaux",
+        "fichier": "registry/items/bento-cases-vivantes/logo.svg",
+        "palette": "indigo",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "bouton-texte-roulant",
@@ -186,42 +212,6 @@
         "width": 640
       },
       "ordre": 2
-    },
-    {
-      "id": "pricing-recharge-carte",
-      "nom": "Carte de recharge éditoriale",
-      "categorie": "pricing",
-      "niveau": "essentiel",
-      "description": "Une carte unique au ton éditorial : le prix à la minute en très grand, le montant en contrôle segmenté, ce qui est inclus en quatre lignes, l’estimation « ≈ X appels de 3 min » et la recharge automatique avec son seuil.",
-      "tags": [
-        "Prépayé",
-        "Éditorial",
-        "SaaS",
-        "Responsive"
-      ],
-      "date": "2026-11-05",
-      "thumb": {
-        "width": 1100
-      },
-      "ordre": 2
-    },
-    {
-      "id": "pricing-recharge-calculateur",
-      "nom": "Calculateur de recharge",
-      "categorie": "pricing",
-      "niveau": "essentiel",
-      "description": "L’utilisateur règle ses appels par jour et leur durée : minutes et coût mensuel estimés, recharge conseillée avec sa barre de crédits (jours couverts), et un tableau dégressif qui montre la baisse du prix à la minute.",
-      "tags": [
-        "Prépayé",
-        "Calculateur",
-        "Tableau",
-        "Responsive"
-      ],
-      "date": "2026-11-05",
-      "thumb": {
-        "width": 1100
-      },
-      "ordre": 3
     },
     {
       "id": "bouton-maintenir",
@@ -258,25 +248,6 @@
       "ordre": 4
     },
     {
-      "id": "pricing-calculateur-volume",
-      "nom": "Calculateur de prix au curseur",
-      "categorie": "pricing",
-      "niveau": "premium",
-      "description": "Le visiteur règle ses sièges, ses minutes et ses appels API au curseur : le total de chaque offre se recalcule avec des chiffres qui roulent, la moins chère s’allume, les paliers d’offre sont dessinés sur la piste et l’économie annuelle est chiffrée.",
-      "tags": [
-        "Curseur",
-        "Chiffres qui roulent",
-        "SaaS",
-        "Usage",
-        "Responsive"
-      ],
-      "date": "2026-11-05",
-      "thumb": {
-        "width": 1180
-      },
-      "ordre": 4
-    },
-    {
       "id": "bouton-remplissage-directionnel",
       "nom": "Remplissage directionnel",
       "categorie": "boutons",
@@ -309,6 +280,13 @@
       "date": "2026-11-05",
       "thumb": {
         "width": 1024
+      },
+      "logo_exemple": {
+        "nom": "Maillon",
+        "secteur": "Intégrations",
+        "fichier": "registry/items/flux-integrations/logo.svg",
+        "palette": "violet",
+        "typo": "Geist SemiBold"
       }
     },
     {
@@ -327,6 +305,13 @@
       "date": "2026-11-05",
       "thumb": {
         "width": 560
+      },
+      "logo_exemple": {
+        "nom": "Vélin",
+        "secteur": "Outil créatif",
+        "fichier": "registry/items/image-tramee/logo.svg",
+        "palette": "graphite",
+        "typo": "Geist SemiBold"
       }
     },
     {

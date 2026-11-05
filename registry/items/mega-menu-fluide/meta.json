@@ -59,5 +59,6 @@
     "Clavier : ← → Origine Fin entre les rubriques (le panneau ouvert suit), ↓ entre dans le panneau, ↑ ↓ Origine Fin dans les liens, Tab sort du dernier lien vers la rubrique suivante, Échap ferme et rend le focus.",
     "Tiroir mobile : dialogue modal avec piège du focus, Échap, niveaux inactifs en inert, titre de niveau focalisé à chaque entrée, ← pour revenir.",
     "Ouverture au survol réservée à la souris, avec délais d’intention ; au toucher, tout passe par le clic. Avec « réduire les animations », le panneau se place sans ressort ni glissement."
-  ]
+  ],
+  "logo_exemple": {"nom": "Sillage", "secteur": "Agents vocaux", "fichier": "logo.svg", "palette": "indigo", "typo": "Geist SemiBold"}
 }

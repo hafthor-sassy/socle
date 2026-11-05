@@ -66,5 +66,6 @@
     "Fenêtre de la frise en role=slider : ← → la déplacent, ↑ ↓ (ou + −) zooment, Page ↑ / ↓ sautent d’une période, Entrée ou Échap reviennent à la vue par défaut ; les deux poignées sont des sliders séparés avec une date lisible en aria-valuetext.",
     "Raccourcis en boutons aria-pressed, cibles de 44 px au toucher ; la variation n’est jamais portée par la couleur seule (flèche, signe et texte « par rapport aux N jours précédents » lu par les lecteurs d’écran).",
     "Avec « réduire les animations », le zoom est instantané et les chiffres ne roulent plus ; aucune boucle tourne au repos (l’animation s’arrête dès que le ressort est posé)."
-  ]
+  ],
+  "logo_exemple": {"nom": "Ondine", "secteur": "Standard vocal IA", "fichier": "logo.svg", "palette": "lagon", "typo": "Geist SemiBold"}
 }

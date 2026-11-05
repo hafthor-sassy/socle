@@ -2,12 +2,46 @@
 import { getCategory } from '../../registry/categories.js';
 import { loadIndex, loadMeta, loadCode, currentTheme } from '../lib/store.js';
 import { icon } from '../lib/icons.js';
-import { esc, fr, formatDate, bindCopy } from '../lib/dom.js';
+import { esc, fr, formatDate, bindCopy, copyText, toast } from '../lib/dom.js';
 import { demoURL, post, SANDBOX, isPremium, premiumBadge } from '../lib/frames.js';
 import { highlight } from '../lib/highlight.js';
 import { crumbs } from './category.js';
+import { contrast, ratio } from '../lib/color.js';
+import { loadPalettes, paletteCats, DEFAULT_PALETTE, CUSTOM, CUSTOM_DEFAULT, deriveDarkInputs, readPaletteQuery, writePaletteQuery, resolveVars, cssBlock, normHex } from '../lib/palette.js';
 
 const WIDTHS = { mobile: 390, tablet: 768, desktop: 1280 };
+/* Hauteur d'écran simulée quand l'aperçu est réduit (largeur réelle > place disponible). */
+const DEVICE_H = { mobile: 844, tablet: 1024, desktop: 1000 };
+const FIELDS = [['accent', 'Accent'], ['bg', 'Fond'], ['surface', 'Surface'], ['text', 'Texte']];
+
+/* ——— Bloc Palette du panneau ——— */
+function palDots(c) {
+  return `<span class="palx__dots" aria-hidden="true"><i style="background:${esc(c.accent)}"></i><i style="background:${esc(c.vif)}"></i><i style="background:${esc(c.doux)}"></i></span>`;
+}
+function paletteListHTML(pals, sel, def, theme) {
+  const k = theme === 'dark' ? 'sombre' : 'clair';
+  const opt = (p) => `<button type="button" class="palx__opt${p.id === def || p.id === DEFAULT_PALETTE ? ' palx__opt--wide' : ''}" aria-pressed="${sel.id === p.id}" data-pal="${esc(p.id)}">${palDots(p[k])}<span class="palx__nm">${esc(p.nom)}</span>${p.id === def ? '<span class="badge">Défaut</span>' : p.id === DEFAULT_PALETTE ? '<span class="badge badge--accent">Socle</span>' : ''}</button>`;
+  return `<button type="button" class="palx__opt palx__opt--custom" aria-pressed="${sel.id === CUSTOM}" data-pal="${CUSTOM}"><span class="palx__dots palx__dots--custom" aria-hidden="true">${icon('palette', { size: 16 })}</span><span class="palx__nm">Personnalisée</span><span class="t-xs muted">Vos codes couleur</span></button>
+    ${paletteCats(pals).map((c) => `<div class="palx__grp" role="group" aria-label="${esc(c)}"><p class="palx__cat">${esc(c)}</p><div class="palx__grid">${pals.filter((p) => (p.categorie || 'Classiques') === c).map(opt).join('')}</div></div>`).join('')}`;
+}
+function customHTML(sel, editing, res) {
+  const set = sel[editing];
+  const rep = res && res.report ? res.report[editing] : null;
+  const badge = (c) => `<span class="badge ${c.r >= c.min ? 'badge--green' : 'badge--red'}">${c.r >= c.min ? 'AA' : 'Échec'}</span>`;
+  return `<div class="seg" role="radiogroup" aria-label="Thème édité" data-pal-edit>
+      <button type="button" role="radio" aria-checked="${editing === 'light'}" data-edit="light">Clair</button>
+      <button type="button" role="radio" aria-checked="${editing === 'dark'}" data-edit="dark">Sombre</button>
+    </div>
+    <div class="palx__fields">${FIELDS.map(([k, l]) => `<div class="palx__field">
+      <label for="pc-${k}">${esc(l)}</label>
+      <input type="color" value="${esc(set[k].toLowerCase())}" data-pc="${k}" aria-label="${esc(l)}, sélecteur">
+      <input class="input mono" id="pc-${k}" type="text" inputmode="text" autocomplete="off" spellcheck="false" maxlength="7" value="${esc(set[k])}" data-pch="${k}">
+    </div>`).join('')}</div>
+    ${editing === 'dark' && !sel.darkEdited ? `<p class="prop__hint">${fr('Sombre calculé depuis le clair (même teinte, clarté inversée). Modifiez une couleur pour le régler à la main.')}</p>` : ''}
+    ${editing === 'dark' && sel.darkEdited ? `<button class="btn btn--ghost btn--sm" type="button" data-pal-rederive>Recalculer depuis le clair</button>` : ''}
+    ${rep ? `<ul class="palx__checks" aria-label="Contrastes">${rep.checks.map((c) => `<li><span>${esc(c.label)}</span><span class="ratio">${ratio(c.r)}</span>${badge(c)}</li>`).join('')}</ul>
+    ${rep.fixes.length ? `<div class="palx__warn" role="status">${icon('accessibility', { size: 16 })}<div><b>Ajusté pour tenir AA</b>${rep.fixes.map((f) => `<span>${esc(f.label)} : <code>${esc(f.from)}</code> → <code>${esc(f.to)}</code> (${String(f.min).replace('.', ',')}:1)</span>`).join('')}</div></div>` : `<p class="prop__hint">${fr('Les autres variables (surface élevée, bordures, textes secondaires, survol, doux, focus) sont dérivées en OKLCH ; contraste AA vérifié.')}</p>`}` : ''}`;
+}
 
 function fmtVal(p, v) {
   if (p.type === 'boolean') return v ? 'true' : 'false';
@@ -60,6 +94,14 @@ export async function renderItem(view, id, onCat) {
   const values = Object.fromEntries(props.map((p) => [p.name, p.default]));
   const narrow = matchMedia('(max-width: 767px)').matches;
   const state = { bg: currentTheme(), width: narrow ? 'mobile' : (meta.stage && meta.stage.width) || 'desktop', tab: 0, locked: false };
+  const pals = await loadPalettes().catch(() => []);
+  const defPal = meta.palette && pals.some((p) => p.id === meta.palette) ? meta.palette : DEFAULT_PALETTE;
+  const fromUrl = readPaletteQuery();
+  let sel = fromUrl && (fromUrl.id === CUSTOM || pals.some((p) => p.id === fromUrl.id)) ? fromUrl : { id: defPal };
+  const custom = sel.id === CUSTOM ? sel : { id: CUSTOM, light: { ...CUSTOM_DEFAULT }, dark: deriveDarkInputs(CUSTOM_DEFAULT), darkEdited: false };
+  let res = pals.length ? resolveVars(sel, pals) : null;
+  let editing = currentTheme() === 'dark' ? 'dark' : 'light';
+  const initPal = res && sel.id !== CUSTOM ? { accent: sel.id } : res ? { palette: { id: res.id, light: res.light, dark: res.dark } } : {};
   const tabs = meta.code || [];
   const sources = await Promise.all(tabs.map((t) => loadCode(meta.id, t.file).catch(() => '/* Fichier introuvable */')));
 
@@ -96,16 +138,22 @@ export async function renderItem(view, id, onCat) {
         </div>
         <div class="stage__view" data-view>
           <div class="stage__frame" data-frame>
-            <iframe data-demo data-theme-lock="1" allow="accelerometer; gyroscope" title="Aperçu live de ${esc(meta.nom)}" sandbox="${SANDBOX}" src="${esc(demoURL(meta.id, { theme: state.bg === 'grid' ? currentTheme() : state.bg, bg: state.bg === 'grid' ? 'grid' : '', props: values }))}"></iframe>
+            <iframe data-demo data-theme-lock="1" allow="accelerometer; gyroscope" title="Aperçu live de ${esc(meta.nom)}" sandbox="${SANDBOX}" src="${esc(demoURL(meta.id, { theme: state.bg === 'grid' ? currentTheme() : state.bg, bg: state.bg === 'grid' ? 'grid' : '', props: values, ...initPal }))}"></iframe>
           </div>
         </div>
-        <div class="stage__foot"><span class="mono num" data-size></span><span class="lbl-wide">Aperçu isolé, au thème choisi</span></div>
+        <div class="stage__foot"><span class="mono num" data-size></span><span class="stage__scale" data-scale hidden><span data-scale-txt></span><button class="stage__fullbtn" type="button" data-full2>${icon('maximize', { size: 14 })}Plein écran</button></span><span class="lbl-wide" data-iso>Aperçu isolé, au thème choisi</span></div>
       </section>
 
-      ${props.length ? `<aside class="panel props" aria-labelledby="h-props">
+      <aside class="panel props" aria-labelledby="h-props">
         <div class="panel__head"><h2 id="h-props">Props</h2><button class="btn btn--ghost btn--sm" type="button" data-reset>Réinitialiser</button></div>
+        ${res ? `<section class="palx" data-palette aria-labelledby="h-pal">
+          <div class="prop__top"><h3 class="palx__title" id="h-pal">Palette</h3><button class="btn btn--ghost btn--sm" type="button" data-pal-copy>${icon('copy', { size: 14 })}Variables</button></div>
+          <button class="palx__current" type="button" aria-expanded="false" aria-controls="palx-list" data-pal-toggle></button>
+          <div class="palx__list" id="palx-list" data-pal-list hidden></div>
+          <div class="palx__custom" data-pal-custom hidden></div>
+        </section>` : ''}
         <div class="panel__body" data-props>${props.map((p) => controlHTML(p, values[p.name])).join('')}</div>
-      </aside>` : ''}
+      </aside>
     </div>
 
     ${tabs.length ? `<section class="code" aria-label="Code">
@@ -139,18 +187,39 @@ export async function renderItem(view, id, onCat) {
   const ifr = frame.querySelector('iframe');
   const sizeEl = view.querySelector('[data-size]');
 
+  const scaleEl = view.querySelector('[data-scale]');
+  const scaleTxt = view.querySelector('[data-scale-txt]');
+  const isoEl = view.querySelector('[data-iso]');
+  /*
+    L'iframe est rendue à sa vraie largeur (390, 768, 1280 ou desktopMin) puis réduite
+    par transform: scale pour tenir dans la place disponible. Réduite, sa hauteur simulée
+    est plafonnée à un écran type (DEVICE_H) et la scène prend la hauteur réduite.
+  */
   function layout() {
+    const full = stage.classList.contains('is-full');
+    if (!full) vw.style.height = '';
     const W = vw.clientWidth;
     const H = vw.clientHeight;
+    if (!W || !H) return;
     const minDesk = (meta.stage && meta.stage.desktopMin) || 0;
-    let target = state.width === 'desktop' ? Math.max(W, minDesk) : WIDTHS[state.width];
+    const target = state.width === 'desktop' ? Math.max(W, minDesk) : WIDTHS[state.width];
     const s = Math.min(1, W / target);
+    let vh = Math.round(H / s);
+    if (s < 1) vh = Math.min(vh, Math.max(DEVICE_H[state.width], H));
+    const fh = Math.min(H, Math.round(vh * s));
     frame.style.width = `${Math.round(target * s)}px`;
+    frame.style.height = `${fh}px`;
+    if (!full && fh < H) vw.style.height = `${fh}px`;
     frame.classList.toggle('is-device', state.width !== 'desktop' && target * s < W);
     ifr.style.width = `${target}px`;
-    ifr.style.height = `${Math.round(H / s)}px`;
+    ifr.style.height = `${vh}px`;
     ifr.style.transform = s < 1 ? `scale(${s})` : 'none';
-    sizeEl.textContent = `${target} × ${Math.round(H / s)}${s < 1 ? ` · ${Math.round(s * 100)} %` : ''}`;
+    sizeEl.textContent = `${target} × ${vh}`;
+    const reduced = s < 0.995;
+    scaleEl.hidden = !reduced;
+    isoEl.hidden = reduced;
+    if (reduced) scaleTxt.textContent = `Aperçu réduit à ${Math.round(s * 100)}\u00A0%`;
+    view.querySelector('[data-full2]').hidden = full;
   }
   function syncSeg() {
     view.querySelectorAll('[data-bg]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.bg === state.bg)));
@@ -172,6 +241,7 @@ export async function renderItem(view, id, onCat) {
     requestAnimationFrame(layout);
   }
   fullBtn.addEventListener('click', () => setFull(!stage.classList.contains('is-full')));
+  view.querySelector('[data-full2]').addEventListener('click', () => { setFull(true); fullBtn.focus(); });
   const onKey = (e) => { if (e.key === 'Escape' && stage.classList.contains('is-full')) setFull(false); };
   document.addEventListener('keydown', onKey);
   const onTheme = (e) => { if (!state.locked && state.bg !== 'grid') { state.bg = e.detail; syncSeg(); } sendTheme(); };
@@ -197,7 +267,17 @@ export async function renderItem(view, id, onCat) {
     });
     return out;
   }
-  function currentCode() { return tabs.length ? applyCode(sources[state.tab], tabs[state.tab].id) : ''; }
+  /* Palette choisie (autre que celle du design) : bloc :root / .dark ajouté au code copié. */
+  function withPalette(text, lang) {
+    if (!res || sel.id === defPal) return text;
+    if (lang === 'html') {
+      if (/<style[^>]*>/i.test(text)) return text.replace(/<style[^>]*>/i, (m) => `${m}\n${cssBlock(res, '  ')}\n`);
+      return `<style>\n${cssBlock(res, '  ')}\n</style>\n${text}`;
+    }
+    if (lang === 'css') return `${cssBlock(res)}\n\n${text}`;
+    return `${cssBlock(res).split('\n').map((l) => `// ${l.replace(/^\/\* | \*\/$/g, '')}`).join('\n')}\n\n${text}`;
+  }
+  function currentCode() { return tabs.length ? withPalette(applyCode(sources[state.tab], tabs[state.tab].id), tabs[state.tab].lang) : ''; }
   function renderCode() {
     if (!tabs.length) return;
     const text = currentCode();
@@ -241,13 +321,121 @@ export async function renderItem(view, id, onCat) {
         pushProps();
       }
     });
-    view.querySelector('[data-reset]').addEventListener('click', () => {
-      props.forEach((p) => { values[p.name] = p.default; });
-      box.innerHTML = props.map((p) => controlHTML(p, values[p.name])).join('');
-      pushProps();
-      post(ifr, { type: 'replay' });
+  }
+  view.querySelector('[data-reset]').addEventListener('click', () => {
+    props.forEach((p) => { values[p.name] = p.default; });
+    if (box) box.innerHTML = props.map((p) => controlHTML(p, values[p.name])).join('');
+    if (res && sel.id !== defPal) selectPalette(defPal);
+    pushProps();
+    post(ifr, { type: 'replay' });
+  });
+
+  /* ——— Palette ——— */
+  const palBox = view.querySelector('[data-palette]');
+  let raf = 0;
+  function applyPalette({ url = true, code = true } = {}) {
+    res = resolveVars(sel, pals);
+    post(ifr, { type: 'palette', palette: { id: res.id, light: res.light, dark: res.dark } });
+    if (url) writePaletteQuery(sel, defPal);
+    if (code && !raf) raf = requestAnimationFrame(() => { raf = 0; renderCode(); });
+  }
+  function renderCurrent() {
+    const k = currentTheme() === 'dark' ? 'sombre' : 'clair';
+    const p = pals.find((x) => x.id === sel.id);
+    const t = palBox.querySelector('[data-pal-toggle]');
+    const open = t.getAttribute('aria-expanded') === 'true';
+    t.innerHTML = `${p ? palDots(p[k]) : `<span class="palx__dots" aria-hidden="true">${['--accent', '--bg', '--text'].map((f) => `<i style="background:${esc(res[currentTheme()][f])}"></i>`).join('')}</span>`}
+      <span class="palx__nm">${esc(p ? p.nom : 'Personnalisée')}</span>${sel.id === defPal ? '<span class="badge">Défaut</span>' : ''}
+      <span class="palx__chev">${icon('chevronDown', { size: 16 })}</span>`;
+    t.setAttribute('aria-label', `Palette : ${p ? p.nom : 'Personnalisée'}. ${open ? 'Fermer' : 'Changer'} la liste`);
+  }
+  function renderList() { palBox.querySelector('[data-pal-list]').innerHTML = paletteListHTML(pals, sel, defPal, currentTheme()); }
+  function renderCustom() {
+    const c = palBox.querySelector('[data-pal-custom]');
+    c.hidden = sel.id !== CUSTOM;
+    if (sel.id === CUSTOM) c.innerHTML = customHTML(sel, editing, res);
+  }
+  function refreshCustomReport() {
+    /* Met à jour contrastes et alertes sans recréer les champs (garde le focus). */
+    const c = palBox.querySelector('[data-pal-custom]');
+    const tmp = document.createElement('div');
+    tmp.innerHTML = customHTML(sel, editing, res);
+    c.querySelectorAll('.palx__checks, .palx__warn, .palx__custom > .prop__hint, [data-pal-rederive]').forEach((n) => n.remove());
+    [...tmp.children].filter((n) => !n.matches('[data-pal-edit], .palx__fields')).forEach((n) => c.appendChild(n));
+    FIELDS.forEach(([k]) => {
+      const v = sel[editing][k];
+      const col = c.querySelector(`[data-pc="${k}"]`); const hx = c.querySelector(`[data-pch="${k}"]`);
+      if (col && document.activeElement !== col) col.value = v.toLowerCase();
+      if (hx && document.activeElement !== hx) hx.value = v;
     });
   }
+  function selectPalette(id) {
+    if (id === CUSTOM) sel = custom;
+    else sel = { id };
+    applyPalette();
+    renderCurrent(); renderList(); renderCustom();
+  }
+  function setEditing(t) {
+    editing = t;
+    if (state.bg !== 'grid' && state.bg !== t) { state.bg = t; state.locked = true; syncSeg(); sendTheme(); }
+    renderCustom();
+  }
+  if (palBox) {
+    renderCurrent(); renderList(); renderCustom();
+    const toggle = palBox.querySelector('[data-pal-toggle]');
+    const list = palBox.querySelector('[data-pal-list]');
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(open));
+      list.hidden = !open;
+      renderCurrent();
+      if (open) { const cur = list.querySelector('[aria-pressed="true"]'); if (cur) cur.scrollIntoView({ block: 'nearest' }); }
+    });
+    list.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-pal]');
+      if (!b) return;
+      selectPalette(b.dataset.pal);
+      if (b.dataset.pal === CUSTOM) {
+        toggle.setAttribute('aria-expanded', 'false'); list.hidden = true; renderCurrent();
+        const first = palBox.querySelector('[data-pch="accent"]');
+        if (first) first.focus({ preventScroll: true });
+        palBox.scrollIntoView({ block: 'nearest' });
+        return;
+      }
+      const nb = list.querySelector(`[data-pal="${b.dataset.pal}"]`);
+      if (nb) nb.focus({ preventScroll: true });
+    });
+    const cbox = palBox.querySelector('[data-pal-custom]');
+    cbox.addEventListener('click', (e) => {
+      const ed = e.target.closest('[data-edit]');
+      if (ed) { setEditing(ed.dataset.edit); return; }
+      if (e.target.closest('[data-pal-rederive]')) {
+        custom.dark = deriveDarkInputs(custom.light); custom.darkEdited = false;
+        applyPalette(); renderCustom(); renderCurrent();
+      }
+    });
+    cbox.addEventListener('input', (e) => {
+      const t = e.target;
+      const k = t.dataset.pc || t.dataset.pch;
+      if (!k) return;
+      const v = normHex(t.value);
+      t.toggleAttribute('aria-invalid', !v);
+      if (!v) return;
+      custom[editing][k] = v;
+      if (editing === 'light' && !custom.darkEdited) custom.dark = deriveDarkInputs(custom.light);
+      if (editing === 'dark') custom.darkEdited = true;
+      const twin = cbox.querySelector(t.dataset.pc ? `[data-pch="${k}"]` : `[data-pc="${k}"]`);
+      if (twin) twin.value = t.dataset.pc ? v : v.toLowerCase();
+      applyPalette();
+      refreshCustomReport();
+      renderCurrent();
+    });
+    bindCopy(palBox.querySelector('[data-pal-copy]'), () => cssBlock(res), { toastMsg: 'Variables de la palette copiées' });
+  }
+  const onPalTheme = () => { if (palBox) { renderCurrent(); renderList(); } };
+  window.addEventListener('socle:theme', onPalTheme);
+  /* La démo rechargée (nouvelle origine) reçoit à nouveau la palette. */
+  ifr.addEventListener('load', () => { if (res && sel.id !== defPal) applyPalette({ url: false, code: false }); });
 
   /* ——— Code ——— */
   if (tabs.length) {
@@ -274,6 +462,7 @@ export async function renderItem(view, id, onCat) {
     ro.disconnect();
     document.removeEventListener('keydown', onKey);
     window.removeEventListener('socle:theme', onTheme);
+    window.removeEventListener('socle:theme', onPalTheme);
     document.body.style.overflow = '';
   };
 }

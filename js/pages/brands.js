@@ -1,11 +1,122 @@
-/* Marques : galerie des logos (window.BRANDS, LOGOS, LOGO_PALETTES), palettes en direct et fiches techniques. */
+/* Marques : galerie des logos (window.BRANDS, LOGOS), palettes en direct et fiches techniques.
+   Palettes : source unique data/palettes.json, la même que Fondations (42 palettes, 9 catégories), plus « Couleurs perso ».
+   Idées de logos : marque « idees » construite depuis registry/index.json (champ logo_exemple de chaque design). */
 import { icon } from '../lib/icons.js';
 import { esc, fr, copyText, toast } from '../lib/dom.js';
-import { currentTheme } from '../lib/store.js';
+import { currentTheme, loadIndex } from '../lib/store.js';
 import { contrast, ratio, ensureContrast } from '../lib/color.js';
 import { crumbs } from './category.js';
 
 const brands = () => window.BRANDS || [];
+const IDEES = 'idees';
+const unitOf = (bid, n) => (bid === IDEES ? (n > 1 ? 'logos' : 'logo') : (n > 1 ? 'pistes' : 'piste'));
+
+/* ——— Palettes : data/palettes.json (Fondations) converties en rôles de logo ———
+   p = vif clair, a = accent clair, s = accent sombre, t = accent clair (texte), lt = doux clair, dk = texte sur accent sombre.
+   Un champ facultatif « logo » dans palettes.json surcharge ces rôles (ex. Graphite, monochrome). */
+let palsP = null;
+let PALS = null;
+const toLogoPal = (p) => ({
+  id: p.id, nom: p.nom, categorie: p.categorie || 'Classiques',
+  p: p.clair.vif, s: p.sombre.accent, a: p.clair.accent, t: p.clair.accent,
+  dk: p.sombre.texte_sur_accent, lt: p.clair.doux, t_d: p.sombre.accent,
+  ...(p.logo || {}),
+});
+export function loadLogoPalettes() {
+  return (palsP ||= fetch('data/palettes.json').then((r) => (r.ok ? r.json() : [])).catch(() => [])
+    .then((list) => { PALS = (Array.isArray(list) ? list : []).filter((p) => p && p.clair && p.sombre).map(toLogoPal); return PALS; }));
+}
+/* Repli tant que palettes.json n'est pas chargé : anciennes palettes de logos-data.js. */
+const libPals = () => (PALS && PALS.length ? PALS : (window.LOGO_PALETTES || []).map((p) => ({ categorie: 'Classiques', ...p })));
+const palById = (id) => libPals().find((p) => p.id === id) || (window.LOGO_PALETTES || []).find((p) => p.id === id);
+
+/* ——— Couleurs perso (partagées entre cartes, « Palette pour toutes » et fiches) ——— */
+const CUSTOM = 'perso';
+const CUSTOM_FIELDS = [
+  ['p', 'Principale'], ['s', 'Secondaire'], ['a', 'Accent'], ['t', 'Texte coloré'], ['lt', 'Fond clair'], ['dk', 'Fond sombre'],
+];
+const HEX = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i;
+const normHex = (x) => { const m = String(x || '').trim().match(HEX); if (!m) return null; const h = m[1].length === 3 ? m[1].split('').map((c) => c + c).join('') : m[1]; return `#${h.toUpperCase()}`; };
+function customPal() {
+  if (!shared.custom) {
+    const base = palById('terracotta') || libPals()[0] || { p: '#D16645', s: '#DC7A5B', a: '#AB4E31', t: '#AB4E31', lt: '#FFEBE5', dk: '#290C04' };
+    shared.custom = { id: CUSTOM, nom: 'Couleurs perso', p: base.p, s: base.s, a: base.a, t: base.t, lt: base.lt, dk: base.dk };
+  }
+  return shared.custom;
+}
+const customOpt = () => ({ key: CUSTOM, pal: customPal(), nom: 'Couleurs perso', group: 'Couleurs perso' });
+
+/* ——— Idées de logos : logos des marques fictives des designs ——— */
+let ideasP = null;
+const normName = (x) => String(x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+function ideaItem(e, src, i) {
+  const open = src.match(/<svg\b[^>]*>/i);
+  if (!open) return null;
+  const attr = (n) => { const m = open[0].match(new RegExp(`\\s${n}="([^"]+)"`)); return m ? m[1] : ''; };
+  const vb = attr('viewBox').trim().split(/[\s,]+/).map(Number);
+  if (vb.length !== 4 || vb.some((x) => !Number.isFinite(x))) return null;
+  const box = (attr('data-icone') || `${vb[0]} ${vb[1]} ${vb[3]} ${vb[3]}`).trim().split(/[\s,]+/).map(Number);
+  const inner = src.slice(src.indexOf(open[0]) + open[0].length, src.lastIndexOf('</svg>')).replace(/<title>[\s\S]*?<\/title>/gi, '').replace(/<\?xml[^>]*>/g, '');
+  const [w, h] = [vb[2], vb[3]];
+  /* Placement par transformation (pas de <svg> imbriqué : le CSS des vignettes lui imposerait width:100%). clip : ne garde que la boîte. */
+  const nest = (x, y, ww, hh, v, clip) => {
+    const k = Math.min(ww / v[2], hh / v[3]);
+    const dx = x + (ww - v[2] * k) / 2; const dy = y + (hh - v[3] * k) / 2;
+    const body = clip ? `<defs><clipPath id="cut"><rect x="${v[0]}" y="${v[1]}" width="${v[2]}" height="${v[3]}"/></clipPath></defs><g clip-path="url(#cut)">${inner}</g>` : inner;
+    return `<g transform="translate(${+dx.toFixed(2)},${+dy.toFixed(2)}) scale(${+k.toFixed(4)}) translate(${-v[0]},${-v[1]})">${body}</g>`;
+  };
+  const W = +(w + 80).toFixed(2); const H = +(h + 80).toFixed(2);
+  const NS = 'xmlns="http://www.w3.org/2000/svg"';
+  const origines = e.origines;
+  const vu = origines.map((o) => `« ${o.nom} »`).join(', ');
+  return {
+    id: origines[0].id,
+    num: String(i + 1).padStart(2, '0'),
+    nom: e.nom,
+    categorie: e.secteur || 'Marque fictive',
+    idee: `Marque fictive ${e.secteur ? `(${e.secteur.toLowerCase()}) ` : ''}créée pour ${origines.length > 1 ? 'les designs' : 'le design'} ${vu}.`,
+    palette_defaut: e.palette || 'terracotta',
+    palettes: [],
+    typo_titre: e.typo || '',
+    forme: 'Icône + mot-symbole',
+    ton: 'Marque fictive des exemples',
+    origines,
+    svg_logo: `<svg ${NS} viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" style="fill:var(--bg)"/>${nest(40, 40, w, h, vb)}</svg>`,
+    svg_icone: `<svg ${NS} viewBox="0 0 120 120"><rect width="120" height="120" style="fill:var(--bg)"/>${nest(10, 10, 100, 100, box, true)}</svg>`,
+    svg_app: `<svg ${NS} viewBox="0 0 100 100"><rect width="100" height="100" rx="23" style="fill:var(--bg)"/>${nest(18, 18, 64, 64, box, true)}</svg>`,
+  };
+}
+export function loadIdeas() {
+  return (ideasP ||= (async () => {
+    const { items = [] } = await loadIndex();
+    const groups = new Map();
+    items.filter((x) => x.logo_exemple && x.logo_exemple.fichier && x.logo_exemple.nom).forEach((x) => {
+      const k = normName(x.logo_exemple.nom);
+      if (!groups.has(k)) groups.set(k, { ...x.logo_exemple, origines: [] });
+      groups.get(k).origines.push({ id: x.id, nom: x.nom });
+    });
+    const entries = [...groups.values()];
+    const srcs = await Promise.all(entries.map((e) => fetch(e.fichier).then((r) => (r.ok ? r.text() : '')).catch(() => '')));
+    const list = entries.map((e, i) => (srcs[i] ? ideaItem(e, srcs[i], i) : null)).filter(Boolean).map((it, i) => ({ ...it, num: String(i + 1).padStart(2, '0') }));
+    window.LOGOS = window.LOGOS || {};
+    window.BRANDS = window.BRANDS || [];
+    window.LOGOS[IDEES] = { categories: [...new Set(list.map((x) => x.categorie))], items: list };
+    const entry = {
+      id: IDEES, nom: 'Idées de logos',
+      baseline: 'Les logos des marques fictives créées pour les exemples de designs',
+      statut: list.length ? `${list.length}\u00A0marques fictives · s’enrichit à chaque nouveau design` : 'Aucun logo pour l’instant',
+      vitrine: list.slice(0, 4).map((x) => x.id),
+    };
+    const at = window.BRANDS.findIndex((b) => b.id === IDEES);
+    if (list.length) { if (at >= 0) window.BRANDS[at] = entry; else window.BRANDS.push(entry); }
+    else if (at >= 0) window.BRANDS.splice(at, 1);
+    /* Une vitrine déjà affichée (accueil) se complète d'elle-même. */
+    document.querySelectorAll('.brand-grid[data-showcase]').forEach((g) => { if (g.isConnected) g.outerHTML = brandShowcase(); });
+    return list;
+  })().catch((err) => { console.warn('Idées de logos indisponibles', err); return []; }));
+}
+const ready = () => Promise.all([loadLogoPalettes(), loadIdeas()]);
+ready();
 const logosOf = (bid) => {
   const b = (window.LOGOS || {})[bid];
   if (!b) return { categories: [], items: [] };
@@ -57,84 +168,170 @@ function svgFor(item, kind, theme) {
   const key = theme === 'dark' && item[`${kind}_d`] ? `${kind}_d` : kind;
   return item[key] || item[kind] || '';
 }
+const VAR_RE = /var\(--(\w+)(?:\s*,\s*([^()]+?))?\s*\)/g;
 function resolved(svg, v) {
-  return svg.replace(/var\(--(\w+)\)/g, (m, k) => v[k] || m);
+  return svg.replace(VAR_RE, (m, k, fb) => v[k] || (fb ? fb.trim() : m));
 }
 function art(item, kind, pal, theme, label, safe = true) {
   const svg = uniq(svgFor(item, kind, theme)).replace('<svg ', `<svg role="img" aria-label="${esc(label)}" `);
   return `<div class="art-box" style="${styleVars(logoVars(pal, theme, safe).v)}">${svg}</div>`;
 }
-const ownPals = (item) => (item.palettes && item.palettes.length ? item.palettes : [(window.LOGO_PALETTES || []).find((p) => p.id === item.palette_defaut)].filter(Boolean));
-/* Palettes proposées : celles de la piste puis les 20 palettes Socle. */
+const ownPals = (item) => (item.palettes && item.palettes.length ? item.palettes : [palById(item.palette_defaut)].filter(Boolean));
+/* Palettes proposées : celles de la piste, puis les 42 palettes de Fondations groupées par catégorie (et « Couleurs perso », à part). */
 function palOptions(item) {
-  const own = ownPals(item).map((p, i) => ({ key: `own:${i}`, pal: p, nom: p.nom || 'Origine', group: 'Palettes de la piste' }));
+  const own = ownPals(item).map((p, i) => ({ key: `own:${i}`, pal: p, nom: p.nom || 'Origine', group: item.origines ? 'Palette d’origine' : 'Palettes de la piste', own: true }));
   const names = new Set(own.map((o) => o.nom));
-  const lib = (window.LOGO_PALETTES || []).filter((p) => !names.has(p.nom)).map((p) => ({ key: p.id, pal: p, nom: p.nom, group: 'Palettes Socle' }));
+  const lib = libPals().filter((p) => !names.has(p.nom)).map((p) => ({ key: p.id, pal: p, nom: p.nom, group: p.categorie || 'Classiques' }));
   return [...own, ...lib];
 }
 function pickPal(item, key) {
+  if (key === CUSTOM) return customOpt();
   const opts = palOptions(item);
   return (opts.find((o) => o.key === key) || opts[0]);
 }
 const dot = (pal) => `<span class="paldot" aria-hidden="true"><i style="background:${esc(pal.p)}"></i><i style="background:${esc(pal.a || pal.s)}"></i></span>`;
 
-/* ——— Sélecteur de palette (surcouche) ——— */
+/* ——— Sélecteur de palette (surcouche) ———
+   opts : palettes proposées (groupe = catégorie). Filtre par catégorie, et éditeur « Couleurs perso » (HEX + sélecteur natif)
+   dont chaque saisie s'applique en direct (onPick(key, { live: true })). reanchor() retrouve le bouton après un nouveau rendu. */
 let popEl = null;
+const popState = { cat: '' };
 function closePop() {
   if (!popEl) return;
-  const { el, anchor, off } = popEl;
+  const { el, off } = popEl;
+  const anchor = popEl.anchor;
   popEl = null; el.remove(); off();
-  anchor.setAttribute('aria-expanded', 'false');
-  anchor.focus({ preventScroll: true });
+  if (anchor && anchor.isConnected) { anchor.setAttribute('aria-expanded', 'false'); anchor.focus({ preventScroll: true }); }
 }
-function openPalPicker(anchor, opts, currentKey, onPick, title = 'Palette') {
+const OWN_GROUPS = ['Par défaut', 'Palettes de la piste', 'Palette d’origine'];
+function openPalPicker(anchor, opts, currentKey, onPick, title = 'Palette', { reanchor } = {}) {
   if (popEl && popEl.anchor === anchor) { closePop(); return; }
   closePop();
   const groups = [...new Set(opts.map((o) => o.group))];
+  const fixed = groups.filter((g) => OWN_GROUPS.includes(g));
+  const cats = groups.filter((g) => !OWN_GROUPS.includes(g));
+  if (popState.cat && !cats.includes(popState.cat)) popState.cat = '';
+  const isCustom = currentKey === CUSTOM;
+  const cp = customPal();
   const el = document.createElement('div');
-  el.className = 'palpop';
+  el.className = 'palpop palpop--x';
   el.setAttribute('role', 'dialog');
   el.setAttribute('aria-label', title);
-  el.innerHTML = `<div class="palpop__head">${esc(title)}</div>${groups.map((g) => `<div class="palpop__group"><p class="eyebrow">${esc(g)}</p><div class="palpop__grid" role="radiogroup" aria-label="${esc(g)}">${opts.filter((o) => o.group === g).map((o) => `<button type="button" role="radio" class="palpop__opt" aria-checked="${o.key === currentKey}" data-key="${esc(o.key)}" title="${esc(o.nom)}">${dot(o.pal)}<span>${esc(o.nom)}</span></button>`).join('')}</div></div>`).join('')}`;
+  const groupHTML = (g) => `<div class="palpop__group" data-group="${esc(g)}"><p class="eyebrow">${esc(g)}</p><div class="palpop__grid" role="radiogroup" aria-label="${esc(g)}">${opts.filter((o) => o.group === g).map((o) => `<button type="button" role="radio" class="palpop__opt" aria-checked="${o.key === currentKey}" data-key="${esc(o.key)}" title="${esc(o.nom)}">${dot(o.pal)}<span>${esc(o.nom)}</span></button>`).join('')}</div></div>`;
+  el.innerHTML = `<div class="palpop__head">${esc(title)}</div>
+    ${fixed.map(groupHTML).join('')}
+    <div class="palpop__group palpop__custom" data-custom-wrap>
+      <button type="button" role="radio" class="palpop__opt palpop__opt--custom" aria-checked="${isCustom}" aria-expanded="${isCustom}" aria-controls="palpop-custom" data-custom-toggle>${dot(cp)}<span>Couleurs perso</span>${icon('chevronDown', { size: 14 })}</button>
+      <div class="palpop__editor" id="palpop-custom" ${isCustom ? '' : 'hidden'}>
+        <p class="t-xs muted">${fr('Saisissez un code HEX ou choisissez une teinte : le logo change en direct. « Contraste garanti » reste actif.')}</p>
+        ${CUSTOM_FIELDS.map(([k, lbl]) => `<div class="palpop__row"><label for="pc-${k}">${esc(lbl)}<code>--${k}</code></label>
+          <input type="color" id="pc-${k}-c" value="${esc(cp[k])}" data-cc="${k}" aria-label="${esc(lbl)} : sélecteur de couleur">
+          <input class="input mono palpop__hex" id="pc-${k}" type="text" inputmode="text" maxlength="7" spellcheck="false" autocomplete="off" value="${esc(cp[k])}" data-ch="${k}" aria-describedby="pc-err"></div>`).join('')}
+        <p class="t-xs palpop__err" id="pc-err" aria-live="polite"></p>
+        <button type="button" class="btn btn--primary btn--sm palpop__apply" data-custom-apply>Appliquer et fermer</button>
+      </div>
+    </div>
+    ${cats.length ? `<div class="palpop__cats"><p class="eyebrow">${libPals().length}\u00A0palettes de Fondations</p>
+      <div class="seg palpop__seg" role="radiogroup" aria-label="Catégorie de palettes" data-pcats>
+        <button type="button" role="radio" aria-checked="${!popState.cat}" data-pcat="">Toutes</button>
+        ${cats.map((c) => `<button type="button" role="radio" aria-checked="${popState.cat === c}" data-pcat="${esc(c)}">${esc(c)} <span class="num muted">${opts.filter((o) => o.group === c).length}</span></button>`).join('')}
+      </div></div>` : ''}
+    <div data-libgroups>${cats.map(groupHTML).join('')}</div>`;
+  const applyCat = () => el.querySelectorAll('[data-libgroups] [data-group]').forEach((g) => { g.hidden = !!popState.cat && g.dataset.group !== popState.cat; });
+  applyCat();
   document.body.appendChild(el);
-  const r = anchor.getBoundingClientRect();
-  const w = Math.min(340, window.innerWidth - 16);
-  el.style.width = `${w}px`;
-  const left = Math.min(Math.max(8, r.left), window.innerWidth - w - 8);
-  const below = window.innerHeight - r.bottom;
-  el.style.left = `${left}px`;
-  if (below < 320 && r.top > below) { el.style.bottom = `${window.innerHeight - r.top + 6}px`; el.style.maxHeight = `${r.top - 16}px`; }
-  else { el.style.top = `${r.bottom + 6}px`; el.style.maxHeight = `${below - 16}px`; }
+  const place = () => {
+    const a = (popEl && popEl.anchor) || anchor;
+    const r = a.getBoundingClientRect();
+    const w = Math.min(380, window.innerWidth - 16);
+    el.style.width = `${w}px`;
+    el.style.left = `${Math.min(Math.max(8, r.left), window.innerWidth - w - 8)}px`;
+    const below = window.innerHeight - r.bottom;
+    el.style.top = ''; el.style.bottom = '';
+    if (below < 360 && r.top > below) { el.style.bottom = `${window.innerHeight - r.top + 6}px`; el.style.maxHeight = `${r.top - 16}px`; }
+    else { el.style.top = `${r.bottom + 6}px`; el.style.maxHeight = `${below - 16}px`; }
+  };
   anchor.setAttribute('aria-expanded', 'true');
-  const onDoc = (e) => { if (!el.contains(e.target) && !anchor.contains(e.target)) closePop(); };
+  const onDoc = (e) => { if (!popEl) return; if (!el.contains(e.target) && !(popEl.anchor && popEl.anchor.contains(e.target))) closePop(); };
   const onKey = (e) => { if (e.key === 'Escape') { e.preventDefault(); closePop(); } };
-  const onScroll = (e) => { if (!el.contains(e.target)) closePop(); };
+  /* Défilement ou clavier virtuel : la surcouche suit son bouton, et se ferme seulement s'il sort de l'écran. */
+  let raf = 0;
+  const follow = () => {
+    raf = 0;
+    if (!popEl) return;
+    const a = popEl.anchor;
+    const r = a && a.isConnected ? a.getBoundingClientRect() : null;
+    if (!r || r.bottom < 0 || r.top > window.innerHeight) { closePop(); return; }
+    place();
+  };
+  const onScroll = (e) => { if (el.contains(e.target)) return; if (!raf) raf = requestAnimationFrame(follow); };
   setTimeout(() => document.addEventListener('pointerdown', onDoc), 0);
   document.addEventListener('keydown', onKey);
   window.addEventListener('scroll', onScroll, true);
-  popEl = { el, anchor, off: () => { document.removeEventListener('pointerdown', onDoc); document.removeEventListener('keydown', onKey); window.removeEventListener('scroll', onScroll, true); } };
+  window.addEventListener('resize', onScroll);
+  popEl = { el, anchor, off: () => { cancelAnimationFrame(raf); document.removeEventListener('pointerdown', onDoc); document.removeEventListener('keydown', onKey); window.removeEventListener('scroll', onScroll, true); window.removeEventListener('resize', onScroll); } };
+  place();
+  const live = () => {
+    onPick(CUSTOM, { live: true });
+    const na = reanchor && reanchor();
+    if (na && popEl) { popEl.anchor = na; na.setAttribute('aria-expanded', 'true'); }
+    el.querySelectorAll('[role="radio"][data-key]').forEach((b) => b.setAttribute('aria-checked', 'false'));
+    const t = el.querySelector('[data-custom-toggle]');
+    t.setAttribute('aria-checked', 'true');
+    t.querySelector('.paldot').outerHTML = dot(customPal());
+  };
+  const setField = (k, raw, from) => {
+    const hex = normHex(raw);
+    const err = el.querySelector('#pc-err');
+    const txt = el.querySelector(`[data-ch="${k}"]`);
+    if (!hex) { txt.setAttribute('aria-invalid', 'true'); err.textContent = 'Code HEX attendu : #RRVVBB ou #RVB.'; return; }
+    txt.removeAttribute('aria-invalid'); err.textContent = '';
+    customPal()[k] = hex;
+    if (from !== 'text') txt.value = hex;
+    if (from !== 'color') el.querySelector(`[data-cc="${k}"]`).value = hex;
+    live();
+  };
+  el.addEventListener('input', (e) => {
+    const c = e.target.closest('[data-cc]');
+    if (c) { setField(c.dataset.cc, c.value, 'color'); return; }
+    const t = e.target.closest('[data-ch]');
+    if (t && normHex(t.value)) setField(t.dataset.ch, t.value, 'text');
+  });
+  el.addEventListener('change', (e) => { const t = e.target.closest('[data-ch]'); if (t) setField(t.dataset.ch, t.value, 'text'); });
+  el.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.closest('[data-ch]')) { e.preventDefault(); onPick(CUSTOM); closePop(); } });
   el.addEventListener('click', (e) => {
+    const pc = e.target.closest('[data-pcat]');
+    if (pc) { popState.cat = pc.dataset.pcat; el.querySelectorAll('[data-pcat]').forEach((x) => x.setAttribute('aria-checked', String(x === pc))); applyCat(); return; }
+    const tg = e.target.closest('[data-custom-toggle]');
+    if (tg) {
+      const ed = el.querySelector('.palpop__editor');
+      const show = ed.hidden;
+      ed.hidden = !show; tg.setAttribute('aria-expanded', String(show));
+      if (show) { live(); const f = el.querySelector('[data-ch]'); f && f.focus({ preventScroll: true }); }
+      return;
+    }
+    if (e.target.closest('[data-custom-apply]')) { onPick(CUSTOM); closePop(); return; }
     const b = e.target.closest('[data-key]');
     if (!b) return;
     onPick(b.dataset.key);
     closePop();
   });
-  const cur = el.querySelector('[aria-checked="true"]') || el.querySelector('[data-key]');
-  cur && cur.focus({ preventScroll: true });
+  const cur = el.querySelector('[data-key][aria-checked="true"]') || (isCustom ? el.querySelector('[data-ch]') : null) || el.querySelector('[data-key]');
+  if (cur) { cur.focus({ preventScroll: true }); if (cur.dataset.key && !OWN_GROUPS.includes(cur.closest('[data-group]')?.dataset.group || '')) cur.scrollIntoView({ block: 'nearest' }); }
 }
 window.addEventListener('hashchange', closePop);
 
 /* Vitrine utilisée sur l'accueil et la liste des marques. */
 export function brandShowcase() {
   const theme = currentTheme();
-  return `<div class="brand-grid">${brands().map((b) => {
+  return `<div class="brand-grid" data-showcase>${brands().map((b) => {
     const { items } = logosOf(b.id);
     const shown = (b.vitrine || []).map((id) => items.find((x) => x.id === id)).filter(Boolean).slice(0, 4);
     while (shown.length < 4 && items[shown.length]) shown.push(items[shown.length]);
-    return `<a class="brand-card" href="#/marques/${esc(b.id)}">
+    return `<a class="brand-card${b.id === IDEES ? ' brand-card--idees' : ''}" href="#/marques/${esc(b.id)}">
       <div class="brand-card__show" aria-hidden="true">${shown.map((it) => `<div class="cell">${art(it, 'svg_app', ownPals(it)[0], theme, it.nom)}</div>`).join('')}</div>
       <div class="brand-card__body">
-        <div class="row"><b class="strong">${esc(b.nom)}</b><span class="t-xs muted num">${items.length}\u00A0pistes</span></div>
+        <div class="row"><b class="strong">${esc(b.nom)}</b><span class="t-xs muted num">${items.length}\u00A0${unitOf(b.id, items.length)}</span></div>
         <p class="t-sm muted">${fr(b.baseline)}</p>
         <p class="t-xs muted">${fr(b.statut || '')}</p>
       </div>
@@ -144,9 +341,10 @@ export function brandShowcase() {
 
 export async function renderBrands(view) {
   document.title = 'Marques — Socle';
+  await ready();
   view.innerHTML = `
     ${crumbs([{ label: 'Bibliothèque', href: '#/' }, { label: 'Fondations', href: '#/' }, { label: 'Marques' }])}
-    <header class="phead"><h1 class="t-page">Marques</h1><p>${fr('Chaque projet, ses pistes de logo, ses icônes d’app et ses palettes. Clair et sombre, fiches techniques, SVG et PNG prêts à l’emploi.')}</p></header>
+    <header class="phead"><h1 class="t-page">Marques</h1><p>${fr('Chaque projet, ses pistes de logo, ses icônes d’app et ses palettes. Clair et sombre, fiches techniques, SVG et PNG prêts à l’emploi. « Idées de logos » réunit les marques fictives créées pour les exemples de designs.')}</p></header>
     ${brandShowcase()}`;
   const onTheme = () => { const g = view.querySelector('.brand-grid'); if (g) g.outerHTML = brandShowcase(); };
   window.addEventListener('socle:theme', onTheme);
@@ -154,9 +352,10 @@ export async function renderBrands(view) {
 }
 
 /* État partagé galerie ↔ fiche (palette choisie, contraste garanti). */
-const shared = { pal: {}, safe: true, all: '' };
+const shared = { pal: {}, safe: true, all: {}, custom: null };
 
 export async function renderBrand(view, bid) {
+  await ready();
   const b = brands().find((x) => x.id === bid);
   if (!b) {
     view.innerHTML = `<div class="empty" style="margin-top:24px"><h1 class="t-section">Marque introuvable</h1><a class="btn btn--secondary" href="#/marques">Toutes les marques</a></div>`;
@@ -167,24 +366,29 @@ export async function renderBrand(view, bid) {
   const state = { cat: '', theme: currentTheme(), locked: false };
   const keyOf = (it) => shared.pal[`${bid}/${it.id}`] || 'own:0';
   const retained = items.filter((it) => /retenu/i.test(it.categorie || ''));
+  const isIdeas = bid === IDEES;
+  const unit = unitOf(bid, items.length);
   const libOpts = [{ key: '', pal: { p: 'var(--text-muted)', a: 'var(--border-control)' }, nom: 'Palette d’origine', group: 'Par défaut' },
-    ...(window.LOGO_PALETTES || []).map((p) => ({ key: p.id, pal: p, nom: p.nom, group: 'Palettes Socle' }))];
+    ...libPals().map((p) => ({ key: p.id, pal: p, nom: p.nom, group: p.categorie || 'Classiques' }))];
+  const allKey = () => shared.all[bid] || '';
+  const allName = (key) => (key === CUSTOM ? 'Couleurs perso' : (libOpts.find((o) => o.key === key) || {}).nom || '');
+  const origin = (it) => (it.origines || []).map((o) => `<a href="#/i/${esc(o.id)}">${esc(o.nom)}</a>`).join(', ');
 
   view.innerHTML = `
     ${crumbs([{ label: 'Bibliothèque', href: '#/' }, { label: 'Marques', href: '#/marques' }, { label: b.nom }])}
     <header class="phead">
       <h1 class="t-page">${esc(b.nom)}</h1>
       <p>${fr(b.baseline)}</p>
-      <div class="phead__meta"><span class="badge ${retained.length ? 'badge--accent' : ''}">${esc(b.statut || '')}</span><span class="t-xs muted num">${items.length}\u00A0pistes</span></div>
+      <div class="phead__meta"><span class="badge brand-statut ${retained.length ? 'badge--accent' : ''}">${esc(b.statut || '')}</span><span class="t-xs muted num">${items.length}\u00A0${unit}</span></div>
     </header>
     <div data-feature></div>
     <div class="toolbar toolbar--logos">
-      <div class="toolbar__left"><div class="seg" role="radiogroup" aria-label="Catégorie de logo" data-cats>
+      <div class="toolbar__left"><div class="seg" role="radiogroup" aria-label="${isIdeas ? 'Secteur' : 'Catégorie de logo'}" data-cats>
         <button type="button" role="radio" aria-checked="true" data-cat="">Toutes</button>
         ${categories.filter((c) => items.some((it) => it.categorie === c)).map((c) => `<button type="button" role="radio" aria-checked="false" data-cat="${esc(c)}">${esc(c)}</button>`).join('')}
       </div></div>
       <div class="toolbar__right">
-        <button class="palbtn" type="button" aria-haspopup="dialog" aria-expanded="false" data-all>${icon('palette', { size: 16 })}<span data-all-lbl>Palette pour toutes</span>${icon('chevronDown', { size: 16 })}</button>
+        <button class="palbtn" type="button" aria-haspopup="dialog" aria-expanded="false" data-all>${icon('palette', { size: 16 })}<span data-all-lbl>Palette pour ${isIdeas ? 'tous' : 'toutes'}</span>${icon('chevronDown', { size: 16 })}</button>
         <div class="seg" role="radiogroup" aria-label="Thème des logos" data-themes>
           <button type="button" role="radio" data-th="light">Clair</button><button type="button" role="radio" data-th="dark">Sombre</button>
         </div>
@@ -201,18 +405,19 @@ export async function renderBrand(view, bid) {
     const o = pickPal(it, keyOf(it));
     const sheet = `#/marques/${esc(bid)}/${esc(it.id)}`;
     const { adjusted } = logoVars(o.pal, state.theme, shared.safe);
-    return `<article class="logo-card" data-id="${esc(it.id)}">
+    return `<article class="logo-card${it.origines ? ' logo-card--idee' : ''}" data-id="${esc(it.id)}">
       <a class="logo-card__art" href="${sheet}" aria-label="Fiche technique : ${esc(it.nom)}">${art(it, 'svg_logo', o.pal, state.theme, `Logo ${b.nom}, piste ${it.nom}`, shared.safe)}
         <div class="logo-card__icons" aria-hidden="true">${art(it, 'svg_app', o.pal, state.theme, '', shared.safe)}</div></a>
       <div class="logo-card__body">
         <div class="logo-card__title"><span class="n">${esc(it.num)}</span><a href="${sheet}"><b>${esc(it.nom)}</b></a><span class="badge ${/retenu/i.test(it.categorie || '') ? 'badge--accent' : ''}" style="margin-left:auto">${esc(it.categorie || '')}</span></div>
-        <p class="clamp2" title="${esc(it.idee || '')}">${fr(it.idee || '')}</p>
-        <p class="t-xs muted mono">${esc(it.typo_titre || '')}${Object.keys(adjusted).length ? ' · <span class="adj">couleurs ajustées</span>' : ''}</p>
+        ${it.origines ? `<p class="logo-card__origin">Vu dans ${origin(it)}</p>` : `<p class="clamp2" title="${esc(it.idee || '')}">${fr(it.idee || '')}</p>`}
+        <p class="t-xs muted mono">${esc(it.typo_titre || (it.origines ? 'Marque fictive' : ''))}${Object.keys(adjusted).length ? ' · <span class="adj">couleurs ajustées</span>' : ''}</p>
       </div>
       <div class="logo-card__foot">
         <button class="palbtn palbtn--sm" type="button" aria-haspopup="dialog" aria-expanded="false" data-pick aria-label="Palette : ${esc(o.nom)}">${dot(o.pal)}<span>${esc(o.nom)}</span>${icon('chevronDown', { size: 14 })}</button>
         <div class="logo-card__actions">
           <button class="icon-btn" type="button" data-copy="svg_logo" aria-label="Copier le SVG du logo" title="Copier le SVG du logo">${icon('copy', { size: 16 })}</button>
+          ${it.origines ? `<a class="icon-btn" href="#/i/${esc(it.origines[0].id)}" aria-label="Voir le design d’origine : ${esc(it.origines[0].nom)}" title="Design d’origine : ${esc(it.origines[0].nom)}">${icon('arrowUpRight', { size: 16 })}</a>` : ''}
           <a class="btn btn--ghost btn--sm btn--arrow" href="${sheet}">Fiche${icon('arrowRight', { size: 14 })}</a>
         </div>
       </div>
@@ -238,8 +443,8 @@ export async function renderBrand(view, bid) {
     grid.innerHTML = list.map(card).join('');
     view.querySelectorAll('[data-th]').forEach((x) => x.setAttribute('aria-checked', String(x.dataset.th === state.theme)));
     const lbl = view.querySelector('[data-all-lbl]');
-    const cur = libOpts.find((o) => o.key === shared.all);
-    lbl.textContent = shared.all && cur ? `Toutes en ${cur.nom}` : 'Palette pour toutes';
+    const k = allKey();
+    lbl.textContent = k && allName(k) ? `${isIdeas ? 'Tous' : 'Toutes'} en ${allName(k)}` : `Palette pour ${isIdeas ? 'tous' : 'toutes'}`;
   }
 
   view.querySelector('[data-cats]').addEventListener('click', (e) => {
@@ -260,17 +465,18 @@ export async function renderBrand(view, bid) {
     renderFeature(); render();
   });
   const allBtn = view.querySelector('[data-all]');
-  allBtn.addEventListener('click', () => openPalPicker(allBtn, libOpts, shared.all, (key) => {
-    shared.all = key;
+  allBtn.addEventListener('click', () => openPalPicker(allBtn, libOpts, allKey(), (key, { live } = {}) => {
+    shared.all[bid] = key;
     items.forEach((it) => {
       const opts = palOptions(it);
       const k = `${bid}/${it.id}`;
       if (!key) delete shared.pal[k];
-      else { const own = opts.find((o) => o.nom === (window.LOGO_PALETTES || []).find((p) => p.id === key)?.nom && o.key.startsWith('own:')); shared.pal[k] = own ? own.key : key; }
+      else if (key === CUSTOM) shared.pal[k] = CUSTOM;
+      else { const nom = (palById(key) || {}).nom; const own = opts.find((o) => o.own && o.nom === nom); shared.pal[k] = own ? own.key : key; }
     });
     renderFeature(); render();
-    toast(key ? `Palette ${libOpts.find((o) => o.key === key).nom} appliquée à toutes les pistes` : 'Palettes d’origine rétablies');
-  }, 'Palette pour toutes les pistes'));
+    if (!live) toast(key ? `${key === CUSTOM ? 'Couleurs perso appliquées' : `Palette ${allName(key)} appliquée`} à ${isIdeas ? 'tous les logos' : 'toutes les pistes'}` : 'Palettes d’origine rétablies');
+  }, isIdeas ? 'Palette pour tous les logos' : 'Palette pour toutes les pistes', { reanchor: () => view.querySelector('[data-all]') }));
 
   grid.addEventListener('click', async (e) => {
     const c = e.target.closest('.logo-card');
@@ -278,12 +484,19 @@ export async function renderBrand(view, bid) {
     const it = items.find((x) => x.id === c.dataset.id);
     const pk = e.target.closest('[data-pick]');
     if (pk) {
-      openPalPicker(pk, palOptions(it), keyOf(it), (key) => {
+      const findBtn = () => grid.querySelector(`[data-id="${CSS.escape(it.id)}"] [data-pick]`);
+      openPalPicker(pk, palOptions(it), keyOf(it), (key, { live } = {}) => {
         shared.pal[`${bid}/${it.id}`] = key;
-        c.outerHTML = card(it);
-        if (it === retained[0]) renderFeature();
-        const nb = grid.querySelector(`[data-id="${CSS.escape(it.id)}"] [data-pick]`); nb && nb.focus();
-      }, `Palette · ${it.nom}`);
+        if (key === CUSTOM) {
+          /* Couleurs perso partagées : toutes les cartes qui les utilisent suivent. */
+          items.filter((x) => keyOf(x) === CUSTOM).forEach((x) => { const el = grid.querySelector(`[data-id="${CSS.escape(x.id)}"]`); if (el) el.outerHTML = card(x); });
+          if (retained[0] && keyOf(retained[0]) === CUSTOM) renderFeature();
+        } else {
+          const el = grid.querySelector(`[data-id="${CSS.escape(it.id)}"]`); if (el) el.outerHTML = card(it);
+          if (it === retained[0]) renderFeature();
+        }
+        if (!live) { const nb = findBtn(); nb && nb.focus(); }
+      }, `Palette · ${it.nom}`, { reanchor: findBtn });
       return;
     }
     const cp = e.target.closest('[data-copy]');
@@ -329,6 +542,7 @@ async function svgToPng(svg, width) {
 }
 
 export async function renderLogoSheet(view, bid, lid) {
+  await ready();
   const b = brands().find((x) => x.id === bid);
   const { items } = logosOf(bid);
   const it = items.find((x) => x.id === lid);
@@ -344,7 +558,7 @@ export async function renderLogoSheet(view, bid, lid) {
   function html() {
     const o = pickPal(it, shared.pal[k] || 'own:0');
     const L = logoVars(o.pal, 'light', shared.safe); const D = logoVars(o.pal, 'dark', shared.safe);
-    const used = new Set([...(svgFor(it, 'svg_logo', 'light') + svgFor(it, 'svg_logo', 'dark') + svgFor(it, 'svg_app', 'light')).matchAll(/var\(--(\w+)\)/g)].map((m) => m[1]));
+    const used = new Set([...(svgFor(it, 'svg_logo', 'light') + svgFor(it, 'svg_logo', 'dark') + svgFor(it, 'svg_app', 'light')).matchAll(VAR_RE)].map((m) => m[1]));
     const keys = ['p', 's', 'a', 't', 'ink', 'bg'].filter((x) => used.has(x) || (x === 'bg' && (used.has('lt') || used.has('dk'))));
     const cell = (V, kk, bg) => {
       const hex = V.v[kk];
@@ -367,6 +581,7 @@ export async function renderLogoSheet(view, bid, lid) {
       </div>
       <div class="sheet-actions">
         <button class="palbtn" type="button" aria-haspopup="dialog" aria-expanded="false" data-pick aria-label="Palette : ${esc(o.nom)}">${dot(o.pal)}<span>${esc(o.nom)}</span>${icon('chevronDown', { size: 16 })}</button>
+        ${it.origines ? `<a class="btn btn--secondary btn--arrow" href="#/i/${esc(it.origines[0].id)}">Design d’origine${icon('arrowUpRight', { size: 16 })}</a>` : ''}
         <button class="btn btn--primary btn--arrow" type="button" data-copysvg>${icon('copy', { size: 16 })}Copier le SVG</button>
       </div>
     </header>
@@ -391,7 +606,8 @@ export async function renderLogoSheet(view, bid, lid) {
           <dt>Texte d’accompagnement</dt><dd>${esc(it.typo_texte || 'Geist')}</dd>
           <dt>Catégorie</dt><dd>${esc(it.categorie || '—')}</dd>
           <dt>Forme</dt><dd>${esc(it.forme || 'Pictogramme + mot-symbole')}</dd>
-          <dt>Ton</dt><dd>${esc(it.ton || '—')}</dd>
+          <dt>${it.origines ? 'Statut' : 'Ton'}</dt><dd>${esc(it.ton || '—')}</dd>
+          ${it.origines ? `<dt>Vu dans</dt><dd>${it.origines.map((o) => `<a href="#/i/${esc(o.id)}">${esc(o.nom)}</a>`).join(', ')}</dd>` : ''}
         </dl>
       </section>
       <section class="fact"><h3>${icon('maximize', { size: 18 })}Protection et taille minimale</h3>
@@ -426,7 +642,7 @@ export async function renderLogoSheet(view, bid, lid) {
       </section>
     </div>
 
-    ${prev || next ? `<nav class="pager" aria-label="Pistes de ${esc(b.nom)}">
+    ${prev || next ? `<nav class="pager" aria-label="${bid === IDEES ? 'Idées de logos' : `Pistes de ${esc(b.nom)}`}">
       ${prev ? `<a class="prev" href="#/marques/${esc(bid)}/${esc(prev.id)}"><span>${icon('arrowLeft', { size: 14 })}Précédent</span><b>${esc(prev.nom)}</b></a>` : '<span></span>'}
       ${next ? `<a class="next" href="#/marques/${esc(bid)}/${esc(next.id)}"><span>Suivant${icon('arrowRight', { size: 14 })}</span><b>${esc(next.nom)}</b></a>` : ''}
     </nav>` : ''}`;
@@ -436,7 +652,7 @@ export async function renderLogoSheet(view, bid, lid) {
   const current = (theme) => { const o = pickPal(it, shared.pal[k] || 'own:0'); return logoVars(o.pal, theme, shared.safe).v; };
   view.addEventListener('click', async (e) => {
     const pk = e.target.closest('[data-pick]');
-    if (pk) { openPalPicker(pk, palOptions(it), shared.pal[k] || 'own:0', (key) => { shared.pal[k] = key; paint(); view.querySelector('[data-pick]').focus(); }, `Palette · ${it.nom}`); return; }
+    if (pk) { openPalPicker(pk, palOptions(it), shared.pal[k] || 'own:0', (key, { live } = {}) => { shared.pal[k] = key; paint(); if (!live) view.querySelector('[data-pick]').focus(); }, `Palette · ${it.nom}`, { reanchor: () => view.querySelector('[data-pick]') }); return; }
     const hx = e.target.closest('[data-hex]');
     if (hx) { const ok = await copyText(hx.dataset.hex); toast(ok ? `${hx.dataset.hex} copié` : 'Copie impossible'); return; }
     if (e.target.closest('[data-copysvg]')) {

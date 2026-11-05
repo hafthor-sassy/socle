@@ -1,5 +1,6 @@
 <!-- Hero produit au défilement — HTML + CSS + JS autonome. Nécessite tokens.css. Marque (Cadran) et chiffres fictifs.
-     La capture d’app est dessinée en HTML/CSS (aucune image) dans un espace de 1200 × 760 px, mis à l’échelle par le script. -->
+     Bureau (≥ 1100 px) : la capture d’app est dessinée en HTML/CSS (aucune image) dans un espace de 1200 × 760 px, mis à l’échelle par le script.
+     Téléphone et tablette (< 1100 px) : une app mobile à taille réelle (.hpd-m) remplace la capture ; ses couches se soulèvent au défilement. -->
 <link rel="stylesheet" href="tokens.css">
 
 <!-- SECTION -->
@@ -125,6 +126,86 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- ——— Composition téléphone et tablette (< 1100 px) : une vraie app mobile à taille réelle, ses couches se soulèvent l’une après l’autre ——— -->
+    <div class="hpd-m" data-hpd-m>
+      <div class="hpd-m__wrap" data-hpd-mwrap>
+        <div class="hpd-m__app" role="img" aria-label="Aperçu de l’app mobile Cadran : MRR de 128 420 € en hausse de 8,2 %, courbe sur 12 mois, derniers mouvements clients, notification de paiement et conseil de l’assistant.">
+          <div class="hpd-m__halo" aria-hidden="true"></div>
+          <div class="hpd-m__screen" aria-hidden="true">
+            <div class="hpd-m__status"><b>9:41</b><span><svg viewBox="0 0 20 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 26 12"><rect x="0.75" y="0.75" width="21" height="10.5" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".45"/><rect x="2.75" y="2.75" width="15" height="6.5" rx="1.5"/><rect x="23.25" y="4" width="1.75" height="4" rx=".8" opacity=".45"/></svg></span></div>
+            <div class="hpd-m__bar">
+              <span class="hpd-m__brand"><span class="hpd-m__logo"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round"><path d="M16 5.5A10.5 10.5 0 1 0 26.5 16"/><path d="M16 16l5.4-5.4"/><circle cx="16" cy="16" r="2.25" fill="currentColor" stroke="none"/><circle cx="24.7" cy="7.3" r="1.85" fill="currentColor" stroke="none"/></svg></span><b>Cadran</b></span>
+              <span class="hpd-m__bar-r"><span class="hpd-m__ic"><svg viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg><i></i></span><span class="hpd-av">LM</span></span>
+            </div>
+            <div class="hpd-m__view" data-hpd-mview>
+              <div class="hpd-m__scroll" data-hpd-mscroll>
+                <div class="hpd-m__title"><b>Vue d’ensemble</b><small>Novembre 2026 · à jour il y a 2 min</small></div>
+                <div class="hpd-m__seg"><i>7 j</i><i class="is-on">30 j</i><i>12 mois</i></div>
+
+                <div class="hpd-m__card hpd-m__kpi" data-mlayer="1">
+                  <div class="hpd-m__kpi-top"><small>MRR</small><span class="hpd-m__delta">▲ 8,2 %</span></div>
+                  <b class="hpd-m__big">128 420 €</b>
+                  <svg class="hpd-m__spark" viewBox="0 0 72 24" preserveAspectRatio="none"><path d="M0.0,22.0 C1.3,21.5 5.3,19.6 8.0,19.1 C10.7,18.6 13.3,19.6 16.0,19.1 C18.7,18.6 21.3,17.2 24.0,16.3 C26.7,15.4 29.3,13.9 32.0,13.4 C34.7,12.9 37.3,13.9 40.0,13.4 C42.7,12.9 45.3,11.5 48.0,10.6 C50.7,9.7 53.3,8.7 56.0,7.7 C58.7,6.8 61.3,5.9 64.0,4.9 C66.7,4.0 70.7,2.5 72.0,2.0"/></svg>
+                  <div class="hpd-m__minis">
+                    <span><small>Clients actifs</small><b>1 284</b><em>▲ 3,1 %</em></span>
+                    <span><small>Churn mensuel</small><b>1,9 %</b><em>▼ 0,4 pt</em></span>
+                  </div>
+                </div>
+
+                <div class="hpd-m__card hpd-m__chart" data-mlayer="2">
+                  <div class="hpd-m__card-h"><span><small>MRR sur 12 mois</small><b>+80 % sur un an</b></span><span class="hpd-m__chip">12 mois</span></div>
+                  <div class="hpd-m__plot">
+                    <svg viewBox="0 0 300 120" preserveAspectRatio="none">
+                      <path class="hpd-grid" d="M0,8.5H300M0,45.5H300M0,82.5H300M0,119.5H300"/>
+                      <path class="hpd-area" d="M0.0,112.0 C4.6,110.9 18.2,108.0 27.3,105.5 C36.4,102.9 45.5,99.1 54.6,96.9 C63.6,94.7 72.7,94.5 81.8,92.2 C90.9,89.9 100.0,86.3 109.1,83.5 C118.2,80.6 127.3,77.7 136.4,75.3 C145.4,72.8 154.6,71.8 163.6,68.7 C172.7,65.6 181.8,60.5 190.9,56.5 C200.0,52.5 209.1,48.5 218.2,44.5 C227.3,40.5 236.4,36.5 245.4,32.5 C254.5,28.5 263.6,24.5 272.7,20.4 C281.8,16.3 295.4,10.1 300.0,8.0 L300,120 L0,120 Z"/>
+                      <path class="hpd-line" pathLength="1" d="M0.0,112.0 C4.6,110.9 18.2,108.0 27.3,105.5 C36.4,102.9 45.5,99.1 54.6,96.9 C63.6,94.7 72.7,94.5 81.8,92.2 C90.9,89.9 100.0,86.3 109.1,83.5 C118.2,80.6 127.3,77.7 136.4,75.3 C145.4,72.8 154.6,71.8 163.6,68.7 C172.7,65.6 181.8,60.5 190.9,56.5 C200.0,52.5 209.1,48.5 218.2,44.5 C227.3,40.5 236.4,36.5 245.4,32.5 C254.5,28.5 263.6,24.5 272.7,20.4 C281.8,16.3 295.4,10.1 300.0,8.0"/>
+                    </svg>
+                    <span class="hpd-dot hpd-m__dot"></span>
+                    <span class="hpd-tip hpd-m__tip">Nov. · 128,4 k€</span>
+                  </div>
+                  <div class="hpd-m__months"><i>déc.</i><i>mars</i><i>juin</i><i>sept.</i><i>nov.</i></div>
+                </div>
+
+                <div class="hpd-m__card hpd-m__list" data-mlayer="2">
+                  <div class="hpd-m__card-h"><b>Derniers mouvements</b><span class="hpd-m__link">Tout voir</span></div>
+                  <div class="hpd-m__row"><i class="hpd-av">ML</i><span><b>Maison Lune</b><small>Pro → Échelle</small></span><span class="hpd-m__amt"><b>+270 €</b><em class="is-green">Montée en gamme</em></span></div>
+                  <div class="hpd-m__row"><i class="hpd-av">BO</i><span><b>Brasserie Opale</b><small>Essentiel</small></span><span class="hpd-m__amt"><b>+49 €</b><em class="is-blue">Nouveau</em></span></div>
+                  <div class="hpd-m__row"><i class="hpd-av">SA</i><span><b>Studio Ardent</b><small>Pro</small></span><span class="hpd-m__amt"><b>−79 €</b><em class="is-red">Résilié</em></span></div>
+                </div>
+              </div>
+            </div>
+            <nav class="hpd-m__tabs">
+              <span class="is-on"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Accueil</span>
+              <span><svg viewBox="0 0 24 24"><path d="M4 18l5-6 4 3 7-9"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 19a6 6 0 0 1 12 0M16 11a3 3 0 1 0 0-6M21 19a5 5 0 0 0-4-4.9"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg></span>
+            </nav>
+            <div class="hpd-m__scrim"></div>
+            <div class="hpd-m__card hpd-m__toast" data-mlayer="3">
+              <span class="hpd-toast__ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+              <span><b>Paiement reçu · Maison Lune</b><small>1 270 € · à l’instant</small></span>
+            </div>
+            <div class="hpd-m__sheet" data-mlayer="3">
+              <span class="hpd-m__grab"></span>
+              <span class="hpd-ai__h"><span class="hpd-ai__ic"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></span><b>Assistant Cadran</b></span>
+              <p>3 comptes Pro dépassent leur quota depuis deux semaines. Leur proposer Échelle rapporterait <b>+810 €</b> de MRR.</p>
+              <span class="hpd-m__acts"><span class="hpd-m__fbtn is-accent">Voir les comptes</span><span class="hpd-m__fbtn">Plus tard</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hpd-m__steps" data-hpd-steps>
+        <span class="hpd-m__eyebrow">Ce que Cadran vous montre</span>
+        <span class="hpd-m__prog" aria-hidden="true"><i data-hpd-bar></i><i data-hpd-bar></i><i data-hpd-bar></i></span>
+        <ol>
+          <li data-hpd-step><span>01</span><b>Indicateurs en temps réel</b><p>MRR, clients et churn recalculés à chaque paiement.</p></li>
+          <li data-hpd-step><span>02</span><b>Graphiques et tableaux partagés</b><p>La courbe sur 12 mois et chaque mouvement client, au même endroit.</p></li>
+          <li data-hpd-step><span>03</span><b>Assistant et alertes</b><p>Cadran repère les montées en gamme et vous prévient au bon moment.</p></li>
+        </ol>
       </div>
     </div>
 
@@ -297,6 +378,153 @@
   .hpd__mouse i { width: 2px; height: 5px; border-radius: 2px; background: currentColor; animation: hpd-wheel 1.6s cubic-bezier(.22, 1, .36, 1) infinite; }
   @keyframes hpd-wheel { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(7px); opacity: 0; } 100% { transform: translateY(0); opacity: 0; } }
 
+  /* ——— Téléphone et tablette (< 1100 px) : l’app mobile remplace la capture bureau ———
+     Variables posées par le script : --mw/--mh (taille de l’app), --m1..--m3 (soulèvement des couches), --mx (couche la plus haute),
+     --me (bascule 3D), --cp (apparition des légendes), --msc (défilement interne de l’app, en px). */
+  .hpd-m { display: none; }
+  @media (max-width: 1099px) {
+    .hpd__shotbox { display: none; }
+    .hpd-m { --m1: 0; --m2: 0; --m3: 0; --mx: 0; --me: 0; --cp: 0; --msc: 0; --mw: 358px; --mh: 640px; --sx: 0px;
+      display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+  }
+  @media (max-width: 599px) {
+    .hpd__head { padding-top: 40px; }
+    .hpd__hint { display: none; }
+  }
+  .hpd-m__wrap { position: absolute; left: 0; top: 0; width: var(--mw); height: var(--mh); perspective: var(--persp); perspective-origin: 50% 30%; transform-origin: 50% 0; will-change: transform; }
+  .hpd-m__app { position: absolute; inset: 0; transform-origin: 50% 30%; transform-style: preserve-3d;
+    transform: rotateX(calc(var(--tilt) * (1 - var(--a)) + 5deg * var(--me) * var(--int))) rotateY(calc(-7deg * var(--me) * var(--int))); }
+  .hpd-m__halo { position: absolute; inset: 6% -6% -2%; border-radius: 50%; box-shadow: 0 0 96px 32px var(--glow-accent), 0 32px 128px 16px var(--glow); opacity: calc(.5 + var(--a) * .5); transform: translateZ(-1px); }
+  .hpd[data-glow=false] .hpd-m__halo { display: none; }
+  .hpd-m__screen { position: absolute; inset: 0; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-sheet); background: var(--bg); box-shadow: var(--shadow-popover);
+    font: 400 14px/1.45 var(--font-sans); color: var(--text); text-align: left; }
+  .hpd-m__screen svg { flex: none; }
+
+  .hpd-m__status { display: flex; align-items: center; justify-content: space-between; height: 40px; padding: 0 24px; color: var(--text-strong); font-size: 14px; }
+  .hpd-m__status span { display: flex; gap: 6px; align-items: center; }
+  .hpd-m__status svg { height: 11px; width: auto; fill: currentColor; }
+  .hpd-m__bar { display: flex; align-items: center; justify-content: space-between; height: 52px; padding: 0 16px; }
+  .hpd-m__brand { display: flex; align-items: center; gap: 10px; }
+  .hpd-m__brand b { color: var(--text-strong); font-size: 17px; letter-spacing: -0.015em; }
+  .hpd-m__logo { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--radius-ctl); background: var(--accent); color: var(--accent-fg); }
+  .hpd-m__logo svg { width: 20px; height: 20px; }
+  .hpd-m__bar-r { display: flex; align-items: center; gap: 4px; }
+  .hpd-m__bar-r .hpd-av { width: 32px; height: 32px; font-size: 12px; }
+  .hpd-m__ic { position: relative; display: grid; place-items: center; width: 40px; height: 40px; color: var(--text); }
+  .hpd-m__ic svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .hpd-m__ic i { position: absolute; top: 9px; right: 10px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-vivid); border: 1.5px solid var(--bg); }
+
+  .hpd-m__view { position: absolute; left: 0; right: 0; top: 92px; bottom: 72px; overflow: hidden; }
+  .hpd-m__scroll { display: grid; gap: 12px; padding: 4px 16px 24px; transform: translateY(calc(var(--msc) * -1px)); }
+  .hpd-m__title { display: grid; gap: 2px; padding-bottom: 4px; }
+  .hpd-m__title b { color: var(--text-strong); font-size: 24px; line-height: 1.2; letter-spacing: -0.025em; font-weight: 600; }
+  .hpd-m__title small { color: var(--text-muted); font-size: 14px; }
+  .hpd-m__seg { display: grid; grid-template-columns: repeat(3, 1fr); height: 40px; padding: 3px; border: 1px solid var(--border); border-radius: var(--radius-ctl); background: var(--raised); }
+  .hpd-m__seg i { display: grid; place-items: center; border-radius: 6px; font-style: normal; color: var(--text-muted); font-size: 14px; font-weight: 500; }
+  .hpd-m__seg i.is-on { background: var(--surface); color: var(--text-strong); box-shadow: 0 0 0 1px var(--border); }
+
+  /* Cartes : chacune se soulève (ombre de profondeur) quand sa couche est à l’étape, les autres s’effacent un peu */
+  .hpd-m__card { --l: 0; position: relative; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface);
+    transform: translateY(calc(var(--l) * -6px * var(--int))) scale(calc(1 + var(--l) * .03 * var(--int)));
+    opacity: calc(1 - .5 * max(0, var(--mx) - var(--l))); }
+  .hpd-m__card::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; box-shadow: var(--shadow-popover); opacity: var(--l); }
+  .hpd-m [data-mlayer="1"] { --l: var(--m1); z-index: 1; }
+  .hpd-m [data-mlayer="2"] { --l: var(--m2); z-index: 1; }
+
+  .hpd-m__kpi-top { display: flex; align-items: center; justify-content: space-between; }
+  .hpd-m__kpi-top small { color: var(--text-muted); font-size: 14px; font-weight: 500; }
+  .hpd-m__delta { display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: var(--radius-pill); border: 1px solid var(--tint-green-border); background: var(--tint-green-bg); color: var(--tint-green-fg); font-size: 14px; font-weight: 600; }
+  .hpd-m__big { display: block; margin-top: 2px; color: var(--text-strong); font-size: 34px; line-height: 1.1; letter-spacing: -0.035em; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .hpd-m__spark { display: block; width: 100%; height: 40px; margin: 10px 0 14px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; overflow: visible; }
+  .hpd-m__spark path { vector-effect: non-scaling-stroke; }
+  .hpd-m__minis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .hpd-m__minis span { display: grid; grid-template-columns: auto 1fr; align-items: baseline; column-gap: 8px; }
+  .hpd-m__minis small { grid-column: 1 / -1; color: var(--text-muted); font-size: 14px; }
+  .hpd-m__minis b { color: var(--text-strong); font-size: 20px; letter-spacing: -0.02em; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .hpd-m__minis em { font-style: normal; color: var(--up); font-size: 14px; font-weight: 600; }
+
+  .hpd-m__card-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .hpd-m__card-h > span:first-child { display: grid; gap: 2px; }
+  .hpd-m__card-h small { color: var(--text-muted); font-size: 14px; }
+  .hpd-m__card-h b { color: var(--text-strong); font-size: 18px; letter-spacing: -0.02em; font-weight: 600; }
+  .hpd-m__chip { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--raised); color: var(--text); font-size: 14px; font-weight: 500; }
+  .hpd-m__plot { position: relative; height: 120px; margin-top: 16px; }
+  .hpd-m__plot svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .hpd-m__dot { left: 100%; top: 8px; }
+  .hpd-m__tip { left: 100%; top: 8px; font-size: 13px; padding: 6px 8px; transform: translate(-100%, 0) translate(-12px, -50%); }
+  .hpd-m__months { display: flex; justify-content: space-between; margin-top: 10px; color: var(--text-muted); font: 500 13px/1 var(--font-mono); }
+  .hpd-m__months i { font-style: normal; }
+
+  .hpd-m__card-h .hpd-m__link { color: var(--accent); font-size: 14px; font-weight: 600; }
+  .hpd-m__list .hpd-m__card-h b { font-size: 17px; }
+  .hpd-m__row { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--border); }
+  .hpd-m__row:nth-child(2) { margin-top: 10px; }
+  .hpd-m__row:last-child { padding-bottom: 0; }
+  .hpd-m__row .hpd-av { width: 40px; height: 40px; font-size: 13px; }
+  .hpd-m__row > span { display: grid; min-width: 0; }
+  .hpd-m__row b { color: var(--text-strong); font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hpd-m__row small { color: var(--text-muted); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hpd-m[data-narrow] .hpd-m__scroll { padding-inline: 12px; }
+  .hpd-m[data-narrow] .hpd-m__card { padding: 14px; }
+  .hpd-m[data-narrow] .hpd-m__row { grid-template-columns: 36px minmax(0, 1fr) auto; gap: 10px; }
+  .hpd-m[data-narrow] .hpd-m__row .hpd-av { width: 36px; height: 36px; }
+  .hpd-m__amt { justify-items: end; text-align: right; }
+  .hpd-m__amt b { font-variant-numeric: tabular-nums; }
+  .hpd-m__amt em { font-style: normal; font-size: 14px; font-weight: 500; }
+  .hpd-m__amt .is-green { color: var(--tint-green-fg); } .hpd-m__amt .is-blue { color: var(--tint-blue-fg); } .hpd-m__amt .is-red { color: var(--tint-red-fg); }
+
+  .hpd-m__tabs { position: absolute; left: 0; right: 0; bottom: 0; height: 72px; display: flex; align-items: center; justify-content: space-around; padding: 0 12px 12px; border-top: 1px solid var(--border); background: var(--surface); }
+  .hpd-m__tabs::after { content: ""; position: absolute; left: 50%; bottom: 6px; width: 120px; height: 4px; margin-left: -60px; border-radius: var(--radius-pill); background: var(--text-strong); opacity: .2; }
+  .hpd-m__tabs span { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 44px; height: 44px; padding: 0 12px; border-radius: var(--radius-pill); color: var(--text-muted); }
+  .hpd-m__tabs span.is-on { background: var(--accent-subtle); color: var(--accent); font-size: 14px; font-weight: 600; padding: 0 16px 0 14px; }
+  .hpd-m__tabs svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Couche 3 : la notification tombe du haut, l’assistant monte en feuille du bas */
+  .hpd-m__scrim { position: absolute; inset: 0; z-index: 3; background: var(--scrim); opacity: calc(var(--m3) * .85); }
+  .hpd-m__toast { position: absolute; z-index: 4; top: 44px; left: 12px; right: 12px; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 12px; padding: 12px 14px; box-shadow: var(--shadow-toast);
+    transform: translateY(calc((1 - var(--m3)) * -180%)) scale(calc(.96 + var(--m3) * .04)); opacity: min(1, calc(var(--m3) * 3)); }
+  .hpd-m__toast::before { display: none; }
+  .hpd-m__toast > span:last-child { display: grid; min-width: 0; }
+  .hpd-m__toast b { color: var(--text-strong); font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hpd-m__toast small { color: var(--text-muted); font-size: 14px; }
+  .hpd-m__toast .hpd-toast__ic { width: 36px; height: 36px; }
+  .hpd-m__sheet { position: absolute; z-index: 4; left: 0; right: 0; bottom: 0; display: grid; gap: 12px; padding: 8px 16px 24px; border-top: 1px solid var(--border); border-radius: var(--radius-sheet) var(--radius-sheet) 0 0; background: var(--surface); box-shadow: var(--shadow-overlay);
+    transform: translateY(calc((1 - var(--m3)) * 105%)); }
+  .hpd-m__grab { justify-self: center; width: 40px; height: 4px; margin-bottom: 4px; border-radius: var(--radius-pill); background: var(--border-strong); }
+  .hpd-m__sheet .hpd-ai__h { font-size: 16px; gap: 10px; }
+  .hpd-m__sheet .hpd-ai__ic { width: 32px; height: 32px; }
+  .hpd-m__sheet .hpd-ai__ic svg { width: 18px; height: 18px; }
+  .hpd-m__sheet p { margin: 0; color: var(--text); font-size: 15px; line-height: 1.5; }
+  .hpd-m__sheet p b { color: var(--text-strong); }
+  .hpd-m__acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+  .hpd-m__fbtn { display: grid; place-items: center; height: 44px; border: 1px solid var(--border-control); border-radius: var(--radius-ctl); background: var(--surface); color: var(--text-strong); font-size: 15px; font-weight: 600; }
+  .hpd-m__fbtn.is-accent { border-color: var(--accent); background: var(--accent); color: var(--accent-fg); }
+
+  /* Légendes : une carte en bas sur téléphone, une liste à droite de l’app sur tablette */
+  .hpd-m__steps { position: absolute; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: var(--mw); display: grid; gap: 12px; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-popover); text-align: left;
+    transform: translateX(-50%) translateY(calc((1 - var(--cp)) * 24px)); opacity: var(--cp); }
+  .hpd[data-labels=false] .hpd-m__steps, .hpd-m[data-nosteps] .hpd-m__steps { display: none; }
+  .hpd-m__eyebrow { display: none; color: var(--text-muted); font: 500 13px/1 var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .hpd-m__prog { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .hpd-m__prog i { --f: 0; position: relative; height: 4px; overflow: hidden; border-radius: var(--radius-pill); background: var(--border); }
+  .hpd-m__prog i::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--accent); transform: scaleX(var(--f)); transform-origin: 0 50%; }
+  .hpd-m__steps ol { display: grid; margin: 0; padding: 0; list-style: none; }
+  .hpd-m__steps li { --v: 0; grid-area: 1 / 1; display: grid; grid-template-columns: auto 1fr; column-gap: 12px; align-content: start;
+    opacity: var(--v); transform: translateY(calc((1 - var(--v)) * 10px)); }
+  .hpd-m__steps li > span { grid-row: span 2; padding-top: 2px; color: var(--accent); font: 600 14px/1.3 var(--font-mono); }
+  .hpd-m__steps li b { color: var(--text-strong); font-size: 16px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
+  .hpd-m__steps li p { margin: 4px 0 0; color: var(--text-muted); font-size: 14px; line-height: 1.45; }
+  .hpd-m[data-side] .hpd-m__steps { left: var(--sx); top: 50%; bottom: auto; width: 296px; gap: 24px; padding: 0; border: 0; background: none; box-shadow: none;
+    transform: translateY(-50%) translateX(calc((1 - var(--cp)) * 24px)); }
+  .hpd-m[data-side] .hpd-m__eyebrow { display: block; }
+  .hpd-m[data-side] .hpd-m__prog { display: none; }
+  .hpd-m[data-side] .hpd-m__steps ol { gap: 28px; }
+  .hpd-m[data-side] .hpd-m__steps li { position: relative; grid-area: auto; padding-left: 20px; opacity: calc(.4 + .6 * var(--v)); transform: none; }
+  .hpd-m[data-side] .hpd-m__steps li::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; border-radius: var(--radius-pill); background: var(--border); }
+  .hpd-m[data-side] .hpd-m__steps li::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; border-radius: var(--radius-pill); background: var(--accent); transform: scaleY(var(--v)); transform-origin: 50% 0; }
+  .hpd-m[data-side] .hpd-m__steps li b { font-size: 19px; }
+  .hpd-m[data-side] .hpd-m__steps li p { font-size: 15px; }
+
   /* ——— Repli statique : réduire les animations, data-mode="static" ou script absent ——— */
   .hpd[data-static] { height: auto; }
   .hpd[data-static] .hpd__stage { position: relative; height: auto; overflow: visible; padding-bottom: 48px; }
@@ -305,14 +533,25 @@
   .hpd[data-static] .hpd__shot { top: 0; transform: scale(var(--s, .3)); }
   .hpd[data-static] .hpd__hint { display: none; }
   .hpd[data-static] .hpd-app__halo { opacity: .7; }
+  @media (max-width: 1099px) {
+    .hpd[data-static] .hpd-m { position: relative; inset: auto; display: grid; justify-items: center; gap: 32px; padding: 40px 16px 0; }
+    .hpd[data-static] .hpd-m__wrap { position: relative; transform: none !important; }
+    .hpd[data-static] .hpd-m__app { transform: none; }
+    .hpd[data-static] .hpd-m__steps { position: relative; left: auto; top: auto; bottom: auto; transform: none; opacity: 1; padding: 0; border: 0; background: none; box-shadow: none; }
+    .hpd[data-static] .hpd-m__prog { display: none; }
+    .hpd[data-static] .hpd-m__steps ol { gap: 20px; }
+    .hpd[data-static] .hpd-m__steps li { grid-area: auto; opacity: 1; transform: none; }
+    .hpd[data-static] .hpd-m__sheet, .hpd[data-static] .hpd-m__scrim { display: none; }
+  }
   @media (prefers-reduced-motion: reduce) { .hpd__mouse i { animation: none; } }
 </style>
 
 <script>
   (function () {
-    var W = 1200, H = 760;
+    var W = 1200, H = 760, BP = 1100;          // en dessous de BP px : composition téléphone / tablette
     function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
     function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }   // in-out cubique
+    function seg(p, a, b) { return ease(clamp((p - a) / (b - a))); }
 
     document.querySelectorAll('[data-hero-scroll]').forEach(function (root) {
       if (root._hpd) root._hpd.destroy();
@@ -323,7 +562,8 @@
       if (isNaN(nLayers)) nLayers = 3;
       var smoothing = Math.max(0, Math.min(.97, parseFloat(d.smoothing)));
       if (isNaN(smoothing)) smoothing = .86;
-      root.style.setProperty('--int', parseFloat(d.intensity) >= 0 ? d.intensity : 1);
+      var int = parseFloat(d.intensity) >= 0 ? parseFloat(d.intensity) : 1;
+      root.style.setProperty('--int', int);
       root.style.setProperty('--tilt', (parseFloat(d.tilt) || 0) + 'deg');
       root.style.setProperty('--persp', (parseFloat(d.perspective) || 1400) + 'px');
       root.style.setProperty('--len', parseFloat(d.length) || 180);
@@ -331,10 +571,46 @@
       if (isStatic) root.setAttribute('data-static', ''); else root.removeAttribute('data-static');
 
       var stage = root.querySelector('.hpd__stage'), head = root.querySelector('[data-hpd-head]'), shot = root.querySelector('[data-hpd-shot]');
-      var geo = { s0: .5, s1: .6, y0: 0, y1: 0 }, cur = 0, target = 0, raf = 0, last = 0, manual = false, visible = true;
+      /* Composition mobile */
+      var m = root.querySelector('[data-hpd-m]'), mwrap = root.querySelector('[data-hpd-mwrap]'), mview = root.querySelector('[data-hpd-mview]'),
+          mscroll = root.querySelector('[data-hpd-mscroll]'), steps = root.querySelector('[data-hpd-steps]'),
+          stepEls = root.querySelectorAll('[data-hpd-step]'), bars = root.querySelectorAll('[data-hpd-bar]');
+      var mq = window.matchMedia ? matchMedia('(max-width: ' + (BP - 1) + 'px)') : { matches: false };
+      var mob = mq.matches;
+      if (m) { if (nLayers) m.removeAttribute('data-nosteps'); else m.setAttribute('data-nosteps', ''); }
 
+      var geo = { s0: .5, s1: .6, y0: 0, y1: 0, mx0: 0, mx1: 0, my0: 0, my1: 0, msc: 0 }, cur = 0, target = 0, raf = 0, last = 0, manual = false, visible = true;
+
+      function fitMobile() {
+        var w = stage.clientWidth, h = stage.clientHeight, side = w >= 720;
+        if (side) m.setAttribute('data-side', ''); else m.removeAttribute('data-side');
+        var mw = side ? Math.min(400, Math.round(w * .46)) : Math.min(w - 32, 420), mh;
+        m.style.setProperty('--mw', mw + 'px');
+        if (mw < 372) m.setAttribute('data-narrow', ''); else m.removeAttribute('data-narrow');
+        if (isStatic) { m.style.setProperty('--mh', Math.min(1100, 92 + mscroll.scrollHeight + 72) + 'px'); return; }
+        var showSteps = d.labels !== 'false' && nLayers > 0;
+        if (side) {
+          mh = Math.min(760, h - 64);
+          var gap = 56, stepsW = 296, x = Math.round((w - (mw + gap + stepsW)) / 2);
+          if (!showSteps) x = Math.round((w - mw) / 2);
+          geo.mx0 = Math.round((w - mw) / 2); geo.mx1 = x;
+          geo.my1 = Math.round((h - mh) / 2);
+          m.style.setProperty('--sx', (x + mw + gap) + 'px');
+        } else {
+          var sh = showSteps ? steps.offsetHeight + 12 : 0;
+          mh = Math.max(440, Math.min(720, h - 16 - sh - 16));
+          geo.mx0 = geo.mx1 = Math.round((w - mw) / 2);
+          geo.my1 = 16;
+        }
+        m.style.setProperty('--mh', mh + 'px');
+        geo.my0 = head.offsetTop + head.offsetHeight + (side ? 40 : 24);
+        /* Défilement interne de l’app à l’étape 2 : on remonte jusqu’à voir la liste entière */
+        geo.msc = Math.max(0, mscroll.scrollHeight - mview.clientHeight);
+      }
       function fit() {
+        mob = mq.matches;
         var w = stage.clientWidth;
+        if (mob && m) return fitMobile();
         if (isStatic) {
           var s = Math.min(1, (w - 32) / (W + 96));
           root.style.setProperty('--s', s.toFixed(4));
@@ -342,7 +618,7 @@
         }
         var h = stage.clientHeight, headBottom = head.offsetTop + head.offsetHeight;
         var narrow = w < 768, fitW = (w - (narrow ? 32 : 96)) / (W + 96);
-        if (narrow) {                                          // mobile : la capture passe de « tient en largeur » à un gros plan recadré
+        if (narrow) {
           geo.s0 = fitW; geo.s1 = Math.min(.5, fitW * 1.5, (h - 160) / H);
         } else {
           geo.s1 = Math.min(1, fitW, (h - 96) / H); geo.s0 = geo.s1 * .92;
@@ -354,7 +630,36 @@
         var r = root.getBoundingClientRect(), total = root.offsetHeight - stage.clientHeight;
         return total > 0 ? clamp(-r.top / total) : 0;
       }
+      function renderMobile(p) {
+        var a = seg(p, 0, .28), draw = seg(p, .04, .38);
+        var s1 = nLayers >= 1 ? seg(p, .32, .46) : 0, s2 = nLayers >= 2 ? seg(p, .52, .66) : 0, s3 = nLayers >= 3 ? seg(p, .72, .86) : 0;
+        if (isStatic) { a = 1; draw = 1; s1 = s2 = s3 = 0; }
+        var m1 = s1 * (1 - .65 * s2), m2 = s2 * (1 - .65 * s3), m3 = s3;
+        root.style.setProperty('--a', a.toFixed(4));
+        root.style.setProperty('--draw', draw.toFixed(4));
+        var st = m.style;
+        st.setProperty('--m1', m1.toFixed(4)); st.setProperty('--m2', m2.toFixed(4)); st.setProperty('--m3', m3.toFixed(4));
+        st.setProperty('--mx', Math.max(m1, m2, m3).toFixed(4));
+        st.setProperty('--me', s1.toFixed(4));
+        st.setProperty('--cp', clamp((a - .55) / .45).toFixed(4));
+        st.setProperty('--msc', (geo.msc * s2).toFixed(1));
+        /* Légendes : la sortante s’efface sur la 1re moitié de la transition, l’entrante apparaît sur la 2de */
+        var o2 = clamp(s2 * 2), i2 = clamp(s2 * 2 - 1), o3 = clamp(s3 * 2), i3 = clamp(s3 * 2 - 1);
+        var v = [1 - o2, i2 * (1 - o3), i3];
+        if (isStatic) v = [1, 1, 1];
+        for (var i = 0; i < stepEls.length; i++) {
+          stepEls[i].style.setProperty('--v', (i < nLayers ? clamp(v[i]) : 0).toFixed(4));
+          stepEls[i].style.display = i < nLayers || isStatic ? '' : 'none';
+        }
+        var f = [s1, s2, s3];
+        for (var j = 0; j < bars.length; j++) { bars[j].style.setProperty('--f', f[j].toFixed(4)); bars[j].style.display = j < nLayers ? '' : 'none'; }
+        if (isStatic) { mwrap.style.transform = ''; return; }
+        var x = geo.mx0 + (geo.mx1 - geo.mx0) * a, y = geo.my0 + (geo.my1 - geo.my0) * a, sc = .92 + .08 * a;
+        mwrap.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) scale(' + sc.toFixed(4) + ')';
+        if (a > .5) root.setAttribute('data-faded', ''); else root.removeAttribute('data-faded');
+      }
       function render(p) {
+        if (mob && m) return renderMobile(p);
         var a = ease(clamp(p / .42)), e = ease(clamp((p - .5) / .38)), draw = ease(clamp((p - .06) / .4));
         if (isStatic) { a = 1; e = 0; draw = 1; }
         root.style.setProperty('--a', a.toFixed(4));
@@ -380,10 +685,11 @@
         if (!raf) raf = requestAnimationFrame(tick);
       }
       function onScroll() { if (visible) request(); }
-      function onResize() { fit(); request(); }
+      function onResize() { fit(); render(cur); request(); }
 
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onResize);
+      if (mq.addEventListener) mq.addEventListener('change', onResize);
       var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible) request(); }) : null;
       if (io) io.observe(root);
       fit(); cur = target = isStatic ? 1 : progress(); render(cur);
@@ -392,7 +698,7 @@
       root._hpd = {
         /* Pilotage manuel (vignette, démo) : p de 0 à 1 ; null rend la main au défilement. */
         drive: function (p, instant) { manual = p != null; if (manual) { target = clamp(p); if (instant) { cur = target; render(cur); return; } } request(); },
-        destroy: function () { cancelAnimationFrame(raf); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onResize); if (io) io.disconnect(); }
+        destroy: function () { cancelAnimationFrame(raf); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onResize); if (mq.removeEventListener) mq.removeEventListener('change', onResize); if (io) io.disconnect(); }
       };
     });
   })();

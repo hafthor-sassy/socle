@@ -29,7 +29,8 @@
    "sombre_acc_doux": 16.02
   },
   "categorie": "Classiques",
-  "id": "graphite"
+  "id": "graphite",
+  "logo": {"s": "#A1A1AA", "a": "#71717A", "dk": "#0D0E10", "lt": "#F4F4F5", "p_d": "#F4F4F5", "s_d": "#52525B", "a_d": "#A1A1AA", "t_d": "#F4F4F5"}
  },
  {
   "nom": "Encre",
