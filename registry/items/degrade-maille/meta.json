@@ -1,0 +1,215 @@
+{
+  "id": "degrade-maille",
+  "nom": "Dégradé maillé vivant",
+  "categorie": "backgrounds",
+  "niveau": "premium",
+  "palette": "lavande",
+  "description": "Quatre teintes tirées de la palette ondulent en nappes de soie dans un shader WebGL, avec un grain de film fin, un tourbillon doux autour du curseur et une zone calme pour le texte. Repli canvas 2D, pause hors écran.",
+  "tags": [
+    "WebGL",
+    "Shader",
+    "Dégradé",
+    "Grain",
+    "Hero",
+    "Pointeur"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 720
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "technique": "Shader WebGL 1 (déformation de domaine fbm) · repli canvas 2D",
+  "difficulte": 3,
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "--accent-vivid, --accent, --accent-subtle-border, --text-strong (reflet en sombre) et --bg ; teintes voisines calculées par rotation"
+    },
+    {
+      "nom": "WebGL 1",
+      "note": "Natif, sans bibliothèque ; repli canvas 2D automatique"
+    },
+    {
+      "nom": "Moteur intégré",
+      "note": "≈ 5 ko minifié, dans le fichier (aucun CDN)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "speed",
+      "label": "Vitesse",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "code": {
+        "html": "data-speed=\"{v}\"",
+        "react": "speed={{v}}"
+      },
+      "hint": "0 : image fixe, le rendu s’arrête."
+    },
+    {
+      "name": "warp",
+      "label": "Déformation",
+      "type": "number",
+      "default": 0.6,
+      "min": 0,
+      "max": 1,
+      "step": 0.05,
+      "code": {
+        "html": "data-warp=\"{v}\"",
+        "react": "warp={{v}}"
+      },
+      "hint": "0 : grandes plages douces. 1 : nappes de soie très plissées."
+    },
+    {
+      "name": "spread",
+      "label": "Écart de teinte",
+      "type": "number",
+      "default": 38,
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "°",
+      "code": {
+        "html": "data-spread=\"{v}\"",
+        "react": "spread={{v}}"
+      },
+      "hint": "0 : camaïeu de l’accent. Plus haut : teintes voisines sur le cercle chromatique."
+    },
+    {
+      "name": "intensity",
+      "label": "Intensité",
+      "type": "number",
+      "default": 0.85,
+      "min": 0.2,
+      "max": 1,
+      "step": 0.05,
+      "code": {
+        "html": "data-intensity=\"{v}\"",
+        "react": "intensity={{v}}"
+      }
+    },
+    {
+      "name": "grain",
+      "label": "Grain",
+      "type": "number",
+      "default": 0.06,
+      "min": 0,
+      "max": 0.15,
+      "step": 0.01,
+      "code": {
+        "html": "data-grain=\"{v}\"",
+        "react": "grain={{v}}"
+      },
+      "hint": "Grain de film animé : casse les bandes du dégradé sur les écrans 8 bits."
+    },
+    {
+      "name": "pointer",
+      "label": "Tourbillon au curseur",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-pointer=\"{v}\"",
+        "react": "pointer={{v}}"
+      },
+      "hint": "Souris et stylet uniquement : au tactile, le doigt fait défiler."
+    },
+    {
+      "name": "calm",
+      "label": "Zone calme",
+      "type": "number",
+      "default": 0.42,
+      "min": 0,
+      "max": 0.6,
+      "step": 0.02,
+      "code": {
+        "html": "data-calm=\"{v}\"",
+        "react": "calm={{v}}"
+      },
+      "hint": "Part du fond laissée unie pour le texte (AA garanti dessus)."
+    },
+    {
+      "name": "side",
+      "label": "Côté calme",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "left",
+          "label": "Gauche"
+        },
+        {
+          "value": "bottom",
+          "label": "Bas"
+        },
+        {
+          "value": "none",
+          "label": "Aucun"
+        }
+      ],
+      "code": {
+        "html": "data-side=\"{v}\"",
+        "react": "side=\"{v}\""
+      },
+      "hint": "Auto : à gauche, en bas sous 900 px (le texte passe sous le dégradé)."
+    },
+    {
+      "name": "contenu",
+      "label": "Afficher le hero",
+      "type": "boolean",
+      "default": true
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/MeshGradient.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Fond d’un hero, d’une page d’inscription ou d’un écran d’attente : un seul dégradé vivant par page, il porte l’ambiance.",
+    "Les couleurs viennent de la palette : changez d’accent (ou de thème) et le shader relit les variables sans se recréer.",
+    "Écart de teinte bas (0 à 20°) pour une marque sobre, 40 à 80° pour un rendu « aurore » plus riche.",
+    "Posez le texte dans la zone calme, ou sur une surface pleine (carte, panneau) : jamais directement sur les nappes colorées.",
+    "MeshGradient.init(scope), puis el._mesh.update(MeshGradient.read(el)) après un changement de data-* ; pointer(x, y) en coordonnées 0 à 1 pour piloter le tourbillon."
+  ],
+  "accessibilite": [
+    "Le canvas est décoratif (aria-hidden) ; la carte d’exemple porte une description textuelle de sa barre de répartition.",
+    "Texte sur la zone calme (fond --bg) ou sur --surface : contraste du thème, ≥ 4,5:1 en clair et en sombre.",
+    "« Réduire les animations » : une seule image fixe, sans ondulation ni grain animé.",
+    "Rendu en pause hors écran (IntersectionObserver) et onglet masqué ; contexte WebGL perdu géré sans erreur.",
+    "Mobile : texte et boutons de 48 px sous le dégradé, aucune interaction requise au tactile."
+  ],
+  "logo_exemple": {
+    "nom": "Aplomb",
+    "secteur": "Banque en ligne pour indépendants",
+    "fichier": "logo.svg",
+    "palette": "lavande",
+    "typo": "Geist SemiBold"
+  }
+}

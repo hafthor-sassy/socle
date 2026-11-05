@@ -1,0 +1,604 @@
+<!-- Tableau façon tableur — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Grille virtualisée (10 000 lignes sans ralentir), sélection rectangulaire au glisser, poignée de recopie,
+     édition en place, barre de formule, copier / couper / coller (TSV, compatible Excel, Numbers, Google Sheets),
+     annuler / rétablir, navigation complète au clavier et somme / moyenne de la sélection.
+     API : el.sheet.setRows(rows), el.sheet.getRows(), événement « change » { changes: [{ row, col, before, after }] }. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="sh" data-sheet data-rows="1200" data-density="comfortable" data-grid-lines="true" data-formula="true" data-state="ready" aria-labelledby="sh-title">
+  <header class="sh__head">
+    <div class="sh__brand">
+      <svg class="sh__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="sh__logo-bg"/><path d="M20 76 50 24l30 52Z" class="sh__logo-st"/><path d="M50 76 50 52 40 76" class="sh__logo-st sh__logo-st--thin"/><circle cx="73" cy="30" r="5" class="sh__logo-fg"/></svg>
+      <div>
+        <p class="sh__eyebrow">Bivouac · Événements</p>
+        <h2 class="sh__title" id="sh-title">Inscriptions — Rencontres Altitude 2027</h2>
+      </div>
+    </div>
+    <p class="sh__saved" data-saved><span class="sh__saved-dot" aria-hidden="true"></span><span data-saved-t>Enregistré</span></p>
+  </header>
+
+  <div class="sh__fbar">
+    <span class="sh__ref" data-ref aria-label="Cellule active">A1</span>
+    <span class="sh__fx" aria-hidden="true">ƒx</span>
+    <label class="sh__fin"><span class="sh__sr">Contenu de la cellule active</span><input type="text" data-fbar autocomplete="off" spellcheck="false"></label>
+  </div>
+
+  <div class="sh__tools" role="toolbar" aria-label="Actions sur la sélection">
+    <button type="button" class="sh__tool" data-act="edit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>Modifier</button>
+    <button type="button" class="sh__tool" data-act="copy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Copier</button>
+    <button type="button" class="sh__tool" data-act="clear"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12"/></svg>Effacer</button>
+    <button type="button" class="sh__tool" data-act="undo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>Annuler</button>
+    <button type="button" class="sh__tool" data-act="select" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke-dasharray="3 3"/><path d="M12 9v6M9 12h6"/></svg>Étendre</button>
+  </div>
+
+  <div class="sh__scroll" data-scroll>
+    <div class="sh__inner" data-inner role="grid" aria-labelledby="sh-title" aria-multiselectable="true" tabindex="0" data-grid>
+      <div class="sh__hrow" role="row" aria-rowindex="1" data-hrow></div>
+      <div class="sh__rows" role="rowgroup" data-rowsel></div>
+      <div class="sh__selbox" aria-hidden="true" data-selbox><i class="sh__fill" data-fill></i></div>
+      <div class="sh__active" aria-hidden="true" data-activebox></div>
+      <svg class="sh__ants" aria-hidden="true" data-ants><rect x="1" y="1" rx="2"/></svg>
+      <div class="sh__fillprev" aria-hidden="true" data-fillprev></div>
+      <input class="sh__editor" type="text" data-editor autocomplete="off" spellcheck="false" aria-label="Modifier la cellule" hidden>
+    </div>
+    <div class="sh__state" data-loading hidden aria-hidden="true"></div>
+    <div class="sh__empty" data-empty hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M9 4v16"/></svg>
+      <p class="sh__empty-t">Aucune inscription pour l’instant</p>
+      <p class="sh__empty-d">Collez une liste depuis un tableur (⌘ V) ou importez un fichier CSV.</p>
+    </div>
+  </div>
+
+  <footer class="sh__status">
+    <p class="sh__msg" data-msg aria-live="polite"></p>
+    <p class="sh__agg" data-agg></p>
+  </footer>
+  <p class="sh__sr" aria-live="assertive" data-live></p>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .sh { --sh-row: 36px; --sh-head: 32px; --sh-num: 48px; position: relative; width: 100%; max-width: 1120px; margin: 0 auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sheet); color: var(--text); font-family: var(--font-sans); font-variant-numeric: tabular-nums; overflow: hidden; }
+  .sh[data-density="compact"] { --sh-row: 28px; }
+  .sh *, .sh *::before { box-sizing: border-box; }
+  .sh [hidden] { display: none !important; }
+  .sh__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+  .sh :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .sh svg { display: block; }
+
+  .sh__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 16px; }
+  .sh__brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .sh__logo { width: 40px; height: 40px; flex: none; }
+  .sh__logo-bg { fill: var(--accent); }
+  .sh__logo-st { fill: none; stroke: var(--accent-fg); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+  .sh__logo-st--thin { stroke-width: 7; }
+  .sh__logo-fg { fill: var(--accent-fg); }
+  .sh__eyebrow { margin: 0; font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .sh__title { margin: 0; font-size: var(--t-section); line-height: var(--t-section-lh); font-weight: 600; letter-spacing: var(--track-snug); color: var(--text-strong); }
+  .sh__saved { display: inline-flex; flex: none; align-items: center; gap: 8px; margin: 0; color: var(--text-muted); font-size: var(--t-xs); }
+  .sh__saved-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--up); transition: background var(--motion-base); }
+  .sh__saved.is-saving .sh__saved-dot { background: var(--warn); animation: sh-pulse 900ms var(--ease-out) infinite; }
+  @keyframes sh-pulse { 50% { opacity: .35; } }
+
+  /* Barre de formule */
+  .sh__fbar { display: flex; align-items: center; height: 40px; margin: 0 24px 12px; border: 1px solid var(--border-control); border-radius: var(--radius-ctl); background: var(--surface); overflow: hidden; }
+  .sh__fbar:focus-within { outline: var(--focus-width) solid var(--focus-ring); outline-offset: -1px; }
+  .sh__ref { flex: none; width: 72px; height: 100%; display: grid; place-items: center; border-right: 1px solid var(--border); color: var(--text-strong); font: 500 var(--t-sm) / 1 var(--font-mono); }
+  .sh__fx { flex: none; padding: 0 8px 0 12px; color: var(--text-muted); font: italic 500 var(--t-sm) / 1 var(--font-sans); }
+  .sh__fin { flex: 1; min-width: 0; height: 100%; }
+  .sh__fin input { width: 100%; height: 100%; padding: 0 12px 0 0; border: 0; background: none; color: var(--text-strong); font: 400 var(--t-sm) / 1 var(--font-sans); outline: none; }
+  .sh__fin input:read-only { color: var(--text-muted); font-family: var(--font-mono); }
+  .sh[data-formula="false"] .sh__fbar { display: none; }
+
+  .sh__tools { display: none; gap: 8px; padding: 0 16px 12px; overflow-x: auto; scrollbar-width: none; }
+  .sh__tool { display: inline-flex; flex: none; align-items: center; gap: 6px; height: 44px; padding: 0 14px; border: 1px solid var(--border-control); border-radius: var(--radius-ctl); background: var(--surface); color: var(--text-strong); font: 500 var(--t-sm) / 1 var(--font-sans); }
+  .sh__tool svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .sh__tool[aria-pressed="true"] { background: var(--accent-subtle); border-color: var(--accent); color: var(--text-strong); }
+  .sh__tool:disabled { opacity: .45; }
+
+  /* Grille */
+  .sh__scroll { position: relative; height: 460px; overflow: auto; border-top: 1px solid var(--border); overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--border-control) transparent; }
+  .sh__inner { position: relative; outline: none; }
+  .sh__inner:focus-visible { outline: none; }
+  .sh__hrow { position: sticky; top: 0; z-index: 4; display: flex; height: var(--sh-head); background: var(--raised); border-bottom: 1px solid var(--border); }
+  .sh__rows { position: absolute; left: 0; top: var(--sh-head); }
+  .sh__row { position: absolute; left: 0; display: flex; height: var(--sh-row); }
+  .sh__c { flex: none; display: flex; align-items: center; height: 100%; padding: 0 10px; border-right: 1px solid transparent; border-bottom: 1px solid var(--border); background: var(--surface); color: var(--text-strong); font-size: var(--t-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: none; -webkit-user-select: none; }
+  .sh:not([data-grid-lines=false]) .sh__c { border-right-color: var(--border); }
+  .sh__c--num { justify-content: flex-end; }
+  .sh__c--fx { background: var(--raised); color: var(--text); }
+  .sh__c--muted { color: var(--text-muted); }
+  .sh__c.is-err { background: var(--tint-red-bg); color: var(--tint-red-fg); }
+  .sh__c.is-flash { animation: sh-flash 900ms var(--ease-out); }
+  @keyframes sh-flash { 0% { background: var(--accent-subtle); } }
+  .sh__tag { display: inline-flex; align-items: center; height: 20px; padding: 0 8px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 500; }
+  .sh__tag--a { background: var(--tint-green-bg); color: var(--tint-green-fg); }
+  .sh__tag--b { background: var(--tint-blue-bg); color: var(--tint-blue-fg); }
+  .sh__tag--c { background: var(--tint-amber-bg); color: var(--tint-amber-fg); }
+  .sh__tag--d { background: var(--tint-violet-bg); color: var(--tint-violet-fg); }
+  .sh__rn, .sh__ch { display: flex; align-items: center; flex: none; height: 100%; border-bottom: 1px solid var(--border); }
+  .sh__ch { border-bottom: 0; }
+  .sh__rn, .sh__ch { position: sticky; left: 0; z-index: 3; justify-content: center; width: var(--sh-num); padding: 0; background: var(--raised); color: var(--text-muted); font: 500 12px / 1 var(--font-mono); cursor: pointer; border-right: 1px solid var(--border); }
+  .sh__ch { z-index: 5; cursor: pointer; }
+  .sh__ch svg { width: 12px; height: 12px; fill: var(--text-muted); }
+  .sh__h { flex: none; display: flex; align-items: center; gap: 6px; height: 100%; padding: 0 10px; border-right: 1px solid var(--border); color: var(--text-muted); font-size: var(--t-xs); font-weight: 500; white-space: nowrap; overflow: hidden; cursor: pointer; user-select: none; -webkit-user-select: none; }
+  .sh__h b { color: var(--text-disabled); font: 500 11px / 1 var(--font-mono); }
+  .sh__h--num { justify-content: flex-end; }
+  .sh__h i { margin-left: auto; color: var(--text-muted); font-style: italic; font-weight: 600; }
+  .sh__h--num i { margin-left: 0; }
+  .sh__h.is-on, .sh__rn.is-on { background: var(--accent-subtle); color: var(--text-strong); }
+  .sh__h.is-on b, .sh__rn.is-on { color: var(--text-strong); }
+  .sh__rn.is-on { box-shadow: inset -2px 0 0 var(--accent); }
+  .sh__h.is-on { box-shadow: inset 0 -2px 0 var(--accent); }
+
+  .sh__selbox { position: absolute; z-index: 2; display: none; pointer-events: none; background: color-mix(in srgb, var(--accent) 9%, transparent); border: 1px solid var(--accent); border-radius: 2px; }
+  .sh__selbox.is-on { display: block; }
+  .sh__fill { position: absolute; right: -5px; bottom: -5px; width: 9px; height: 9px; border: 2px solid var(--surface); border-radius: 2px; background: var(--accent); pointer-events: auto; cursor: crosshair; touch-action: none; }
+  .sh__fill::after { content: ""; position: absolute; inset: -12px; }
+  .sh__active { position: absolute; z-index: 2; pointer-events: none; border: 2px solid var(--accent); border-radius: 2px; transition: transform 90ms var(--ease-out), width 90ms var(--ease-out), height 90ms var(--ease-out); }
+  .sh__inner:not(:focus-within) .sh__active { border-color: var(--border-strong); }
+  .sh .sh__ants { position: absolute; z-index: 2; display: none; overflow: visible; pointer-events: none; }
+  .sh .sh__ants.is-on { display: block; }
+  .sh__ants rect { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 4; animation: sh-ants 600ms linear infinite; }
+  @keyframes sh-ants { to { stroke-dashoffset: -9; } }
+  .sh__fillprev { position: absolute; z-index: 2; display: none; pointer-events: none; border: 1px dashed var(--accent); border-radius: 2px; }
+  .sh__fillprev.is-on { display: block; }
+  .sh__editor { position: absolute; z-index: 6; padding: 0 9px; border: 2px solid var(--accent); border-radius: 2px; background: var(--surface); color: var(--text-strong); font: 400 var(--t-sm) / 1 var(--font-sans); box-shadow: var(--shadow-popover); outline: none; }
+  .sh__editor.is-num { text-align: right; }
+  .sh__editor.is-bad { border-color: var(--down); animation: sh-shake 320ms var(--ease-out); }
+  @keyframes sh-shake { 25% { translate: -3px 0; } 50% { translate: 3px 0; } 75% { translate: -2px 0; } }
+  .sh__fin input.is-bad { color: var(--down); }
+
+  .sh__state { position: absolute; inset: var(--sh-head) 0 0; background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--sh-row) - 1px), var(--border) calc(var(--sh-row) - 1px) var(--sh-row)); }
+  .sh__state::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--state-press), transparent); transform: translateX(-100%); animation: sh-shim 1.4s var(--ease-in) infinite; }
+  @keyframes sh-shim { to { transform: translateX(100%); } }
+  .sh__empty { position: absolute; inset: var(--sh-head) 0 0; display: grid; place-content: center; justify-items: center; gap: 4px; padding: 24px; text-align: center; }
+  .sh__empty svg { width: 32px; height: 32px; margin-bottom: 8px; fill: none; stroke: var(--text-muted); stroke-width: 1.5; }
+  .sh__empty-t { margin: 0; color: var(--text-strong); font-weight: 600; }
+  .sh__empty-d { margin: 0; color: var(--text-muted); font-size: var(--t-sm); }
+
+  .sh__status { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 40px; padding: 8px 24px; border-top: 1px solid var(--border); background: var(--raised); font-size: var(--t-xs); line-height: var(--t-xs-lh); }
+  .sh__msg { margin: 0; color: var(--text-muted); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sh__msg.is-err { color: var(--down); }
+  .sh__msg kbd { padding: 1px 5px; border: 1px solid var(--border-control); border-radius: 4px; font: 500 11px / 1 var(--font-mono); color: var(--text); }
+  .sh__agg { display: flex; flex: none; gap: 16px; margin: 0; color: var(--text-muted); }
+  .sh__agg b { color: var(--text-strong); font-weight: 600; }
+
+  @media (max-width: 720px) {
+    .sh { --sh-row: 44px; --sh-num: 40px; border-radius: var(--radius-card); }
+    .sh[data-density="compact"] { --sh-row: 40px; }
+    .sh__head { padding: 16px; }
+    .sh__title { font-size: var(--t-base); line-height: var(--t-base-lh); }
+    .sh__saved span:last-child { display: none; }
+    .sh__fbar { height: 44px; margin: 0 16px 12px; }
+    .sh__ref { width: 56px; }
+    .sh__fin input, .sh__editor { font-size: var(--t-input); }
+    .sh__tools { display: flex; }
+    .sh__scroll { height: 420px; }
+    .sh__c { font-size: var(--t-sm); }
+    .sh__status { flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 16px; }
+    .sh__agg { gap: 12px; flex-wrap: wrap; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sh *, .sh *::before, .sh *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+  }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  /* ——— Colonnes ——— */
+  var PASS = { 'Pass 3 jours': 390, 'Pass 1 jour': 160, 'Exposant': 0, 'Intervenant': 0 };
+  var COLS = [
+    { key: 'nom', label: 'Participant', w: 184, type: 'text', grow: 1 },
+    { key: 'societe', label: 'Société', w: 168, type: 'text', grow: 1 },
+    { key: 'formule', label: 'Formule', w: 132, type: 'tag', options: Object.keys(PASS) },
+    { key: 'nuits', label: 'Nuits', w: 80, type: 'int', min: 0, max: 14 },
+    { key: 'prix', label: 'Prix / nuit', w: 112, type: 'eur' },
+    { key: 'navette', label: 'Navette', w: 96, type: 'text', grow: .5 },
+    { key: 'total', label: 'Total', w: 124, type: 'eur', fx: function (r) { return (+r.nuits || 0) * (+r.prix || 0) + (PASS[r.formule] || 0); }, fxText: function (i) { return '=D' + i + '*E' + i + '+PASS(C' + i + ')'; } }
+  ];
+  var LETTERS = 'ABCDEFGHIJ';
+  var eur = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  var nf = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 2 });
+
+  /* ——— Données d'exemple déterministes ——— */
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var PRE = ['Camille', 'Léa', 'Hugo', 'Inès', 'Nathan', 'Chloé', 'Louis', 'Manon', 'Jules', 'Sarah', 'Yanis', 'Lina', 'Adam', 'Zoé', 'Gabriel', 'Jade', 'Noah', 'Clara', 'Rayan', 'Alice', 'Théo', 'Emma', 'Malik', 'Anaïs', 'Paul', 'Salomé', 'Karim', 'Margaux', 'Victor', 'Nora'];
+  var NOMS = ['Roux', 'Lefèvre', 'Benali', 'Garnier', 'Moreau', 'Faure', 'Nguyen', 'Chevalier', 'Mercier', 'Haddad', 'Lambert', 'Rousseau', 'Perrin', 'Blanc', 'Guérin', 'Boyer', 'Diallo', 'Fontaine', 'Caron', 'Mallet', 'Barbier', 'Leclerc', 'Renaud', 'Meunier', 'Brunet', 'Da Silva', 'Colin', 'Vidal', 'Marchand', 'Arnaud'];
+  var SOC = ['Alpage Énergies', 'Studio Névé', 'Cordée Conseil', 'Granit Logiciels', 'Lauze & Fils', 'Crête Mobilité', 'Moraine Santé', 'Serac Data', 'Combe Assurances', 'Ubac Design', 'Adret Finance', 'Chamois Retail', 'Névé Labs', 'Pierrier Industrie', 'Hameau Média'];
+  function sample(n) {
+    var R = rng(2027), rows = [], prices = [89, 109, 129, 149, 175];
+    for (var i = 0; i < n; i++) {
+      var f = R(), formule = f < .58 ? 'Pass 3 jours' : f < .86 ? 'Pass 1 jour' : f < .96 ? 'Exposant' : 'Intervenant';
+      var nuits = formule === 'Pass 1 jour' ? (R() < .6 ? 0 : 1) : formule === 'Pass 3 jours' ? 2 + (R() < .3 ? 1 : 0) : 1 + Math.floor(R() * 3);
+      rows.push({ nom: PRE[Math.floor(R() * PRE.length)] + ' ' + NOMS[Math.floor(R() * NOMS.length)], societe: SOC[Math.floor(R() * SOC.length)], formule: formule, nuits: nuits, prix: nuits ? prices[Math.floor(R() * prices.length)] : '', navette: R() < .62 ? 'Oui' : 'Non' });
+    }
+    return rows;
+  }
+
+  function init(root) {
+    if (root._sheet) return root._sheet;
+    var $ = function (s) { return root.querySelector(s); };
+    var scroll = $('[data-scroll]'), inner = $('[data-inner]'), hrow = $('[data-hrow]'), rowsEl = $('[data-rowsel]');
+    var selbox = $('[data-selbox]'), activeBox = $('[data-activebox]'), ants = $('[data-ants]'), fillPrev = $('[data-fillprev]'), editor = $('[data-editor]');
+    var fbar = $('[data-fbar]'), refEl = $('[data-ref]'), msg = $('[data-msg]'), agg = $('[data-agg]'), live = $('[data-live]'), saved = $('[data-saved]');
+    var rows = sample(+root.dataset.rows || 1200);
+    var X = [], W = 0, RH = 36, HH = 32, NUMW = 48;
+    var sel = { r: 0, c: 0, r0: 0, c0: 0, r1: 0, c1: 0 }; /* cellule active + rectangle */
+    var edit = null, copied = null, undo = [], redo = [], extendMode = false, rendered = { a: -1, b: -1 }, rafId = 0;
+    var uid = 'sh' + Math.random().toString(36).slice(2, 7);
+
+    function metrics() {
+      var cs = getComputedStyle(root);
+      RH = parseFloat(cs.getPropertyValue('--sh-row')) || 36; HH = parseFloat(cs.getPropertyValue('--sh-head')) || 32; NUMW = parseFloat(cs.getPropertyValue('--sh-num')) || 48;
+      /* Les colonnes de texte se partagent la place libre : la grille remplit toujours sa carte. */
+      COLS.forEach(function (c) { if (c.base == null) c.base = c.w; c.w = c.base; });
+      var baseW = NUMW + COLS.reduce(function (a, c) { return a + c.base; }, 0), free = Math.max(0, scroll.clientWidth - baseW - 1);
+      if (free) { var grow = COLS.filter(function (c) { return c.grow; }), gsum = grow.reduce(function (a, c) { return a + c.base * c.grow; }, 0); grow.forEach(function (c) { c.w = Math.floor(c.base + free * c.base * c.grow / gsum); }); }
+      X = []; var x = NUMW; COLS.forEach(function (c) { X.push(x); x += c.w; }); W = x;
+      hrow.querySelectorAll('[data-col]').forEach(function (h) { h.style.width = COLS[+h.dataset.col].w + 'px'; });
+      inner.style.width = W + 'px'; inner.style.height = (HH + rows.length * RH) + 'px';
+      inner.setAttribute('aria-rowcount', rows.length + 1); inner.setAttribute('aria-colcount', COLS.length + 1);
+    }
+    function val(r, c) { var col = COLS[c], row = rows[r]; if (!row) return ''; return col.fx ? col.fx(row) : row[col.key]; }
+    function isNum(c) { return COLS[c].type === 'int' || COLS[c].type === 'eur'; }
+    function show(r, c) {
+      var v = val(r, c), col = COLS[c];
+      if (v === '' || v == null) return '';
+      if (col.type === 'eur') return eur.format(+v);
+      if (col.type === 'int') return nf.format(+v);
+      return String(v);
+    }
+    function raw(r, c) { var v = val(r, c); if (v == null) return ''; return COLS[c].type === 'eur' || COLS[c].type === 'int' ? String(v).replace('.', ',') : String(v); }
+
+    /* ——— En-têtes ——— */
+    function head() {
+      hrow.innerHTML = '<div class="sh__ch" role="columnheader" aria-label="Tout sélectionner" data-all><svg viewBox="0 0 12 12"><path d="M11 1v10H1z"/></svg></div>' +
+        COLS.map(function (c, i) { return '<div class="sh__h' + (isNum(i) ? ' sh__h--num' : '') + '" role="columnheader" aria-colindex="' + (i + 2) + '" data-col="' + i + '" style="width:' + c.w + 'px">' + (isNum(i) ? (c.fx ? '<i aria-hidden="true">ƒ</i>' : '') + '<b>' + LETTERS[i] + '</b>' + c.label : '<b>' + LETTERS[i] + '</b>' + c.label + (c.fx ? '<i aria-hidden="true">ƒ</i>' : '')) + '</div>'; }).join('');
+    }
+
+    /* ——— Rendu virtualisé : seules les lignes visibles (+ marge) existent dans le DOM ——— */
+    function paint(force) {
+      var top = scroll.scrollTop, h = scroll.clientHeight;
+      var a = Math.max(0, Math.floor((top - HH) / RH) - 8), b = Math.min(rows.length - 1, Math.ceil((top + h) / RH) + 8);
+      if (!force && a === rendered.a && b === rendered.b) return syncHeads();
+      rendered = { a: a, b: b };
+      var html = '';
+      for (var r = a; r <= b; r++) {
+        html += '<div class="sh__row" role="row" aria-rowindex="' + (r + 2) + '" style="top:' + (r * RH) + 'px;width:' + W + 'px"><div class="sh__rn" role="rowheader" data-rn="' + r + '">' + (r + 1) + '</div>';
+        for (var c = 0; c < COLS.length; c++) {
+          var col = COLS[c], v = show(r, c), cls = 'sh__c' + (isNum(c) ? ' sh__c--num' : '') + (col.fx ? ' sh__c--fx' : '') + (col.key === 'navette' && v === 'Non' ? ' sh__c--muted' : '');
+          var on = r >= sel.r0 && r <= sel.r1 && c >= sel.c0 && c <= sel.c1;
+          if (col.type === 'tag' && v) v = '<span class="sh__tag sh__tag--' + ['a', 'b', 'c', 'd'][col.options.indexOf(v)] + '">' + v + '</span>';
+          html += '<div class="' + cls + '" role="gridcell" id="' + uid + '-' + r + '-' + c + '" aria-colindex="' + (c + 2) + '" aria-selected="' + on + '"' + (col.fx ? ' aria-readonly="true"' : '') + ' data-r="' + r + '" data-c="' + c + '" style="width:' + col.w + 'px">' + v + '</div>';
+        }
+        html += '</div>';
+      }
+      rowsEl.innerHTML = html;
+      syncHeads();
+    }
+    function schedule() { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(function () { paint(false); }); }
+    function syncHeads() {
+      hrow.querySelectorAll('[data-col]').forEach(function (h) { var c = +h.dataset.col; h.classList.toggle('is-on', c >= sel.c0 && c <= sel.c1); });
+      rowsEl.querySelectorAll('[data-rn]').forEach(function (n) { var r = +n.dataset.rn; n.classList.toggle('is-on', r >= sel.r0 && r <= sel.r1); });
+      rowsEl.querySelectorAll('[aria-selected]').forEach(function (el) { var r = +el.dataset.r, c = +el.dataset.c; el.setAttribute('aria-selected', r >= sel.r0 && r <= sel.r1 && c >= sel.c0 && c <= sel.c1); });
+    }
+    function rect(r0, c0, r1, c1) { return { x: X[c0], y: HH + r0 * RH, w: X[c1] + COLS[c1].w - X[c0], h: (r1 - r0 + 1) * RH }; }
+    function place(el, b, pad) { pad = pad || 0; el.style.left = (b.x - pad) + 'px'; el.style.top = (b.y - pad) + 'px'; el.style.width = (b.w + pad * 2) + 'px'; el.style.height = (b.h + pad * 2) + 'px'; }
+
+    function drawSel() {
+      var multi = sel.r0 !== sel.r1 || sel.c0 !== sel.c1;
+      selbox.classList.toggle('is-on', true);
+      place(selbox, rect(sel.r0, sel.c0, sel.r1, sel.c1));
+      selbox.style.background = multi ? '' : 'transparent';
+      selbox.style.borderColor = multi ? '' : 'transparent';
+      var a = rect(sel.r, sel.c, sel.r, sel.c);
+      activeBox.style.left = '0'; activeBox.style.top = '0';
+      activeBox.style.transform = 'translate(' + (a.x - 1) + 'px,' + (a.y - 1) + 'px)'; activeBox.style.width = (a.w + 1) + 'px'; activeBox.style.height = (a.h + 1) + 'px';
+      if (copied) { var cb = rect(copied.r0, copied.c0, copied.r1, copied.c1); ants.classList.add('is-on'); place(ants, cb, 1); ants.querySelector('rect').setAttribute('width', cb.w); ants.querySelector('rect').setAttribute('height', cb.h); }
+      else ants.classList.remove('is-on');
+      var id = uid + '-' + sel.r + '-' + sel.c;
+      inner.setAttribute('aria-activedescendant', document.getElementById(id) ? id : '');
+      refEl.textContent = multi ? LETTERS[sel.c0] + (sel.r0 + 1) + ':' + LETTERS[sel.c1] + (sel.r1 + 1) : LETTERS[sel.c] + (sel.r + 1);
+      if (!edit || edit.from !== 'bar') { var col = COLS[sel.c]; fbar.value = col.fx ? col.fxText(sel.r + 1) : raw(sel.r, sel.c); fbar.readOnly = !!col.fx; }
+      syncHeads(); aggregate();
+    }
+    function aggregate() {
+      var sum = 0, n = 0, cnt = 0, cells = (sel.r1 - sel.r0 + 1) * (sel.c1 - sel.c0 + 1);
+      if (cells > 1) {
+        for (var r = sel.r0; r <= sel.r1; r++) for (var c = sel.c0; c <= sel.c1; c++) { var v = val(r, c); if (v !== '' && v != null) cnt++; if (isNum(c) && v !== '' && !isNaN(+v)) { sum += +v; n++; } }
+        var money = false; for (var k = sel.c0; k <= sel.c1; k++) if (COLS[k].type === 'eur') money = true;
+        var f = function (x) { return money && (sel.c0 === sel.c1 || COLS.slice(sel.c0, sel.c1 + 1).every(function (c) { return c.type === 'eur'; })) ? eur.format(x) : nf.format(x); };
+        agg.innerHTML = (n ? '<span>Somme <b>' + f(sum) + '</b></span><span>Moyenne <b>' + f(sum / n) + '</b></span>' : '') + '<span>Nombre <b>' + nf.format(cnt) + '</b></span>';
+      } else agg.innerHTML = '<span><b>' + nf.format(rows.length) + '</b> inscriptions</span><span>Recettes <b>' + eur.format(rows.reduce(function (a, r) { return a + COLS[6].fx(r); }, 0)) + '</b></span>';
+    }
+    function note(t, err) { msg.innerHTML = t; msg.classList.toggle('is-err', !!err); clearTimeout(note._t); note._t = setTimeout(function () { msg.classList.remove('is-err'); msg.innerHTML = hint(); }, err ? 4200 : 2600); }
+    function hint() { return matchMedia('(max-width: 720px)').matches ? 'Touchez une cellule, touchez deux fois pour la modifier.' : 'Glissez pour sélectionner · <kbd>Entrée</kbd> modifier · <kbd>⌘ C</kbd> <kbd>⌘ V</kbd> copier-coller · <kbd>⌘ Z</kbd> annuler'; }
+    function say(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 20); }
+
+    function ensureVisible(r, c) {
+      var b = rect(r, c, r, c), st = scroll.scrollTop, sl = scroll.scrollLeft, vh = scroll.clientHeight, vw = scroll.clientWidth;
+      if (b.y - HH < st) scroll.scrollTop = b.y - HH; else if (b.y + b.h > st + vh) scroll.scrollTop = b.y + b.h - vh;
+      if (b.x - NUMW < sl) scroll.scrollLeft = b.x - NUMW; else if (b.x + b.w > sl + vw) scroll.scrollLeft = b.x + b.w - vw;
+      paint(false);
+    }
+    function select(r, c, extend, quiet) {
+      r = Math.max(0, Math.min(rows.length - 1, r)); c = Math.max(0, Math.min(COLS.length - 1, c));
+      if (extend) { sel.r0 = Math.min(sel.r, r); sel.r1 = Math.max(sel.r, r); sel.c0 = Math.min(sel.c, c); sel.c1 = Math.max(sel.c, c); sel.er = r; sel.ec = c; }
+      else { sel.r = sel.r0 = sel.r1 = sel.er = r; sel.c = sel.c0 = sel.c1 = sel.ec = c; }
+      ensureVisible(extend ? r : sel.r, extend ? c : sel.c); drawSel();
+      if (!quiet) say(extend ? refEl.textContent + ' sélectionnées' : LETTERS[c] + (r + 1) + ', ' + COLS[c].label + ', ' + (show(r, c) || 'vide'));
+    }
+
+    /* ——— Écriture avec historique (annuler / rétablir) ——— */
+    function parse(c, text) {
+      var col = COLS[c]; text = String(text).trim();
+      if (col.fx) return { skip: true };
+      if (col.type === 'int' || col.type === 'eur') {
+        if (text === '') return { v: '' };
+        var n = +text.replace(/\s|\u202f|\u00a0|€/g, '').replace(',', '.');
+        if (isNaN(n)) return { err: '« ' + text.slice(0, 24) + ' » n’est pas un nombre (colonne ' + col.label + ').' };
+        if (col.type === 'int') { n = Math.round(n); if (n < col.min || n > col.max) return { err: col.label + ' : entre ' + col.min + ' et ' + col.max + '.' }; }
+        if (n < 0) return { err: col.label + ' : pas de valeur négative.' };
+        return { v: n };
+      }
+      if (col.type === 'tag' && text) { var hit = col.options.filter(function (o) { return o.toLowerCase().indexOf(text.toLowerCase()) === 0; })[0]; if (!hit) return { err: 'Formule inconnue : ' + col.options.join(', ') + '.' }; return { v: hit }; }
+      return { v: text };
+    }
+    function write(cells, label) {
+      var changes = [], errs = [];
+      cells.forEach(function (x) {
+        var p = parse(x.c, x.text); if (p.skip) return;
+        if (p.err) { errs.push({ r: x.r, c: x.c, m: p.err }); return; }
+        var key = COLS[x.c].key, before = rows[x.r][key];
+        if (before === p.v) return;
+        rows[x.r][key] = p.v; changes.push({ row: x.r, col: key, before: before, after: p.v, c: x.c });
+      });
+      if (changes.length) { undo.push({ changes: changes, sel: Object.assign({}, sel) }); if (undo.length > 200) undo.shift(); redo = []; emit(changes); }
+      paint(true); drawSel();
+      changes.forEach(function (ch) { flash(ch.row, ch.c); if (COLS[6]) flash(ch.row, 6); });
+      if (errs.length) { var e = errs[0]; errFlash(e.r, e.c); note(e.m + (errs.length > 1 ? ' (' + errs.length + ' cellules refusées)' : ''), true); say(e.m); }
+      else if (label && changes.length) note(label);
+      return changes.length;
+    }
+    function flash(r, c) { var el = document.getElementById(uid + '-' + r + '-' + c); if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.classList.remove('is-flash'); el.offsetWidth; el.classList.add('is-flash'); } }
+    function errFlash(r, c) { var el = document.getElementById(uid + '-' + r + '-' + c); if (el) { el.classList.add('is-err'); setTimeout(function () { el.classList.remove('is-err'); }, 1400); } }
+    function history(from, to, verb) {
+      var h = from.pop(); if (!h) return note('Rien à ' + verb.toLowerCase() + '.');
+      h.changes.forEach(function (ch) { rows[ch.row][ch.col] = verb === 'Annuler' ? ch.before : ch.after; });
+      to.push(h); sel = Object.assign({}, h.sel); paint(true); ensureVisible(sel.r, sel.c); drawSel();
+      h.changes.forEach(function (ch) { flash(ch.row, ch.c); });
+      emit(h.changes.map(function (ch) { return { row: ch.row, col: ch.col, before: verb === 'Annuler' ? ch.after : ch.before, after: verb === 'Annuler' ? ch.before : ch.after }; }));
+      note((verb === 'Annuler' ? 'Annulé' : 'Rétabli') + ' : ' + h.changes.length + ' cellule' + (h.changes.length > 1 ? 's' : '')); say(verb === 'Annuler' ? 'Modification annulée' : 'Modification rétablie');
+    }
+    var saveT = 0;
+    function emit(changes) {
+      root.dispatchEvent(new CustomEvent('change', { bubbles: true, detail: { changes: changes.map(function (c) { return { row: c.row, col: c.col, before: c.before, after: c.after }; }) } }));
+      saved.classList.add('is-saving'); saved.querySelector('[data-saved-t]').textContent = 'Enregistrement…';
+      clearTimeout(saveT); saveT = setTimeout(function () { saved.classList.remove('is-saving'); saved.querySelector('[data-saved-t]').textContent = 'Enregistré'; }, 700);
+    }
+
+    /* ——— Édition en place ——— */
+    function startEdit(initial, from) {
+      var col = COLS[sel.c]; if (col.fx) { note('Total est calculé : =Nuits × Prix / nuit + prix du pass.'); return; }
+      sel.r0 = sel.r1 = sel.r; sel.c0 = sel.c1 = sel.c; drawSel();
+      if (from === 'bar') { edit = { from: 'bar' }; return; }
+      ensureVisible(sel.r, sel.c);
+      var b = rect(sel.r, sel.c, sel.r, sel.c);
+      editor.hidden = false; editor.classList.toggle('is-num', isNum(sel.c));
+      editor.style.left = (b.x - 1) + 'px'; editor.style.top = (b.y - 1) + 'px'; editor.style.width = Math.max(b.w + 2, 120) + 'px'; editor.style.height = (b.h + 1) + 'px';
+      editor.value = initial != null ? initial : raw(sel.r, sel.c);
+      editor.setAttribute('aria-label', 'Modifier ' + LETTERS[sel.c] + (sel.r + 1) + ', ' + col.label);
+      edit = { from: 'cell', r: sel.r, c: sel.c };
+      editor.focus({ preventScroll: true });
+      var n = editor.value.length; editor.setSelectionRange(n, n);
+    }
+    function commit(dr, dc) {
+      if (!edit) return;
+      var e = edit, text = e.from === 'bar' ? fbar.value : editor.value;
+      var tr = e.from === 'bar' ? sel.r : e.r, tc = e.from === 'bar' ? sel.c : e.c, chk = parse(tc, text);
+      /* Valeur refusée : l'éditeur reste ouvert, bordé de rouge, avec la raison dans la barre d'état. */
+      if (chk.err) { note(chk.err, true); say(chk.err); (e.from === 'bar' ? fbar : editor).classList.add('is-bad'); (e.from === 'bar' ? fbar : editor).setAttribute('aria-invalid', 'true'); if (e.from === 'cell') editor.focus(); return; }
+      editor.classList.remove('is-bad'); fbar.classList.remove('is-bad'); editor.removeAttribute('aria-invalid'); fbar.removeAttribute('aria-invalid');
+      edit = null;
+      editor.hidden = true;
+      write([{ r: e.from === 'bar' ? sel.r : e.r, c: e.from === 'bar' ? sel.c : e.c, text: text }]);
+      inner.focus({ preventScroll: true });
+      if (dr || dc) select(sel.r + (dr || 0), sel.c + (dc || 0));
+    }
+    function cancel() { if (!edit) return; edit = null; editor.hidden = true; drawSel(); inner.focus({ preventScroll: true }); say('Modification annulée'); }
+    editor.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); commit(e.shiftKey ? -1 : 1, 0); }
+      else if (e.key === 'Tab') { e.preventDefault(); commit(0, e.shiftKey ? -1 : 1); }
+      else if (e.key === 'Escape') { e.preventDefault(); cancel(); }
+      e.stopPropagation();
+    });
+    editor.addEventListener('blur', function () { if (edit && edit.from === 'cell') { if (parse(edit.c, editor.value).err) cancel(); else commit(0, 0); } });
+    editor.addEventListener('input', function () { editor.classList.remove('is-bad'); editor.removeAttribute('aria-invalid'); });
+    fbar.addEventListener('focus', function () { if (!COLS[sel.c].fx) startEdit(null, 'bar'); });
+    fbar.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); commit(1, 0); }
+      else if (e.key === 'Escape') { e.preventDefault(); edit = null; drawSel(); inner.focus(); }
+    });
+    fbar.addEventListener('blur', function () { if (edit && edit.from === 'bar') { if (parse(sel.c, fbar.value).err) { edit = null; fbar.classList.remove('is-bad'); drawSel(); } else commit(0, 0); } });
+
+    /* ——— Clavier ——— */
+    inner.addEventListener('keydown', function (e) {
+      if (edit) return;
+      var mod = e.metaKey || e.ctrlKey, k = e.key, ext = e.shiftKey;
+      var er = ext ? sel.er : sel.r, ec = ext ? sel.ec : sel.c, page = Math.max(1, Math.floor(scroll.clientHeight / RH) - 1);
+      var moves = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
+      if (moves[k]) {
+        e.preventDefault(); var m = moves[k];
+        if (mod) select(m[0] ? (m[0] < 0 ? 0 : rows.length - 1) : er, m[1] ? (m[1] < 0 ? 0 : COLS.length - 1) : ec, ext);
+        else select(er + m[0], ec + m[1], ext);
+        return;
+      }
+      if (k === 'PageDown' || k === 'PageUp') { e.preventDefault(); select(er + (k === 'PageDown' ? page : -page), ec, ext); return; }
+      if (k === 'Home') { e.preventDefault(); select(mod ? 0 : er, 0, ext); return; }
+      if (k === 'End') { e.preventDefault(); select(mod ? rows.length - 1 : er, COLS.length - 1, ext); return; }
+      if (k === 'Tab') { e.preventDefault(); select(sel.r, sel.c + (ext ? -1 : 1)); return; }
+      if (k === 'Enter') { e.preventDefault(); if (ext) select(sel.r - 1, sel.c); else startEdit(); return; }
+      if (k === 'F2') { e.preventDefault(); startEdit(); return; }
+      if (k === 'Escape') { if (copied) { copied = null; drawSel(); say('Copie annulée'); } return; }
+      if (k === 'Delete' || k === 'Backspace') { e.preventDefault(); clearSel(); return; }
+      if (mod && (k === 'a' || k === 'A')) { e.preventDefault(); selectAll(); return; }
+      if (mod && (k === 'z' || k === 'Z')) { e.preventDefault(); if (e.shiftKey) history(redo, undo, 'Rétablir'); else history(undo, redo, 'Annuler'); return; }
+      if (mod && (k === 'y' || k === 'Y')) { e.preventDefault(); history(redo, undo, 'Rétablir'); return; }
+      if (mod && (k === 'd' || k === 'D')) { e.preventDefault(); fillDown(); return; }
+      if (!mod && !e.altKey && k.length === 1) { e.preventDefault(); startEdit(k); }
+    });
+    function clearSel() {
+      var cells = [];
+      for (var r = sel.r0; r <= sel.r1; r++) for (var c = sel.c0; c <= sel.c1; c++) if (!COLS[c].fx) cells.push({ r: r, c: c, text: '' });
+      var n = write(cells); if (n) note(n + ' cellule' + (n > 1 ? 's effacées' : ' effacée') + ' · <kbd>⌘ Z</kbd> pour annuler');
+    }
+    function selectAll() { sel.r = 0; sel.c = 0; sel.r0 = 0; sel.c0 = 0; sel.r1 = rows.length - 1; sel.c1 = COLS.length - 1; sel.er = sel.r1; sel.ec = sel.c1; drawSel(); say('Toute la feuille est sélectionnée'); }
+    function fillDown() {
+      if (sel.r0 === sel.r1) return note('Sélectionnez plusieurs lignes : la première est recopiée vers le bas (⌘ D).');
+      var cells = []; for (var r = sel.r0 + 1; r <= sel.r1; r++) for (var c = sel.c0; c <= sel.c1; c++) cells.push({ r: r, c: c, text: raw(sel.r0, c) });
+      var n = write(cells); if (n) note('Recopié vers le bas : ' + n + ' cellules');
+    }
+
+    /* ——— Copier / couper / coller (TSV) ——— */
+    function tsv() { var out = []; for (var r = sel.r0; r <= sel.r1; r++) { var line = []; for (var c = sel.c0; c <= sel.c1; c++) line.push(raw(r, c)); out.push(line.join('\t')); } return out.join('\n'); }
+    function markCopied(cut) { copied = { r0: sel.r0, c0: sel.c0, r1: sel.r1, c1: sel.c1, cut: cut }; drawSel(); var n = (sel.r1 - sel.r0 + 1) * (sel.c1 - sel.c0 + 1); note(n + ' cellule' + (n > 1 ? 's' : '') + (cut ? ' coupée' : ' copiée') + (n > 1 ? 's' : '') + ' · <kbd>⌘ V</kbd> pour coller · <kbd>Échap</kbd> pour annuler'); say(n + ' cellules copiées'); }
+    var viaButton = false;
+    document.addEventListener('copy', function (e) { if (!root.contains(document.activeElement) && !viaButton) return; if (edit || document.activeElement === fbar) return; e.preventDefault(); e.clipboardData.setData('text/plain', tsv()); markCopied(false); viaButton = false; });
+    document.addEventListener('cut', function (e) { if (!root.contains(document.activeElement) || edit || document.activeElement === fbar) return; e.preventDefault(); e.clipboardData.setData('text/plain', tsv()); markCopied(true); });
+    document.addEventListener('paste', function (e) {
+      if (!root.contains(document.activeElement) || edit || document.activeElement === fbar) return;
+      e.preventDefault();
+      var text = (e.clipboardData || window.clipboardData).getData('text/plain'); if (!text) return;
+      var lines = text.replace(/\r/g, '').replace(/\n$/, '').split('\n').map(function (l) { return l.split('\t'); });
+      var h = lines.length, w = Math.max.apply(null, lines.map(function (l) { return l.length; }));
+      /* Une seule valeur collée sur une plage : elle remplit toute la plage, comme dans un tableur. */
+      var single = h === 1 && w === 1 && (sel.r1 > sel.r0 || sel.c1 > sel.c0);
+      var R = single ? sel.r1 - sel.r0 + 1 : h, C = single ? sel.c1 - sel.c0 + 1 : w, cells = [];
+      for (var i = 0; i < R; i++) for (var j = 0; j < C; j++) { var r = sel.r0 + i, c = sel.c0 + j; if (r >= rows.length || c >= COLS.length) continue; cells.push({ r: r, c: c, text: single ? lines[0][0] : (lines[i][j] != null ? lines[i][j] : '') }); }
+      if (copied && copied.cut) { for (var rr = copied.r0; rr <= copied.r1; rr++) for (var cc = copied.c0; cc <= copied.c1; cc++) if (!(rr >= sel.r0 && rr < sel.r0 + R && cc >= sel.c0 && cc < sel.c0 + C)) cells.unshift({ r: rr, c: cc, text: '' }); }
+      sel.r1 = Math.min(rows.length - 1, sel.r0 + R - 1); sel.c1 = Math.min(COLS.length - 1, sel.c0 + C - 1); sel.er = sel.r1; sel.ec = sel.c1;
+      copied = null;
+      var n = write(cells); if (n) { note(n + ' cellule' + (n > 1 ? 's collées' : ' collée') + ' · <kbd>⌘ Z</kbd> pour annuler'); say(n + ' cellules collées'); }
+    });
+
+    /* ——— Souris et doigt : sélection au glisser, poignée de recopie, en-têtes ——— */
+    function cellAt(clientX, clientY) {
+      var b = inner.getBoundingClientRect(), x = clientX - b.left, y = clientY - b.top - HH;
+      var r = Math.floor(y / RH), c = COLS.length - 1;
+      for (var i = 0; i < COLS.length; i++) if (x < X[i] + COLS[i].w) { c = i; break; }
+      return { r: Math.max(0, Math.min(rows.length - 1, r)), c: Math.max(0, c) };
+    }
+    var drag = null, autoT = 0;
+    function autoscroll(ev) {
+      cancelAnimationFrame(autoT);
+      var b = scroll.getBoundingClientRect(), dy = 0, dx = 0, edge = 32;
+      if (ev.clientY < b.top + HH + edge) dy = -Math.ceil((b.top + HH + edge - ev.clientY) / 4); else if (ev.clientY > b.bottom - edge) dy = Math.ceil((ev.clientY - b.bottom + edge) / 4);
+      if (ev.clientX < b.left + NUMW + edge) dx = -Math.ceil((b.left + NUMW + edge - ev.clientX) / 4); else if (ev.clientX > b.right - edge) dx = Math.ceil((ev.clientX - b.right + edge) / 4);
+      if (!dx && !dy) return;
+      (function loop() { if (!drag) return; scroll.scrollTop += dy; scroll.scrollLeft += dx; drag.move(ev); autoT = requestAnimationFrame(loop); })();
+    }
+    inner.addEventListener('pointerdown', function (e) {
+      if (e.button > 0) return;
+      var t = e.target;
+      if (t.closest('[data-fill]')) { e.preventDefault(); startFill(e); return; }
+      if (t.closest('[data-all]')) { selectAll(); inner.focus({ preventScroll: true }); return; }
+      var hc = t.closest('[data-col]');
+      if (hc) { var c = +hc.dataset.col; e.preventDefault(); inner.focus({ preventScroll: true }); sel.c = c; sel.r = Math.max(0, Math.min(sel.r, rows.length - 1)); sel.c0 = sel.c1 = c; sel.r0 = 0; sel.r1 = rows.length - 1; sel.er = sel.r1; sel.ec = c; drawSel(); say('Colonne ' + COLS[c].label + ' sélectionnée'); return; }
+      var rn = t.closest('[data-rn]');
+      if (rn) { var r = +rn.dataset.rn; e.preventDefault(); inner.focus({ preventScroll: true }); sel.r = r; sel.c = 0; sel.r0 = sel.r1 = r; sel.c0 = 0; sel.c1 = COLS.length - 1; sel.er = r; sel.ec = sel.c1; drawSel(); say('Ligne ' + (r + 1) + ' sélectionnée'); return; }
+      var cell = t.closest('[data-r]'); if (!cell) return;
+      if (edit) commit(0, 0);
+      var touch = e.pointerType !== 'mouse';
+      var p = { r: +cell.dataset.r, c: +cell.dataset.c };
+      if (touch && !extendMode) { drag = null; return; } /* le doigt fait défiler ; la sélection se fait au toucher (pointerup) */
+      e.preventDefault(); inner.focus({ preventScroll: true });
+      if (e.shiftKey || (touch && extendMode)) select(p.r, p.c, true, true); else select(p.r, p.c, false, true);
+      drag = { id: e.pointerId, move: function (ev) { var q = cellAt(ev.clientX, ev.clientY); if (q.r !== sel.er || q.c !== sel.ec) { sel.r0 = Math.min(sel.r, q.r); sel.r1 = Math.max(sel.r, q.r); sel.c0 = Math.min(sel.c, q.c); sel.c1 = Math.max(sel.c, q.c); sel.er = q.r; sel.ec = q.c; drawSel(); } } };
+      inner.setPointerCapture(e.pointerId);
+    });
+    inner.addEventListener('pointermove', function (e) { if (drag && e.pointerId === drag.id) { drag.move(e); autoscroll(e); } });
+    function end(e) {
+      if (drag && drag.id === e.pointerId) { var d = drag; drag = null; cancelAnimationFrame(autoT); if (d.fill) d.fill(); else if (sel.r0 !== sel.r1 || sel.c0 !== sel.c1) say(refEl.textContent + ' sélectionnées'); return; }
+    }
+    inner.addEventListener('pointerup', function (e) {
+      if (!drag && e.pointerType !== 'mouse') {
+        var cell = e.target.closest('[data-r]');
+        if (cell && Math.abs(e.clientY - (tapY || e.clientY)) < 8) {
+          var r = +cell.dataset.r, c = +cell.dataset.c, now = Date.now();
+          if (lastTap && lastTap.r === r && lastTap.c === c && now - lastTap.t < 380) { select(r, c, false, true); startEdit(); lastTap = null; return; }
+          inner.focus({ preventScroll: true }); select(r, c, extendMode, false); lastTap = { r: r, c: c, t: now };
+        }
+      }
+      end(e);
+    });
+    var tapY = 0, lastTap = null;
+    inner.addEventListener('pointerdown', function (e) { tapY = e.clientY; }, true);
+    inner.addEventListener('pointercancel', function (e) { drag = null; cancelAnimationFrame(autoT); });
+    inner.addEventListener('dblclick', function (e) { var cell = e.target.closest('[data-r]'); if (cell) { select(+cell.dataset.r, +cell.dataset.c, false, true); startEdit(); } });
+
+    function startFill(e) {
+      var base = { r0: sel.r0, r1: sel.r1, c0: sel.c0, c1: sel.c1 }, to = base.r1;
+      inner.setPointerCapture(e.pointerId);
+      drag = {
+        id: e.pointerId,
+        move: function (ev) { var q = cellAt(ev.clientX, ev.clientY); to = Math.max(base.r1, q.r); fillPrev.classList.toggle('is-on', to > base.r1); place(fillPrev, rect(base.r0, base.c0, to, base.c1)); },
+        fill: function () {
+          fillPrev.classList.remove('is-on'); if (to <= base.r1) return;
+          var h = base.r1 - base.r0 + 1, cells = [];
+          for (var r = base.r1 + 1; r <= to; r++) for (var c = base.c0; c <= base.c1; c++) cells.push({ r: r, c: c, text: raw(base.r0 + ((r - base.r0) % h), c) });
+          sel.r1 = to; sel.er = to; var n = write(cells); if (n) note('Recopié : ' + n + ' cellules · <kbd>⌘ Z</kbd> pour annuler');
+        }
+      };
+    }
+
+    /* ——— Barre d'outils (téléphone) ——— */
+    root.querySelector('[data-act="edit"]').addEventListener('click', function () { startEdit(); });
+    root.querySelector('[data-act="clear"]').addEventListener('click', function () { clearSel(); });
+    root.querySelector('[data-act="undo"]').addEventListener('click', function () { history(undo, redo, 'Annuler'); });
+    root.querySelector('[data-act="copy"]').addEventListener('click', function () {
+      var text = tsv();
+      var done = function () { markCopied(false); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, legacy); else legacy();
+      function legacy() { var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0'; root.appendChild(ta); ta.select(); try { viaButton = true; document.execCommand('copy'); } catch (er) {} viaButton = false; ta.remove(); done(); }
+    });
+    var selBtn = root.querySelector('[data-act="select"]');
+    selBtn.addEventListener('click', function () { extendMode = !extendMode; selBtn.setAttribute('aria-pressed', extendMode); note(extendMode ? 'Touchez une autre cellule pour étendre la sélection, ou glissez.' : 'Sélection simple.'); });
+
+    scroll.addEventListener('scroll', schedule, { passive: true });
+    inner.addEventListener('focus', function () { drawSel(); });
+
+    function state() {
+      var s = root.dataset.state;
+      $('[data-loading]').hidden = s !== 'loading'; $('[data-empty]').hidden = s !== 'empty';
+      rowsEl.hidden = selbox.hidden = activeBox.hidden = s !== 'ready';
+      if (s !== 'ready') { fbar.value = ''; refEl.textContent = '—'; hrow.querySelectorAll('.is-on').forEach(function (h) { h.classList.remove('is-on'); }); }
+      if (s === 'empty') { inner.style.height = '100%'; agg.innerHTML = ''; msg.textContent = ''; }
+      if (s === 'loading') { msg.textContent = 'Chargement des inscriptions…'; agg.innerHTML = ''; }
+      if (s === 'ready') { metrics(); paint(true); drawSel(); msg.innerHTML = hint(); }
+    }
+
+    var api = {
+      setRows: function (r) { rows = r.slice(); undo = []; redo = []; copied = null; sel = { r: 0, c: 0, r0: 0, c0: 0, r1: 0, c1: 0, er: 0, ec: 0 }; metrics(); paint(true); drawSel(); },
+      getRows: function () { return rows.map(function (r) { return Object.assign({}, r); }); },
+      update: function (o) {
+        var prevRows = root.dataset.rows;
+        Object.keys(o || {}).forEach(function (k) { if (o[k] != null) root.dataset[k] = o[k]; });
+        if (root.dataset.rows !== prevRows) { rows = sample(+root.dataset.rows || 1200); undo = []; redo = []; copied = null; sel = { r: 0, c: 0, r0: 0, c0: 0, r1: 0, c1: 0, er: 0, ec: 0 }; scroll.scrollTop = 0; }
+        state();
+      },
+      select: function (r0, c0, r1, c1) { select(r0, c0, false, true); if (r1 != null) select(r1, c1, true, true); },
+      replay: function () { scroll.scrollTop = 0; scroll.scrollLeft = 0; copied = null; select(0, 0, false, true); }
+    };
+    root._sheet = api;
+    head(); sel.er = 0; sel.ec = 0; state();
+    if ('ResizeObserver' in window) { var lastW = 0; new ResizeObserver(function () { var w = scroll.clientWidth; if (w === lastW || root.dataset.state !== 'ready') return; lastW = w; metrics(); paint(true); drawSel(); msg.innerHTML = hint(); }).observe(scroll); }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (root.dataset.state === 'ready') { paint(true); drawSel(); } });
+    return api;
+  }
+  document.querySelectorAll('[data-sheet]').forEach(init);
+  window.Sheet = { init: init };
+})();
+</script>

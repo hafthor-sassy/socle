@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dégradé maillé vivant — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  body { overflow-x: hidden; }
+  .mg { min-height: 100vh; }
+  .no-content .mg__inner { display: none; }
+  .is-thumb .mg__inner { display: none; }
+  /* Scène mobile de l'app (≈ 520 px de haut) : version compacte */
+  @media (max-width: 719px) and (max-height: 640px) {
+    .mg__inner { padding-top: 120px; }
+    .mg__lead, .mg__note, .mg__card, .mg__btn--ghost { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ speed: 1, warp: 0.6, spread: 38, intensity: 0.85, grain: 0.06, pointer: true, calm: 0.42, side: 'auto', contenu: true });
+  var KEYS = ['speed', 'warp', 'spread', 'intensity', 'grain', 'pointer', 'calm', 'side'];
+  var el = null;
+  function set(p) {
+    var q = Object.assign({}, p);
+    if (Socle.thumb || !p.contenu) q.calm = 0;
+    KEYS.forEach(function (k) { el.dataset[k] = String(q[k]); });
+    document.documentElement.classList.toggle('no-content', !p.contenu);
+  }
+  function apply(p) { if (!el) return; set(p); if (el._mesh) el._mesh.update(MeshGradient.read(el)); else MeshGradient.init(document); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    el = document.querySelector('[data-mesh]');
+    if (new URLSearchParams(location.search).get('fallback') === 'canvas') el.dataset.fallback = 'canvas';
+    set(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    apply(props);
+    var m = /[?&]ptr=([\d.]+),([\d.]+)/.exec(location.search);
+    if (m && el._mesh) el._mesh.pointer(+m[1], +m[2]);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (el && el._mesh) el._mesh.replay(); });
+</script>
+</body>
+</html>

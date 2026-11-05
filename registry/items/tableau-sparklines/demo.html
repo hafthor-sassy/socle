@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau à sparklines — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; padding: 48px 32px; display: grid; align-content: center; }
+  @media (max-width: 720px) { .stage { padding: 16px 12px 32px; align-content: start; } }
+  .is-thumb .stage { padding: 40px; align-content: start; }
+  .is-thumb .spt__help, .is-thumb .spt__tools { display: none; }
+  .is-thumb .spt__body .spt__row:nth-child(n+6) { display: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ titre: 'Parcs en exploitation', periode: '30', courbe: 'area', couleur: 'accent', densite: 'comfortable', reordonner: true, totaux: true, raideur: 260, amortissement: 24, etat: 'ready' });
+  var root = null, api = null;
+  function opts(p) { return { period: p.periode, curve: p.courbe, color: p.couleur, density: p.densite, reorder: String(!!p.reordonner), totals: String(!!p.totaux), stiffness: p.raideur, damping: p.amortissement }; }
+  var lastState = props.etat;
+  function render(p) {
+    if (!api) return;
+    root.querySelector('.spt__title').textContent = p.titre || 'Parcs';
+    var o = opts(p);
+    if (p.etat !== lastState) { o.state = p.etat; lastState = p.etat; }
+    api.update(o);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-spark-table]');
+    var o = opts(props); Object.keys(o).forEach(function (k) { root.dataset[k] = o[k]; }); root.dataset.state = props.etat;
+    root.querySelector('.spt__title').textContent = props.titre;
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = root._sparkTable;
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var regs = ['Bretagne', 'Hauts-de-France', 'all', 'Occitanie', 'all'], i = 0, vis = true;
+      new IntersectionObserver(function (e) { vis = e[0].isIntersecting; }).observe(root);
+      setInterval(function () { if (vis && !document.hidden) api.setRegion(regs[i++ % regs.length]); }, 2400);
+    }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (api) api.replay(); });
+</script>
+</body>
+</html>

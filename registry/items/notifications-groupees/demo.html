@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Centre de notifications groupées — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'ambre');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: start center; padding: 40px 24px; }
+  @media (max-width: 599px) { .stage { padding: 0; place-items: start stretch; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ ressort: 'doux', profondeur: 3, arrivees: true, intervalle: 7 });
+  var root = null, nc = null, seen = true, timer = 0, k = 0;
+  var INCOMING = [
+    ['orders', { title: 'Nouvelle commande #4822', text: 'Léa Fontaine · 2 articles · 96,00 €', time: 'à l’instant' }],
+    ['agent', { title: 'Ticket résolu automatiquement', text: 'Changement d’adresse confirmé pour la commande #4818.', time: 'à l’instant' }],
+    ['stock', { title: 'Réassort reçu : chemise Lin, L', text: '24 pièces ajoutées au stock.', time: 'à l’instant' }],
+    ['orders', { title: 'Nouvelle commande #4823', text: 'Paul Girard · 1 article · 58,00 €', time: 'à l’instant' }],
+    ['pay', { title: 'Paiement contesté', text: 'Commande #4777 · 64,00 € · réponse attendue sous 7 jours.', time: 'à l’instant' }]
+  ];
+  function loop(p) {
+    clearInterval(timer);
+    if (!p.arrivees || Socle.reducedMotion() || Socle.thumb) return;
+    timer = setInterval(function () { if (!seen || document.hidden || !nc) return; var x = INCOMING[k++ % INCOMING.length]; nc.add(x[0], Object.assign({}, x[1])); }, p.intervalle * 1000);
+  }
+  function apply(p) {
+    if (!root) return;
+    root.dataset.spring = p.ressort;
+    root.dataset.stack = p.profondeur;
+    if (nc) nc.sync();
+    loop(p);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-notif-center]');
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    nc = root._notif; apply(props);
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(root);
+    if (Socle.thumb && !Socle.reducedMotion()) { var on = false; setInterval(function () { if (seen) { on = !on; nc.toggle('orders', on); } }, 2000); }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (!nc) return; nc.reset(); setTimeout(function () { nc.toggle('orders', true); }, 700); setTimeout(function () { nc.add('agent', { title: 'Escalade vers l’équipe', text: 'Colis endommagé : photo jointe par le client.', time: 'à l’instant' }); }, 1800); });
+</script>
+</body>
+</html>

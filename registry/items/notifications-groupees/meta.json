@@ -1,0 +1,48 @@
+{
+  "id": "notifications-groupees",
+  "nom": "Centre de notifications groupées",
+  "categorie": "notifications",
+  "niveau": "premium",
+  "description": "Les notifications d’une même source se rangent en pile, avec le nombre en attente ; un clic déplie la pile en liste et les autres groupes s’écartent. Déplier, filtrer les non lues, effacer d’un glissement ou recevoir une nouvelle alerte : chaque changement est animé par FLIP sur un ressort, interruptible. Démontré dans le back-office d’une boutique en ligne.",
+  "tags": ["Notifications", "Pile", "FLIP", "Mise en page animée", "Geste", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 40,
+  "palette": "ambre",
+  "logo_exemple": { "nom": "Hublot", "secteur": "Back-office e-commerce", "fichier": "logo.svg", "palette": "ambre", "typo": "Geist SemiBold" },
+  "thumb": { "width": 720 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, teintes par source, accent, ombre de surcouche" },
+    { "nom": "Script NotifCenter", "note": "≈ 8 ko non minifié, inclus dans l’onglet HTML, sans dépendance : FLIP sur Web Animations avec ressort en linear(), glisser pour effacer" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "framer-motion ≥ 11", "note": "Onglet React seulement : layout, LayoutGroup, AnimatePresence, drag" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "ressort", "label": "Ressort", "type": "select", "default": "doux",
+      "options": [ { "value": "doux", "label": "Doux" }, { "value": "sec", "label": "Sec" }, { "value": "joueur", "label": "Joueur" } ],
+      "code": { "html": "data-spring=\"{v}\"", "react": "spring = '{v}'," } },
+    { "name": "profondeur", "label": "Cartes visibles dans une pile", "type": "number", "default": 3, "min": 1, "max": 3, "step": 1,
+      "code": { "html": "data-stack=\"{v}\"", "react": "stackDepth = {v}," } },
+    { "name": "arrivees", "label": "Simuler des arrivées", "type": "boolean", "default": true,
+      "hint": "Démo : une nouvelle notification rejoint son groupe, qui remonte en tête. Dans votre code : center._notif.add(groupe, { title, text, time })." },
+    { "name": "intervalle", "label": "Intervalle des arrivées", "type": "number", "default": 7, "min": 3, "max": 20, "step": 1, "unit": "s" }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/NotificationCenter.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour un centre de notifications dense (back-office, outil d’équipe, application d’agents IA) où une même source envoie des rafales : la pile garde la vue courte sans rien cacher.",
+    "Les données vivent dans le bloc <script type=\"application/json\" data-ng-data> (groupes, icône, teinte, éléments). API : add(groupe, notif), toggle(groupe, ouvert), reset().",
+    "Toute mutation passe par flip(mutation) : mesurer, muter, mesurer, inverser. Utilisez-la pour vos propres changements (tri, déplacement) et ils s’animeront aussi.",
+    "À éviter pour moins de cinq notifications : une liste simple suffit."
+  ],
+  "accessibilite": [
+    "Chaque groupe est un role=\"group\" nommé ; la pile repliée est un bouton aria-expanded=\"false\" annoncé « Commandes, 4 notifications. Déplier » ; les cartes cachées derrière sont aria-hidden et hors tabulation.",
+    "Filtre Toutes / Non lues en role=\"radiogroup\" (flèches ← →) ; changements annoncés par une région aria-live polie (déplié, effacée, nouvelle notification).",
+    "Le focus est toujours replacé : sur Réduire après dépliage, sur la carte suivante après un effacement.",
+    "Non lu signalé par une pastille et une graisse plus forte, pas par la couleur seule ; textes ≥ 14 px, cibles de 44 px sur mobile, AA en clair et en sombre.",
+    "Avec « réduire les animations » : changements appliqués sans mouvement."
+  ]
+}

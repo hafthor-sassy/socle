@@ -1,0 +1,260 @@
+<!-- Onglets à pastille glissante — HTML + CSS + JS intégré (≈ 1,6 ko), sans dépendance. Nécessite tokens.css.
+     Contenu d'exemple fictif (Cursif, cours en ligne). Motif ARIA « tabs » complet : flèches, Début, Fin, activation auto ou manuelle. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="st" data-tabs data-variant="surface" data-duration="380" data-stretch="0.6" data-activation="auto">
+  <div class="st__scroller" data-st-scroller>
+    <div class="st__list" role="tablist" aria-label="Sections du cours" data-st-list>
+      <span class="st__hover" data-st-hover aria-hidden="true"></span>
+      <span class="st__pill" data-st-pill aria-hidden="true"></span>
+      <button class="st__tab" role="tab" type="button" id="st-t-apercu" aria-controls="st-p-apercu" aria-selected="true" tabindex="0">
+        <svg class="st__ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/></svg>
+        <span>Aperçu</span>
+      </button>
+      <button class="st__tab" role="tab" type="button" id="st-t-lecons" aria-controls="st-p-lecons" aria-selected="false" tabindex="-1">
+        <svg class="st__ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="13" rx="2.5"/><path d="M10.5 9.5v4l3.5-2z"/></svg>
+        <span>Leçons</span><span class="st__count">12</span>
+      </button>
+      <button class="st__tab" role="tab" type="button" id="st-t-exos" aria-controls="st-p-exos" aria-selected="false" tabindex="-1">
+        <svg class="st__ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5l5 5L9 20H4v-5z"/><path d="M12.5 6.5l5 5"/></svg>
+        <span>Exercices</span><span class="st__count">4</span>
+      </button>
+      <button class="st__tab" role="tab" type="button" id="st-t-forum" aria-controls="st-p-forum" aria-selected="false" tabindex="-1">
+        <svg class="st__ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg>
+        <span>Discussions</span><span class="st__count">28</span>
+      </button>
+      <button class="st__tab" role="tab" type="button" id="st-t-certif" aria-controls="st-p-certif" aria-selected="false" tabindex="-1">
+        <svg class="st__ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.5"/><path d="M8.5 13.5L7 21l5-2.5 5 2.5-1.5-7.5"/></svg>
+        <span>Certificat</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="st__panels" data-st-panels>
+    <section class="st__panel" role="tabpanel" id="st-p-apercu" aria-labelledby="st-t-apercu" tabindex="0">
+      <p class="st__lede">Apprenez à choisir, associer et régler des caractères pour l’écran&nbsp;: échelle fluide, interlignage, longueur de ligne et contraste.</p>
+      <div class="st__progress" role="group" aria-label="Progression">
+        <div class="st__bar"><span style="width: 42%"></span></div>
+        <p><b>5 leçons sur 12</b> · environ 2&nbsp;h&nbsp;10 restantes</p>
+      </div>
+      <ul class="st__facts">
+        <li><b>3 h 40</b><span>de vidéo</span></li>
+        <li><b>4</b><span>exercices notés</span></li>
+        <li><b>4,8</b><span>sur 5 (1 204 avis)</span></li>
+      </ul>
+    </section>
+
+    <section class="st__panel" role="tabpanel" id="st-p-lecons" aria-labelledby="st-t-lecons" tabindex="0" hidden>
+      <ol class="st__rows">
+        <li class="is-done"><span class="st__n">01</span><span class="st__t">Lire avant de dessiner</span><span class="st__d">12 min</span></li>
+        <li class="is-done"><span class="st__n">02</span><span class="st__t">Anatomie d’un caractère</span><span class="st__d">18 min</span></li>
+        <li class="is-done"><span class="st__n">03</span><span class="st__t">Échelles modulaires et fluides</span><span class="st__d">24 min</span></li>
+        <li class="is-now"><span class="st__n">06</span><span class="st__t">Interlignage et rythme vertical</span><span class="st__d">16 min</span></li>
+        <li><span class="st__n">07</span><span class="st__t">Associer deux familles</span><span class="st__d">21 min</span></li>
+      </ol>
+    </section>
+
+    <section class="st__panel" role="tabpanel" id="st-p-exos" aria-labelledby="st-t-exos" tabindex="0" hidden>
+      <ol class="st__rows">
+        <li class="is-done"><span class="st__n">A</span><span class="st__t">Recomposer une page de presse</span><span class="st__d">18/20</span></li>
+        <li class="is-now"><span class="st__n">B</span><span class="st__t">Échelle fluide pour un tableau de bord</span><span class="st__d">À rendre jeudi</span></li>
+        <li><span class="st__n">C</span><span class="st__t">Couple serif et sans pour une revue</span><span class="st__d">Verrouillé</span></li>
+      </ol>
+    </section>
+
+    <section class="st__panel" role="tabpanel" id="st-p-forum" aria-labelledby="st-t-forum" tabindex="0" hidden>
+      <ul class="st__rows st__rows--talk">
+        <li><span class="st__av" aria-hidden="true">MB</span><span class="st__t">Quel interlignage pour du 15&nbsp;px en Geist&nbsp;?<small>Marc B. · 6 réponses</small></span><span class="st__d">2 h</span></li>
+        <li><span class="st__av" aria-hidden="true">SL</span><span class="st__t">Mon échelle saute entre 768 et 1024&nbsp;px<small>Sarah L. · 3 réponses</small></span><span class="st__d">hier</span></li>
+        <li><span class="st__av" aria-hidden="true">YK</span><span class="st__t">Ressources pour les espaces insécables<small>Yanis K. · 11 réponses</small></span><span class="st__d">lun.</span></li>
+      </ul>
+    </section>
+
+    <section class="st__panel" role="tabpanel" id="st-p-certif" aria-labelledby="st-t-certif" tabindex="0" hidden>
+      <div class="st__empty">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>
+        <p><b>Encore 7 leçons avant votre certificat.</b> Il est délivré quand toutes les leçons sont vues et les exercices notés au-dessus de 12/20.</p>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .st { --st-d: 380ms; --st-h: 44px; --st-lead: cubic-bezier(.3, 1.35, .5, 1); --st-trail: cubic-bezier(.65, 0, .35, 1);
+    width: 100%; max-width: 760px; font-family: var(--font-sans); color: var(--text); }
+  .st :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .st[data-size="sm"] { --st-h: 36px; }
+
+  /* Barre : défile à l'horizontale sur mobile, fondu aux bords */
+  .st__scroller { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; scroll-padding-inline: 16px; }
+  .st__scroller::-webkit-scrollbar { display: none; }
+  .st__scroller.is-overflow { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%); }
+  .st__scroller.is-start { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 32px), transparent 100%); mask-image: linear-gradient(90deg, #000 calc(100% - 32px), transparent 100%); }
+  .st__scroller.is-end { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 32px); mask-image: linear-gradient(90deg, transparent 0, #000 32px); }
+  .st__list { position: relative; isolation: isolate; display: inline-flex; gap: 2px; padding: 4px; vertical-align: top; border-radius: var(--radius-pill); background: var(--raised); border: 1px solid var(--border); }
+
+  .st[data-fill="true"] .st__list { display: flex; min-width: 100%; }
+  .st[data-fill="true"] .st__tab { flex: 1 0 auto; }
+  .st__tab { position: relative; display: inline-flex; flex: none; align-items: center; justify-content: center; gap: 8px; height: var(--st-h); padding: 0 16px; border: 0; border-radius: var(--radius-pill); background: transparent;
+    color: var(--text-muted); font: 500 15px/1 var(--font-sans); letter-spacing: var(--track-snug); white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: color var(--motion-base) var(--ease-out); }
+  .st__tab:focus-visible { outline-offset: -2px; }
+  .st__tab[aria-selected="true"] { color: var(--text-strong); }
+  @media (hover: hover) and (pointer: fine) { .st__tab:hover { color: var(--text-strong); } }
+  .st__ic { flex: none; opacity: .85; }
+  .st[data-icons="false"] .st__ic { display: none; }
+  .st__count { display: inline-grid; place-items: center; min-width: 24px; height: 20px; padding: 0 6px; border-radius: var(--radius-pill); background: var(--state-press); color: var(--text-muted);
+    font: 600 12px/1 var(--font-sans); font-variant-numeric: tabular-nums; transition: background-color var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out); }
+  .st__tab[aria-selected="true"] .st__count { background: var(--accent-subtle); color: var(--accent); }
+  .st[data-counts="false"] .st__count { display: none; }
+
+  /* Pastille : deux bords animés séparément. Le bord de tête part vite (ressort), le bord de queue suit : la pastille s'étire. */
+  .st__pill, .st__hover { position: absolute; top: 4px; bottom: 4px; left: 0; right: 100%; z-index: -1; border-radius: var(--radius-pill); pointer-events: none; }
+  .st__pill { background: var(--surface); box-shadow: var(--shadow-overlay); border: 1px solid var(--border); }
+  .st__pill.is-anim { transition: left var(--st-dl) var(--st-el) var(--st-wl), right var(--st-dr) var(--st-er) var(--st-wr); }
+  .st__hover { background: var(--state-hover); opacity: 0; transition: opacity var(--motion-base) var(--ease-out), left 240ms var(--ease-out), right 240ms var(--ease-out); }
+  .st__hover.is-on { opacity: 1; }
+  .st__hover.is-jump { transition: opacity var(--motion-base) var(--ease-out); }
+
+  /* Variante accent : pastille pleine, texte sur accent */
+  .st[data-variant="accent"] .st__pill { background: var(--accent); border-color: var(--accent); box-shadow: none; }
+  .st[data-variant="accent"] .st__tab[aria-selected="true"] { color: var(--accent-fg); }
+  .st[data-variant="accent"] .st__tab[aria-selected="true"] .st__count { background: color-mix(in srgb, var(--accent-fg) 18%, transparent); color: var(--accent-fg); }
+  /* Variante soulignement : barre fine sous l'onglet, sans fond de piste */
+  .st[data-variant="underline"] .st__list { padding: 0; gap: 4px; border-radius: 0; background: transparent; border: 0; border-bottom: 1px solid var(--border); }
+  .st[data-variant="underline"] .st__tab { border-radius: var(--radius-ctl); padding: 0 12px; }
+  .st[data-variant="underline"] .st__pill { top: auto; bottom: -1px; height: 2px; background: var(--accent); border: 0; box-shadow: none; z-index: 1; }
+  .st[data-variant="underline"] .st__hover { top: 6px; bottom: 6px; border-radius: var(--radius-ctl); }
+
+  /* Panneaux : le contenu arrive du côté de l'onglet choisi */
+  .st__panels { position: relative; margin-top: 16px; }
+  .st__panel { padding: 20px; border-radius: var(--radius-sheet); background: var(--surface); border: 1px solid var(--border); }
+  .st__panel:focus-visible { outline-offset: 2px; }
+  .st__panel.is-in { animation: st-in var(--motion-slow) var(--ease-out) both; }
+  .st__panel.is-in[data-from="left"] { --st-x: -16px; }
+  .st__panel.is-in[data-from="right"] { --st-x: 16px; }
+  @keyframes st-in { from { opacity: 0; transform: translateX(var(--st-x, 0)); } }
+
+  .st__lede { margin: 0; max-width: 56ch; color: var(--text); font-size: 16px; line-height: 1.6; }
+  .st__progress { margin-top: 20px; }
+  .st__bar { height: 8px; border-radius: var(--radius-pill); background: var(--raised); overflow: hidden; }
+  .st__bar span { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
+  .st__progress p { margin: 8px 0 0; color: var(--text-muted); font-size: 14px; }
+  .st__progress b { color: var(--text-strong); font-weight: 600; }
+  .st__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 20px 0 0; padding: 16px 0 0; list-style: none; border-top: 1px solid var(--border); }
+  .st__facts b { display: block; color: var(--text-strong); font: 600 20px/28px var(--font-sans); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .st__facts span { color: var(--text-muted); font-size: 14px; line-height: 20px; }
+
+  .st__rows { display: grid; margin: -8px 0; padding: 0; list-style: none; }
+  .st__rows li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 56px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .st__rows li:last-child { border-bottom: 0; }
+  .st__n { color: var(--text-muted); font: 500 13px/1 var(--font-mono); }
+  .st__t { color: var(--text-strong); font-size: 15px; line-height: 22px; }
+  .st__t small { display: block; color: var(--text-muted); font-size: 13px; line-height: 18px; }
+  .st__d { color: var(--text-muted); font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .st__rows li.is-done .st__n { color: var(--accent); }
+  .st__rows li.is-done .st__t { color: var(--text-muted); }
+  .st__rows li.is-now .st__t { font-weight: 600; }
+  .st__rows li.is-now .st__d { color: var(--accent); font-weight: 600; }
+  .st__rows--talk li { grid-template-columns: 40px minmax(0, 1fr) auto; }
+  .st__av { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--radius-pill); background: var(--raised); color: var(--text-muted); font: 600 13px/1 var(--font-sans); }
+  .st__empty { display: grid; justify-items: center; gap: 12px; padding: 24px 8px; text-align: center; color: var(--text-muted); }
+  .st__empty p { max-width: 44ch; margin: 0; font-size: 15px; line-height: 1.55; }
+  .st__empty b { display: block; margin-bottom: 4px; color: var(--text-strong); font-weight: 600; }
+
+  @media (max-width: 599px) {
+    .st__tab { padding: 0 14px; }
+    .st__panel { padding: 16px; }
+    .st__facts b { font-size: 18px; }
+    .st__facts span { font-size: 13px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .st__pill.is-anim, .st__hover { transition: none; }
+    .st__panel.is-in { animation: none; }
+  }
+</style>
+
+<script>
+/* Onglets : la pastille se place par ses bords gauche et droit (px). En allant vers la droite, le bord droit mène
+   avec un ressort et le gauche suit avec du retard : c'est l'étirement. Clavier ARIA complet, roving tabindex.
+   API : racine._tabs = { select(index | id), destroy }. Événement « tabs:change » { index, id }. */
+(function () {
+  var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function Tabs(root) {
+    var list = root.querySelector('[data-st-list]'), scroller = root.querySelector('[data-st-scroller]');
+    var pill = root.querySelector('[data-st-pill]'), hover = root.querySelector('[data-st-hover]');
+    var tabs = [].slice.call(list.querySelectorAll('[role="tab"]'));
+    var D = parseFloat(root.dataset.duration) || 380, K = Math.max(0, Math.min(1, parseFloat(root.dataset.stretch || 0.6)));
+    var manual = root.dataset.activation === 'manual';
+    var cur = Math.max(0, tabs.findIndex(function (t) { return t.getAttribute('aria-selected') === 'true'; }));
+    var ro, dead = false, hoverOn = false;
+
+    function edges(t) { return { l: t.offsetLeft, r: list.clientWidth - t.offsetLeft - t.offsetWidth }; }
+    function put(el, t) { var e = edges(t); el.style.left = e.l + 'px'; el.style.right = e.r + 'px'; }
+    function movePill(to, from, animate) {
+      if (!animate || REDUCE || D === 0) { pill.classList.remove('is-anim'); put(pill, tabs[to]); return; }
+      var right = to > from, lead = D * (1 - K * 0.35), trail = D * (1 + K * 0.15), wait = Math.round(D * K * 0.18);
+      var s = pill.style;
+      /* tête : rapide et élastique ; queue : plus lente, légèrement retardée */
+      s.setProperty('--st-dl', (right ? trail : lead) + 'ms'); s.setProperty('--st-dr', (right ? lead : trail) + 'ms');
+      s.setProperty('--st-el', right ? 'var(--st-trail)' : 'var(--st-lead)'); s.setProperty('--st-er', right ? 'var(--st-lead)' : 'var(--st-trail)');
+      s.setProperty('--st-wl', (right ? wait : 0) + 'ms'); s.setProperty('--st-wr', (right ? 0 : wait) + 'ms');
+      pill.classList.add('is-anim'); put(pill, tabs[to]);
+    }
+    function reveal(t) {
+      if (scroller.scrollWidth <= scroller.clientWidth) return;
+      var pad = 24, x = t.offsetLeft, w = t.offsetWidth, sl = scroller.scrollLeft, sw = scroller.clientWidth, target = sl;
+      if (x - pad < sl) target = x - pad; else if (x + w + pad > sl + sw) target = x + w + pad - sw;
+      if (target !== sl) scroller.scrollTo({ left: target, behavior: REDUCE ? 'auto' : 'smooth' });
+    }
+    function edgesMask() {
+      var o = scroller.scrollWidth > scroller.clientWidth + 1, sl = scroller.scrollLeft, max = scroller.scrollWidth - scroller.clientWidth;
+      scroller.classList.toggle('is-overflow', o && sl > 2 && sl < max - 2);
+      scroller.classList.toggle('is-start', o && sl <= 2);
+      scroller.classList.toggle('is-end', o && sl >= max - 2);
+    }
+    function select(i, focus) {
+      if (typeof i === 'string') i = tabs.findIndex(function (t) { return t.id === i; });
+      if (i < 0 || i >= tabs.length) return;
+      var prev = cur; cur = i;
+      tabs.forEach(function (t, k) {
+        var on = k === i; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
+        var p = document.getElementById(t.getAttribute('aria-controls')); if (!p) return;
+        if (on) { p.hidden = false; if (k !== prev && !REDUCE) { p.dataset.from = k > prev ? 'right' : 'left'; p.classList.remove('is-in'); void p.offsetWidth; p.classList.add('is-in'); } }
+        else { p.hidden = true; p.classList.remove('is-in'); }
+      });
+      movePill(i, prev, i !== prev); reveal(tabs[i]);
+      if (focus) tabs[i].focus({ preventScroll: true });
+      if (i !== prev) root.dispatchEvent(new CustomEvent('tabs:change', { detail: { index: i, id: tabs[i].id } }));
+    }
+    function onKey(e) {
+      var i = tabs.indexOf(document.activeElement); if (i < 0) return;
+      var n = tabs.length, to = { ArrowRight: (i + 1) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[e.key];
+      if (to == null) { if (manual && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); select(i); } return; }
+      e.preventDefault();
+      if (manual) { tabs[to].focus({ preventScroll: true }); reveal(tabs[to]); } else select(to, true);
+    }
+    function onClick(e) { var t = e.target.closest('[role="tab"]'); if (t) select(tabs.indexOf(t)); }
+    function onOver(e) {
+      var t = e.target.closest('[role="tab"]'); if (!t || e.pointerType !== 'mouse') return;
+      if (!hoverOn) { hover.classList.add('is-jump'); put(hover, t); void hover.offsetWidth; hover.classList.remove('is-jump'); }
+      else put(hover, t);
+      hoverOn = true; hover.classList.toggle('is-on', t.getAttribute('aria-selected') !== 'true');
+    }
+    function onOut() { hoverOn = false; hover.classList.remove('is-on'); }
+
+    list.addEventListener('keydown', onKey); list.addEventListener('click', onClick);
+    list.addEventListener('pointerover', onOver); list.addEventListener('pointerleave', onOut);
+    scroller.addEventListener('scroll', edgesMask, { passive: true });
+    ro = new ResizeObserver(function () { if (!dead) { movePill(cur, cur, false); edgesMask(); } });
+    ro.observe(list); ro.observe(scroller);
+    movePill(cur, cur, false); edgesMask();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (!dead) { movePill(cur, cur, false); edgesMask(); } });
+
+    return { select: select, destroy: function () { dead = true; ro.disconnect(); list.removeEventListener('keydown', onKey); list.removeEventListener('click', onClick); } };
+  }
+  document.querySelectorAll('[data-tabs]').forEach(function (el) { if (el._tabs) el._tabs.destroy(); el._tabs = Tabs(el); });
+})();
+</script>

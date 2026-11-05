@@ -1,0 +1,207 @@
+{
+  "id": "tags-pile-physique",
+  "nom": "Tags en pile physique",
+  "categorie": "badges",
+  "niveau": "premium",
+  "ordre": 1,
+  "palette": "jade",
+  "description": "Les tags tombent, se cognent et s’empilent avec un vrai moteur physique maison : on les attrape, on les lance, la souris pousse la pile, un clic met une compétence en avant. Chaque tag reste un bouton natif, accessible au clavier.",
+  "tags": [
+    "Physique",
+    "Glisser-lancer",
+    "Sans dépendance",
+    "Accessible",
+    "Recrutement"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 760
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Teintes des tags, accent, surfaces, focus"
+    },
+    {
+      "nom": "Moteur intégré",
+      "note": "≈ 3 ko min., Verlet + capsules, aucune bibliothèque (pas de Matter.js)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "jeu",
+      "label": "Jeu de tags",
+      "type": "select",
+      "default": "dev",
+      "options": [
+        {
+          "value": "dev",
+          "label": "Dév"
+        },
+        {
+          "value": "design",
+          "label": "Design"
+        },
+        {
+          "value": "data",
+          "label": "Data"
+        }
+      ],
+      "hint": "Contenu d’exemple : compétences d’un profil candidat.",
+      "code": {
+        "react": "tags={TAGS_{v}}"
+      }
+    },
+    {
+      "name": "gravity",
+      "label": "Gravité",
+      "type": "number",
+      "default": 1,
+      "min": 0.3,
+      "max": 2,
+      "step": 0.1,
+      "unit": "×",
+      "code": {
+        "html": "data-gravity=\"{v}\"",
+        "react": "gravity={{v}}"
+      }
+    },
+    {
+      "name": "bounce",
+      "label": "Rebond",
+      "type": "number",
+      "default": 0.2,
+      "min": 0,
+      "max": 0.7,
+      "step": 0.05,
+      "hint": "0 : les tags s’écrasent. 0,5 et plus : ils rebondissent sur le sol et les murs.",
+      "code": {
+        "html": "data-bounce=\"{v}\"",
+        "react": "bounce={{v}}"
+      }
+    },
+    {
+      "name": "friction",
+      "label": "Frottement",
+      "type": "number",
+      "default": 0.5,
+      "min": 0,
+      "max": 1,
+      "step": 0.05,
+      "hint": "Bas : la pile glisse et s’étale. Haut : elle tient en tas.",
+      "code": {
+        "html": "data-friction=\"{v}\"",
+        "react": "friction={{v}}"
+      }
+    },
+    {
+      "name": "drop",
+      "label": "Arrivée",
+      "type": "select",
+      "default": "pluie",
+      "options": [
+        {
+          "value": "pluie",
+          "label": "En pluie"
+        },
+        {
+          "value": "bloc",
+          "label": "En bloc"
+        }
+      ],
+      "code": {
+        "html": "data-drop=\"{v}\"",
+        "react": "drop=\"{v}\""
+      }
+    },
+    {
+      "name": "push",
+      "label": "La souris pousse la pile",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-push=\"{v}\"",
+        "react": "push={{v}}"
+      }
+    },
+    {
+      "name": "height",
+      "label": "Hauteur de la zone",
+      "type": "number",
+      "default": 360,
+      "min": 240,
+      "max": 560,
+      "step": 8,
+      "unit": "px",
+      "hint": "Sur mobile, la zone gagne 96 px : la pile monte plus vite dans une colonne étroite.",
+      "code": {
+        "html": "--tp-h: {v}px",
+        "react": "height={{v}}"
+      }
+    },
+    {
+      "name": "size",
+      "label": "Taille des tags",
+      "type": "select",
+      "default": "md",
+      "options": [
+        {
+          "value": "md",
+          "label": "44 px"
+        },
+        {
+          "value": "lg",
+          "label": "56 px"
+        }
+      ],
+      "code": {
+        "html": "data-size=\"{v}\"",
+        "react": "size=\"{v}\""
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/TagPile.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour un ensemble court et ludique (8 à 30 tags) : pile technique, compétences, centres d’intérêt, ingrédients. Au-delà, préférez une liste filtrable.",
+    "Le placement est décoratif, la donnée ne l’est pas : la sélection (aria-pressed) se lit dans l’événement tagpile:change ou le rappel onChange.",
+    "Le moteur s’endort dès que la pile est immobile et se met en pause hors écran : aucun coût au repos, même avec 40 tags.",
+    "Réglage sûr : gravité 1, rebond 0,2, frottement 0,5. Rebond haut et frottement bas donnent une pile vivante mais moins lisible."
+  ],
+  "accessibilite": [
+    "Chaque tag est un <button aria-pressed> natif : Tab pour parcourir, Entrée ou Espace pour mettre en avant ; les flèches poussent le tag ciblé.",
+    "Le compteur et chaque changement sont annoncés dans une région aria-live ; l’ajout signale les doublons et la saisie vide par un message lié au champ.",
+    "Avec « réduire les animations », pas de physique : les tags se rangent en lignes, toujours activables.",
+    "Teintes des tags (texte sur fond teinté) et état sélectionné (texte sur accent) ≥ 4,5:1 en clair et en sombre ; cibles de 44 px."
+  ],
+  "logo_exemple": {
+    "nom": "Tremplin",
+    "secteur": "Recrutement tech",
+    "fichier": "logo.svg",
+    "palette": "jade",
+    "typo": "Geist SemiBold"
+  }
+}

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feuille mobile à crans — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 64px; align-items: center; max-width: 1080px; min-height: 100vh; margin: 0 auto; padding: 40px 32px; }
+  .copy { display: grid; gap: 16px; max-width: 30rem; }
+  .eyebrow { color: var(--text-muted); font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .copy h1 { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); line-height: 1.05; letter-spacing: -0.04em; font-weight: 600; }
+  .copy p { color: var(--text-muted); font-size: 16px; line-height: 1.6; }
+  .snaps { display: flex; flex-wrap: wrap; gap: 8px; }
+  .snaps button { height: 44px; padding: 0 16px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-strong); font: 500 14px/1 var(--font-sans); cursor: pointer; }
+  .snaps button[aria-pressed="true"] { background: var(--accent-subtle); border-color: var(--accent-subtle-border); color: var(--accent); }
+  .keys { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; color: var(--text-muted); font-size: 13px; }
+  .keys kbd { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--border); background: var(--raised); font: 500 12px/1 var(--font-mono); color: var(--text-strong); }
+  .device { width: 390px; height: 800px; max-height: calc(100vh - 80px); padding: 10px; border-radius: 48px; background: var(--surface); border: 1px solid var(--border); }
+  .device__screen { height: 100%; overflow: hidden; border-radius: 38px; transform: translateZ(0); }
+  @media (max-width: 899px) { .stage { grid-template-columns: 1fr; justify-items: center; padding: 24px; } .copy { display: none; } }
+  @media (max-width: 599px) {
+    .stage { display: block; padding: 0; min-height: 0; }
+    .device { width: 100%; height: 100vh; height: 100dvh; max-height: none; padding: 0; border: 0; border-radius: 0; }
+    .device__screen { border-radius: 0; }
+  }
+  .is-thumb .fs { min-height: 0; --fs-peek: 120px; }
+  .is-thumb .stage { display: block; padding: 0; } .is-thumb .copy { display: none; }
+  .is-thumb .device { width: 100%; height: 100vh; max-height: none; padding: 0; border: 0; border-radius: 0; } .is-thumb .device__screen { border-radius: 0; }
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="copy">
+    <span class="eyebrow">Rayon · vélos en libre-service</span>
+    <h1>La ville à portée de pouce.</h1>
+    <p>Une feuille à trois crans au-dessus de la carte. Glissez la poignée ou lancez-la&nbsp;: elle garde l’élan du geste et se pose sur le cran le plus proche. En plein écran, la carte recule.</p>
+    <div class="snaps" role="group" aria-label="Aller au cran"><button type="button" data-go="peek">Réduite</button><button type="button" data-go="half">Moitié</button><button type="button" data-go="full">Plein écran</button></div>
+    <p class="keys">Clavier sur la poignée&nbsp;: <kbd>↑</kbd><kbd>↓</kbd><kbd>Début</kbd><kbd>Fin</kbd> · <kbd>Échap</kbd> redescend</p>
+  </div>
+  <div class="device"><div class="device__screen" id="mount"></div></div>
+</main>
+<script>
+  var props = Socle.props({ snap: 'half', state: 'list', stiffness: 420, damping: 36, recede: true, peek: 152 });
+  var src = null, tour = [], mount = document.getElementById('mount');
+  function api() { var r = mount.querySelector('[data-sheet]'); return r && r._sheet; }
+  function sync() { var a = api(); document.querySelectorAll('[data-go]').forEach(function (b) { b.setAttribute('aria-pressed', !!a && a.at === b.dataset.go); }); }
+  function render(p) {
+    if (!src) return;
+    tour.forEach(clearTimeout); tour = [];
+    var a = api(); if (a) a.destroy();
+    mount.innerHTML = src.markup;
+    var r = mount.querySelector('[data-sheet]');
+    r.dataset.snap = p.snap; r.dataset.state = p.state; r.dataset.stiffness = p.stiffness; r.dataset.damping = p.damping; r.dataset.recede = p.recede;
+    r.style.setProperty('--fs-peek', p.peek + 'px');
+    r.addEventListener('sheet:snap', sync);
+    try { new Function(src.script)(); } catch (e) { console.error(e); }
+    sync();
+  }
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-go]'); var a = api(); if (b && a) { a.snap(b.dataset.go); sync(); } });
+  function replay() {
+    var a = api(); if (!a) return; tour.forEach(clearTimeout); tour = [];
+    var at = function (t, f) { tour.push(setTimeout(function () { f(); sync(); }, t)); };
+    a.snap('peek'); sync(); at(700, function () { a.snap('half'); }); at(1500, function () { a.snap('full'); }); at(2600, function () { a.snap('half'); });
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props);
+    if (Socle.thumb && !Socle.reducedMotion()) { var seq = ['full', 'half', 'peek', 'half'], i = 0; setInterval(function () { var a = api(); a && a.snap(seq[i++ % 4]); }, 1800); }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(replay);
+</script>
+</body>
+</html>

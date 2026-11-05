@@ -1,0 +1,178 @@
+{
+  "id": "curseur-contextuel",
+  "nom": "Curseur contextuel",
+  "categorie": "survol",
+  "niveau": "premium",
+  "palette": "moka",
+  "description": "Un curseur à ressorts qui change de rôle selon la cible : pastille « Voir » sur un produit, « Glisser » avec flèches sur un carrousel (glisser-déposer avec inertie), petite flèche sur un lien, barre de texte sur un paragraphe, et sur un bouton il s’accroche en prenant sa forme pendant que le bouton suit l’aimant. S’étire avec la vitesse ; coupé au tactile.",
+  "tags": [
+    "Pointeur",
+    "Ressort",
+    "Aimant",
+    "Carrousel",
+    "E-commerce"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 1280
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "technique": "Suivi pointeur + ressorts amortis (x, y, taille, rayon) · data-cursor déclaratif",
+  "difficulte": 2,
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "--text-strong et --bg (pastilles inversées), --accent (liens), --state-hover (aimant)"
+    },
+    {
+      "nom": "JS intégré",
+      "note": "≈ 3,5 ko minifié, aucun CDN"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "stiffness",
+      "label": "Raideur",
+      "type": "number",
+      "default": 320,
+      "min": 80,
+      "max": 800,
+      "step": 20,
+      "code": {
+        "html": "data-stiffness=\"{v}\"",
+        "react": "stiffness={{v}}"
+      },
+      "hint": "Haut : le curseur colle. Bas : il traîne derrière le pointeur."
+    },
+    {
+      "name": "damping",
+      "label": "Amortissement",
+      "type": "number",
+      "default": 26,
+      "min": 8,
+      "max": 50,
+      "step": 1,
+      "code": {
+        "html": "data-damping=\"{v}\"",
+        "react": "damping={{v}}"
+      },
+      "hint": "Bas : rebond en arrivant sur une cible. Haut : arrêt net."
+    },
+    {
+      "name": "dot",
+      "label": "Point central",
+      "type": "number",
+      "default": 8,
+      "min": 4,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "code": {
+        "html": "data-dot=\"{v}\"",
+        "react": "dot={{v}}"
+      }
+    },
+    {
+      "name": "magnet",
+      "label": "Force de l’aimant",
+      "type": "number",
+      "default": 0.25,
+      "min": 0,
+      "max": 0.5,
+      "step": 0.05,
+      "code": {
+        "html": "data-magnet=\"{v}\"",
+        "react": "magnet={{v}}"
+      },
+      "hint": "Part du déplacement du pointeur suivie par le bouton accroché."
+    },
+    {
+      "name": "stretch",
+      "label": "Étirement",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-stretch=\"{v}\"",
+        "react": "stretch={{v}}"
+      },
+      "hint": "Le cercle s’allonge dans le sens du mouvement."
+    },
+    {
+      "name": "labels",
+      "label": "Libellés",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-labels=\"{v}\"",
+        "react": "labels={{v}}"
+      },
+      "hint": "« Voir », « Glisser » ; un data-cursor-label sur la cible remplace le texte."
+    },
+    {
+      "name": "blend",
+      "label": "Mélange",
+      "type": "select",
+      "default": "normal",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "difference",
+          "label": "Différence"
+        }
+      ],
+      "code": {
+        "html": "data-blend=\"{v}\"",
+        "react": "blend=\"{v}\""
+      },
+      "hint": "Différence : le cercle inverse les couleurs dessous (fonds très variés)."
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/ContextCursor.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Boutiques, portfolios, studios : une zone (data-cursor-zone) où le curseur explique l’action possible avant le clic.",
+    "Déclarez les rôles en HTML : data-cursor=\"voir\" (produit, projet), \"glisser\" (carrousel avec data-drag), \"lien\", \"aimant\" (boutons, icônes), \"texte\" (paragraphes).",
+    "Limitez-vous à une zone par page et à des cibles franches : un curseur qui change toutes les 20 px fatigue.",
+    "Gardez les vrais états de survol des éléments (couleur, soulignement) : le curseur s’ajoute, il ne remplace rien."
+  ],
+  "accessibilite": [
+    "Le curseur est décoratif (aria-hidden, pointer-events: none) : chaque cible garde son nom accessible et son focus visible.",
+    "Activé seulement avec une souris (hover: hover et pointer: fine, et pointerType = mouse) : au tactile et au stylet, le curseur natif et le défilement normal restent.",
+    "Le carrousel se parcourt aussi au clavier (focusable, flèches et Tab) et au doigt (défilement natif avec aimantation).",
+    "« Réduire les animations » : suivi immédiat, sans ressort, étirement ni déplacement magnétique ; les libellés restent.",
+    "Libellés sur pastille inversée (--text-strong / --bg) : contraste maximal du thème, en clair et en sombre."
+  ],
+  "logo_exemple": {
+    "nom": "Ourlet",
+    "secteur": "Prêt-à-porter en maille",
+    "fichier": "logo.svg",
+    "palette": "moka",
+    "typo": "Geist SemiBold"
+  }
+}

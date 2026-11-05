@@ -1,0 +1,57 @@
+{
+  "id": "toasts-eventail",
+  "nom": "Pile en éventail",
+  "categorie": "notifications",
+  "niveau": "premium",
+  "description": "Les toasts s’empilent en profondeur, s’étalent au survol, au toucher ou au clavier, et se ferment d’un glissement qui garde l’élan du geste. Position, échelle, hauteur et opacité suivent chacune leur ressort ; un toast « en cours » se transforme en succès sans sauter. Démontré dans un logiciel RH.",
+  "tags": ["Toast", "Pile", "Ressort", "Geste", "Promesse", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 30,
+  "palette": "orchidee",
+  "logo_exemple": { "nom": "Relève", "secteur": "Logiciel RH", "fichier": "logo.svg", "palette": "orchidee", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1180 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, teintes de statut, accent, ombre de toast" },
+    { "nom": "Script FanStack", "note": "≈ 7 ko non minifié, inclus dans l’onglet HTML, sans dépendance : moteur de ressorts, glisser avec élan, minuteurs pausables" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "framer-motion ≥ 11", "note": "Onglet React seulement : ressorts, drag, AnimatePresence" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "position", "label": "Position", "type": "select", "default": "bottom-right",
+      "options": [ { "value": "bottom-right", "label": "Bas droite" }, { "value": "bottom-center", "label": "Bas" }, { "value": "top-right", "label": "Haut droite" } ],
+      "code": { "html": "data-position=\"{v}\"", "react": "position = '{v}'," } },
+    { "name": "visibles", "label": "Toasts visibles dans la pile", "type": "number", "default": 3, "min": 1, "max": 5, "step": 1,
+      "code": { "html": "data-visible=\"{v}\"", "react": "visible = {v}," } },
+    { "name": "ecart", "label": "Écart une fois étalée", "type": "number", "default": 12, "min": 8, "max": 24, "step": 4, "unit": "px",
+      "code": { "html": "data-gap=\"{v}\"", "react": "gap = {v}," } },
+    { "name": "duree", "label": "Durée d’affichage", "type": "number", "default": 6000, "min": 3000, "max": 12000, "step": 500, "unit": "ms",
+      "hint": "En pause tant que la pile est étalée ; les toasts « en cours » restent jusqu’à leur résultat.",
+      "code": { "html": "data-duration=\"{v}\"", "react": "duration = {v}," } },
+    { "name": "ressort", "label": "Ressort", "type": "select", "default": "doux",
+      "options": [ { "value": "doux", "label": "Doux" }, { "value": "sec", "label": "Sec" }, { "value": "joueur", "label": "Joueur" } ],
+      "code": { "html": "data-spring=\"{v}\"", "react": "spring = '{v}'," } },
+    { "name": "glisser", "label": "Glisser pour fermer", "type": "boolean", "default": true,
+      "code": { "html": "data-swipe=\"{v}\"", "react": "swipe = {v}," } },
+    { "name": "deplie", "label": "Toujours étalée", "type": "boolean", "default": false,
+      "code": { "react": "expanded = {v}," } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/FanToaster.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour les retours d’action qui peuvent s’enchaîner (validations, envois, synchronisations) : la pile garde la page lisible et l’historique récent à portée de survol.",
+    "API : const fan = FanStack(section) ; fan.push({ type, title, description, action: { label, onClick }, duration }) renvoie un id ; fan.update(id, {...}) transforme un toast « loading » en succès ou en erreur ; fan.dismiss(id), fan.clear().",
+    "Types : success, info, warning, error (annoncé en role=\"alert\"), loading (reste affiché). Au-delà de 8 toasts, le plus ancien part.",
+    "À éviter pour une information indispensable ou une décision : préférez une bannière ou un dialogue."
+  ],
+  "accessibilite": [
+    "Région nommée « Notifications (Alt + T) » ; Alt + T y porte le focus, ↑ ↓ passent d’un toast à l’autre, Suppr ferme le toast actif, Échap replie la pile.",
+    "Chaque toast est annoncé une fois (aria-live polite, assertif pour les erreurs) ; les toasts repliés derrière la pile ne reçoivent pas le pointeur.",
+    "Les minuteurs s’arrêtent quand la pile est étalée (survol, focus, toucher) et quand l’onglet est masqué.",
+    "Fermer : cible de 44 px (zone étendue sur bureau, bouton de 44 px sur mobile) ; contrastes AA en clair et en sombre.",
+    "Avec « réduire les animations » : positions appliquées sans ressort, sans glisser ; l’icône de chargement ralentit."
+  ]
+}

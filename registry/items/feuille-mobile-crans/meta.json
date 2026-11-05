@@ -1,0 +1,176 @@
+{
+  "id": "feuille-mobile-crans",
+  "nom": "Feuille mobile à crans",
+  "categorie": "modales",
+  "description": "Un panneau du bas à trois crans (réduite, moitié, plein écran) qu’on glisse au doigt : il garde l’élan du geste, se pose sur le cran le plus proche avec un ressort et devient élastique aux bornes. En montant, la vue derrière recule et s’assombrit, comme sur iOS.",
+  "tags": [
+    "Gestes",
+    "Ressort",
+    "Inertie",
+    "Mobile",
+    "Mobilité urbaine"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 420
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, voile, teintes de la carte, accent"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 3,5 ko min., Pointer Events + ressort maison, aucune dépendance"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "snap",
+      "label": "Cran au départ",
+      "type": "select",
+      "default": "half",
+      "options": [
+        {
+          "value": "peek",
+          "label": "Réduite"
+        },
+        {
+          "value": "half",
+          "label": "Moitié"
+        },
+        {
+          "value": "full",
+          "label": "Plein"
+        }
+      ],
+      "code": {
+        "html": "data-snap=\"{v}\"",
+        "react": "defaultSnap=\"{v}\""
+      }
+    },
+    {
+      "name": "state",
+      "label": "Contenu",
+      "type": "select",
+      "default": "list",
+      "options": [
+        {
+          "value": "list",
+          "label": "Liste"
+        },
+        {
+          "value": "loading",
+          "label": "Chargement"
+        },
+        {
+          "value": "empty",
+          "label": "Vide"
+        }
+      ],
+      "hint": "États de la liste : stations, squelette de chargement, aucune station.",
+      "code": {
+        "html": "data-state=\"{v}\"",
+        "react": "state=\"{v}\""
+      }
+    },
+    {
+      "name": "stiffness",
+      "label": "Raideur du ressort",
+      "type": "number",
+      "default": 420,
+      "min": 150,
+      "max": 800,
+      "step": 10,
+      "code": {
+        "html": "data-stiffness=\"{v}\"",
+        "react": "stiffness={{v}}"
+      }
+    },
+    {
+      "name": "damping",
+      "label": "Amortissement",
+      "type": "number",
+      "default": 36,
+      "min": 14,
+      "max": 60,
+      "step": 1,
+      "hint": "Autour de 2×√raideur (≈ 41) : pas de rebond. En dessous : la feuille dépasse un peu son cran.",
+      "code": {
+        "html": "data-damping=\"{v}\"",
+        "react": "damping={{v}}"
+      }
+    },
+    {
+      "name": "recede",
+      "label": "La vue derrière recule",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-recede=\"{v}\"",
+        "react": "recede={{v}}"
+      }
+    },
+    {
+      "name": "peek",
+      "label": "Hauteur réduite",
+      "type": "number",
+      "default": 152,
+      "min": 96,
+      "max": 240,
+      "step": 8,
+      "unit": "px",
+      "code": {
+        "html": "--fs-peek: {v}px",
+        "react": "peek={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/SnapSheet.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour une vue principale qu’on veut garder visible (carte, lecteur, caméra) avec un contenu qui s’étend à la demande : stations, résultats, détails d’un trajet.",
+    "Le contenu ne défile qu’en plein écran ; aux autres crans, tout glissé vertical déplace la feuille. En plein écran, saisissez l’en-tête pour redescendre.",
+    "Sur grand écran, la feuille devient un panneau de 420 px ancré à gauche : le même composant sert au bureau.",
+    "Le conteneur .fs prend la hauteur de son parent : height: 100dvh pour une page plein écran."
+  ],
+  "accessibilite": [
+    "La poignée est un vrai contrôle (role=\"slider\", 3 valeurs annoncées : réduite, à moitié ouverte, plein écran) : flèches, Page haut/bas, Début, Fin ; Entrée bascule moitié / plein.",
+    "Échap redescend du plein écran ; chaque changement de cran est annoncé (aria-live). En position réduite, le contenu caché est inerte.",
+    "Un simple toucher reste un clic : le glissé ne démarre qu’après 6 px verticaux, et le clic qui suit un glissé est ignoré.",
+    "Avec « réduire les animations », la feuille saute de cran en cran sans ressort ; textes ≥ 4,5:1, cibles de 44 px."
+  ],
+  "niveau": "premium",
+  "ordre": 4,
+  "palette": "foret",
+  "stage": {
+    "width": "desktop"
+  },
+  "logo_exemple": {
+    "nom": "Rayon",
+    "secteur": "Vélos en libre-service (mobilité urbaine)",
+    "fichier": "logo.svg",
+    "palette": "foret",
+    "typo": "Geist SemiBold"
+  }
+}

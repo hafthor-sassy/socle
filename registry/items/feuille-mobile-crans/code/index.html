@@ -1,0 +1,261 @@
+<!-- Feuille mobile à crans — HTML + CSS + JS intégré (≈ 3,5 ko), sans dépendance. Nécessite tokens.css.
+     Panneau du bas à trois hauteurs (réduite, moitié, plein écran), glissé au doigt avec inertie et ressort ;
+     la vue derrière recule quand la feuille monte. Contenu d'exemple fictif (Rayon, vélos en libre-service).
+     Le conteneur .fs prend la taille de son parent : donnez-lui height: 100dvh (plein écran) ou une hauteur fixe. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="fs" data-sheet data-snap="half" data-stiffness="420" data-damping="36" data-recede="true" data-state="list">
+  <!-- Vue derrière la feuille : une carte -->
+  <div class="fs__back" data-fs-back aria-hidden="true">
+    <svg class="fs__map" viewBox="0 0 400 860" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="860" class="m-ground"/>
+      <path d="M-20 520C80 470 140 560 230 520S360 430 430 470V560C360 520 300 600 220 610S80 560-20 600Z" class="m-water"/>
+      <path d="M40 120h140v130H40zM250 650h120v120H250z" class="m-park"/>
+      <g class="m-road-w"><path d="M-10 300H420M200-10V870M-10 690L420 640M90-10L130 870"/></g>
+      <g class="m-road"><path d="M-10 300H420M200-10V870M-10 690L420 640M90-10L130 870"/></g>
+      <g class="m-street"><path d="M-10 190H420M-10 400H420M-10 800H420M300-10V870M30-10V870M-10 90L420 140M240 300L360 520"/></g>
+      <g class="m-pin"><circle cx="200" cy="300" r="16"/><circle cx="300" cy="190" r="16"/><circle cx="118" cy="420" r="16"/><circle cx="300" cy="400" r="16"/></g>
+      <g class="m-pin-t"><text x="200" y="305">3</text><text x="300" y="195">7</text><text x="118" y="425">0</text><text x="300" y="405">5</text></g>
+      <circle cx="160" cy="250" r="22" class="m-me-halo"/><circle cx="160" cy="250" r="8" class="m-me"/>
+    </svg>
+    <div class="fs__top">
+      <span class="fs__brand"><svg width="28" height="28" viewBox="0 0 100 100"><rect width="100" height="100" rx="28" class="fs-fill-acc"/><circle cx="50" cy="50" r="25" fill="none" class="fs-stroke-fg" stroke-width="9"/><path d="M50 50L67.7 32.3" fill="none" class="fs-stroke-fg" stroke-width="8" stroke-linecap="round"/><circle cx="50" cy="50" r="7" class="fs-fill-fg"/></svg></span>
+      <span class="fs__where">Où allez-vous&nbsp;?</span>
+    </div>
+  </div>
+  <div class="fs__scrim" data-fs-scrim aria-hidden="true"></div>
+
+  <!-- La feuille -->
+  <section class="fs__sheet" data-fs-sheet aria-label="Stations proches">
+    <div class="fs__head" data-fs-handle>
+      <button class="fs__grip" type="button" role="slider" aria-label="Hauteur de la feuille" aria-valuemin="1" aria-valuemax="3" aria-valuenow="2" aria-valuetext="À moitié ouverte" data-fs-grip><span aria-hidden="true"></span></button>
+      <div class="fs__sum">
+        <div class="fs__sum-t"><h3>Stations proches</h3><p data-fs-sub>4 stations à moins de 6 min à pied</p></div>
+        <button class="fs__cta" type="button">Réserver</button>
+      </div>
+    </div>
+    <div class="fs__body" data-fs-body>
+      <div data-fs-view="list">
+        <ul class="fs__list">
+          <li class="fs__st is-best"><span class="fs__pin">3</span><span class="fs__st-t"><b>Place du Capitole</b><small>2 min · 160 m · mis à jour il y a 30 s</small></span><span class="fs__avail"><span><i class="fs__dot fs__dot--b"></i>2 vélos</span><span><i class="fs__dot fs__dot--e"></i>1 électrique</span></span></li>
+          <li class="fs__st"><span class="fs__pin">7</span><span class="fs__st-t"><b>Jean-Jaurès</b><small>4 min · 320 m</small></span><span class="fs__avail"><span><i class="fs__dot fs__dot--b"></i>4 vélos</span><span><i class="fs__dot fs__dot--e"></i>3 électriques</span></span></li>
+          <li class="fs__st"><span class="fs__pin">5</span><span class="fs__st-t"><b>Saint-Sernin</b><small>5 min · 410 m</small></span><span class="fs__avail"><span><i class="fs__dot fs__dot--b"></i>5 vélos</span><span><i class="fs__dot fs__dot--e"></i>0 électrique</span></span></li>
+          <li class="fs__st is-empty"><span class="fs__pin">0</span><span class="fs__st-t"><b>Esquirol</b><small>6 min · 480 m · 9 places libres</small></span><span class="fs__avail"><span>Aucun vélo</span><span>Retour possible</span></span></li>
+        </ul>
+        <div class="fs__pass">
+          <p><b>Pass Journée · 5&nbsp;€</b>45 min offertes à chaque trajet, électriques compris.</p>
+          <button class="fs__cta fs__cta--ghost" type="button">Choisir</button>
+        </div>
+        <h4 class="fs__h">Trajets récents</h4>
+        <ul class="fs__list fs__list--plain">
+          <li><span class="fs__st-t"><b>Capitole → Compans-Caffarelli</b><small>Hier · 14 min · 0,00 €</small></span></li>
+          <li><span class="fs__st-t"><b>Carmes → Saint-Cyprien</b><small>Lun. · 22 min · 0,50 €</small></span></li>
+          <li><span class="fs__st-t"><b>Jean-Jaurès → Matabiau</b><small>4 nov. · 9 min · 0,00 €</small></span></li>
+        </ul>
+      </div>
+      <div data-fs-view="loading" hidden aria-busy="true">
+        <ul class="fs__list" aria-label="Chargement des stations"><li class="fs__skel"></li><li class="fs__skel"></li><li class="fs__skel"></li></ul>
+      </div>
+      <div data-fs-view="empty" hidden>
+        <div class="fs__empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="17" r="3.5"/><circle cx="18" cy="17" r="3.5"/><path d="M6 17l3.5-8H14l4 8M3 3l18 18"/></svg>
+          <p><b>Aucune station à moins de 15 min.</b>Élargissez la zone ou activez les vélos hors station.</p><button class="fs__cta fs__cta--ghost" type="button">Élargir à 2 km</button></div>
+      </div>
+    </div>
+  </section>
+  <p class="fs-sr" data-fs-live aria-live="polite"></p>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .fs { --fs-peek: 152px; --fs-top: 48px; container: fs / inline-size; position: relative; height: 100%; min-height: 480px; overflow: hidden; isolation: isolate; background: var(--text-strong); font-family: var(--font-sans); color: var(--text); touch-action: manipulation; }
+  .dark .fs { background: var(--bg); }
+  .fs-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .fs :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .fs-fill-acc { fill: var(--accent); } .fs-fill-fg { fill: var(--accent-fg); } .fs-stroke-fg { stroke: var(--accent-fg); }
+
+  /* Vue derrière : recule (échelle, rayon) et s'assombrit quand la feuille passe de moitié à plein écran */
+  .fs__back { position: absolute; inset: 0; overflow: hidden; background: var(--raised); transform-origin: 50% 0; will-change: transform; }
+  .fs__map { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .m-ground { fill: var(--raised); } .m-water { fill: var(--tint-blue-bg); } .m-park { fill: var(--tint-green-bg); }
+  .m-road-w path { fill: none; stroke: var(--border); stroke-width: 18; stroke-linecap: round; }
+  .m-road path { fill: none; stroke: var(--surface); stroke-width: 14; stroke-linecap: round; }
+  .m-street path { fill: none; stroke: var(--surface); stroke-width: 5; stroke-linecap: round; }
+  .m-pin circle { fill: var(--accent); stroke: var(--surface); stroke-width: 3; }
+  .m-pin-t text { fill: var(--accent-fg); font: 700 14px var(--font-sans); text-anchor: middle; }
+  .m-me { fill: var(--tint-blue-fg); stroke: var(--surface); stroke-width: 3; } .m-me-halo { fill: var(--tint-blue-fg); opacity: .16; }
+  .fs__top { position: absolute; left: 12px; right: 12px; top: 12px; display: flex; align-items: center; gap: 8px; height: 52px; padding: 0 8px; border-radius: 999px; background: var(--surface); box-shadow: var(--shadow-popover); }
+  .fs__brand { display: grid; place-items: center; width: 36px; height: 36px; }
+  .fs__where { color: var(--text-muted); font-size: 16px; }
+  .fs__scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; pointer-events: none; }
+
+  .fs__sheet { position: absolute; left: 0; right: 0; top: 0; z-index: 2; display: flex; flex-direction: column; height: calc(100% - var(--fs-top)); border-radius: var(--radius-sheet) var(--radius-sheet) 0 0; background: var(--surface);
+    box-shadow: 0 -1px 0 var(--border), var(--shadow-popover); will-change: transform; transform: translateY(100%); }
+  .fs__head { flex: none; padding: 0 16px 12px; touch-action: none; cursor: grab; -webkit-user-select: none; user-select: none; }
+  .fs.is-drag .fs__head, .fs.is-drag .fs__sheet { cursor: grabbing; }
+  .fs__grip { display: grid; place-items: center; width: 100%; height: 28px; margin: 0; padding: 0; border: 0; background: transparent; cursor: inherit; touch-action: none; }
+  .fs__grip span { width: 40px; height: 5px; border-radius: 999px; background: var(--border-control); opacity: .55; transition: width var(--motion-base) var(--ease-out), opacity var(--motion-base) var(--ease-out); }
+  .fs.is-drag .fs__grip span { width: 52px; opacity: .9; }
+  .fs__grip:focus-visible { outline-offset: -4px; border-radius: 8px; }
+  .fs__sum { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .fs__sum h3 { margin: 0; color: var(--text-strong); font: 600 20px/28px var(--font-sans); letter-spacing: var(--track-tight); }
+  .fs__sum p { margin: 2px 0 0; color: var(--text-muted); font-size: 14px; line-height: 20px; }
+  .fs__cta { flex: none; height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: 600 15px/1 var(--font-sans); cursor: pointer; transition: transform var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out); }
+  .fs__cta:active { transform: scale(.96); }
+  @media (hover: hover) { .fs__cta:hover { background: var(--accent-hover); } }
+  .fs__cta--ghost { background: var(--raised); color: var(--text-strong); }
+  @media (hover: hover) { .fs__cta--ghost:hover { background: var(--state-press); } }
+
+  /* Le contenu ne défile qu'en plein écran ; sinon tout glissé déplace la feuille */
+  .fs__body { flex: 1; min-height: 0; padding: 0 16px 24px; overflow: hidden; overscroll-behavior: contain; touch-action: none; }
+  .fs.is-full .fs__body { overflow-y: auto; touch-action: pan-y; }
+  .fs__list { display: grid; margin: 0; padding: 0; list-style: none; }
+  .fs__st { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 4px 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--border); }
+  .fs__pin { grid-row: span 2; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 999px; background: var(--accent-subtle); color: var(--accent); font: 700 14px/1 var(--font-sans); }
+  .fs__st.is-best .fs__pin { background: var(--accent); color: var(--accent-fg); }
+  .fs__st.is-empty .fs__pin { background: var(--raised); color: var(--text-muted); }
+  .fs__st-t b { display: block; color: var(--text-strong); font: 500 16px/22px var(--font-sans); }
+  .fs__st-t small { color: var(--text-muted); font-size: 14px; line-height: 20px; }
+  .fs__avail { grid-column: 2; display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--text); font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; }
+  .fs__avail span { display: inline-flex; align-items: center; gap: 6px; }
+  .fs__st.is-empty .fs__avail { color: var(--text-muted); }
+  .fs__dot { width: 8px; height: 8px; border-radius: 999px; }
+  .fs__dot--b { background: var(--accent); } .fs__dot--e { background: var(--tint-amber-fg); }
+  .fs__pass { display: flex; align-items: center; gap: 12px; margin: 8px 0 24px; padding: 14px 14px 14px 16px; border-radius: var(--radius-card); background: var(--raised); }
+  .fs__pass p { flex: 1; margin: 0; color: var(--text-muted); font-size: 14px; line-height: 20px; }
+  .fs__pass b { display: block; color: var(--text-strong); font-weight: 600; font-size: 15px; }
+  .fs__pass .fs__cta--ghost { background: var(--surface); }
+  .fs__h { margin: 0 0 4px; color: var(--text-muted); font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .fs__list--plain li { padding: 12px 0; border-top: 1px solid var(--border); }
+  .fs__skel { height: 64px; margin: 8px 0; border-radius: var(--radius-card); background: linear-gradient(90deg, var(--raised) 0 40%, var(--state-press) 50%, var(--raised) 60% 100%) 0 0 / 300% 100%; animation: fs-sk 1.4s linear infinite; }
+  @keyframes fs-sk { to { background-position: -150% 0; } }
+  .fs__empty { display: grid; justify-items: center; gap: 12px; padding: 24px 8px; text-align: center; color: var(--text-muted); }
+  .fs__empty p { max-width: 32ch; margin: 0; font-size: 15px; line-height: 1.5; }
+  .fs__empty b { display: block; color: var(--text-strong); font-weight: 600; }
+
+  @container fs (min-width: 720px) {
+    /* Conteneur large (bureau) : la feuille devient un panneau de 420 px ancré à gauche, au-dessus de la carte */
+    .fs__sheet { left: 16px; right: auto; width: 420px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fs__skel { animation: none; } .fs__grip span { transition: none; } }
+</style>
+
+<script>
+/* Feuille : position verticale y (haut de la feuille) pilotée par un ressort ; trois crans (plein, moitié, réduite).
+   Au relâchement, on projette la position avec la vitesse du doigt et on vise le cran le plus proche (un lancer
+   franc saute au cran suivant) ; le ressort repart avec cette vitesse. Au-delà des bornes : élastique.
+   API : racine._sheet = { snap('peek'|'half'|'full'), at, destroy }. Événement « sheet:snap » { snap }. */
+(function () {
+  var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NAMES = ['full', 'half', 'peek'], LABEL = { full: 'Plein écran', half: 'À moitié ouverte', peek: 'Réduite' }, VAL = { full: 3, half: 2, peek: 1 };
+  function Sheet(root) {
+    var sheet = root.querySelector('[data-fs-sheet]'), back = root.querySelector('[data-fs-back]'), scrim = root.querySelector('[data-fs-scrim]');
+    var body = root.querySelector('[data-fs-body]'), grip = root.querySelector('[data-fs-grip]'), live = root.querySelector('[data-fs-live]');
+    var K = parseFloat(root.dataset.stiffness) || 420, C = parseFloat(root.dataset.damping) || 36, RECEDE = root.dataset.recede !== 'false';
+    var H = 0, snaps = {}, cur = root.dataset.snap || 'half', y = 0, v = 0, target = 0, raf = 0, last = 0, drag = null, dead = false;
+
+    function measure() {
+      H = root.clientHeight;
+      var cs = getComputedStyle(root), top = parseFloat(cs.getPropertyValue('--fs-top')) || 48, peek = parseFloat(cs.getPropertyValue('--fs-peek')) || 152;
+      snaps = { full: top, half: Math.round(H * 0.48), peek: H - peek };
+    }
+    function paint() {
+      sheet.style.transform = 'translate3d(0,' + y.toFixed(2) + 'px,0)';
+      /* p : 0 à moitié (ou plus bas), 1 en plein écran */
+      var p = Math.max(0, Math.min(1, (snaps.half - y) / (snaps.half - snaps.full)));
+      if (RECEDE) {
+        back.style.transform = 'translateY(' + (p * 10).toFixed(2) + 'px) scale(' + (1 - p * 0.06).toFixed(4) + ')';
+        back.style.borderRadius = (p * 16).toFixed(1) + 'px';
+      } else { back.style.transform = ''; back.style.borderRadius = ''; }
+      scrim.style.opacity = (RECEDE ? p * 0.6 : p * 0.3).toFixed(3);
+    }
+    function frame(now) {
+      raf = 0; if (dead) return;
+      var dt = Math.min(0.05, (now - (last || now)) / 1000) || 1 / 60; last = now;
+      for (var s = 0, h = 1 / 240; s < dt; s += h) { var a = -K * (y - target) - C * v; v += a * h; y += v * h; }
+      if (Math.abs(y - target) < 0.3 && Math.abs(v) < 4) { y = target; v = 0; last = 0; paint(); return; }
+      paint(); raf = requestAnimationFrame(frame);
+    }
+    function snap(name, vel, silent) {
+      if (snaps[name] == null) return;
+      var changed = name !== cur; cur = name; target = snaps[name]; v = vel || 0;
+      root.classList.toggle('is-full', name === 'full'); root.dataset.at = name;
+      grip.setAttribute('aria-valuenow', VAL[name]); grip.setAttribute('aria-valuetext', LABEL[name]);
+      body.inert = name === 'peek'; /* réduite : seul le résumé reste atteignable */
+      if (name !== 'full') body.scrollTop = 0;
+      if (REDUCE) { y = target; v = 0; paint(); }
+      else if (!raf) { last = 0; raf = requestAnimationFrame(frame); }
+      if (changed && !silent) { live.textContent = 'Feuille ' + LABEL[name].toLowerCase(); root.dispatchEvent(new CustomEvent('sheet:snap', { detail: { snap: name } })); }
+    }
+    function rubber(raw) {
+      if (raw < snaps.full) return snaps.full - Math.pow(snaps.full - raw, 0.8) * 0.5;
+      if (raw > snaps.peek) return snaps.peek + Math.pow(raw - snaps.peek, 0.8) * 0.5;
+      return raw;
+    }
+
+    /* Glisser : sur l'en-tête toujours ; sur le contenu tant que la feuille n'est pas en plein écran.
+       « pending » : on attend 6 px verticaux avant de prendre la main, un simple toucher reste un clic. */
+    function onDown(e) {
+      if (e.button > 0) return;
+      var inHead = e.target.closest('[data-fs-handle]'), inBody = e.target.closest('[data-fs-body]');
+      if (!inHead && !(inBody && cur !== 'full')) return;
+      drag = { pending: true, x: e.clientX, y0: e.clientY, start: y, id: e.pointerId, samples: [] };
+      /* écoute sur la fenêtre : le doigt sort vite de la poignée quand on la tire vers le haut */
+      window.addEventListener('pointermove', onMove, { passive: false }); window.addEventListener('pointerup', onUp); window.addEventListener('pointercancel', onUp);
+    }
+    function onMove(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dy = e.clientY - drag.y0;
+      if (drag.pending) {
+        if (Math.abs(dy) < 6 || Math.abs(dy) < Math.abs(e.clientX - drag.x)) return;
+        drag.pending = false; drag.start = y - dy; cancelAnimationFrame(raf); raf = 0; v = 0;
+        root.classList.add('is-drag'); try { sheet.setPointerCapture(e.pointerId); } catch (_) {}
+      }
+      y = rubber(drag.start + dy); paint();
+      var t = performance.now(); drag.samples.push([t, e.clientY]);
+      while (drag.samples.length > 2 && t - drag.samples[0][0] > 100) drag.samples.shift();
+      e.preventDefault();
+    }
+    function onUp(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var d = drag; drag = null; root.classList.remove('is-drag');
+      window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onUp); window.removeEventListener('pointercancel', onUp);
+      if (d.pending) return;
+      var sm = d.samples, vel = 0;
+      if (sm.length > 1) { var a = sm[0], b = sm[sm.length - 1]; vel = (b[1] - a[1]) / Math.max(1, b[0] - a[0]) * 1000; }
+      var proj = y + vel * 0.2, best = NAMES.reduce(function (m, n) { return Math.abs(snaps[n] - proj) < Math.abs(snaps[m] - proj) ? n : m; }, cur);
+      /* Lancer franc : on passe au moins au cran suivant dans le sens du geste */
+      if (Math.abs(vel) > 1100 && best === cur) { var i = NAMES.indexOf(cur); best = NAMES[vel < 0 ? Math.max(0, i - 1) : Math.min(2, i + 1)]; }
+      snap(best, Math.max(-4000, Math.min(4000, vel)));
+      root.addEventListener('click', swallow, { capture: true, once: true }); setTimeout(function () { root.removeEventListener('click', swallow, true); }, 0);
+    }
+    function swallow(e) { e.stopPropagation(); e.preventDefault(); }
+    function onKey(e) {
+      var i = NAMES.indexOf(cur), m = { ArrowUp: -1, ArrowRight: -1, PageUp: -1, ArrowDown: 1, ArrowLeft: 1, PageDown: 1 }[e.key];
+      if (e.key === 'Home') { e.preventDefault(); snap('full'); return; }
+      if (e.key === 'End') { e.preventDefault(); snap('peek'); return; }
+      if (m) { e.preventDefault(); snap(NAMES[Math.max(0, Math.min(2, i + m))]); }
+    }
+    function onGripClick() { snap(cur === 'half' ? 'full' : 'half'); }
+    function onRootKey(e) { if (e.key === 'Escape' && cur === 'full') { snap('half'); grip.focus(); } }
+
+    sheet.addEventListener('pointerdown', onDown);
+    grip.addEventListener('keydown', onKey); grip.addEventListener('click', onGripClick); root.addEventListener('keydown', onRootKey);
+    var ro = new ResizeObserver(function () { measure(); target = snaps[cur]; if (!raf) { y = target; v = 0; paint(); } });
+    ro.observe(root);
+    measure(); snap(cur, 0, true);
+    y = REDUCE ? target : H; paint();
+    if (!REDUCE) { last = 0; raf = requestAnimationFrame(frame); } /* entrée : la feuille monte jusqu'à son cran */
+
+    return { snap: snap, get at() { return cur; }, destroy: function () { dead = true; cancelAnimationFrame(raf); ro.disconnect(); window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onUp); window.removeEventListener('pointercancel', onUp); } };
+  }
+  document.querySelectorAll('[data-sheet]').forEach(function (el) {
+    if (el._sheet) el._sheet.destroy();
+    var st = el.dataset.state || 'list';
+    [].forEach.call(el.querySelectorAll('[data-fs-view]'), function (v) { v.hidden = v.dataset.fsView !== st; });
+    var sub = el.querySelector('[data-fs-sub]');
+    if (sub) sub.textContent = st === 'loading' ? 'Recherche des stations autour de vous…' : st === 'empty' ? 'Aucune station dans un rayon de 15 min' : '4 stations à moins de 6 min à pied';
+    el._sheet = Sheet(el);
+  });
+})();
+</script>

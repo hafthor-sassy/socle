@@ -1,0 +1,53 @@
+{
+  "id": "modale-element-partage",
+  "nom": "Modale à élément partagé",
+  "categorie": "modales",
+  "niveau": "premium",
+  "description": "La carte devient la modale : sa couverture et son titre voyagent jusqu’à leur place dans le dialogue sur un vrai ressort physique, interruptible à tout moment, puis retournent dans la grille. Sur mobile, la carte en ligne s’ouvre en feuille plein écran que l’on ferme d’un glissement. Démontré sur le catalogue d’une école en ligne.",
+  "tags": ["Élément partagé", "Ressort", "Modale", "Geste", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 20,
+  "palette": "indigo",
+  "logo_exemple": { "nom": "Préau", "secteur": "Éducation (cours en ligne)", "fichier": "logo.svg", "palette": "indigo", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1024 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, accent, voile, ombre de surcouche, rayons" },
+    { "nom": "Script SharedModal", "note": "≈ 5 ko non minifié, inclus dans l’onglet HTML, sans dépendance : ressort intégré (raideur, amortissement), calques partagés, piège du focus" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "framer-motion ≥ 11", "note": "Onglet React seulement : layoutId partagé, AnimatePresence, glisser pour fermer" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "ressort", "label": "Ressort", "type": "select", "default": "doux",
+      "options": [ { "value": "doux", "label": "Doux" }, { "value": "sec", "label": "Sec" }, { "value": "joueur", "label": "Joueur" } ],
+      "hint": "Doux : raideur 170, amortissement 22. Sec : sans rebond. Joueur : rebond marqué. Le ressort garde sa vitesse si l’on ferme pendant l’ouverture.",
+      "code": { "html": "data-spring=\"{v}\"", "react": "spring = '{v}'," } },
+    { "name": "fond", "label": "Fond", "type": "select", "default": "blur",
+      "options": [ { "value": "blur", "label": "Flouté" }, { "value": "dim", "label": "Voile" }, { "value": "none", "label": "Aucun" } ],
+      "code": { "html": "data-scrim=\"{v}\"", "react": "scrim = '{v}'," } },
+    { "name": "recul", "label": "Recul des cartes voisines", "type": "boolean", "default": true,
+      "code": { "html": "data-recede=\"{v}\"", "react": "recede = {v}," } },
+    { "name": "glisser", "label": "Glisser vers le bas pour fermer", "type": "boolean", "default": true,
+      "code": { "html": "data-drag=\"{v}\"", "react": "dragToClose = {v}," } },
+    { "name": "largeur", "label": "Largeur du dialogue (bureau)", "type": "number", "default": 720, "min": 560, "max": 880, "step": 40, "unit": "px",
+      "code": { "html": "--pr-max: {v}px", "react": "maxWidth = {v}," } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/SharedModal.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour ouvrir le détail d’un élément d’une collection sans quitter la page : cours, produit, projet, article, fiche d’équipe. La continuité visuelle dit d’où vient le contenu et où il retournera.",
+    "Chaque carte porte son détail dans un <template> voisin : le dialogue est unique et se remplit à l’ouverture. API : root._sharedModal.open(carte) / .close(), événements sharedmodal:open et sharedmodal:close.",
+    "Les illustrations de couverture utilisent preserveAspectRatio=\"xMidYMid slice\" : le motif reste centré du carré mobile au bandeau large du dialogue. Gardez l’essentiel dans les 200 × 180 unités centrales.",
+    "À éviter pour un contenu long ou une tâche en plusieurs étapes : préférez une vraie page, avec son URL."
+  ],
+  "accessibilite": [
+    "Cartes en <button> avec aria-haspopup=\"dialog\" et aria-expanded ; dialogue role=\"dialog\" aria-modal, nommé par son titre.",
+    "Focus placé sur Fermer à l’ouverture, piégé dans le dialogue (Tab, Maj+Tab), rendu à la carte d’origine à la fermeture ; Échap, clic sur le voile et bouton Fermer ferment.",
+    "Le reste de la page passe en inert pendant l’ouverture et le défilement de la page est bloqué.",
+    "Avec « réduire les animations » : ouverture en fondu de 160 ms, sans vol ni recul des cartes.",
+    "Textes et accent AA en clair et en sombre ; cibles de 44 px (Fermer, actions), boutons d’action, pleine largeur sur mobile."
+  ]
+}

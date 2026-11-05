@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curseur contextuel — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  body { overflow-x: hidden; }
+  .is-thumb .cc__shelf { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ stiffness: 320, damping: 26, dot: 8, labels: true, blend: 'normal', magnet: 0.25, stretch: true });
+  var KEYS = ['stiffness', 'damping', 'dot', 'labels', 'blend', 'magnet', 'stretch'];
+  var zone = null;
+  function apply(p) {
+    if (!zone) return;
+    KEYS.forEach(function (k) { zone.dataset[k] = String(p[k]); });
+    if (zone._cc) zone._cc.update(ContextCursor.read(zone)); else ContextCursor.init(document);
+  }
+  function at(sel, fx, fy) {
+    var el = document.querySelector(sel); if (!el || !zone._cc) return;
+    var r = el.getBoundingClientRect(); zone._cc.at(r.left + r.width * (fx == null ? .5 : fx), r.top + r.height * (fy == null ? .5 : fy));
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    zone = document.querySelector('[data-cursor-zone]');
+    KEYS.forEach(function (k) { zone.dataset[k] = String(props[k]); });
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    apply(props);
+    // Vignette et captures : ?at=voir|glisser|lien|aimant|texte pose le curseur sur une cible
+    var m = /[?&]at=(\w+)/.exec(location.search), which = m ? m[1] : (Socle.thumb ? 'voir' : '');
+    var SEL = { voir: ['.cc__feature .cc__media', .45, .4], glisser: ['.cc__track', .5, .4], lien: ['.cc__link', .6, .5], aimant: ['.cc__btn--solid', .7, .3], texte: ['.cc__lead', .3, .5] };
+    if (SEL[which]) setTimeout(function () { var s = SEL[which]; at(s[0], s[1], s[2]); }, 200);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () {
+    if (!zone || !zone._cc) return;
+    var seq = [['.cc__nav a', .5, .5], ['.cc__btn--solid', .6, .4], ['.cc__lead', .4, .5], ['.cc__feature .cc__media', .5, .5], ['.cc__track', .5, .5]], i = 0;
+    (function next() { if (i >= seq.length) return; at(seq[i][0], seq[i][1], seq[i][2]); i++; setTimeout(next, 900); })();
+  });
+</script>
+</body>
+</html>

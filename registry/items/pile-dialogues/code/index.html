@@ -1,0 +1,304 @@
+<!-- Pile de dialogues — HTML + CSS + JS intégré (≈ 2,5 ko), sans dépendance. Nécessite tokens.css.
+     <dialog> natif (couche supérieure, focus piégé) ; chaque étape s'empile sur la précédente, Échap revient d'un niveau.
+     Contenu d'exemple fictif (Jalon, gestion de projet). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="ds" data-dstack data-offset="14" data-scale="0.05" data-backdrop="back" data-confirm="true">
+  <section class="ds-zone" aria-labelledby="ds-zone-t">
+    <div>
+      <h3 id="ds-zone-t">Supprimer l’espace</h3>
+      <p>L’espace « Refonte site 2027 », ses 248 tâches et ses 6 tableaux. Vous choisirez quoi garder avant de confirmer.</p>
+    </div>
+    <button class="ds-btn ds-btn--danger-ghost" type="button" data-ds-open>Supprimer l’espace…</button>
+  </section>
+  <p class="ds-done" data-ds-done role="status" hidden></p>
+
+  <dialog class="ds__dlg" data-ds-dialog aria-labelledby="ds-t-choose">
+    <div class="ds__scrim" data-ds-scrim aria-hidden="true"></div>
+    <div class="ds__stack" data-ds-stack>
+
+      <form class="ds__card" data-step="choose" method="dialog" hidden>
+        <p class="ds__step"><span data-ds-stepno>Étape 1 sur 3</span><span class="ds__dots" aria-hidden="true"><i></i><i></i><i></i></span></p>
+        <h2 id="ds-t-choose">Supprimer « Refonte site 2027 »&nbsp;?</h2>
+        <p class="ds__p">248 tâches, 6 tableaux et 1,2 Go de fichiers. Les 12 membres perdront l’accès. Que faire des tâches&nbsp;?</p>
+        <fieldset class="ds__opts">
+          <legend class="ds-sr">Devenir des tâches</legend>
+          <label class="ds__opt"><input type="radio" name="what" value="move" checked><span><b>Les déplacer dans un autre espace</b><small>Historique et pièces jointes conservés.</small></span></label>
+          <label class="ds__opt"><input type="radio" name="what" value="export"><span><b>Les exporter puis supprimer</b><small>Un fichier CSV avec commentaires et dates.</small></span></label>
+          <label class="ds__opt"><input type="radio" name="what" value="delete"><span><b>Tout supprimer</b><small>Rien n’est conservé après 30 jours.</small></span></label>
+        </fieldset>
+        <div class="ds__foot"><button class="ds-btn" type="button" data-ds-back>Annuler</button><button class="ds-btn ds-btn--primary" type="submit">Continuer</button></div>
+      </form>
+
+      <form class="ds__card" data-step="move" method="dialog" hidden>
+        <p class="ds__step"><span data-ds-stepno>Étape 2 sur 3</span><span class="ds__dots" aria-hidden="true"><i></i><i></i><i></i></span></p>
+        <h2 id="ds-t-move">Où déplacer les 248 tâches&nbsp;?</h2>
+        <fieldset class="ds__opts ds__opts--list">
+          <legend class="ds-sr">Espace de destination</legend>
+          <label class="ds__opt"><input type="radio" name="dest" value="Marketing" checked><span class="ds__sp" aria-hidden="true">MK</span><span><b>Marketing</b><small>9 membres · 412 tâches</small></span></label>
+          <label class="ds__opt"><input type="radio" name="dest" value="Produit"><span class="ds__sp" aria-hidden="true">PR</span><span><b>Produit</b><small>14 membres · 1 086 tâches</small></span></label>
+          <label class="ds__opt"><input type="radio" name="dest" value="Archives 2026"><span class="ds__sp" aria-hidden="true">AR</span><span><b>Archives 2026</b><small>Lecture seule pour les membres</small></span></label>
+        </fieldset>
+        <div class="ds__foot"><button class="ds-btn" type="button" data-ds-back>Retour</button><button class="ds-btn ds-btn--primary" type="submit">Continuer</button></div>
+      </form>
+
+      <form class="ds__card" data-step="export" method="dialog" hidden>
+        <p class="ds__step"><span data-ds-stepno>Étape 2 sur 3</span><span class="ds__dots" aria-hidden="true"><i></i><i></i><i></i></span></p>
+        <h2 id="ds-t-export">Export des tâches</h2>
+        <div class="ds__file" data-ds-file>
+          <span class="ds__file-ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg></span>
+          <span class="ds__file-t"><b>refonte-site-2027.csv</b><small data-ds-filemsg>Préparation… 0 sur 248 tâches</small></span>
+          <span class="ds__bar" aria-hidden="true"><span data-ds-bar></span></span>
+        </div>
+        <p class="ds__p ds__p--sm">Le lien de téléchargement est aussi envoyé par courriel et reste valable 7 jours.</p>
+        <div class="ds__foot"><button class="ds-btn" type="button" data-ds-back>Retour</button><button class="ds-btn ds-btn--primary" type="submit" data-ds-exportnext disabled>Continuer</button></div>
+      </form>
+
+      <form class="ds__card" data-step="confirm" method="dialog" hidden novalidate>
+        <p class="ds__step"><span data-ds-stepno>Étape 3 sur 3</span><span class="ds__dots" aria-hidden="true"><i></i><i></i><i></i></span></p>
+        <h2 id="ds-t-confirm">Confirmer la suppression</h2>
+        <p class="ds__p" data-ds-recap>Les tâches iront dans « Marketing ». L’espace sera supprimé pour tous ses membres.</p>
+        <div class="ds__field" data-ds-typed>
+          <label for="ds-name">Saisissez <b>Refonte site 2027</b> pour confirmer</label>
+          <input id="ds-name" type="text" autocomplete="off" spellcheck="false" aria-describedby="ds-name-err">
+          <p id="ds-name-err" class="ds__err" data-ds-err></p>
+        </div>
+        <div class="ds__foot"><button class="ds-btn" type="button" data-ds-back>Retour</button><button class="ds-btn ds-btn--danger" type="submit">Supprimer définitivement</button></div>
+      </form>
+
+    </div>
+  </dialog>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .ds { --ds-off: 14px; --ds-scale: .05; --ds-dur: 420ms; --ds-spring: cubic-bezier(.32, 1.3, .55, 1); --ds-top: 16vh;
+    width: 100%; max-width: 760px; font-family: var(--font-sans); color: var(--text); }
+  .ds-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .ds :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+  /* Zone sensible (déclencheur) */
+  .ds-zone { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 20px; border: 1px solid var(--tint-red-border); border-radius: var(--radius-sheet); background: var(--surface); }
+  .ds-zone h3 { margin: 0; color: var(--text-strong); font: 600 16px/24px var(--font-sans); }
+  .ds-zone p { margin: 4px 0 0; max-width: 46ch; color: var(--text-muted); font-size: 14px; line-height: 20px; }
+  .ds-done { margin: 12px 0 0; padding: 12px 16px; border-radius: var(--radius-card); background: var(--tint-green-bg); color: var(--tint-green-fg); border: 1px solid var(--tint-green-border); font-size: 14px; line-height: 20px; }
+  .ds-done button { margin-left: 8px; padding: 0; border: 0; background: none; color: inherit; font: 600 14px/20px var(--font-sans); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+  .ds-btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 18px; border: 1px solid var(--border); border-radius: var(--radius-ctl); background: var(--surface); color: var(--text-strong); font: 600 14px/1 var(--font-sans); white-space: nowrap; cursor: pointer; transition: background-color var(--motion-fast) var(--ease-out), opacity var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out); }
+  .ds-btn:active:not(:disabled) { transform: scale(.98); }
+  .ds-btn:disabled { opacity: .5; cursor: not-allowed; }
+  @media (hover: hover) { .ds-btn:hover:not(:disabled) { background: var(--raised); } }
+  .ds-btn--primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+  @media (hover: hover) { .ds-btn--primary:hover:not(:disabled) { background: var(--accent-hover); } }
+  .ds-btn--danger { background: var(--tint-red-fg); border-color: var(--tint-red-fg); color: var(--surface); }
+  @media (hover: hover) { .ds-btn--danger:hover:not(:disabled) { background: var(--tint-red-fg); opacity: .9; } }
+  .ds-btn--danger-ghost { color: var(--tint-red-fg); border-color: var(--tint-red-border); }
+  @media (hover: hover) { .ds-btn--danger-ghost:hover { background: var(--tint-red-bg); } }
+
+  /* Dialog plein écran transparent : le voile et la pile sont à nous (::backdrop ne lit pas toujours les variables) */
+  .ds__dlg { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: var(--ds-top) 16px 16px; border: 0; background: transparent; color: inherit; overflow: hidden; }
+  .ds__dlg::backdrop { background: transparent; }
+  .ds__scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; transition: opacity var(--motion-slow) var(--ease-out); }
+  .ds.is-open .ds__scrim { opacity: 1; }
+  .ds__stack { position: relative; display: grid; width: 100%; max-width: 480px; margin: 0 auto; }
+  .ds__card { --d: 0; grid-area: 1 / 1; align-self: start; display: grid; gap: 16px; margin: 0; padding: 24px; border-radius: var(--radius-sheet); background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-popover);
+    transform-origin: 50% 0; transform: translateY(calc(var(--d) * var(--ds-off) * -1)) scale(calc(1 - var(--d) * var(--ds-scale)));
+    transition: transform var(--ds-dur) var(--ds-spring), opacity var(--motion-slow) var(--ease-out), height var(--ds-dur) var(--ds-spring); }
+  .ds__card[hidden] { display: none; }
+  /* Cartes du dessous : rognées à la hauteur de celle du dessus, contenu estompé */
+  .ds__card.is-under { height: var(--ds-h); overflow: hidden; pointer-events: none; background: color-mix(in srgb, var(--surface) 55%, var(--raised)); }
+  .ds__card.is-under > * { opacity: .35; transition: opacity var(--motion-slow) var(--ease-out); }
+  .ds__card.is-enter { transform: translateY(32px) scale(.98); opacity: 0; }
+  .ds__card.is-leave { transform: translateY(32px) scale(.98); opacity: 0; pointer-events: none; transition-duration: 260ms, 200ms; transition-timing-function: var(--ease-in); }
+
+  .ds__step { display: flex; align-items: center; justify-content: space-between; margin: 0; color: var(--text-muted); font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .ds__dots { display: inline-flex; gap: 6px; }
+  .ds__dots i { width: 6px; height: 6px; border-radius: 999px; background: var(--border-control); opacity: .45; transition: width var(--motion-slow) var(--ds-spring), opacity var(--motion-base) var(--ease-out); }
+  .ds__dots i.is-on { width: 18px; background: var(--accent); opacity: 1; }
+  .ds__dots i.is-off { display: none; }
+  .ds__card h2 { margin: -4px 0 0; color: var(--text-strong); font: 600 20px/28px var(--font-sans); letter-spacing: var(--track-tight); text-wrap: balance; }
+  .ds__p { margin: -4px 0 0; color: var(--text-muted); font-size: 15px; line-height: 22px; }
+  .ds__p--sm { font-size: 14px; line-height: 20px; }
+
+  .ds__opts { display: grid; gap: 8px; margin: 0; padding: 0; border: 0; min-width: 0; }
+  .ds__opt { position: relative; display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: start; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-card); cursor: pointer; transition: border-color var(--motion-fast) var(--ease-out), background-color var(--motion-fast) var(--ease-out); }
+  .ds__opts--list .ds__opt { grid-template-columns: 20px 36px minmax(0, 1fr); align-items: center; }
+  .ds__opt:has(input:checked) { border-color: var(--accent); background: var(--accent-subtle); }
+  .ds__opt:has(input:focus-visible) { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 2px; }
+  .ds__opt input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--accent); }
+  .ds__opt input:focus-visible { outline: none; }
+  .ds__opt b { display: block; color: var(--text-strong); font: 500 15px/22px var(--font-sans); }
+  .ds__opt small { display: block; color: var(--text-muted); font-size: 13px; line-height: 18px; }
+  .ds__sp { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; background: var(--raised); color: var(--text-muted); font: 600 12px/1 var(--font-mono); }
+
+  .ds__file { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 12px; align-items: center; padding: 14px; border-radius: var(--radius-card); background: var(--raised); }
+  .ds__file-ic { grid-row: span 2; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; background: var(--surface); color: var(--text-muted); }
+  .ds__file-t b { display: block; color: var(--text-strong); font: 500 14px/20px var(--font-mono); }
+  .ds__file-t small { color: var(--text-muted); font-size: 13px; line-height: 18px; font-variant-numeric: tabular-nums; }
+  .ds__bar { grid-column: 2; height: 4px; border-radius: 999px; background: var(--border); overflow: hidden; }
+  .ds__bar span { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--accent); }
+  .ds__file.is-ready .ds__file-ic { color: var(--tint-green-fg); background: var(--tint-green-bg); }
+  .ds__file.is-ready .ds__bar { display: none; }
+
+  .ds__field { display: grid; gap: 8px; }
+  .ds__field label { color: var(--text); font-size: 14px; line-height: 20px; }
+  .ds__field label b { color: var(--text-strong); font-weight: 600; }
+  .ds__field input { height: 44px; padding: 0 12px; border: 1px solid var(--border-control); border-radius: var(--radius-ctl); background: var(--surface); color: var(--text-strong); font: 400 var(--t-input)/1 var(--font-mono); }
+  .ds__field input[aria-invalid="true"] { border-color: var(--tint-red-fg); }
+  .ds__err { min-height: 0; margin: 0; color: var(--tint-red-fg); font-size: 13px; line-height: 18px; }
+  .ds__err:empty { display: none; }
+  .ds__foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+
+  /* Mobile : la pile se pose en bas de l'écran, pleine largeur, boutons empilés */
+  @media (max-width: 599px) {
+    .ds__dlg { padding: 0 8px calc(8px + var(--safe-bottom, 0px)); display: flex; flex-direction: column; justify-content: flex-end; }
+    .ds__dlg:not([open]) { display: none; }
+    .ds__stack { max-width: none; }
+    .ds__card { align-self: end; padding: 20px 16px 16px; transform-origin: 50% 0; }
+    .ds__card.is-enter, .ds__card.is-leave { transform: translateY(100%); opacity: 1; }
+    .ds__foot { flex-direction: column-reverse; }
+    .ds__foot .ds-btn { width: 100%; height: 48px; }
+    .ds-zone .ds-btn { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ds__card, .ds__card.is-leave, .ds__scrim, .ds__dots i { transition: none; }
+  }
+</style>
+
+<script>
+/* Pile : un seul <dialog> modal contient des cartes-étapes. Empiler pousse la carte du dessous en arrière
+   (décalée vers le haut, réduite, rognée à la hauteur de la nouvelle) ; Échap, « Retour » ou le voile
+   dépilent d'un niveau et rendent le focus à l'élément d'origine. API : racine._dstack = { open, push, back, close, destroy }. */
+(function () {
+  var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function DialogStack(root) {
+    var dlg = root.querySelector('[data-ds-dialog]'), stackEl = root.querySelector('[data-ds-stack]'), done = root.querySelector('[data-ds-done]');
+    var opener = root.querySelector('[data-ds-open]');
+    var ds = root.dataset, NAME = 'Refonte site 2027';
+    root.style.setProperty('--ds-off', (parseFloat(ds.offset) || 14) + 'px');
+    root.style.setProperty('--ds-scale', parseFloat(ds.scale) || 0.05);
+    var stack = [], focusBack = [], ro = null, exportT = 0, dead = false;
+    function card(n) { return stackEl.querySelector('[data-step="' + n + '"]'); }
+    function total() { var w = card('choose').querySelector('input[name="what"]:checked'); return w && w.value === 'delete' ? 2 : 3; }
+
+    function layout() {
+      var top = card(stack[stack.length - 1]);
+      stack.forEach(function (n, i) {
+        var c = card(n), d = stack.length - 1 - i;
+        c.style.setProperty('--d', d); c.classList.toggle('is-under', d > 0); c.inert = d > 0;
+        c.style.zIndex = i + 1;
+      });
+      if (top) { root.style.setProperty('--ds-h', top.offsetHeight + 'px'); dlg.setAttribute('aria-labelledby', top.querySelector('h2').id); }
+      stack.forEach(function (n, i) {
+        var c = card(n), no = i + 1, t = total(); if (n === 'confirm') no = t;
+        c.querySelector('[data-ds-stepno]').textContent = 'Étape ' + no + ' sur ' + t;
+        [].forEach.call(c.querySelectorAll('.ds__dots i'), function (dot, k) { dot.classList.toggle('is-on', k === no - 1); dot.classList.toggle('is-off', k >= t); });
+      });
+    }
+    function focusIn(c) {
+      var f = c.querySelector('input:checked, input[type="text"], button[type="submit"]:not(:disabled), button');
+      if (f) f.focus({ preventScroll: true });
+    }
+    function push(n) {
+      var c = card(n); if (!c || stack.indexOf(n) > -1) return;
+      focusBack.push(document.activeElement);
+      stack.push(n); c.hidden = false;
+      if (!REDUCE) { c.classList.add('is-enter'); void c.offsetWidth; }
+      layout();
+      requestAnimationFrame(function () { c.classList.remove('is-enter'); });
+      if (n === 'export') startExport();
+      if (n === 'confirm') prepConfirm();
+      focusIn(c);
+    }
+    function back() {
+      if (stack.length <= 1) return close();
+      var n = stack.pop(), c = card(n);
+      if (n === 'export') clearInterval(exportT);
+      c.classList.add('is-leave'); c.inert = true;
+      setTimeout(function () { c.hidden = true; c.classList.remove('is-leave'); }, REDUCE ? 0 : 280);
+      layout();
+      var f = focusBack.pop(); if (f && f.focus) f.focus({ preventScroll: true });
+    }
+    function open() {
+      if (dlg.open) return;
+      done.hidden = true;
+      dlg.showModal(); document.documentElement.style.overflow = 'hidden';
+      requestAnimationFrame(function () { root.classList.add('is-open'); });
+      push('choose');
+    }
+    function close(after) {
+      if (!dlg.open) return;
+      clearInterval(exportT);
+      root.classList.remove('is-open');
+      stack.forEach(function (n) { card(n).classList.add('is-leave'); });
+      var first = focusBack[0];
+      setTimeout(function () {
+        stack.forEach(function (n) { var c = card(n); c.hidden = true; c.classList.remove('is-leave', 'is-under'); c.inert = false; });
+        stack = []; focusBack = [];
+        dlg.close(); document.documentElement.style.overflow = '';
+        if (after) after();
+        (first && first.focus ? first : opener).focus({ preventScroll: true });
+      }, REDUCE ? 0 : 260);
+    }
+
+    function startExport() {
+      var file = card('export').querySelector('[data-ds-file]'), msg = card('export').querySelector('[data-ds-filemsg]'), bar = card('export').querySelector('[data-ds-bar]'), next = card('export').querySelector('[data-ds-exportnext]');
+      var k = 0; file.classList.remove('is-ready'); next.disabled = true; bar.style.width = '0%';
+      clearInterval(exportT);
+      exportT = setInterval(function () {
+        k = Math.min(248, k + 9 + Math.round(Math.random() * 14));
+        bar.style.width = (k / 248 * 100) + '%'; msg.textContent = 'Préparation… ' + k + ' sur 248 tâches';
+        if (k >= 248) { clearInterval(exportT); file.classList.add('is-ready'); msg.textContent = 'Prêt · 84 Ko · lien envoyé à camille@jalon.app'; next.disabled = false; }
+      }, REDUCE ? 20 : 90);
+    }
+    function prepConfirm() {
+      var what = card('choose').querySelector('input[name="what"]:checked').value, dest = card('move').querySelector('input[name="dest"]:checked').value;
+      card('confirm').querySelector('[data-ds-recap]').textContent = what === 'move' ? 'Les 248 tâches iront dans « ' + dest + ' ». L’espace sera supprimé pour ses 12 membres.'
+        : what === 'export' ? 'L’export est prêt. L’espace et ses 248 tâches seront supprimés pour ses 12 membres.' : 'Les 248 tâches seront supprimées. Elles restent récupérables 30 jours par un administrateur.';
+      var f = card('confirm').querySelector('[data-ds-typed]'), inp = f.querySelector('input');
+      f.hidden = ds.confirm === 'false'; inp.value = ''; inp.removeAttribute('aria-invalid'); card('confirm').querySelector('[data-ds-err]').textContent = '';
+    }
+    function onSubmit(e) {
+      e.preventDefault();
+      var step = e.target.dataset.step;
+      if (step === 'choose') { var w = e.target.querySelector('input[name="what"]:checked').value; push(w === 'delete' ? 'confirm' : w); }
+      else if (step === 'move' || step === 'export') push('confirm');
+      else if (step === 'confirm') {
+        var inp = e.target.querySelector('#ds-name'), err = e.target.querySelector('[data-ds-err]');
+        if (ds.confirm !== 'false' && inp.value.trim() !== NAME) {
+          inp.setAttribute('aria-invalid', 'true'); err.textContent = inp.value.trim() ? 'Le nom saisi ne correspond pas (majuscules comprises).' : 'Saisissez le nom de l’espace.'; inp.focus(); return;
+        }
+        var what = card('choose').querySelector('input[name="what"]:checked').value, dest = card('move').querySelector('input[name="dest"]:checked').value;
+        close(function () {
+          done.innerHTML = 'Espace « ' + NAME + ' » supprimé. ' + (what === 'move' ? '248 tâches déplacées dans « ' + dest + ' ».' : what === 'export' ? 'Export envoyé par courriel.' : 'Récupérable 30 jours.') + ' <button type="button" data-ds-undo>Annuler</button>';
+          done.hidden = false;
+          root.dispatchEvent(new CustomEvent('dstack:done', { detail: { what: what, dest: what === 'move' ? dest : null } }));
+        });
+      }
+    }
+    function onClick(e) {
+      if (e.target.closest('[data-ds-back]')) { back(); return; }
+      if (e.target === dlg.querySelector('[data-ds-scrim]') || e.target === dlg || e.target === stackEl) {
+        if (ds.backdrop === 'close') close(); else if (ds.backdrop === 'back') back();
+      }
+    }
+    function onCancel(e) { e.preventDefault(); back(); } /* Échap : un niveau à la fois */
+    function onInput(e) { if (e.target.id === 'ds-name' && e.target.getAttribute('aria-invalid')) { e.target.removeAttribute('aria-invalid'); card('confirm').querySelector('[data-ds-err]').textContent = ''; } }
+    function onChange(e) { if (e.target.name === 'what') layout(); }
+    function onRoot(e) { if (e.target.closest('[data-ds-open]')) open(); if (e.target.closest('[data-ds-undo]')) { done.hidden = true; opener.focus(); } }
+
+    root.addEventListener('click', onRoot);
+    dlg.addEventListener('click', onClick); dlg.addEventListener('cancel', onCancel); dlg.addEventListener('submit', onSubmit);
+    dlg.addEventListener('input', onInput); dlg.addEventListener('change', onChange);
+    ro = new ResizeObserver(function () { if (stack.length) root.style.setProperty('--ds-h', card(stack[stack.length - 1]).offsetHeight + 'px'); });
+    [].forEach.call(stackEl.children, function (c) { ro.observe(c); });
+
+    return {
+      open: open, push: push, back: back, close: close,
+      destroy: function () { dead = true; clearInterval(exportT); ro.disconnect(); if (dlg.open) dlg.close(); document.documentElement.style.overflow = ''; root.removeEventListener('click', onRoot); }
+    };
+  }
+  document.querySelectorAll('[data-dstack]').forEach(function (el) { if (el._dstack) el._dstack.destroy(); el._dstack = DialogStack(el); });
+})();
+</script>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Décodage — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; padding: 48px 32px; display: grid; align-content: center; }
+  @media (max-width: 860px) { .stage { padding: 12px; align-content: start; } }
+  .is-thumb .stage { padding: 40px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var LOOP = 'Vos secrets, illisibles pour tous sauf vous.|Un coffre, une clé : la vôtre.|Partagez un accès, jamais un mot de passe.';
+  var props = Socle.props({ titre: 'Vos secrets, illisibles pour tous sauf vous.', declencheur: 'view', jeu: 'symbols', ordre: 'ltr', duree: 1400, couleur: 'muted', meneur: true });
+  var markup = '', t = 0;
+  function render(p) {
+    if (!markup) return;
+    var mount = document.getElementById('mount');
+    mount.innerHTML = markup;
+    var sec = mount.querySelector('.dc'); sec.dataset.scrambleColor = p.couleur;
+    var h = mount.querySelector('#dc-title');
+    var trig = Socle.thumb ? 'loop' : p.declencheur;
+    h.textContent = p.titre || 'Titre';
+    h.dataset.trigger = trig; h.dataset.charset = p.jeu; h.dataset.order = p.ordre; h.dataset.duration = p.duree; h.dataset.lead = String(!!p.meneur);
+    if (trig === 'loop') { h.dataset.texts = Socle.thumb ? LOOP : (p.titre + '|' + LOOP.split('|').slice(1).join('|')); h.dataset.pause = '1800'; }
+    mount.querySelectorAll('[data-decode]').forEach(function (el) { if (el !== h && el.closest('.dc__copy')) { el.dataset.charset = el.dataset.charset; } DecodeText.attach(el); });
+    mount.querySelectorAll('[data-secret]').forEach(DecodeText.secret);
+    if (Socle.thumb) { var b = mount.querySelectorAll('[data-secret]')[0]; setTimeout(function () { b && b._secret && b._secret.show(); }, 900); }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (txt) {
+    var css = txt.match(/<style>([\s\S]*?)<\/style>/), mk = txt.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = txt.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    markup = mk ? mk[1] : '';
+    /* Le script du composant s'attache tout seul ; on le charge sur un conteneur vide puis on monte le balisage. */
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    render(props);
+  });
+  Socle.onChange(function (p) { clearTimeout(t); t = setTimeout(function () { render(p); }, 120); });
+  Socle.onReplay(render);
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tags en pile physique — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .page { min-height: 100vh; display: grid; grid-template-rows: auto 1fr; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 1120px; width: 100%; margin: 0 auto; padding: 16px 24px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text-strong); font: 600 17px/1 var(--font-sans); letter-spacing: -0.02em; }
+  .bar__nav { display: flex; gap: 4px; }
+  .bar__nav span { display: none; padding: 8px 12px; border-radius: 999px; color: var(--text-muted); font-size: 14px; }
+  .bar__nav span.is-on { color: var(--text-strong); background: var(--state-press); }
+  .layout { display: grid; gap: 32px; align-content: center; max-width: 1120px; width: 100%; margin: 0 auto; padding: 16px 24px 48px; }
+  .intro { display: grid; gap: 16px; align-content: start; }
+  .eyebrow { color: var(--text-muted); font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .who { display: flex; align-items: center; gap: 16px; }
+  .avatar { flex: none; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 999px; background: var(--accent-subtle); color: var(--accent); border: 1px solid var(--accent-subtle-border); font: 600 18px/1 var(--font-sans); }
+  .who h1 { font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem); line-height: 1.08; letter-spacing: -0.035em; font-weight: 600; }
+  .who p { margin-top: 4px; color: var(--text-muted); font-size: 15px; }
+  .lede { max-width: 34rem; color: var(--text); font-size: 16px; line-height: 1.6; }
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; max-width: 30rem; padding-top: 8px; border-top: 1px solid var(--border); }
+  .kpis div { padding: 12px 12px 0 0; }
+  .kpis b { display: block; color: var(--text-strong); font: 600 22px/28px var(--font-sans); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .kpis span { color: var(--text-muted); font-size: 13px; line-height: 18px; }
+  @media (min-width: 960px) {
+    .bar__nav span { display: inline-block; }
+    .layout { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
+  }
+  @media (max-width: 599px) { .bar, .layout { padding-left: 16px; padding-right: 16px; } .layout { gap: 20px; padding-top: 8px; padding-bottom: 24px; } .lede, .kpis { display: none; } .avatar { width: 48px; height: 48px; font-size: 16px; } .who p { font-size: 14px; } }
+  .is-thumb .bar, .is-thumb .intro { display: none; }
+  .is-thumb .layout { padding: 24px; grid-template-columns: 1fr; place-items: center; min-height: 100vh; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="bar">
+    <span class="brand">
+      <svg width="28" height="28" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" style="fill:var(--accent)"/><path d="M20 76h20c8 0 12-4 16-10L72 34" fill="none" style="stroke:var(--accent-fg)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M52 30h22v22" fill="none" style="stroke:var(--accent-fg)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Tremplin
+    </span>
+    <nav class="bar__nav" aria-label="Exemple"><span>Offres</span><span class="is-on">Mon profil</span><span>Candidatures</span></nav>
+  </header>
+  <main class="layout">
+    <div class="intro">
+      <span class="eyebrow">Profil candidat · visible des recruteurs</span>
+      <div class="who"><span class="avatar" aria-hidden="true">LM</span><div><h1>Lina Moreau</h1><p>Développeuse full-stack · Lyon · ouverte aux offres</p></div></div>
+      <p class="lede">Les recruteurs lisent d’abord vos compétences mises en avant. Rangez votre pile comme vous rangeriez votre bureau&nbsp;: à la main.</p>
+      <div class="kpis"><div><b>18</b><span>compétences</span></div><div><b>92&nbsp;%</b><span>profil complet</span></div><div><b>24</b><span>offres compatibles</span></div></div>
+    </div>
+    <div id="mount" style="display:grid;justify-items:center;width:100%"></div>
+  </main>
+</div>
+<script>
+  var props = Socle.props({ jeu: 'dev', gravity: 1, bounce: 0.2, friction: 0.5, drop: 'pluie', push: true, height: 360, size: 'md' });
+  var SETS = {
+    design: [['Figma', 'design', 1], ['Prototypage', 'design', 1], ['Recherche utilisateur', 'method', 1], ['Design system', 'front'], ['Accessibilité', 'design'], ['Motion', 'front'], ['Ateliers', 'method'], ['Typographie', 'design'], ['Illustration', 'design'], ['Tests utilisateurs', 'method'], ['Copywriting', 'lang'], ['Framer', 'front'], ['Icônes', 'design'], ['Personas', 'method'], ['Webflow', 'front'], ['Analytics', 'data']],
+    data: [['Python', 'lang', 1], ['SQL', 'data', 1], ['Agents IA', 'front', 1], ['dbt', 'data'], ['Pandas', 'lang'], ['RAG', 'front'], ['Airflow', 'ops'], ['Statistiques', 'method'], ['Looker', 'design'], ['Spark', 'ops'], ['Évaluation de modèles', 'method'], ['PyTorch', 'lang'], ['BigQuery', 'data'], ['Prompting', 'front'], ['Dataviz', 'design'], ['MLOps', 'ops']],
+  };
+  var src = null, loop = 0, mount = document.getElementById('mount');
+  function el() { return mount.querySelector('[data-tagpile]'); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function render(p) {
+    if (!src) return;
+    var old = el(); if (old && old._tagpile) old._tagpile.destroy();
+    mount.innerHTML = src.markup;
+    var r = el(), zone = r.querySelector('[data-tp-zone]');
+    if (SETS[p.jeu]) {
+      zone.innerHTML = SETS[p.jeu].map(function (t) { return '<button class="tp-tag" type="button" data-kind="' + t[1] + '" aria-pressed="' + !!t[2] + '"><span class="tp-tag__mk" aria-hidden="true"></span>' + esc(t[0]) + '</button>'; }).join('');
+      r.querySelector('[data-tp-count]').textContent = SETS[p.jeu].filter(function (t) { return t[2]; }).length;
+    }
+    r.dataset.gravity = p.gravity; r.dataset.bounce = p.bounce; r.dataset.friction = p.friction; r.dataset.drop = p.drop; r.dataset.push = p.push; r.dataset.size = p.size;
+    r.style.setProperty('--tp-h', p.height + 'px');
+    if (Socle.thumb) { r.style.setProperty('--tp-h', '300px'); }
+    try { new Function(src.script)(); } catch (e) { console.error(e); }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props);
+    if (Socle.thumb && !Socle.reducedMotion()) loop = setInterval(function () { var r = el(); r && r._tagpile && r._tagpile.shake(); }, 5200);
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { var r = el(); r && r._tagpile && r._tagpile.drop(); });
+</script>
+</body>
+</html>

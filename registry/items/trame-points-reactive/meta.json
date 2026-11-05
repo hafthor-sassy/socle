@@ -1,0 +1,230 @@
+{
+  "id": "trame-points-reactive",
+  "nom": "Trame de points réactive",
+  "categorie": "backgrounds",
+  "niveau": "essentiel",
+  "palette": "mousse",
+  "description": "Une grille de points tenus par des ressorts : ils s’écartent et grossissent autour du pointeur, prennent la couleur d’accent, et un clic envoie une onde. Canvas 2D léger, pointeur fantôme au tactile.",
+  "tags": [
+    "Canvas 2D",
+    "Pointeur",
+    "Ressort",
+    "Grille",
+    "Hero"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 1024
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "technique": "Canvas 2D · ressorts par point · onde au clic",
+  "difficulte": 2,
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "--border-control pour les points, --accent-vivid (ou --text-strong) près du pointeur, --bg"
+    },
+    {
+      "nom": "Canvas 2D",
+      "note": "Natif, ≈ 3 ko minifié, aucun CDN"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "gap",
+      "label": "Pas de la grille",
+      "type": "number",
+      "default": 24,
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "code": {
+        "html": "data-gap=\"{v}\"",
+        "react": "gap={{v}}"
+      },
+      "hint": "Multiple de 4 : la trame tombe sur la grille de 8 px."
+    },
+    {
+      "name": "size",
+      "label": "Taille des points",
+      "type": "number",
+      "default": 1.6,
+      "min": 0.8,
+      "max": 4,
+      "step": 0.2,
+      "unit": "px",
+      "code": {
+        "html": "data-size=\"{v}\"",
+        "react": "size={{v}}"
+      }
+    },
+    {
+      "name": "radius",
+      "label": "Rayon d’influence",
+      "type": "number",
+      "default": 160,
+      "min": 60,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "code": {
+        "html": "data-radius=\"{v}\"",
+        "react": "radius={{v}}"
+      }
+    },
+    {
+      "name": "force",
+      "label": "Écart",
+      "type": "number",
+      "default": 22,
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "code": {
+        "html": "data-force=\"{v}\"",
+        "react": "force={{v}}"
+      },
+      "hint": "Distance maximale dont un point s’écarte du pointeur."
+    },
+    {
+      "name": "grow",
+      "label": "Grossissement",
+      "type": "number",
+      "default": 1.6,
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "code": {
+        "html": "data-grow=\"{v}\"",
+        "react": "grow={{v}}"
+      }
+    },
+    {
+      "name": "tone",
+      "label": "Couleur au survol",
+      "type": "select",
+      "default": "accent",
+      "options": [
+        {
+          "value": "accent",
+          "label": "Accent"
+        },
+        {
+          "value": "neutre",
+          "label": "Neutre"
+        }
+      ],
+      "code": {
+        "html": "data-tone=\"{v}\"",
+        "react": "tone=\"{v}\""
+      }
+    },
+    {
+      "name": "ripple",
+      "label": "Onde au clic",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-ripple=\"{v}\"",
+        "react": "ripple={{v}}"
+      }
+    },
+    {
+      "name": "ambient",
+      "label": "Respiration",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-ambient=\"{v}\"",
+        "react": "ambient={{v}}"
+      },
+      "hint": "Variation lente de taille. Désactivée : le rendu s’arrête quand plus rien ne bouge."
+    },
+    {
+      "name": "auto",
+      "label": "Pointeur fantôme",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-auto=\"{v}\"",
+        "react": "auto={{v}}"
+      },
+      "hint": "Sans souris (tactile, inactivité de 2 s), une trace lente parcourt la zone libre."
+    },
+    {
+      "name": "mask",
+      "label": "Fondu des bords",
+      "type": "select",
+      "default": "ellipse",
+      "options": [
+        {
+          "value": "ellipse",
+          "label": "Ellipse"
+        },
+        {
+          "value": "none",
+          "label": "Aucun"
+        }
+      ],
+      "code": {
+        "html": "data-mask=\"{v}\"",
+        "react": "mask=\"{v}\""
+      },
+      "hint": "Ellipse : la trame s’efface côté texte (en haut sur mobile)."
+    },
+    {
+      "name": "contenu",
+      "label": "Afficher le hero",
+      "type": "boolean",
+      "default": true
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/DotGrid.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Derrière un hero ou une section d’accroche : la trame donne du relief sans image ni vidéo, quelques kilo-octets suffisent.",
+    "Pas de 16 à 24 px et points de 1,2 à 2 px pour un fond discret ; pas de 32 px et plus pour un motif affirmé.",
+    "Gardez « Fondu des bords » sur Ellipse dès qu’un texte est posé dessus : les points s’effacent côté titre.",
+    "Neutre pour un produit sobre, Accent pour signer la marque : la couleur suit la palette et le thème en direct.",
+    "DotGrid.init(scope) puis el._dotgrid.update(DotGrid.read(el)) après un changement de data-* ; pulse(x, y) déclenche une onde par code."
+  ],
+  "accessibilite": [
+    "Le canvas est décoratif (aria-hidden) : aucun contenu n’en dépend, tout reste utilisable au clavier.",
+    "Points à 55 % de --border-control, sous le texte fondus par le masque : titre et paragraphe gardent le contraste du thème (≥ 4,5:1 en clair et en sombre).",
+    "« Réduire les animations » : trame fixe, sans ressort, onde ni respiration.",
+    "Rendu en pause hors écran (IntersectionObserver) et onglet masqué ; sans respiration ni fantôme, arrêt complet quand tout est au repos.",
+    "Au tactile, glisser fait réagir la trame sans bloquer le défilement vertical (touch-action: pan-y) ; les boutons font 48 px de haut sur mobile."
+  ],
+  "logo_exemple": {
+    "nom": "Semis",
+    "secteur": "Agritech (capteurs de sol)",
+    "fichier": "logo.svg",
+    "palette": "mousse",
+    "typo": "Geist SemiBold"
+  }
+}

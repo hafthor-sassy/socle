@@ -1,0 +1,282 @@
+<!-- Encre qui monte — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Les lettres apparaissent comme de l'encre qui se diffuse dans l'eau : un front bruité monte (ou s'étend du centre),
+     l'encre déborde, se teinte, laisse des volutes, puis se resserre sur la forme exacte du texte.
+     WebGL 1 maison (aucune bibliothèque), repli CSS sans WebGL, texte réel toujours présent (sélection, SEO, lecteurs d'écran).
+     Usage : <h2 data-ink data-duration="2600" data-turbulence="0.6" data-bleed="0.5" data-origin="bottom" data-color="text" data-wisps="true">…</h2>
+     API : el._ink.play() · RisingInk.attach(el) -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="ink" aria-labelledby="ink-title">
+  <div class="ink__copy">
+    <a class="ink__brand" href="#" aria-label="Lavis, accueil">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" class="ink__logo-bg"/><path d="M50 18c11 15 22 27 22 39a22 22 0 0 1-44 0c0-12 11-24 22-39Z" class="ink__logo-fg"/><path d="M41 60c0 6 4 10 9 11" class="ink__logo-st"/></svg>
+      <span>lavis</span><span class="ink__brand-sub">éditions</span>
+    </a>
+    <p class="ink__eyebrow">Rentrée littéraire 2027 · Roman</p>
+    <h2 class="ink__title" id="ink-title" data-ink data-duration="2600" data-turbulence="0.6" data-bleed="0.5" data-origin="bottom" data-color="text" data-wisps="true">L’encre se souvient de tout.</h2>
+    <p class="ink__lead">Dans <em>La Marée lente</em>, Mathilde Arnaud suit trois générations de femmes sur l’île de Bréhat, entre lettres jamais envoyées et carnets retrouvés.</p>
+    <div class="ink__ctas">
+      <a href="#" class="ink__cta">Lire les premières pages</a>
+      <a href="#" class="ink__ghost">Trouver une librairie</a>
+    </div>
+    <dl class="ink__facts">
+      <div><dt>Parution</dt><dd>21 août 2027</dd></div>
+      <div><dt>Pages</dt><dd>312</dd></div>
+      <div><dt>Prix</dt><dd>21,50 €</dd></div>
+    </dl>
+  </div>
+  <a class="ink__book" href="#" aria-label="La Marée lente, Mathilde Arnaud : voir la fiche du livre">
+    <span class="ink__cover">
+      <span class="ink__author">Mathilde Arnaud</span>
+      <span class="ink__btitle" data-ink data-trigger="hover" data-duration="2000" data-turbulence="0.8" data-bleed="0.7" data-origin="center" data-color="accent" data-wisps="false">La Marée lente</span>
+      <span class="ink__genre">roman</span>
+      <span class="ink__imprint"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 18c11 15 22 27 22 39a22 22 0 0 1-44 0c0-12 11-24 22-39Z"/></svg>lavis</span>
+    </span>
+    <span class="ink__hint" aria-hidden="true">Survolez ou touchez la couverture</span>
+  </a>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .ink { position: relative; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); align-items: center; gap: 64px; width: 100%; max-width: 1120px; margin: 0 auto; padding: 64px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sheet); color: var(--text); font-family: var(--font-sans); overflow: hidden; }
+  .ink a { color: inherit; text-decoration: none; }
+  .ink :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .ink__brand { display: inline-flex; align-items: baseline; gap: 8px; margin-bottom: 48px; color: var(--text-strong); font-weight: 600; font-size: 20px; letter-spacing: -.03em; }
+  .ink__brand svg { align-self: center; width: 32px; height: 32px; }
+  .ink__logo-bg { fill: var(--accent); }
+  .ink__logo-fg { fill: var(--accent-fg); }
+  .ink__logo-st { fill: none; stroke: var(--accent); stroke-width: 5; stroke-linecap: round; }
+  .ink__brand-sub { color: var(--text-muted); font-weight: 400; font-size: var(--t-sm); letter-spacing: 0; }
+  .ink__eyebrow { margin: 0 0 20px; color: var(--text-muted); font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .ink__title { margin: 0; color: var(--text-strong); font-size: clamp(2.5rem, 1.4rem + 4.2vw, 5rem); line-height: 1; font-weight: 600; letter-spacing: -.045em; text-wrap: balance; }
+  .ink__lead { max-width: 44ch; margin: 28px 0 0; color: var(--text-muted); font-size: var(--t-base); line-height: 1.6; }
+  .ink__lead em { color: var(--text-strong); font-style: italic; }
+  .ink__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .ink__cta, .ink__ghost { display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: var(--radius-pill); font-size: var(--t-sm); font-weight: 500; transition: background var(--motion-base) var(--ease-out); }
+  .ink .ink__cta { background: var(--text-strong); color: var(--surface); }
+  .ink .ink__cta:hover { background: var(--text); }
+  .ink .ink__ghost { border: 1px solid var(--border-control); color: var(--text-strong); }
+  .ink__ghost:hover { background: var(--state-hover); }
+  .ink__facts { display: flex; gap: 32px; margin: 40px 0 0; padding: 20px 0 0; border-top: 1px solid var(--border); }
+  .ink__facts dt { color: var(--text-muted); font-size: var(--t-xs); }
+  .ink__facts dd { margin: 2px 0 0; color: var(--text-strong); font-weight: 500; font-size: var(--t-sm); font-variant-numeric: tabular-nums; }
+
+  .ink__book { display: grid; justify-items: center; gap: 16px; }
+  .ink__cover { position: relative; display: flex; flex-direction: column; width: 100%; max-width: 320px; aspect-ratio: 2 / 3; padding: 32px 28px 28px; border-radius: 4px 12px 12px 4px; background: var(--accent-subtle); color: var(--text-strong); box-shadow: inset 6px 0 0 var(--accent-subtle-border); transition: transform var(--motion-slow) var(--ease-out); }
+  .ink__book:hover .ink__cover, .ink__book:focus-visible .ink__cover { transform: translateY(-4px) rotate(-.6deg); }
+  .ink__author { font-size: var(--t-sm); font-weight: 500; letter-spacing: .01em; }
+  .ink__btitle { display: block; margin-top: auto; font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem); line-height: 1; font-weight: 600; letter-spacing: -.04em; color: var(--accent); }
+  .ink__genre { margin-top: 12px; color: var(--text-muted); font-size: var(--t-sm); font-style: italic; }
+  .ink__imprint { display: flex; align-items: center; gap: 6px; margin-top: 40px; font-size: var(--t-xs); font-weight: 600; letter-spacing: -.01em; }
+  .ink__imprint svg { width: 14px; height: 14px; fill: var(--accent); }
+  .ink__hint { color: var(--text-muted); font-size: var(--t-xs); }
+
+  /* Moteur : le canvas recouvre le texte (plus une marge pour les volutes), le vrai texte reste en dessous. */
+  [data-ink] { position: relative; }
+  [data-ink].is-inking { color: transparent !important; }
+  .ink-cv { position: absolute; z-index: 1; pointer-events: none; transition: opacity 240ms var(--ease-out); }
+  .ink-cv.is-live { transition: none; }
+  [data-ink].is-ending { transition: color 240ms var(--ease-out); }
+  [data-ink].is-css { animation: ink-css var(--ink-dur, 2600ms) cubic-bezier(.2, .7, .2, 1) both; }
+  @keyframes ink-css { 0% { opacity: 0; filter: blur(18px); clip-path: inset(100% 0 0 0); transform: translateY(.12em); } 45% { opacity: .8; filter: blur(6px); } 100% { opacity: 1; filter: blur(0); clip-path: inset(-20% 0 -20% 0); transform: none; } }
+
+  @media (max-width: 860px) {
+    .ink { grid-template-columns: 1fr; gap: 40px; padding: 28px 20px 32px; border-radius: var(--radius-card); }
+    .ink__brand { margin-bottom: 32px; }
+    .ink__title { font-size: clamp(2.5rem, 1rem + 8vw, 3.5rem); }
+    .ink__ctas { flex-direction: column; }
+    .ink__cta, .ink__ghost { justify-content: center; height: 48px; font-size: var(--t-base); }
+    .ink__facts { gap: 24px; }
+    .ink__cover { max-width: 260px; }
+  }
+  @media (prefers-reduced-motion: reduce) { [data-ink].is-css { animation: none; } .ink__cover { transition: none; } }
+</style>
+
+<script>
+(function () {
+  'use strict';
+  var reduced = function () { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; };
+  var VS = 'attribute vec2 p; varying vec2 v; void main(){ v = p * .5 + .5; gl_Position = vec4(p, 0., 1.); }';
+  var FS = [
+    'precision highp float;',
+    'uniform sampler2D uT, uB, uS; uniform vec2 uRes; uniform vec4 uBox; uniform float uP, uTime, uTurb, uBleed, uOrigin, uWisps; uniform vec3 uInk, uTint;',
+    'varying vec2 v;',
+    'float h(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
+    'float n(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f); return mix(mix(h(i), h(i + vec2(1, 0)), f.x), mix(h(i + vec2(0, 1)), h(i + vec2(1, 1)), f.x), f.y); }',
+    'float fbm(vec2 p){ float s = 0., a = .5; for (int i = 0; i < 5; i++) { s += a * n(p); p = p * 2.03 + vec2(1.7, 9.2); a *= .5; } return s; }',
+    'void main(){',
+    '  float settle = smoothstep(.62, 1., uP), done = smoothstep(.93, 1., uP);',
+    '  vec2 asp = vec2(uRes.x / uRes.y, 1.), q = v * asp * 3.2;',
+    /* Bruit qui monte : l'eau entraîne l'encre vers le haut. */
+    '  vec2 w = vec2(fbm(q * .8 + vec2(0., -uTime * .12)), fbm(q * .8 + vec2(3.1, 1.7) - uTime * .16));',
+    '  float n1 = fbm(q + 2.2 * w + vec2(0., -uTime * .32)), n2 = fbm(q * 1.8 + 1.6 * w + vec2(4.1, -uTime * .5));',
+    '  float ly = clamp((v.y - uBox.y) / max(.001, uBox.w - uBox.y), 0., 1.);',
+    '  vec2 c = vec2((uBox.x + uBox.z) * .5, (uBox.y + uBox.w) * .5);',
+    '  float rad = length((v - c) * asp) / max(.001, length((uBox.zw - c) * asp));',
+    '  float pos = uOrigin < .5 ? ly : rad;',
+    '  float front = uP * 1.38 - pos - (n1 - .5) * .8 * uTurb;',
+    '  float r = smoothstep(0., .5, front);',
+    '  vec2 disp = (vec2(n1, n2) - .5) * .085 * uTurb * (1. - settle);',
+    '  disp.y -= (1. - r) * .035 * (1. - uOrigin);',
+    '  vec2 s = v + disp;',
+    '  float T = texture2D(uT, s).a, B = texture2D(uB, s).a;',
+    '  float F = mix(B, T, settle) + (n2 - .5) * .22 * uTurb * (1. - settle);',
+    '  float thr = mix(1.05, mix(.5, .28, uBleed * (1. - settle)), r);',
+    '  float e = mix(.06 + .2 * uBleed, .02, settle);',
+    '  float a = smoothstep(thr - e, thr + e, F);',
+    '  a = mix(a, texture2D(uT, v).a, done);',
+    /* Volutes : de la fumée d'encre au-dessus du front, qui s'efface en se posant. */
+    '  float S = texture2D(uS, v + vec2(0., -.06 * (1. - r)) + disp * 2.4).a;',
+    '  float band = smoothstep(-.05, .2, front) * (1. - smoothstep(.2, .85, front));',
+    '  float smoke = uWisps * S * smoothstep(.42, .78, n1 * .7 + n2 * .6) * band * (1. - settle) * .6;',
+    '  float mott = mix(.3 + .7 * smoothstep(.28, .72, n2 * .8 + n1 * .4), 1., settle * settle);',
+    '  float al = clamp(max(a * mott, smoke), 0., 1.);',
+    '  vec3 col = mix(uTint, uInk, clamp(smoothstep(.15, .95, a * mott) * (.55 + .45 * settle) + done, 0., 1.));',
+    '  gl_FragColor = vec4(col * al, al);',
+    '}'
+  ].join('\n');
+
+  function cssColor(el, v) {
+    var probe = document.createElement('span'); probe.style.color = 'var(' + v + ')'; probe.style.display = 'none'; el.appendChild(probe);
+    var m = getComputedStyle(probe).color.match(/[\d.]+/g) || [0, 0, 0]; probe.remove();
+    return [m[0] / 255, m[1] / 255, m[2] / 255];
+  }
+  function opts(el) {
+    var d = el.dataset;
+    return { duration: +d.duration || 2600, turb: d.turbulence != null ? +d.turbulence : .6, bleed: d.bleed != null ? +d.bleed : .5, origin: d.origin === 'center' ? 1 : 0, color: d.color || 'text', wisps: d.wisps === 'false' ? 0 : 1, trigger: d.trigger || 'view' };
+  }
+
+  function attach(el) {
+    if (el._ink) return el._ink;
+    var host = el.offsetParent || el.parentNode, cv = document.createElement('canvas');
+    cv.className = 'ink-cv'; cv.setAttribute('aria-hidden', 'true');
+    var gl = null;
+    try { gl = cv.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false }) || cv.getContext('experimental-webgl'); } catch (e) { gl = null; }
+    var api = { play: function () {}, stop: function () {}, refresh: function () {} };
+    el._ink = api;
+
+    /* Repli sans WebGL : flou et masque montant en CSS. */
+    if (!gl) {
+      api.play = function () { el.style.opacity = ''; if (reduced()) return; el.style.setProperty('--ink-dur', opts(el).duration + 'ms'); el.classList.remove('is-css'); void el.offsetWidth; el.classList.add('is-css'); };
+      api.refresh = function () {};
+      trigger();
+      return api;
+    }
+    el.parentNode.insertBefore(cv, el.nextSibling);
+    function sh(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; }
+    var pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { cv.remove(); gl = null; api.play = function () {}; return api; }
+    gl.useProgram(pr);
+    var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    var loc = gl.getAttribLocation(pr, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    var U = {}; ['uT', 'uB', 'uS', 'uRes', 'uBox', 'uP', 'uTime', 'uTurb', 'uBleed', 'uOrigin', 'uWisps', 'uInk', 'uTint'].forEach(function (k) { U[k] = gl.getUniformLocation(pr, k); });
+    var tex = [0, 1, 2].map(function (i) { var t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, t); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); return t; });
+    gl.uniform1i(U.uT, 0); gl.uniform1i(U.uB, 1); gl.uniform1i(U.uS, 2);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+    var W = 0, H = 0, dpr = 1, raf = 0, t0 = 0, prog = 1, playing = false, visible = true, paused = 0;
+    var o = opts(el);
+
+    /* Le texte est redessiné dans un canvas 2D à l'endroit exact de chaque mot du DOM (mêmes retours à la ligne). */
+    function layout() {
+      var cs = getComputedStyle(el), fs = parseFloat(cs.fontSize), padX = fs * .35, padT = fs * .9, padB = fs * .35;
+      var er = el.getBoundingClientRect(), hr = host.getBoundingClientRect();
+      W = Math.ceil(er.width + padX * 2); H = Math.ceil(er.height + padT + padB);
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      cv.style.left = (er.left - hr.left - padX + (host.scrollLeft || 0)) + 'px'; cv.style.top = (er.top - hr.top - padT + (host.scrollTop || 0)) + 'px';
+      cv.style.width = W + 'px'; cv.style.height = H + 'px';
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      var c2 = document.createElement('canvas'); c2.width = cv.width; c2.height = cv.height;
+      var x = c2.getContext('2d'); x.scale(dpr, dpr);
+      x.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+      if ('letterSpacing' in x) x.letterSpacing = cs.letterSpacing === 'normal' ? '0px' : cs.letterSpacing;
+      x.fillStyle = '#000'; x.textBaseline = 'alphabetic';
+      var m = x.measureText('Hg'), asc = m.fontBoundingBoxAscent || fs * .9, desc = m.fontBoundingBoxDescent || fs * .25;
+      var minY = 1e9, maxY = -1e9, minX = 1e9, maxX = -1e9;
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), node;
+      while ((node = walker.nextNode())) {
+        var re = /\S+/g, mm;
+        while ((mm = re.exec(node.data))) {
+          var rg = document.createRange(); rg.setStart(node, mm.index); rg.setEnd(node, mm.index + mm[0].length);
+          var rects = rg.getClientRects(); if (!rects.length) continue;
+          var rc = rects[0], lx = rc.left - er.left + padX, ty = rc.top - er.top + padT;
+          var by = ty + (rc.height - (asc + desc)) / 2 + asc;
+          x.fillText(mm[0], lx, by);
+          minX = Math.min(minX, lx); maxX = Math.max(maxX, lx + rc.width); minY = Math.min(minY, ty); maxY = Math.max(maxY, ty + rc.height);
+        }
+      }
+      upload(0, c2);
+      var b = blurred(c2, fs * .14, 2); upload(1, b);
+      var s = blurred(c2, fs * .5, 3); upload(2, s);
+      /* Boîte du texte en coordonnées de texture (y vers le haut). */
+      gl.viewport(0, 0, cv.width, cv.height);
+      gl.uniform2f(U.uRes, W, H);
+      gl.uniform4f(U.uBox, minX / W, 1 - maxY / H, maxX / W, 1 - minY / H);
+      colors();
+    }
+    function blurred(src, r, passes) {
+      var c = document.createElement('canvas'); c.width = src.width; c.height = src.height;
+      var x = c.getContext('2d'); x.filter = 'blur(' + (r * dpr).toFixed(1) + 'px)';
+      for (var i = 0; i < passes; i++) x.drawImage(src, 0, 0);
+      return c;
+    }
+    function upload(i, c) { gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, tex[i]); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, c); }
+    /* Couleurs relues dans les variables de tokens.css (thème, palette). */
+    function colors() {
+      var ink = cssColor(el, o.color === 'accent' ? '--accent' : '--text-strong'), tint = cssColor(el, '--accent-vivid');
+      gl.uniform3f(U.uInk, ink[0], ink[1], ink[2]); gl.uniform3f(U.uTint, tint[0], tint[1], tint[2]);
+    }
+    function draw(now) {
+      gl.uniform1f(U.uP, prog); gl.uniform1f(U.uTime, (now || 0) / 1000);
+      gl.uniform1f(U.uTurb, o.turb); gl.uniform1f(U.uBleed, o.bleed); gl.uniform1f(U.uOrigin, o.origin); gl.uniform1f(U.uWisps, o.wisps);
+      gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    function frame(now) {
+      if (!visible || document.hidden) { playing = false; paused = now - t0; return; }
+      var p = Math.min(1, (now - t0) / o.duration);
+      prog = 1 - Math.pow(1 - p, 1.25); /* départ vif, arrivée lente : l'encre ralentit en se posant */
+      draw(now);
+      if (p < 1) raf = requestAnimationFrame(frame);
+      else { playing = false; cv.classList.remove('is-live'); el.classList.add('is-ending'); el.classList.remove('is-inking'); cv.style.opacity = '0'; setTimeout(function () { el.classList.remove('is-ending'); }, 260); el.dispatchEvent(new CustomEvent('inkend', { bubbles: true })); }
+    }
+    api.play = function () {
+      o = opts(el); cancelAnimationFrame(raf);
+      if (reduced()) { el.classList.remove('is-inking'); cv.style.opacity = '0'; return; }
+      layout(); el.classList.remove('is-ending'); el.classList.add('is-inking'); cv.classList.add('is-live'); cv.style.opacity = '1';
+      prog = 0; draw(0); t0 = performance.now(); paused = 0; playing = true; raf = requestAnimationFrame(frame);
+    };
+    api.stop = function () { cancelAnimationFrame(raf); playing = false; el.classList.remove('is-inking'); cv.style.opacity = '0'; };
+    api.refresh = function () { o = opts(el); if (cv.style.opacity === '1') { layout(); draw(performance.now()); } };
+
+    /* Pause hors écran : reprend où elle s'était arrêtée. */
+    new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible && !playing && el.classList.contains('is-inking')) { t0 = performance.now() - paused; playing = true; raf = requestAnimationFrame(frame); } }).observe(el);
+    new MutationObserver(function () { if (gl) { colors(); if (cv.style.opacity === '1') draw(performance.now()); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'style', 'data-accent'] });
+    var rw = 0; if ('ResizeObserver' in window) new ResizeObserver(function () { var w = el.getBoundingClientRect().width; if (Math.abs(w - rw) > 1 && rw) { if (playing) layout(); } rw = w; }).observe(el);
+    cv.addEventListener('webglcontextlost', function (e) { e.preventDefault(); api.stop(); });
+    trigger();
+    return api;
+
+    function trigger() {
+      var tr = opts(el).trigger;
+      if (tr === 'view') {
+        if (gl && !reduced()) el.classList.add('is-inking');
+        if (!gl && !reduced()) el.style.opacity = '0';
+        if (gl) cv.style.opacity = '0';
+        var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); var go = function () { api.play(); }; if (document.fonts && document.fonts.ready) document.fonts.ready.then(go); else go(); } }, { threshold: .35 });
+        io.observe(el);
+      } else if (tr === 'hover') {
+        var target = el.closest('a, button') || el, last = 0;
+        var go = function () { var now = Date.now(); if (now - last < 600) return; last = now; api.play(); };
+        target.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') go(); });
+        target.addEventListener('focus', go);
+        target.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') go(); });
+      }
+    }
+  }
+
+  document.querySelectorAll('[data-ink]').forEach(attach);
+  window.RisingInk = { attach: attach };
+})();
+</script>

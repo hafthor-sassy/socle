@@ -1,0 +1,326 @@
+<!-- Tableau à bords figés — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     En-tête, première colonne, colonne de statut et ligne de total restent collés (position: sticky) ;
+     une ombre apparaît sur chaque bord tant qu'il reste du contenu à faire défiler de ce côté. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="pc" data-sticky-table data-density="comfort" data-zebra="false" data-cross="true" data-shadows="true" data-pin-end="true" style="--pc-max-h: 520px">
+  <header class="pc__top">
+    <span class="pc__brand">
+      <svg class="pc__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="pc__logo-bg"/><path class="pc__logo-mk" d="M22 76q28-14 56 0M22 62q28-14 56 0M50 50V30"/><path class="pc__logo-lf" d="M50 36c0-8 6-13 15-13 0 9-6 14-15 13ZM50 42c0-7-5-11-12-11 0 7 5 11 12 11Z"/></svg>
+      <span class="pc__word">parcelle</span>
+    </span>
+    <span class="pc__org">Coopérative du Lauragais</span>
+  </header>
+  <div class="pc__bar">
+    <div>
+      <h2 class="pc__title" id="pc-caption">Campagne 2025-2026</h2>
+      <p class="pc__lead">18 parcelles · rendements en tonnes par hectare · mis à jour ce matin</p>
+    </div>
+    <p class="pc__hint" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M15 8l4 4-4 4"/></svg>Faites défiler le tableau</p>
+  </div>
+
+  <div class="pc__frame">
+    <div class="pc__scroll" role="region" aria-labelledby="pc-caption" tabindex="0" data-pc-scroll>
+      <table class="pc__table">
+        <caption class="pc__sr">Campagne 2025-2026 : surfaces, dates, production, rendement et marge par parcelle. Trier avec les boutons d’en-tête.</caption>
+        <thead>
+          <tr>
+            <th scope="col"><button type="button" data-sort="text">Parcelle</button></th>
+            <th scope="col" class="pc__cult"><button type="button" data-sort="text">Culture</button></th>
+            <th scope="col"><button type="button" data-sort="num">Surface <span class="pc__u">ha</span></button></th>
+            <th scope="col"><button type="button" data-sort="num">Semis</button></th>
+            <th scope="col"><button type="button" data-sort="num">Récolte</button></th>
+            <th scope="col"><button type="button" data-sort="num">Production <span class="pc__u">t</span></button></th>
+            <th scope="col"><button type="button" data-sort="num">Rendement <span class="pc__u">t/ha</span></button></th>
+            <th scope="col"><button type="button" data-sort="num">Objectif <span class="pc__u">t/ha</span></button></th>
+            <th scope="col"><button type="button" data-sort="num">Écart</button></th>
+            <th scope="col"><button type="button" data-sort="num">Humidité <span class="pc__u">%</span></button></th>
+            <th scope="col"><button type="button" data-sort="num">Irrigation <span class="pc__u">mm</span></button></th>
+            <th scope="col"><button type="button" data-sort="num">Intrants <span class="pc__u">€/ha</span></button></th>
+            <th scope="col"><button type="button" data-sort="num">Marge <span class="pc__u">€/ha</span></button></th>
+            <th scope="col"><button type="button" data-sort="num">Statut</button></th>
+          </tr>
+        </thead>
+        <tbody>
+      <tr>
+        <th scope="row" data-v="Les Pradals"><span class="pc__name">Les Pradals</span><span class="pc__sub">Villefranche<span class="pc__mcult"> · Blé dur</span></span></th>
+        <td data-v="Blé dur" class="pc__cult"><span class="pc__chip">Blé dur</span></td><td data-v="19.5">19,5</td><td data-v="1018">18 oct.</td><td data-v="9999">—</td><td data-v="-1" class="is-na">—</td><td data-v="-1" class="is-na">—</td><td data-v="6.3">6,3</td><td data-v="-999" class="is-na">—</td><td data-v="-1" class="is-na">—</td><td data-v="0">—</td><td data-v="842">842</td><td data-v="-99999" class="is-na">—</td>
+        <td data-v="2"><span class="pc__st pc__st--neutral">À venir</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="La Bourdette"><span class="pc__name">La Bourdette</span><span class="pc__sub">Baziège<span class="pc__mcult"> · Tournesol</span></span></th>
+        <td data-v="Tournesol" class="pc__cult"><span class="pc__chip">Tournesol</span></td><td data-v="10.4">10,4</td><td data-v="404">4 avr.</td><td data-v="921">21 sept.</td><td data-v="22.9">22,9</td><td data-v="2.2">2,2</td><td data-v="2.6">2,6</td><td data-v="-15.4"><span class="pc__delta pc__delta--down"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5V9M3 6.5l3 3 3-3"/></svg>−15,4 %</span></td><td data-v="10.4">10,4</td><td data-v="0">—</td><td data-v="525">525</td><td data-v="443">443</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Champ du Moulin"><span class="pc__name">Champ du Moulin</span><span class="pc__sub">Montgiscard<span class="pc__mcult"> · Maïs</span></span></th>
+        <td data-v="Maïs" class="pc__cult"><span class="pc__chip">Maïs</span></td><td data-v="26.3">26,3</td><td data-v="403">3 avr.</td><td data-v="1009">9 oct.</td><td data-v="313.0">313,0</td><td data-v="11.9">11,9</td><td data-v="10.8">10,8</td><td data-v="10.2"><span class="pc__delta pc__delta--up"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 9.5V3M3 5.5 6 2.5l3 3"/></svg>+10,2 %</span></td><td data-v="18.6">18,6</td><td data-v="0">—</td><td data-v="440">440</td><td data-v="1999">1 999</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Le Plô"><span class="pc__name">Le Plô</span><span class="pc__sub">Ayguesvives<span class="pc__mcult"> · Soja</span></span></th>
+        <td data-v="Soja" class="pc__cult"><span class="pc__chip">Soja</span></td><td data-v="15.2">15,2</td><td data-v="523">23 mai</td><td data-v="1016">16 oct.</td><td data-v="50.2">50,2</td><td data-v="3.3">3,3</td><td data-v="3.2">3,2</td><td data-v="3.1"><span class="pc__delta pc__delta--up"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 9.5V3M3 5.5 6 2.5l3 3"/></svg>+3,1 %</span></td><td data-v="13.1">13,1</td><td data-v="210">210</td><td data-v="384">384</td><td data-v="969">969</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Las Fonts"><span class="pc__name">Las Fonts</span><span class="pc__sub">Nailloux<span class="pc__mcult"> · Colza</span></span></th>
+        <td data-v="Colza" class="pc__cult"><span class="pc__chip">Colza</span></td><td data-v="22.8">22,8</td><td data-v="911">11 sept.</td><td data-v="604">4 juin</td><td data-v="75.2">75,2</td><td data-v="3.3">3,3</td><td data-v="3.6">3,6</td><td data-v="-8.3"><span class="pc__delta pc__delta--down"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5V9M3 6.5l3 3 3-3"/></svg>−8,3 %</span></td><td data-v="9.1">9,1</td><td data-v="0">—</td><td data-v="905">905</td><td data-v="629">629</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="La Garrigue"><span class="pc__name">La Garrigue</span><span class="pc__sub">Revel<span class="pc__mcult"> · Orge</span></span></th>
+        <td data-v="Orge" class="pc__cult"><span class="pc__chip">Orge</span></td><td data-v="32.8">32,8</td><td data-v="1008">8 oct.</td><td data-v="9999">—</td><td data-v="-1" class="is-na">—</td><td data-v="-1" class="is-na">—</td><td data-v="6.8">6,8</td><td data-v="-999" class="is-na">—</td><td data-v="-1" class="is-na">—</td><td data-v="0">—</td><td data-v="598">598</td><td data-v="-99999" class="is-na">—</td>
+        <td data-v="2"><span class="pc__st pc__st--neutral">À venir</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Bois Grand"><span class="pc__name">Bois Grand</span><span class="pc__sub">Caraman<span class="pc__mcult"> · Sorgho</span></span></th>
+        <td data-v="Sorgho" class="pc__cult"><span class="pc__chip">Sorgho</span></td><td data-v="20.1">20,1</td><td data-v="512">12 mai</td><td data-v="1011">11 oct.</td><td data-v="132.7">132,7</td><td data-v="6.6">6,6</td><td data-v="6.5">6,5</td><td data-v="1.5"><span class="pc__delta pc__delta--up"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 9.5V3M3 5.5 6 2.5l3 3"/></svg>+1,5 %</span></td><td data-v="12.6">12,6</td><td data-v="45">45</td><td data-v="656">656</td><td data-v="532">532</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Les Aiguelongues"><span class="pc__name">Les Aiguelongues</span><span class="pc__sub">Avignonet<span class="pc__mcult"> · Pois chiche</span></span></th>
+        <td data-v="Pois chiche" class="pc__cult"><span class="pc__chip">Pois chiche</span></td><td data-v="18.1">18,1</td><td data-v="316">16 mars</td><td data-v="707">7 juil.</td><td data-v="38.0">38,0</td><td data-v="2.1">2,1</td><td data-v="2.0">2,0</td><td data-v="5.0"><span class="pc__delta pc__delta--up"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 9.5V3M3 5.5 6 2.5l3 3"/></svg>+5,0 %</span></td><td data-v="10.3">10,3</td><td data-v="0">—</td><td data-v="441">441</td><td data-v="651">651</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Peyrelade"><span class="pc__name">Peyrelade</span><span class="pc__sub">Villefranche<span class="pc__mcult"> · Soja</span></span></th>
+        <td data-v="Soja" class="pc__cult"><span class="pc__chip">Soja</span></td><td data-v="37.5">37,5</td><td data-v="502">2 mai</td><td data-v="9999">—</td><td data-v="105.0">105,0</td><td data-v="2.8">2,8</td><td data-v="3.3">3,3</td><td data-v="-15.2"><span class="pc__delta pc__delta--down"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5V9M3 6.5l3 3 3-3"/></svg>−15,2 %</span></td><td data-v="15.0">15,0</td><td data-v="160">160</td><td data-v="597">597</td><td data-v="551">551</td>
+        <td data-v="1"><span class="pc__st pc__st--amber">En cours</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Le Pigeonnier"><span class="pc__name">Le Pigeonnier</span><span class="pc__sub">Baziège<span class="pc__mcult"> · Colza</span></span></th>
+        <td data-v="Colza" class="pc__cult"><span class="pc__chip">Colza</span></td><td data-v="37.9">37,9</td><td data-v="905">5 sept.</td><td data-v="606">6 juin</td><td data-v="140.2">140,2</td><td data-v="3.7">3,7</td><td data-v="3.2">3,2</td><td data-v="15.6"><span class="pc__delta pc__delta--up"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 9.5V3M3 5.5 6 2.5l3 3"/></svg>+15,6 %</span></td><td data-v="9.3">9,3</td><td data-v="30">30</td><td data-v="970">970</td><td data-v="750">750</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="La Borde Basse"><span class="pc__name">La Borde Basse</span><span class="pc__sub">Montgiscard<span class="pc__mcult"> · Blé dur</span></span></th>
+        <td data-v="Blé dur" class="pc__cult"><span class="pc__chip">Blé dur</span></td><td data-v="30.3">30,3</td><td data-v="1020">20 oct.</td><td data-v="702">2 juil.</td><td data-v="157.6">157,6</td><td data-v="5.2">5,2</td><td data-v="6.2">6,2</td><td data-v="-16.1"><span class="pc__delta pc__delta--down"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5V9M3 6.5l3 3 3-3"/></svg>−16,1 %</span></td><td data-v="11.0">11,0</td><td data-v="0">—</td><td data-v="593">593</td><td data-v="889">889</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="En Canto"><span class="pc__name">En Canto</span><span class="pc__sub">Ayguesvives<span class="pc__mcult"> · Pois chiche</span></span></th>
+        <td data-v="Pois chiche" class="pc__cult"><span class="pc__chip">Pois chiche</span></td><td data-v="8.5">8,5</td><td data-v="322">22 mars</td><td data-v="9999">—</td><td data-v="14.4">14,4</td><td data-v="1.7">1,7</td><td data-v="2.0">2,0</td><td data-v="-15.0"><span class="pc__delta pc__delta--down"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5V9M3 6.5l3 3 3-3"/></svg>−15,0 %</span></td><td data-v="9.7">9,7</td><td data-v="0">—</td><td data-v="567">567</td><td data-v="317">317</td>
+        <td data-v="1"><span class="pc__st pc__st--amber">En cours</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Les Ribals"><span class="pc__name">Les Ribals</span><span class="pc__sub">Nailloux<span class="pc__mcult"> · Soja</span></span></th>
+        <td data-v="Soja" class="pc__cult"><span class="pc__chip">Soja</span></td><td data-v="31.8">31,8</td><td data-v="521">21 mai</td><td data-v="1015">15 oct.</td><td data-v="101.8">101,8</td><td data-v="3.2">3,2</td><td data-v="3.0">3,0</td><td data-v="6.7"><span class="pc__delta pc__delta--up"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 9.5V3M3 5.5 6 2.5l3 3"/></svg>+6,7 %</span></td><td data-v="11.9">11,9</td><td data-v="160">160</td><td data-v="874">874</td><td data-v="438">438</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Pech Blanc"><span class="pc__name">Pech Blanc</span><span class="pc__sub">Revel<span class="pc__mcult"> · Blé dur</span></span></th>
+        <td data-v="Blé dur" class="pc__cult"><span class="pc__chip">Blé dur</span></td><td data-v="21.5">21,5</td><td data-v="1011">11 oct.</td><td data-v="9999">—</td><td data-v="124.7">124,7</td><td data-v="5.8">5,8</td><td data-v="6.1">6,1</td><td data-v="-4.9"><span class="pc__delta pc__delta--down"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5V9M3 6.5l3 3 3-3"/></svg>−4,9 %</span></td><td data-v="13.2">13,2</td><td data-v="0">—</td><td data-v="882">882</td><td data-v="771">771</td>
+        <td data-v="1"><span class="pc__st pc__st--amber">En cours</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="La Fontasse"><span class="pc__name">La Fontasse</span><span class="pc__sub">Caraman<span class="pc__mcult"> · Tournesol</span></span></th>
+        <td data-v="Tournesol" class="pc__cult"><span class="pc__chip">Tournesol</span></td><td data-v="8.5">8,5</td><td data-v="404">4 avr.</td><td data-v="915">15 sept.</td><td data-v="20.4">20,4</td><td data-v="2.4">2,4</td><td data-v="2.6">2,6</td><td data-v="-7.7"><span class="pc__delta pc__delta--down"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5V9M3 6.5l3 3 3-3"/></svg>−7,7 %</span></td><td data-v="7.5">7,5</td><td data-v="0">—</td><td data-v="396">396</td><td data-v="660">660</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Le Ramier"><span class="pc__name">Le Ramier</span><span class="pc__sub">Avignonet<span class="pc__mcult"> · Blé dur</span></span></th>
+        <td data-v="Blé dur" class="pc__cult"><span class="pc__chip">Blé dur</span></td><td data-v="10.2">10,2</td><td data-v="1116">16 nov.</td><td data-v="723">23 juil.</td><td data-v="55.1">55,1</td><td data-v="5.4">5,4</td><td data-v="6.2">6,2</td><td data-v="-12.9"><span class="pc__delta pc__delta--down"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5V9M3 6.5l3 3 3-3"/></svg>−12,9 %</span></td><td data-v="11.9">11,9</td><td data-v="0">—</td><td data-v="521">521</td><td data-v="1018">1 018</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Camp Long"><span class="pc__name">Camp Long</span><span class="pc__sub">Villefranche<span class="pc__mcult"> · Blé dur</span></span></th>
+        <td data-v="Blé dur" class="pc__cult"><span class="pc__chip">Blé dur</span></td><td data-v="20.2">20,2</td><td data-v="1017">17 oct.</td><td data-v="725">25 juil.</td><td data-v="105.0">105,0</td><td data-v="5.2">5,2</td><td data-v="6.2">6,2</td><td data-v="-16.1"><span class="pc__delta pc__delta--down"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5V9M3 6.5l3 3 3-3"/></svg>−16,1 %</span></td><td data-v="10.8">10,8</td><td data-v="30">30</td><td data-v="456">456</td><td data-v="1026">1 026</td>
+        <td data-v="0"><span class="pc__st pc__st--green">Récoltée</span></td>
+      </tr>
+      <tr>
+        <th scope="row" data-v="Las Canals"><span class="pc__name">Las Canals</span><span class="pc__sub">Baziège<span class="pc__mcult"> · Tournesol</span></span></th>
+        <td data-v="Tournesol" class="pc__cult"><span class="pc__chip">Tournesol</span></td><td data-v="6.7">6,7</td><td data-v="413">13 avr.</td><td data-v="9999">—</td><td data-v="20.1">20,1</td><td data-v="3.0">3,0</td><td data-v="2.7">2,7</td><td data-v="11.1"><span class="pc__delta pc__delta--up"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 9.5V3M3 5.5 6 2.5l3 3"/></svg>+11,1 %</span></td><td data-v="9.2">9,2</td><td data-v="0">—</td><td data-v="729">729</td><td data-v="591">591</td>
+        <td data-v="1"><span class="pc__st pc__st--amber">En cours</span></td>
+      </tr>
+        </tbody>
+        <tfoot>
+      <tr>
+        <th scope="row"><span class="pc__name">Total</span><span class="pc__sub">18 parcelles</span></th>
+        <td class="pc__cult"></td><td>378,3</td><td></td><td></td><td>1 476,3</td><td>4,5</td><td></td><td></td><td></td><td>35</td><td>632</td><td>765</td>
+        <td>12 / 18</td>
+      </tr>
+        </tfoot>
+      </table>
+    </div>
+    <span class="pc__edge pc__edge--top" aria-hidden="true"></span>
+    <span class="pc__edge pc__edge--bottom" aria-hidden="true"></span>
+    <span class="pc__edge pc__edge--left" aria-hidden="true"></span>
+    <span class="pc__edge pc__edge--right" aria-hidden="true"></span>
+  </div>
+  <p class="pc__sr" aria-live="polite" data-pc-live></p>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .pc { --pc-first: 200px; --pc-row: 56px; --pc-shadow: var(--scrim);
+    width: 100%; max-width: 1120px; margin: 0 auto; font-family: var(--font-sans); color: var(--text);
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sheet); overflow: hidden; }
+  .pc *, .pc *::before, .pc *::after { box-sizing: border-box; }
+  .pc[data-density="compact"] { --pc-row: 40px; }
+
+  .pc__top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; border-bottom: 1px solid var(--border); }
+  .pc__brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text-strong); }
+  .pc__logo { width: 28px; height: 28px; }
+  .pc__logo-bg { fill: var(--accent); } .pc__logo-mk { fill: none; stroke: var(--accent-fg); stroke-width: 7; stroke-linecap: round; } .pc__logo-lf { fill: var(--accent-fg); }
+  .pc__word { font-size: 18px; font-weight: 650; letter-spacing: -0.035em; }
+  .pc__org { font-size: 14px; color: var(--text-muted); }
+  .pc__bar { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding: 24px 24px 16px; }
+  .pc__title { margin: 0; color: var(--text-strong); font-size: var(--t-section); line-height: 1.25; font-weight: 600; letter-spacing: -0.02em; }
+  .pc__lead { margin: 4px 0 0; color: var(--text-muted); font-size: 14px; }
+  .pc__hint { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: var(--text-muted); font-size: 13px; white-space: nowrap; transition: opacity var(--motion-slow) var(--ease-out); }
+  .pc__hint svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; animation: pc-nudge 1600ms var(--ease-out) infinite; }
+  @keyframes pc-nudge { 0%, 60%, 100% { transform: none; } 30% { transform: translateX(4px); } }
+  .pc.is-scrolled .pc__hint, .pc.is-fit .pc__hint { opacity: 0; }
+
+  /* Cadre et défilement */
+  .pc__frame { position: relative; border-top: 1px solid var(--border); }
+  .pc__scroll { max-height: var(--pc-max-h); overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+  .pc__scroll:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: calc(var(--focus-width) * -1); }
+  .pc__table { width: max-content; min-width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; }
+  .pc__table th, .pc__table td { height: var(--pc-row); padding: 0 16px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .pc__table td { color: var(--text); }
+  .pc__table tbody th { text-align: left; font-weight: 400; }
+  .pc[data-zebra="true"] tbody tr:nth-child(even) > * { background: var(--raised); }
+
+  /* Les quatre bords figés */
+  .pc__table thead th { position: sticky; top: 0; z-index: 2; height: 44px; padding: 0 4px; background: var(--raised); color: var(--text-muted); font-size: 13px; font-weight: 550; }
+  .pc__table tfoot > tr > * { position: sticky; bottom: 0; z-index: 2; height: 48px; background: var(--raised); color: var(--text-strong); font-weight: 600; border-top: 1px solid var(--border); border-bottom: 0; }
+  .pc__table tr > :first-child { position: sticky; left: 0; z-index: 1; width: var(--pc-first); min-width: var(--pc-first); max-width: var(--pc-first); text-align: left; border-right: 1px solid var(--border); }
+  .pc[data-pin-end="true"] .pc__table tr > :last-child { position: sticky; right: 0; z-index: 1; border-left: 1px solid var(--border); }
+  .pc__table thead tr > :first-child, .pc__table tfoot tr > :first-child,
+  .pc[data-pin-end="true"] .pc__table thead tr > :last-child, .pc[data-pin-end="true"] .pc__table tfoot tr > :last-child { z-index: 3; }
+  .pc__table tbody tr > :last-child, .pc__table thead tr > :last-child { text-align: left; }
+
+  /* Ombres de défilement : un calque par bord, au-dessus des cellules figées */
+  .pc__edge { position: absolute; z-index: 4; pointer-events: none; opacity: 0; transition: opacity var(--motion-base) var(--ease-out); }
+  .pc__edge--top { left: 0; right: 0; top: 44px; height: 8px; background: linear-gradient(var(--pc-shadow), transparent); }
+  .pc__edge--bottom { left: 0; right: 0; bottom: calc(48px + var(--pc-sbh, 0px)); height: 12px; background: linear-gradient(transparent, var(--pc-shadow)); }
+  .pc__edge--left { top: 0; bottom: 0; left: var(--pc-first); width: 12px; background: linear-gradient(90deg, var(--pc-shadow), transparent); }
+  .pc__edge--right { top: 0; bottom: 0; right: var(--pc-last, 0px); width: 12px; background: linear-gradient(-90deg, var(--pc-shadow), transparent); }
+  .pc[data-shadows="true"].at-top .pc__edge--top, .pc[data-shadows="true"].at-bottom .pc__edge--bottom,
+  .pc[data-shadows="true"].at-left .pc__edge--left, .pc[data-shadows="true"].at-right .pc__edge--right { opacity: .32; }
+
+  /* En-têtes triables */
+  .pc__table thead button { display: inline-flex; align-items: center; justify-content: flex-end; gap: 4px; width: 100%; height: 36px; padding: 0 12px; border: 0; border-radius: var(--radius-ctl);
+    background: transparent; color: inherit; font: inherit; cursor: pointer; white-space: nowrap; }
+  .pc__table thead tr > :first-child button, .pc__table thead tr > :last-child button, .pc__table thead .pc__cult button { justify-content: flex-start; }
+  .pc__table thead button:hover { color: var(--text-strong); background: var(--state-hover); }
+  .pc__table thead button:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: -2px; }
+  .pc__table thead button::after { content: ""; width: 8px; height: 8px; margin-left: 2px; border: 1.5px solid currentColor; border-width: 0 1.5px 1.5px 0; opacity: 0; transform: rotate(45deg) translate(-2px, -2px); transition: transform var(--motion-base) var(--ease-out), opacity var(--motion-base); }
+  .pc__table th[aria-sort] button { color: var(--text-strong); }
+  .pc__table th[aria-sort] button::after { opacity: 1; }
+  .pc__table th[aria-sort="ascending"] button::after { transform: rotate(-135deg) translate(-2px, -2px); }
+  .pc__u { color: var(--text-disabled); font-weight: 450; }
+
+  /* Cellules */
+  .pc__name { display: block; color: var(--text-strong); font-weight: 550; overflow: hidden; text-overflow: ellipsis; }
+  .pc__sub { display: block; color: var(--text-muted); font-size: 13px; line-height: 18px; overflow: hidden; text-overflow: ellipsis; }
+  .pc[data-density="compact"] .pc__sub { display: none; }
+  .pc__mcult { display: none; }
+  .pc__chip { display: inline-block; padding: 2px 8px; border-radius: 999px; background: var(--accent-subtle); border: 1px solid var(--accent-subtle-border); color: var(--text-strong); font-size: 13px; line-height: 18px; }
+  .pc__table td.pc__cult { text-align: left; }
+  .pc__table .is-na { color: var(--text-disabled); }
+  .pc__delta { display: inline-flex; align-items: center; gap: 2px; font-weight: 550; }
+  .pc__delta svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .pc__delta--up { color: var(--up); } .pc__delta--down { color: var(--down); }
+  .pc__st { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 13px; line-height: 18px; font-weight: 550; border: 1px solid; }
+  .pc__st--green { background: var(--tint-green-bg); color: var(--tint-green-fg); border-color: var(--tint-green-border); }
+  .pc__st--amber { background: var(--tint-amber-bg); color: var(--tint-amber-fg); border-color: var(--tint-amber-border); }
+  .pc__st--neutral { background: var(--tint-neutral-bg); color: var(--tint-neutral-fg); border-color: var(--tint-neutral-border); }
+
+  /* Surlignage croisé : ligne et colonne de la cellule survolée */
+  .pc[data-cross="true"] .pc__table tbody tr:hover > * { background-image: linear-gradient(var(--state-hover), var(--state-hover)); }
+  .pc[data-cross="true"] .pc__table .is-col { background-image: linear-gradient(var(--state-hover), var(--state-hover)); }
+  .pc[data-cross="true"] .pc__table tbody tr:hover > .is-col { background-image: linear-gradient(var(--state-press), var(--state-press)); }
+  .pc__table thead th.is-col { color: var(--text-strong); }
+
+  .pc__sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 599px) {
+    .pc { --pc-first: 148px; border-radius: var(--radius-card); }
+    .pc__top { padding: 12px 16px; } .pc__org { display: none; }
+    .pc__bar { flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px 16px 12px; }
+    .pc__scroll { max-height: min(var(--pc-max-h), 64vh); }
+    .pc__table th, .pc__table td { padding: 0 12px; }
+    .pc__table .pc__cult { display: none; }
+    .pc__mcult { display: inline; }
+    .pc__table thead button { padding: 0 8px; }
+    .pc__table tr > :first-child { padding-left: 12px; }
+    .pc[data-pin-end="true"] .pc__table tr > :last-child { position: static; border-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pc__hint svg { animation: none; } }
+</style>
+
+<script>
+(function () {
+  function StickyTable(root) {
+    var sc = root.querySelector('[data-pc-scroll]'), table = sc.querySelector('table'), tbody = table.tBodies[0], live = root.querySelector('[data-pc-live]');
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)'), raf = 0;
+
+    /* Ombres : quatre classes selon ce qu'il reste à faire défiler */
+    function edges() {
+      raf = 0;
+      var x = sc.scrollLeft, y = sc.scrollTop, mx = sc.scrollWidth - sc.clientWidth, my = sc.scrollHeight - sc.clientHeight;
+      root.classList.toggle('at-left', x > 1);
+      root.classList.toggle('at-right', x < mx - 1);
+      root.classList.toggle('at-top', y > 1);
+      root.classList.toggle('at-bottom', y < my - 1);
+      root.classList.toggle('is-fit', mx <= 1);
+      var lc = table.tHead.rows[0].lastElementChild, last = getComputedStyle(lc).position === 'sticky' ? lc.offsetWidth : 0;
+      root.style.setProperty('--pc-last', last + (sc.offsetWidth - sc.clientWidth) + 'px');
+      root.style.setProperty('--pc-sbh', (sc.offsetHeight - sc.clientHeight) + 'px');
+      if (x > 8 || y > 8) root.classList.add('is-scrolled');
+    }
+    function queue() { if (!raf) raf = requestAnimationFrame(edges); }
+    sc.addEventListener('scroll', queue, { passive: true });
+    if (window.ResizeObserver) new ResizeObserver(queue).observe(sc); else window.addEventListener('resize', queue);
+
+    /* Tri : bouton d'en-tête, aria-sort, lignes déplacées en FLIP */
+    var heads = Array.prototype.slice.call(table.tHead.rows[0].cells);
+    heads.forEach(function (th, i) {
+      var b = th.querySelector('button'); if (!b) return;
+      b.addEventListener('click', function () {
+        var dir = th.getAttribute('aria-sort') === 'ascending' ? 'descending' : th.getAttribute('aria-sort') === 'descending' ? null : (b.dataset.sort === 'text' ? 'ascending' : 'descending');
+        heads.forEach(function (h) { h.removeAttribute('aria-sort'); });
+        var rows = Array.prototype.slice.call(tbody.rows);
+        if (!rows[0]._i) rows.forEach(function (r, k) { r._i = k + 1; });
+        var first = new Map(rows.map(function (r) { return [r, r.getBoundingClientRect().top]; }));
+        if (dir) {
+          th.setAttribute('aria-sort', dir);
+          var s = dir === 'ascending' ? 1 : -1;
+          rows.sort(function (a, b2) {
+            var va = a.cells[i].dataset.v, vb = b2.cells[i].dataset.v;
+            return b.dataset.sort === 'text' ? s * va.localeCompare(vb, 'fr') : s * (parseFloat(va) - parseFloat(vb));
+          });
+        } else rows.sort(function (a, b2) { return a._i - b2._i; });
+        rows.forEach(function (r) { tbody.appendChild(r); });
+        live.textContent = dir ? 'Trié par ' + b.textContent.trim() + (dir === 'ascending' ? ', croissant' : ', décroissant') : 'Ordre d’origine';
+        if (reduce.matches || !rows[0].animate) return;
+        rows.forEach(function (r) {
+          var d = first.get(r) - r.getBoundingClientRect().top;
+          if (Math.abs(d) > 1) r.animate([{ transform: 'translateY(' + d + 'px)' }, { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.2, .8, .2, 1)' });
+        });
+      });
+    });
+
+    /* Surlignage croisé de la colonne survolée */
+    var col = -1;
+    function mark(i) {
+      if (i === col) return;
+      if (col > -1) table.querySelectorAll('.is-col').forEach(function (c) { c.classList.remove('is-col'); });
+      col = i;
+      if (i < 1 || root.dataset.cross !== 'true') return;
+      Array.prototype.forEach.call(table.rows, function (r) { if (r.parentNode.tagName !== 'TFOOT' && r.cells[i]) r.cells[i].classList.add('is-col'); });
+    }
+    table.addEventListener('pointerover', function (e) { var c = e.target.closest('td, th'); if (c && c.parentNode.parentNode !== table.tFoot) mark(c.cellIndex); });
+    table.addEventListener('pointerleave', function () { mark(-1); });
+
+    edges();
+    root._sticky = { refresh: queue };
+    return root._sticky;
+  }
+  window.StickyTable = StickyTable;
+  document.querySelectorAll('[data-sticky-table]').forEach(function (el) { if (!el._sticky) StickyTable(el); });
+})();
+</script>

@@ -1,0 +1,198 @@
+{
+  "id": "apercu-survol-liens",
+  "nom": "Aperçu au survol de liens",
+  "categorie": "survol",
+  "niveau": "essentiel",
+  "palette": "petrole",
+  "description": "Une liste de liens éditoriale : au survol d’une ligne, une vignette suit le pointeur avec inertie et inclinaison, sa pellicule glisse vers l’image de la ligne et les autres s’estompent. Au clavier, l’aperçu se cale à côté de la ligne ; au tactile, chaque ligne montre sa vignette.",
+  "tags": [
+    "Pointeur",
+    "Inertie",
+    "Liste",
+    "Éditorial",
+    "Clavier"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 1024
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1024
+  },
+  "technique": "Transforms + lissage (rAF) · pellicule translatée · clip-path",
+  "difficulte": 1,
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Affiches dessinées en SVG avec --accent (4 densités), --accent-subtle, --surface et --text-strong"
+    },
+    {
+      "nom": "JS intégré",
+      "note": "≈ 2 ko minifié, aucun CDN ; vos images remplacent les SVG dans .hp__reel"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "ease",
+      "label": "Inertie",
+      "type": "number",
+      "default": 0.16,
+      "min": 0.04,
+      "max": 0.5,
+      "step": 0.02,
+      "code": {
+        "html": "data-ease=\"{v}\"",
+        "react": "ease={{v}}"
+      },
+      "hint": "Part de la distance rattrapée à chaque image : bas = vignette qui traîne, haut = collée au curseur."
+    },
+    {
+      "name": "tilt",
+      "label": "Inclinaison",
+      "type": "number",
+      "default": 6,
+      "min": 0,
+      "max": 14,
+      "step": 1,
+      "unit": "°",
+      "code": {
+        "html": "data-tilt=\"{v}\"",
+        "react": "tilt={{v}}"
+      },
+      "hint": "Inclinaison maximale selon la vitesse horizontale."
+    },
+    {
+      "name": "size",
+      "label": "Largeur",
+      "type": "number",
+      "default": 280,
+      "min": 200,
+      "max": 400,
+      "step": 8,
+      "unit": "px",
+      "code": {
+        "html": "data-size=\"{v}\"",
+        "react": "size={{v}}"
+      }
+    },
+    {
+      "name": "format",
+      "label": "Format",
+      "type": "select",
+      "default": "portrait",
+      "options": [
+        {
+          "value": "portrait",
+          "label": "Portrait 4:5"
+        },
+        {
+          "value": "carre",
+          "label": "Carré"
+        },
+        {
+          "value": "paysage",
+          "label": "Paysage 3:2"
+        }
+      ],
+      "code": {
+        "html": "data-format=\"{v}\"",
+        "react": "format=\"{v}\""
+      }
+    },
+    {
+      "name": "place",
+      "label": "Position",
+      "type": "select",
+      "default": "side",
+      "options": [
+        {
+          "value": "side",
+          "label": "À côté du curseur"
+        },
+        {
+          "value": "center",
+          "label": "Centrée sur le curseur"
+        }
+      ],
+      "code": {
+        "html": "data-place=\"{v}\"",
+        "react": "place=\"{v}\""
+      },
+      "hint": "À côté : ne masque jamais le titre lu, bascule à gauche près du bord."
+    },
+    {
+      "name": "mode",
+      "label": "Suivi",
+      "type": "select",
+      "default": "cursor",
+      "options": [
+        {
+          "value": "cursor",
+          "label": "Libre"
+        },
+        {
+          "value": "anchor",
+          "label": "Vertical seulement"
+        }
+      ],
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "mode=\"{v}\""
+      },
+      "hint": "Vertical seulement : la vignette reste dans une colonne à droite et suit la ligne."
+    },
+    {
+      "name": "dim",
+      "label": "Estomper les autres",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-dim=\"{v}\"",
+        "react": "dim={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/HoverPreview.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Sommaire de revue, liste de projets d’agence, index d’articles, catalogue court : 3 à 10 liens dont l’image aide à choisir.",
+    "Remplacez les affiches SVG de .hp__reel par vos <img> (même ordre que les lignes) : la pellicule et les vignettes mobiles suivent.",
+    "Gardez l’aperçu à côté du curseur sur une liste lisible ; « Centrée » convient aux titres courts ou très espacés.",
+    "Pas d’information uniquement dans l’aperçu : lieu et durée restent écrits dans la ligne."
+  ],
+  "accessibilite": [
+    "Chaque ligne est un vrai lien ; l’aperçu est décoratif (aria-hidden) et n’intercepte aucun clic (pointer-events: none).",
+    "Au clavier, Tab affiche l’aperçu calé à côté de la ligne focalisée ; Échap le referme.",
+    "Tactile et écrans < 720 px : pas de survol, une vignette de 64 × 80 px dans chaque ligne, lignes de plus de 44 px de haut.",
+    "Lignes estompées à 40 % seulement pendant le survol ; au repos, tout le texte garde le contraste du thème (≥ 4,5:1).",
+    "« Réduire les animations » : la vignette suit sans inertie ni inclinaison, sans glissement de pellicule."
+  ],
+  "logo_exemple": {
+    "nom": "Méridienne",
+    "secteur": "Revue de voyage",
+    "fichier": "logo.svg",
+    "palette": "petrole",
+    "typo": "Geist SemiBold"
+  }
+}

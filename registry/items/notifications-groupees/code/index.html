@@ -1,0 +1,364 @@
+<!-- Centre de notifications groupées — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     Les notifications d'une même source se rangent en pile ; un clic les déplie en liste. Chaque changement
+     (déplier, filtrer, effacer, nouvelle arrivée) est animé par FLIP sur un ressort : rien ne saute. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="hb">
+  <header class="hb__top">
+    <span class="hb__brand">
+      <svg class="hb__logo" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" class="hb__logo-bg"/><circle cx="50" cy="50" r="25" class="hb__logo-mk"/><path class="hb__logo-mk hb__logo-th" d="M40 42a14 14 0 0 1 12-6"/><g class="hb__logo-dot"><circle cx="50" cy="13" r="3.5"/><circle cx="87" cy="50" r="3.5"/><circle cx="50" cy="87" r="3.5"/><circle cx="13" cy="50" r="3.5"/></g></svg>
+      <span class="hb__word">hublot</span>
+    </span>
+    <span class="hb__shop">Maison Ardoise · boutique</span>
+    <span class="hb__bell" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0"/></svg><span class="hb__badge" data-ng-badge>0</span></span>
+  </header>
+
+  <section class="ng" data-notif-center data-spring="doux" data-stack="3" data-filter="all" aria-labelledby="ng-title">
+    <header class="ng__head">
+      <h2 class="ng__title" id="ng-title">Notifications <span class="ng__count" data-ng-count></span></h2>
+      <button class="ng__link" type="button" data-ng-read>Tout marquer comme lu</button>
+    </header>
+    <div class="ng__tabs" role="radiogroup" aria-label="Filtrer">
+      <button type="button" role="radio" aria-checked="true" data-ng-filter="all">Toutes</button>
+      <button type="button" role="radio" aria-checked="false" data-ng-filter="unread">Non lues</button>
+    </div>
+    <div class="ng__list" data-ng-list></div>
+    <div class="ng__empty" data-ng-empty hidden>
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M17 24.5l5 5 9-10"/></svg>
+      <p class="ng__empty-t">Vous êtes à jour</p>
+      <p class="ng__empty-s">Les nouvelles commandes et alertes de stock apparaîtront ici.</p>
+      <button class="ng__btn" type="button" data-ng-reset>Restaurer l’exemple</button>
+    </div>
+    <p class="ng__sr" aria-live="polite" data-ng-live></p>
+
+    <script type="application/json" data-ng-data>
+    [
+      { "id": "orders", "name": "Commandes", "icon": "bag", "tone": "blue", "items": [
+        { "title": "Nouvelle commande #4821", "text": "Claire Dumas · 3 articles · 128,90 €", "time": "2 min" },
+        { "title": "Nouvelle commande #4820", "text": "Hugo Petit · 1 article · 39,00 €", "time": "8 min" },
+        { "title": "Commande #4819 payée", "text": "Sarah Nguyen · 2 articles · 74,50 €", "time": "15 min" },
+        { "title": "Nouvelle commande #4817", "text": "Jules Moreau · 5 articles · 212,00 €", "time": "1 h", "read": true } ] },
+      { "id": "agent", "name": "Agent support", "icon": "spark", "tone": "violet", "items": [
+        { "title": "Ticket résolu automatiquement", "text": "Retour de colis : étiquette envoyée à Marc Lefèvre.", "time": "5 min" },
+        { "title": "Escalade vers l’équipe", "text": "Livraison en retard (#4790) : la cliente demande un geste.", "time": "22 min" },
+        { "title": "Réponse rédigée, à valider", "text": "Question sur les tailles du manteau Corde.", "time": "40 min", "read": true } ] },
+      { "id": "stock", "name": "Stock", "icon": "box", "tone": "amber", "items": [
+        { "title": "Stock faible : pull col roulé, M", "text": "3 pièces restantes · réassort conseillé avant vendredi.", "time": "12 min" },
+        { "title": "Rupture : bonnet côtelé, sable", "text": "Retiré de la boutique automatiquement.", "time": "2 h", "read": true } ] },
+      { "id": "pay", "name": "Paiements", "icon": "bank", "tone": "green", "items": [
+        { "title": "Versement reçu", "text": "2 418,60 € sur le compte pro · ventes du 3 novembre.", "time": "hier", "read": true } ] }
+    ]
+    </script>
+  </section>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .hb { --ng-spring: linear(0, 0.0571, 0.1964, 0.3709, 0.5459, 0.7001, 0.8239, 0.9145, 0.9741, 1.0075, 1.0215, 1.0225, 1.016, 1.0068, 0.9985, 0.9928, 0.99, 0.9898, 0.9912, 0.9934, 0.9956, 0.9975, 0.9989, 0.9998, 1);
+    width: 100%; max-width: 480px; margin: 0 auto; font-family: var(--font-sans); color: var(--text); }
+  .hb *, .hb *::before, .hb *::after { box-sizing: border-box; }
+  .hb__top { display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 8px 0 16px; margin-bottom: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sheet); }
+  .hb__brand { display: inline-flex; align-items: center; gap: 8px; color: var(--text-strong); }
+  .hb__logo { width: 28px; height: 28px; }
+  .hb__logo-bg { fill: var(--accent); } .hb__logo-mk { fill: none; stroke: var(--accent-fg); stroke-width: 9; stroke-linecap: round; } .hb__logo-th { stroke-width: 6; } .hb__logo-dot { fill: var(--accent-fg); }
+  .hb__word { font-size: 18px; font-weight: 650; letter-spacing: -0.035em; }
+  .hb__shop { margin-right: auto; font-size: 14px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hb__bell { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: var(--radius-ctl); background: var(--accent-subtle); color: var(--text-strong); }
+  .hb__bell svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+  .hb__badge { position: absolute; top: 4px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: 650 11px / 18px var(--font-sans); text-align: center; font-variant-numeric: tabular-nums; box-shadow: 0 0 0 2px var(--accent-subtle); }
+  .hb__badge.is-zero { display: none; }
+
+  .ng { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sheet); padding: 8px 12px 12px; box-shadow: var(--shadow-popover); }
+  .ng__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 4px 4px 8px; }
+  .ng__title { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--text-strong); font-size: 18px; line-height: 28px; font-weight: 600; letter-spacing: -0.02em; }
+  .ng__count { min-width: 24px; height: 22px; padding: 0 8px; border-radius: 999px; background: var(--accent-subtle); border: 1px solid var(--accent-subtle-border); color: var(--text-strong); font: 600 12px / 20px var(--font-sans); text-align: center; font-variant-numeric: tabular-nums; }
+  .ng__count:empty { display: none; }
+  .ng__link { height: 44px; padding: 0 10px; border: 0; border-radius: var(--radius-ctl); background: transparent; color: var(--accent); font: 550 14px var(--font-sans); cursor: pointer; }
+  .ng__link:hover { background: var(--accent-subtle); }
+  .ng__link:disabled { color: var(--text-disabled); background: transparent; cursor: default; }
+  .ng__tabs { display: inline-flex; gap: 2px; margin: 4px 0 12px 8px; padding: 3px; border-radius: 999px; background: var(--raised); border: 1px solid var(--border); }
+  .ng__tabs button { height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; color: var(--text-muted); font: 550 14px var(--font-sans); cursor: pointer; }
+  .ng__tabs button[aria-checked="true"] { background: var(--surface); color: var(--text-strong); box-shadow: var(--shadow-overlay), inset 0 0 0 1px var(--border); }
+  .ng button:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+  .ng__list { display: flex; flex-direction: column; }
+  .ng__list[hidden] { display: none; }
+  .ng__group { position: relative; margin-bottom: 12px; }
+  .ng__group[data-hidden] { display: none; }
+  .ng__ghead { display: none; align-items: center; gap: 8px; height: 44px; padding: 0 0 0 8px; }
+  .ng__group.is-open .ng__ghead { display: flex; }
+  .ng__gname { margin-right: auto; color: var(--text-strong); font-size: 15px; font-weight: 600; }
+  .ng__gbtn { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--raised); color: var(--text); font: 550 13px var(--font-sans); cursor: pointer; }
+  .ng__gbtn:hover { color: var(--text-strong); border-color: var(--border-strong); }
+  .ng__gbtn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .ng__gbtn--x { width: 36px; padding: 0; justify-content: center; }
+
+  .ng__stack { position: relative; isolation: isolate; display: flex; flex-direction: column; gap: 8px; }
+  .ng__card { position: relative; display: flex; gap: 12px; padding: 12px; min-height: 72px; background: var(--raised); border: 1px solid var(--border); border-radius: var(--radius-card); touch-action: pan-y; }
+  .ng__card[data-hidden] { display: none; }
+  .ng__ico { display: grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 10px; border: 1px solid; }
+  .ng__ico svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  [data-tone="blue"] .ng__ico { background: var(--tint-blue-bg); color: var(--tint-blue-fg); border-color: var(--tint-blue-border); }
+  [data-tone="violet"] .ng__ico { background: var(--tint-violet-bg); color: var(--tint-violet-fg); border-color: var(--tint-violet-border); }
+  [data-tone="amber"] .ng__ico { background: var(--tint-amber-bg); color: var(--tint-amber-fg); border-color: var(--tint-amber-border); }
+  [data-tone="green"] .ng__ico { background: var(--tint-green-bg); color: var(--tint-green-fg); border-color: var(--tint-green-border); }
+  .ng__body { display: flex; flex-direction: column; min-width: 0; flex: 1; padding-right: 32px; }
+  .ng__eye { display: flex; align-items: center; gap: 6px; font-size: 13px; line-height: 18px; color: var(--text-muted); }
+  .ng__more { margin-left: auto; padding: 0 8px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-weight: 600; font-size: 12px; line-height: 18px; display: none; font-variant-numeric: tabular-nums; }
+  .ng__t { margin-top: 2px; color: var(--text-strong); font-size: 15px; line-height: 20px; font-weight: 600; }
+  .ng__d { color: var(--text-muted); font-size: 14px; line-height: 20px; }
+  .ng__dot { position: absolute; top: 8px; left: 40px; width: 10px; height: 10px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 2px var(--raised); }
+  .ng__card.is-read .ng__dot { display: none; }
+  .ng__card.is-read .ng__t { font-weight: 550; }
+  .ng__hit { position: absolute; inset: 0; z-index: 1; width: 100%; border: 0; border-radius: inherit; background: transparent; cursor: pointer; }
+  .ng__hit:hover { background: var(--state-hover); }
+  .ng__x { position: absolute; z-index: 2; top: 6px; right: 6px; display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-muted); cursor: pointer;
+    opacity: 0; transition: opacity var(--motion-fast) var(--ease-out); }
+  .ng__x::after { content: ""; position: absolute; inset: -6px; }
+  .ng__x svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; }
+  .ng__card:hover .ng__x, .ng__x:focus-visible { opacity: 1; }
+  @media (hover: none) { .ng__x { opacity: 1; } }
+
+  /* Pile repliée : uniquement de la mise en page (FLIP s'occupe du mouvement) */
+  .ng__group.is-stacked .ng__stack { gap: 0; }
+  .ng__group.is-stacked .ng__stack[data-depth="1"] { margin-bottom: 8px; }
+  .ng__group.is-stacked .ng__stack[data-depth="2"] { margin-bottom: 16px; }
+  .ng__group.is-stacked .ng__card.is-back { position: absolute; top: 0; bottom: 0; pointer-events: none; }
+  .ng__group.is-stacked .ng__card.is-back > * { opacity: 0; }
+  .ng__group.is-stacked .ng__card.is-b1 { left: 8px; right: 8px; top: 8px; bottom: -8px; z-index: -1; }
+  .ng__group.is-stacked .ng__card.is-b2 { left: 16px; right: 16px; top: 16px; bottom: -16px; z-index: -2; opacity: .7; }
+  .ng__group.is-stacked .ng__card.is-deep { display: none; }
+  .ng__group.is-stacked .ng__more { display: inline-block; }
+  .ng__group.is-stacked .ng__more:empty { display: none; }
+  .ng__card > * { transition: opacity 220ms var(--ease-out) 60ms; }
+
+  .ng__empty { display: grid; justify-items: center; gap: 4px; padding: 32px 16px 24px; text-align: center; }
+  .ng__empty[hidden] { display: none; }
+  .ng__empty svg { width: 48px; height: 48px; margin-bottom: 8px; fill: none; stroke: var(--text-disabled); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .ng__empty-t { margin: 0; color: var(--text-strong); font-weight: 600; }
+  .ng__empty-s { margin: 0 0 16px; color: var(--text-muted); font-size: 14px; max-width: 32ch; }
+  .ng__btn { height: 44px; padding: 0 16px; border: 1px solid var(--border-control); border-radius: 999px; background: transparent; color: var(--text-strong); font: 550 14px var(--font-sans); cursor: pointer; }
+  .ng__btn[hidden] { display: none; }
+  .ng__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 599px) {
+    .hb { max-width: none; }
+    .hb__top { border-radius: 0; border-width: 0 0 1px; margin: 0; }
+    .ng { border: 0; border-radius: 0; box-shadow: none; padding: 8px 12px 24px; }
+    .ng__tabs { display: flex; margin-right: 8px; } .ng__tabs button { flex: 1; height: 40px; }
+    .ng__x { width: 44px; height: 44px; top: 0; right: 0; border: 0; background: transparent; }
+    .ng__x::after { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ng__card > * { transition: none; } }
+</style>
+
+<script>
+(function () {
+  var ICONS = {
+    bag: '<path d="M6 8h12l-1 12H7zM9 8V6a3 3 0 0 1 6 0v2"/>',
+    spark: '<path d="M12 4l1.8 4.6L18.5 10l-4.7 1.6L12 16l-1.8-4.4L5.5 10l4.7-1.4zM18 16l.7 1.6 1.6.6-1.6.6L18 20l-.7-1.2-1.6-.6 1.6-.6z"/>',
+    box: '<path d="M4 8l8-4 8 4v8l-8 4-8-4zM4 8l8 4 8-4M12 12v8"/>',
+    bank: '<path d="M4 10h16M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3.5 20h17M12 4l8 4H4z"/>'
+  };
+  var X = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>';
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function NotifCenter(root) {
+    var listEl = root.querySelector('[data-ng-list]'), empty = root.querySelector('[data-ng-empty]'), live = root.querySelector('[data-ng-live]');
+    var countEl = root.querySelector('[data-ng-count]'), readAll = root.querySelector('[data-ng-read]');
+    var badge = document.querySelector('[data-ng-badge]');
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    var seed = JSON.parse(root.querySelector('[data-ng-data]').textContent), uid = 0;
+
+    function ease() { return root.dataset.spring === 'sec' ? 'cubic-bezier(.2, 0, 0, 1)' : getComputedStyle(root.parentNode).getPropertyValue('--ng-spring') || 'ease-out'; }
+    function dur() { return root.dataset.spring === 'joueur' ? 720 : root.dataset.spring === 'sec' ? 380 : 560; }
+
+    /* FLIP : mesurer, muter, mesurer, inverser, jouer. Interruptible : on mesure l'état visible avant d'annuler. */
+    function flip(mutate) {
+      var els = Array.prototype.slice.call(root.querySelectorAll('[data-flip]')), first = new Map();
+      els.forEach(function (el) { first.set(el, el.getBoundingClientRect()); });
+      els.forEach(function (el) { el.getAnimations().forEach(function (a) { if (a.id === 'flip') a.cancel(); }); });
+      mutate();
+      if (reduce.matches) return;
+      root.querySelectorAll('[data-flip]').forEach(function (el) {
+        if (el.offsetParent === null) return;
+        var l = el.getBoundingClientRect(), f = first.get(el), a;
+        if (!f || f.width === 0) {
+          a = el.animate([{ opacity: 0, transform: 'translateY(-8px) scale(.97)' }, { opacity: 1, transform: 'none' }], { duration: dur(), easing: ease() });
+        } else {
+          var dx = f.left - l.left, dy = f.top - l.top, sx = f.width / l.width, sy = f.height / l.height;
+          if (Math.abs(dx) < .5 && Math.abs(dy) < .5 && Math.abs(sx - 1) < .005 && Math.abs(sy - 1) < .005) return;
+          a = el.animate([{ transformOrigin: '0 0', transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')' }, { transformOrigin: '0 0', transform: 'none' }], { duration: dur(), easing: ease() });
+        }
+        a.id = 'flip';
+      });
+    }
+
+    function cardHTML(g, it) {
+      return '<span class="ng__ico" aria-hidden="true"><svg viewBox="0 0 24 24">' + ICONS[g.icon] + '</svg></span>' +
+        '<span class="ng__body"><span class="ng__eye"><span>' + esc(g.name) + '</span><span aria-hidden="true">·</span><span>' + (/^\d/.test(it.time) ? 'il y a ' : '') + esc(it.time) + '</span><span class="ng__more" aria-hidden="true"></span></span>' +
+        '<span class="ng__t">' + esc(it.title) + '</span><span class="ng__d">' + esc(it.text) + '</span></span>' +
+        '<span class="ng__dot" aria-hidden="true"></span>' +
+        '<button class="ng__hit" type="button" aria-label="' + esc(it.title + '. ' + it.text) + '"></button>' +
+        '<button class="ng__x" type="button" aria-label="Effacer : ' + esc(it.title) + '">' + X + '</button>';
+    }
+    function makeCard(g, it) {
+      var c = document.createElement('article');
+      c.className = 'ng__card' + (it.read ? ' is-read' : ''); c.setAttribute('data-flip', ''); c.dataset.id = 'n' + (++uid);
+      c.innerHTML = cardHTML(g, it); return c;
+    }
+    function makeGroup(g) {
+      var el = document.createElement('div');
+      el.className = 'ng__group is-stacked'; el.dataset.group = g.id; el.dataset.tone = g.tone; el.setAttribute('role', 'group'); el.setAttribute('aria-label', g.name);
+      el.innerHTML = '<div class="ng__ghead" data-flip><span class="ng__gname">' + esc(g.name) + '</span>' +
+        '<button class="ng__gbtn" type="button" data-ng-fold><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14l5-5 5 5"/></svg>Réduire</button>' +
+        '<button class="ng__gbtn ng__gbtn--x" type="button" data-ng-clear aria-label="Tout effacer : ' + esc(g.name) + '">' + X + '</button></div>' +
+        '<div class="ng__stack"></div>';
+      el._g = g;
+      var st = el.querySelector('.ng__stack');
+      g.items.forEach(function (it) { st.appendChild(makeCard(g, it)); });
+      return el;
+    }
+    function groups() { return Array.prototype.slice.call(listEl.querySelectorAll('.ng__group')); }
+    function cardsOf(gr) { return Array.prototype.slice.call(gr.querySelectorAll('.ng__card')); }
+
+    /* Recalcule la pile de chaque groupe, les compteurs et l'état vide */
+    function sync() {
+      var unreadOnly = root.dataset.filter === 'unread', max = +root.dataset.stack || 3, unread = 0, any = false;
+      groups().forEach(function (gr) {
+        var cards = cardsOf(gr), shown = [];
+        cards.forEach(function (c) {
+          var read = c.classList.contains('is-read'); if (!read) unread++;
+          if (unreadOnly && read) c.setAttribute('data-hidden', ''); else { c.removeAttribute('data-hidden'); shown.push(c); }
+          c.classList.remove('is-back', 'is-b1', 'is-b2', 'is-deep');
+          var h = c.querySelector('.ng__hit'); if (h.dataset.label) h.setAttribute('aria-label', h.dataset.label); h.removeAttribute('aria-expanded');
+        });
+        if (!shown.length) { gr.setAttribute('data-hidden', ''); return; }
+        gr.removeAttribute('data-hidden'); any = true;
+        var open = gr.classList.contains('is-open') && shown.length > 1;
+        gr.classList.toggle('is-open', open); gr.classList.toggle('is-stacked', !open);
+        gr.querySelector('.ng__stack').dataset.depth = open ? 0 : Math.min(shown.length - 1, max - 1);
+        shown.forEach(function (c, i) {
+          var hit = c.querySelector('.ng__hit'), x = c.querySelector('.ng__x');
+          if (!open && i > 0) { c.classList.add('is-back', i === 1 && max > 1 ? 'is-b1' : i === 2 && max > 2 ? 'is-b2' : 'is-deep'); hit.tabIndex = -1; x.tabIndex = -1; c.setAttribute('aria-hidden', 'true'); }
+          else { hit.tabIndex = 0; x.tabIndex = 0; c.removeAttribute('aria-hidden'); }
+        });
+        var front = shown[0], hit = front.querySelector('.ng__hit');
+        front.querySelector('.ng__more').textContent = shown.length > 1 ? '+' + (shown.length - 1) : '';
+        if (shown.length > 1) {
+          hit.setAttribute('aria-expanded', String(open));
+          if (!open) { hit.dataset.label = hit.dataset.label || hit.getAttribute('aria-label'); hit.setAttribute('aria-label', gr._g.name + ', ' + shown.length + ' notifications. Déplier'); }
+        }
+      });
+      countEl.textContent = unread ? String(unread) : '';
+      if (badge) { badge.textContent = unread > 9 ? '9+' : String(unread); badge.classList.toggle('is-zero', !unread); }
+      readAll.disabled = !unread;
+      empty.hidden = any; listEl.hidden = !any;
+      if (!any) empty.querySelector('.ng__empty-t').textContent = unreadOnly && groups().length ? 'Aucune notification non lue' : 'Vous êtes à jour';
+      empty.querySelector('[data-ng-reset]').hidden = unreadOnly && groups().length > 0;
+    }
+
+    function toggle(gr, open) {
+      flip(function () { gr.classList.toggle('is-open', open); sync(); });
+      var target = open ? gr.querySelector('[data-ng-fold]') : gr.querySelector('.ng__card:not([data-hidden]) .ng__hit');
+      if (target && root.contains(document.activeElement)) target.focus({ preventScroll: true });
+      live.textContent = gr._g.name + (open ? ' déplié' : ' replié');
+    }
+    function leave(cards, done) {
+      var n = 0;
+      if (reduce.matches || !cards[0] || !cards[0].animate) { done(); return; }
+      cards.forEach(function (c, i) {
+        var a = c.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateX(-24px) scale(.98)' }], { duration: 200, delay: i * 40, easing: 'cubic-bezier(.4, 0, 1, 1)', fill: 'forwards' });
+        a.onfinish = function () { if (++n === cards.length) done(); };
+      });
+    }
+    function focusFirst() { var n = root.querySelector('.ng__card:not([data-hidden]):not([aria-hidden]) .ng__hit'); (n || root.querySelector('[data-ng-filter="all"]')).focus({ preventScroll: true }); }
+    function removeCard(c) {
+      var gr = c.closest('.ng__group'), hadFocus = c.contains(document.activeElement);
+      c.removeAttribute('data-flip');
+      leave([c], function () { flip(function () { c.remove(); if (!cardsOf(gr).length) gr.remove(); sync(); }); if (hadFocus) focusFirst(); });
+      live.textContent = 'Notification effacée';
+    }
+    function clearGroup(gr) {
+      var cards = cardsOf(gr).filter(function (c) { return !c.hasAttribute('data-hidden'); });
+      gr.querySelector('.ng__ghead').removeAttribute('data-flip');
+      leave(cards, function () { flip(function () { gr.remove(); sync(); }); focusFirst(); });
+      live.textContent = gr._g.name + ' : notifications effacées';
+    }
+
+    /* Nouvelle notification : en tête de son groupe, groupe remonté en tête de liste */
+    function add(groupId, it) {
+      var gr = listEl.querySelector('[data-group="' + groupId + '"]'), g = seed.filter(function (x) { return x.id === groupId; })[0];
+      if (!gr && !g) return;
+      flip(function () {
+        if (!gr) gr = makeGroup({ id: g.id, name: g.name, icon: g.icon, tone: g.tone, items: [] });
+        var st = gr.querySelector('.ng__stack');
+        st.insertBefore(makeCard(gr._g, it), st.firstChild);
+        listEl.insertBefore(gr, listEl.firstChild);
+        sync();
+      });
+      live.textContent = 'Nouvelle notification, ' + gr._g.name + ' : ' + it.title;
+    }
+    function reset() { flip(function () { listEl.innerHTML = ''; seed.forEach(function (g) { listEl.appendChild(makeGroup(g)); }); sync(); }); }
+
+    listEl.addEventListener('click', function (e) {
+      var gr = e.target.closest('.ng__group'); if (!gr) return;
+      if (e.target.closest('[data-ng-fold]')) return toggle(gr, false);
+      if (e.target.closest('[data-ng-clear]')) return clearGroup(gr);
+      var x = e.target.closest('.ng__x'); if (x) return removeCard(x.closest('.ng__card'));
+      var hit = e.target.closest('.ng__hit'); if (!hit) return;
+      if (hit.getAttribute('aria-expanded') === 'false') return toggle(gr, true);
+      var c = hit.closest('.ng__card');
+      if (!c.classList.contains('is-read')) { flip(function () { c.classList.add('is-read'); sync(); }); live.textContent = 'Marquée comme lue'; }
+    });
+    root.querySelectorAll('[data-ng-filter]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        root.querySelectorAll('[data-ng-filter]').forEach(function (o) { o.setAttribute('aria-checked', String(o === b)); o.tabIndex = o === b ? 0 : -1; });
+        flip(function () { root.dataset.filter = b.dataset.ngFilter; sync(); });
+      });
+    });
+    root.querySelector('[data-ng-filter="unread"]').tabIndex = -1;
+    root.querySelector('.ng__tabs').addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault(); var o = root.querySelector('[data-ng-filter][aria-checked="false"]'); o.click(); o.focus();
+    });
+    readAll.addEventListener('click', function () { flip(function () { root.querySelectorAll('.ng__card').forEach(function (c) { c.classList.add('is-read'); }); sync(); }); live.textContent = 'Tout est marqué comme lu'; });
+    root.querySelector('[data-ng-reset]').addEventListener('click', reset);
+
+    /* Glisser une carte vers la gauche pour l'effacer (toucher et souris) */
+    listEl.addEventListener('pointerdown', function (e) {
+      var c = e.target.closest('.ng__card'); if (!c || e.target.closest('.ng__x, [data-ng-fold], [data-ng-clear]') || c.classList.contains('is-back') || e.button > 0) return;
+      var gr = c.closest('.ng__group');
+      if (gr.classList.contains('is-stacked') && cardsOf(gr).filter(function (x) { return !x.hasAttribute('data-hidden'); }).length > 1) return;
+      var x0 = e.clientX, y0 = e.clientY, dx = 0, on = false, id = e.pointerId;
+      function shown(d) { return d > 0 ? d / (1 + d / 30) : d; }
+      function mv(ev) {
+        if (ev.pointerId !== id) return;
+        dx = ev.clientX - x0;
+        if (!on) { if (Math.abs(ev.clientY - y0) > 10) return up(); if (Math.abs(dx) < 8) return; on = true; c.setPointerCapture(id); }
+        c.style.transform = 'translateX(' + shown(dx) + 'px)'; c.style.opacity = String(1 - Math.min(.7, Math.abs(shown(dx)) / c.offsetWidth));
+      }
+      function up() {
+        listEl.removeEventListener('pointermove', mv); listEl.removeEventListener('pointerup', up); listEl.removeEventListener('pointercancel', up);
+        if (!on) return;
+        c.addEventListener('click', function (ev) { ev.stopPropagation(); ev.preventDefault(); }, { capture: true, once: true });
+        c.style.transform = ''; c.style.opacity = '';
+        if (dx < -c.offsetWidth * .35) {
+          c.removeAttribute('data-flip');
+          c.animate([{ transform: 'translateX(' + dx + 'px)', opacity: .4 }, { transform: 'translateX(-110%)', opacity: 0 }], { duration: 180, fill: 'forwards' }).onfinish = function () { flip(function () { c.remove(); if (!cardsOf(gr).length) gr.remove(); sync(); }); };
+          live.textContent = 'Notification effacée';
+        } else c.animate([{ transform: 'translateX(' + shown(dx) + 'px)' }, { transform: 'none' }], { duration: 420, easing: ease() });
+      }
+      listEl.addEventListener('pointermove', mv); listEl.addEventListener('pointerup', up); listEl.addEventListener('pointercancel', up);
+    });
+
+    seed.forEach(function (g) { listEl.appendChild(makeGroup(g)); });
+    sync();
+    root._notif = { add: add, reset: reset, toggle: function (id, open) { var g = listEl.querySelector('[data-group="' + id + '"]'); if (g) toggle(g, open !== false); }, sync: function () { flip(sync); } };
+    return root._notif;
+  }
+  window.NotifCenter = NotifCenter;
+  document.querySelectorAll('[data-notif-center]').forEach(function (el) { if (!el._notif) NotifCenter(el); });
+})();
+</script>

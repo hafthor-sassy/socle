@@ -1,0 +1,314 @@
+<!-- Barre île dynamique — HTML + CSS + JS intégré (≈ 4 ko), sans dépendance. Nécessite tokens.css.
+     Contenu d'exemple fictif (Grain, torréfacteur en ligne). Une île flottante qui change de forme avec un ressort
+     selon le contexte : repos, recherche, ajout au panier, livraison, alerte. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="di" data-island data-tone="encre" data-position="top" data-stiffness="340" data-damping="26" data-autoclose="4000" data-blur="true">
+  <div class="di__shape" data-di-shape>
+    <!-- Repos -->
+    <template data-di-view="idle">
+      <div class="di__row di__row--idle">
+        <a class="di__brand" href="#" aria-label="Grain, accueil">
+          <svg width="28" height="28" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="di-fill-acc"/><ellipse cx="50" cy="50" rx="22" ry="31" transform="rotate(32 50 50)" class="di-fill-accfg"/><path d="M62 28c-10 6-18 14-14 24s0 18-12 22" fill="none" class="di-stroke-acc" stroke-width="6" stroke-linecap="round"/></svg>
+          <span>Grain</span>
+        </a>
+        <span class="di__sep" aria-hidden="true"></span>
+        <button class="di__icon" type="button" data-di-open="search" aria-label="Rechercher (raccourci /)" aria-keyshortcuts="/">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+        </button>
+        <button class="di__icon di__cart" type="button" data-di-cart aria-label="Panier, 2 articles">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+          <span class="di__badge" data-di-count>2</span>
+        </button>
+      </div>
+    </template>
+
+    <!-- Recherche (combobox) -->
+    <template data-di-view="search">
+      <div class="di__search">
+        <div class="di__field">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+          <input class="di__input" data-di-input type="text" role="combobox" aria-expanded="true" aria-controls="di-results" aria-autocomplete="list" aria-label="Rechercher un café" placeholder="Un café, une origine, un moulin…" autocomplete="off" enterkeyhint="go">
+          <button class="di__esc" type="button" data-di-close aria-label="Fermer la recherche"><span class="di__esc-k">Échap</span><svg class="di__esc-x" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </div>
+        <p class="di__label" data-di-rlabel>Populaires cette semaine</p>
+        <ul class="di__results" id="di-results" role="listbox" aria-label="Résultats" data-di-results></ul>
+      </div>
+    </template>
+
+    <!-- Ajout au panier -->
+    <template data-di-view="cart">
+      <div class="di__row di__row--note">
+        <span class="di__thumb" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="24" ry="34" transform="rotate(32 50 50)" fill="currentColor"/></svg><span class="di__tick"></span></span>
+        <span class="di__txt"><b>Ajouté au panier</b><span data-di-item>Éthiopie Guji · 250 g</span></span>
+        <button class="di__cta" type="button" data-di-cta>Voir&nbsp;<span data-di-count>3</span></button>
+        <span class="di__ring" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" class="di__ring-bg"/><circle cx="12" cy="12" r="10" class="di__ring-fg" pathLength="100"/></svg></span>
+      </div>
+    </template>
+
+    <!-- Livraison en cours -->
+    <template data-di-view="delivery">
+      <div class="di__row di__row--note">
+        <span class="di__thumb di__thumb--ok" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M6 17l3.5-8H14l4 8M9.5 9H8M14 9l-1.5-3H15"/></svg></span>
+        <span class="di__txt"><b>Commande en route</b><span>Arrivée entre 14&nbsp;h&nbsp;20 et 14&nbsp;h&nbsp;40</span></span>
+        <span class="di__eta" aria-hidden="true"><span class="di__eta-bar"><span></span></span><span class="di__eta-t">12 min</span></span>
+      </div>
+    </template>
+
+    <!-- Alerte -->
+    <template data-di-view="alert">
+      <div class="di__row di__row--note">
+        <span class="di__thumb di__thumb--err" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 7.5v6M12 16.5h.01"/><circle cx="12" cy="12" r="9"/></svg></span>
+        <span class="di__txt"><b>Paiement refusé</b><span>Carte expirée en 10/26</span></span>
+        <button class="di__cta di__cta--ghost" type="button" data-di-retry>Réessayer</button>
+      </div>
+    </template>
+  </div>
+  <p class="di-sr" data-di-live aria-live="polite"></p>
+  <p class="di-sr" data-di-alert role="alert"></p>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .di { --di-max: 560px; --di-top: 16px; --di-bg: var(--text-strong); --di-fg: var(--surface); --di-muted: color-mix(in srgb, var(--surface) 68%, transparent); --di-line: color-mix(in srgb, var(--surface) 16%, transparent); --di-hover: color-mix(in srgb, var(--surface) 12%, transparent);
+    position: fixed; z-index: var(--z-overlay); left: 0; right: 0; top: calc(var(--di-top) + var(--safe-top, 0px)); display: flex; justify-content: center; pointer-events: none; font-family: var(--font-sans); }
+  .dark .di[data-tone="encre"], .di[data-tone="surface"] { --di-bg: var(--surface); --di-fg: var(--text-strong); --di-muted: var(--text-muted); --di-line: var(--border); --di-hover: var(--state-hover); }
+  .dark .di[data-tone="encre"] { --di-bg: var(--raised); }
+  .di[data-position="bottom"] { top: auto; bottom: calc(var(--di-top) + var(--safe-bottom, 0px)); align-items: flex-end; }
+  .di-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .di :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: 2px; }
+  .di-fill-acc { fill: var(--accent); } .di-fill-accfg { fill: var(--accent-fg); } .di-stroke-acc { stroke: var(--accent); }
+
+  /* La forme : largeur, hauteur et rayon pilotés par ressort (JS) */
+  .di__shape { position: relative; overflow: hidden; width: 216px; height: 52px; border-radius: 26px; background: var(--di-bg); color: var(--di-fg); pointer-events: auto;
+    box-shadow: var(--shadow-popover); will-change: width, height; contain: layout paint; }
+  .di[data-tone="surface"] .di__shape, .dark .di__shape { box-shadow: var(--shadow-popover), inset 0 0 0 1px var(--di-line); }
+  .di__view { position: absolute; left: 50%; top: 0; width: max-content; max-width: min(var(--di-max), calc(100vw - 32px)); transform-origin: 50% 0; translate: -50% 0; }
+  .di__view.is-in { animation: di-in 300ms var(--ease-out) 50ms both; }
+  .di__view.is-out { animation: di-out 160ms var(--ease-in) both; pointer-events: none; }
+  @keyframes di-in { from { opacity: 0; transform: scale(.94); filter: blur(var(--di-blur, 6px)); } }
+  @keyframes di-out { to { opacity: 0; transform: scale(.96); filter: blur(var(--di-blur, 4px)); } }
+  .di[data-blur="false"] { --di-blur: 0px; }
+
+  .di__row { display: flex; align-items: center; gap: 4px; height: 52px; padding: 0 4px 0 12px; white-space: nowrap; }
+  .di__row--note { gap: 12px; height: 64px; padding: 0 10px 0 10px; }
+  .di__brand { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding-right: 8px; border-radius: 999px; color: inherit; text-decoration: none; font: 600 16px/1 var(--font-sans); letter-spacing: -0.02em; }
+  .di__sep { width: 1px; height: 20px; margin: 0 4px; background: var(--di-line); }
+  .di__icon { position: relative; display: inline-grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 999px; background: transparent; color: inherit; cursor: pointer; transition: background-color var(--motion-fast) var(--ease-out); }
+  @media (hover: hover) { .di__icon:hover { background: var(--di-hover); } }
+  .di__badge { position: absolute; top: 6px; right: 4px; display: grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: 700 11px/1 var(--font-sans); font-variant-numeric: tabular-nums; box-shadow: 0 0 0 2px var(--di-bg); }
+  .di__badge.is-bump { animation: di-bump 480ms cubic-bezier(.34, 1.56, .64, 1); }
+  @keyframes di-bump { 30% { transform: scale(1.35); } }
+
+  .di__thumb { position: relative; flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--accent-subtle); color: var(--accent); }
+  .di__thumb--ok { background: var(--tint-green-bg); color: var(--tint-green-fg); border-radius: 999px; }
+  .di__thumb--err { background: var(--tint-red-bg); color: var(--tint-red-fg); border-radius: 999px; }
+  .di__tick { position: absolute; right: -3px; bottom: -3px; width: 18px; height: 18px; border-radius: 999px; background: var(--tint-green-bg); box-shadow: 0 0 0 2px var(--di-bg); }
+  .di__tick::after { content: ""; position: absolute; left: 6px; top: 3.5px; width: 4px; height: 8px; border: solid var(--tint-green-fg); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .di__txt { display: grid; gap: 2px; min-width: 0; padding-right: 4px; }
+  .di__txt b { font: 600 15px/20px var(--font-sans); letter-spacing: var(--track-snug); }
+  .di__txt span { overflow: hidden; text-overflow: ellipsis; color: var(--di-muted); font-size: 14px; line-height: 18px; }
+  .di__cta { flex: none; height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: 600 14px/1 var(--font-sans); cursor: pointer; transition: background-color var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out); }
+  .di__cta:active { transform: scale(.96); }
+  .di__cta--ghost { background: var(--di-hover); color: var(--di-fg); }
+  .di__ring { flex: none; width: 24px; height: 24px; margin-right: 4px; }
+  .di__ring svg { transform: rotate(-90deg); }
+  .di__ring circle { fill: none; stroke-width: 2.5; }
+  .di__ring-bg { stroke: var(--di-line); }
+  .di__ring-fg { stroke: var(--di-fg); stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 0; animation: di-ring var(--di-close, 4000ms) linear forwards; }
+  .di.is-hold .di__ring-fg { animation-play-state: paused; }
+  @keyframes di-ring { to { stroke-dashoffset: 100; } }
+  .di__eta { display: grid; gap: 6px; justify-items: end; width: 72px; padding-right: 8px; }
+  .di__eta-bar { width: 100%; height: 4px; border-radius: 999px; background: var(--di-line); overflow: hidden; }
+  .di__eta-bar span { display: block; width: 62%; height: 100%; border-radius: inherit; background: var(--tint-green-fg); animation: di-eta 2.4s var(--ease-out) both; }
+  @keyframes di-eta { from { width: 8%; } }
+  .di__eta-t { color: var(--di-muted); font: 500 12px/1 var(--font-mono); }
+
+  /* Recherche */
+  .di__search { width: min(var(--di-max), calc(100vw - 32px)); padding: 6px 6px 8px; }
+  .di__field { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 6px 0 12px; color: var(--di-muted); }
+  .di__input { flex: 1; min-width: 0; height: 44px; border: 0; background: transparent; color: var(--di-fg); font: 400 var(--t-input)/1 var(--font-sans); outline: none; }
+  .di__input::placeholder { color: var(--di-muted); }
+  .di__input:focus-visible { outline: none; }
+  .di__field { position: relative; }
+  .di__field::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: -2px; height: 1px; background: var(--di-line); transition: background-color var(--motion-base) var(--ease-out), height var(--motion-base) var(--ease-out); }
+  .di__field:focus-within::after { height: 2px; background: var(--focus-ring); }
+  .di__esc-x { display: none; }
+  /* Voile derrière la recherche ouverte */
+  .di::before { content: ""; position: fixed; inset: 0; background: var(--scrim); opacity: 0; pointer-events: none; transition: opacity var(--motion-slow) var(--ease-out); }
+  .di[data-state="search"]::before { opacity: 1; }
+  .di__esc { flex: none; height: 32px; padding: 0 10px; border: 1px solid var(--di-line); border-radius: 8px; background: transparent; color: var(--di-muted); font: 500 12px/1 var(--font-mono); cursor: pointer; }
+  .di__label { margin: 10px 12px 4px; color: var(--di-muted); font: 500 11px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .di__results { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+  .di__opt { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 52px; padding: 6px 12px 6px 8px; border-radius: 12px; cursor: pointer; }
+  .di__opt[aria-selected="true"] { background: var(--di-hover); }
+  .di__opt-ic { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; background: var(--accent-subtle); color: var(--accent); }
+  .di__opt b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 15px/20px var(--font-sans); }
+  .di__opt small { color: var(--di-muted); font-size: 13px; line-height: 18px; }
+  .di__opt mark { background: none; color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-color: var(--accent-vivid); }
+  .di__price { color: var(--di-muted); font: 500 14px/1 var(--font-sans); font-variant-numeric: tabular-nums; }
+  .di__none { padding: 16px 12px 12px; color: var(--di-muted); font-size: 14px; line-height: 20px; }
+  .di__none b { display: block; color: var(--di-fg); font-weight: 600; }
+
+  @media (hover: none) { .di__esc { width: 44px; height: 44px; padding: 0; border: 0; border-radius: 999px; display: grid; place-items: center; } .di__esc-k { display: none; } .di__esc-x { display: block; } }
+  @media (max-width: 599px) {
+    .di { --di-top: 8px; }
+    .di__row--note { gap: 10px; }
+    .di__txt b { font-size: 14px; }
+    .di__txt span { font-size: 13px; }
+    .di__eta { width: 56px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .di__view.is-in { animation: di-fade 160ms linear both; } .di__view.is-out { animation: none; opacity: 0; }
+    .di__badge.is-bump, .di__eta-bar span { animation: none; }
+    @keyframes di-fade { from { opacity: 0; } }
+  }
+</style>
+
+<script>
+/* Île : chaque état est un <template> rendu dans une vue centrée ; la forme mesure la vue et y va par ressort
+   (largeur, hauteur ; rayon = demi-hauteur pour une pilule, 16 px au-delà de 64 px). L'ancienne vue s'efface en
+   flou pendant que la nouvelle arrive. API : racine._island = { show(état, données), idle(), count(n), destroy }. */
+(function () {
+  var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var CATALOGUE = [
+    ['Éthiopie Guji', 'Floral, pêche blanche · 250 g', '14,90 €'], ['Colombie Huila', 'Caramel, pomme · 250 g', '12,50 €'],
+    ['Kenya Nyeri', 'Cassis, pamplemousse · 250 g', '16,20 €'], ['Brésil Cerrado', 'Noisette, cacao · 1 kg', '32,00 €'],
+    ['Pérou décaféiné', 'Chocolat au lait · 250 g', '13,40 €'], ['Moulin manuel Ardoise', 'Meules coniques en acier', '89,00 €'],
+    ['Guatemala Huehuetenango', 'Miel, amande · 250 g', '13,90 €'], ['Abonnement découverte', 'Un café différent chaque mois', '11,00 €/mois'],
+  ];
+  function Spring(v) { this.x = v; this.v = 0; this.t = v; }
+  Spring.prototype.step = function (dt, k, c) {
+    for (var s = 0, h = 1 / 240; s < dt; s += h) { var a = -k * (this.x - this.t) - c * this.v; this.v += a * h; this.x += this.v * h; }
+    if (Math.abs(this.x - this.t) < 0.2 && Math.abs(this.v) < 0.2) { this.x = this.t; this.v = 0; return false; }
+    return true;
+  };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function Island(root) {
+    var shape = root.querySelector('[data-di-shape]'), live = root.querySelector('[data-di-live]'), alertEl = root.querySelector('[data-di-alert]');
+    var K = parseFloat(root.dataset.stiffness) || 340, C = parseFloat(root.dataset.damping) || 26, AUTO = parseFloat(root.dataset.autoclose);
+    if (isNaN(AUTO)) AUTO = 4000;
+    var W = new Spring(shape.offsetWidth), H = new Spring(shape.offsetHeight), raf = 0, last = 0;
+    var state = null, view = null, timer = 0, left = 0, t0 = 0, cart = 2, active = -1, results = [], dead = false, returnFocus = null;
+    root.style.setProperty('--di-close', AUTO + 'ms');
+
+    function radius(h) { return h <= 64 ? h / 2 : Math.max(16, 32 - (h - 64) * 0.3); }
+    function paint() { shape.style.width = W.x + 'px'; shape.style.height = H.x + 'px'; shape.style.borderRadius = radius(H.x) + 'px'; }
+    function frame(now) {
+      raf = 0; if (dead) return;
+      var dt = Math.min(0.05, (now - (last || now)) / 1000) || 1 / 60; last = now;
+      var a = W.step(dt, K, C), b = H.step(dt, K, C); paint();
+      if (a || b) raf = requestAnimationFrame(frame); else last = 0;
+    }
+    function go(w, h, kick) {
+      W.t = w; H.t = h;
+      if (kick) W.v += kick;
+      if (REDUCE) { W.x = w; H.x = h; W.v = H.v = 0; paint(); return; }
+      if (!raf) raf = requestAnimationFrame(frame);
+    }
+    function say(t, urgent) { var el = urgent ? alertEl : live; el.textContent = ''; setTimeout(function () { el.textContent = t; }, 40); }
+
+    function clearTimer() { clearTimeout(timer); timer = 0; root.classList.remove('is-hold'); }
+    function arm(ms) { clearTimer(); if (!ms) return; left = ms; t0 = performance.now(); timer = setTimeout(idle, ms); }
+    function hold(on) {
+      if (!timer && !root.classList.contains('is-hold')) return;
+      if (on) { clearTimeout(timer); timer = 0; left -= performance.now() - t0; root.classList.add('is-hold'); }
+      else if (root.classList.contains('is-hold')) { root.classList.remove('is-hold'); t0 = performance.now(); timer = setTimeout(idle, Math.max(400, left)); }
+    }
+
+    function show(name, data) {
+      data = data || {};
+      var tpl = root.querySelector('template[data-di-view="' + name + '"]'); if (!tpl) return;
+      clearTimer();
+      var old = view, next = document.createElement('div');
+      next.className = 'di__view'; next.dataset.state = name; next.appendChild(tpl.content.cloneNode(true));
+      [].forEach.call(next.querySelectorAll('[data-di-count]'), function (el) { el.textContent = cart; });
+      var cartBtn = next.querySelector('[data-di-cart]'); if (cartBtn) cartBtn.setAttribute('aria-label', 'Panier, ' + cart + ' article' + (cart > 1 ? 's' : ''));
+      if (data.item) next.querySelector('[data-di-item]').textContent = data.item;
+      shape.appendChild(next);
+      var w = next.offsetWidth, h = next.offsetHeight;
+      if (old) { old.classList.remove('is-in'); old.classList.add('is-out'); old.setAttribute('aria-hidden', 'true'); old.inert = true; setTimeout(function () { old.remove(); }, REDUCE ? 0 : 170); }
+      if (old && !REDUCE) next.classList.add('is-in');
+      var prev = state; state = name; view = next;
+      go(w, h, name === prev && name !== 'search' ? 140 : 0);
+      root.dataset.state = name;
+      if (name === 'search') { results = CATALOGUE.slice(0, 4); renderResults(''); var inp = next.querySelector('[data-di-input]'); setTimeout(function () { inp.focus({ preventScroll: true }); }, REDUCE ? 0 : 60); }
+      if (name === 'cart') { say('Ajouté au panier : ' + (data.item || 'Éthiopie Guji · 250 g') + '. ' + cart + ' articles.'); arm(AUTO); }
+      if (name === 'delivery') { say('Commande en route, arrivée entre 14 h 20 et 14 h 40.'); arm(AUTO ? AUTO + 2000 : 0); }
+      if (name === 'alert') { say('Paiement refusé : carte expirée.', true); }
+      if (name === 'idle' && returnFocus) { var f = next.querySelector(returnFocus); returnFocus = null; if (f) f.focus({ preventScroll: true }); }
+      root.dispatchEvent(new CustomEvent('island:change', { detail: { state: name } }));
+    }
+    function idle() { show('idle'); }
+
+    function renderResults(q) {
+      var list = view.querySelector('[data-di-results]'), label = view.querySelector('[data-di-rlabel]');
+      var n = q.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      results = n ? CATALOGUE.filter(function (r) { return (r[0] + ' ' + r[1]).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').indexOf(n) > -1; }).slice(0, 5) : CATALOGUE.slice(0, 4);
+      label.textContent = !n ? 'Populaires cette semaine' : results.length ? results.length + ' résultat' + (results.length > 1 ? 's' : '') : 'Aucun résultat';
+      active = results.length ? 0 : -1;
+      if (!results.length) list.innerHTML = '<li class="di__none" role="presentation"><b>Aucun café pour « ' + esc(q.trim()) + ' »</b>Essayez une origine (Kenya, Pérou) ou un arôme (cacao, floral).</li>';
+      else list.innerHTML = results.map(function (r, i) {
+        var name = esc(r[0]);
+        if (n) { var plain = r[0].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''), at = plain.indexOf(n); if (at > -1) name = esc(r[0].slice(0, at)) + '<mark>' + esc(r[0].slice(at, at + n.length)) + '</mark>' + esc(r[0].slice(at + n.length)); }
+        return '<li class="di__opt" role="option" id="di-o-' + i + '" aria-selected="' + (i === active) + '" data-i="' + i + '"><span class="di__opt-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="24" ry="34" transform="rotate(32 50 50)" fill="currentColor"/></svg></span><span><b>' + name + '</b><small>' + esc(r[1]) + '</small></span><span class="di__price">' + esc(r[2]) + '</span></li>';
+      }).join('');
+      var inp = view.querySelector('[data-di-input]');
+      if (active > -1) inp.setAttribute('aria-activedescendant', 'di-o-0'); else inp.removeAttribute('aria-activedescendant');
+      go(view.offsetWidth, view.offsetHeight);
+    }
+    function mark(i) {
+      var opts = view.querySelectorAll('.di__opt'); if (!opts.length) return;
+      active = (i + opts.length) % opts.length;
+      [].forEach.call(opts, function (o, k) { o.setAttribute('aria-selected', k === active); });
+      view.querySelector('[data-di-input]').setAttribute('aria-activedescendant', 'di-o-' + active);
+    }
+    function pick(i) { var r = results[i]; if (!r) return; cart++; returnFocus = '[data-di-cart]'; show('cart', { item: r[0] + ' · ' + r[1].split(' · ').pop() }); }
+
+    function onClick(e) {
+      var t = e.target;
+      if (t.closest('[data-di-open="search"]')) { returnFocus = '[data-di-open="search"]'; show('search'); return; }
+      if (t.closest('[data-di-close]')) { idle(); return; }
+      if (t.closest('[data-di-cart]')) { W.v += 160; go(W.t, H.t); root.dispatchEvent(new CustomEvent('island:cart')); return; }
+      if (t.closest('[data-di-cta]')) { returnFocus = '[data-di-cart]'; idle(); root.dispatchEvent(new CustomEvent('island:cart')); return; }
+      if (t.closest('[data-di-retry]')) { returnFocus = '[data-di-cart]'; show('delivery'); return; }
+      var o = t.closest('.di__opt'); if (o) pick(+o.dataset.i);
+    }
+    function onInput(e) { if (e.target.matches('[data-di-input]')) renderResults(e.target.value); }
+    function onKey(e) {
+      if (state !== 'search') return;
+      if (e.key === 'ArrowDown') { e.preventDefault(); mark(active + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); mark(active - 1); }
+      else if (e.key === 'Enter' && active > -1) { e.preventDefault(); pick(active); }
+    }
+    function onDocKey(e) {
+      if (e.key === 'Escape' && state && state !== 'idle') { e.preventDefault(); if (state === 'search') returnFocus = '[data-di-open="search"]'; idle(); return; }
+      var typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement && document.activeElement.tagName) || (document.activeElement && document.activeElement.isContentEditable);
+      if (!typing && (e.key === '/' || (e.key.toLowerCase() === 'k' && (e.metaKey || e.ctrlKey)))) { e.preventDefault(); show('search'); }
+    }
+    function onDocDown(e) { if (state === 'search' && !shape.contains(e.target)) idle(); }
+    function onEnter() { hold(true); } function onLeave() { hold(false); }
+
+    shape.addEventListener('click', onClick); shape.addEventListener('input', onInput); shape.addEventListener('keydown', onKey);
+    shape.addEventListener('pointerenter', onEnter); shape.addEventListener('pointerleave', onLeave);
+    shape.addEventListener('focusin', onEnter); shape.addEventListener('focusout', onLeave);
+    document.addEventListener('keydown', onDocKey); document.addEventListener('pointerdown', onDocDown);
+    var ro = new ResizeObserver(function () { if (view) go(view.offsetWidth, view.offsetHeight); });
+    ro.observe(document.documentElement);
+
+    show(root.dataset.start || 'idle');
+    W.x = W.t; H.x = H.t; W.v = 0; paint();
+    if (view) view.classList.remove('is-in');
+
+    return {
+      show: show, idle: idle,
+      count: function (n) { cart = n; var b = view && view.querySelector('.di__badge'); if (b) { b.textContent = n; b.classList.remove('is-bump'); void b.offsetWidth; b.classList.add('is-bump'); } },
+      add: function (item) { cart++; show('cart', { item: item }); },
+      destroy: function () { dead = true; cancelAnimationFrame(raf); clearTimer(); ro.disconnect(); document.removeEventListener('keydown', onDocKey); document.removeEventListener('pointerdown', onDocDown); }
+    };
+  }
+  document.querySelectorAll('[data-island]').forEach(function (el) { if (el._island) el._island.destroy(); el._island = Island(el); });
+})();
+</script>

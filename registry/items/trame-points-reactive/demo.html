@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trame de points réactive — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  body { overflow-x: hidden; }
+  .tp { min-height: 100vh; }
+  html.bg-grid .tp { background: transparent; }
+  .no-content .tp__content, .no-content .tp__readout { display: none; }
+  .is-thumb .tp__content, .is-thumb .tp__readout { display: none; }
+  .is-thumb .tp__field canvas { -webkit-mask-image: none; mask-image: none; }
+  /* Scène mobile de l'app (≈ 520 px de haut) : version compacte */
+  @media (max-width: 719px) and (max-height: 640px) {
+    .tp { min-height: 100vh; }
+    .tp__content { padding-top: 96px; }
+    .tp__lead, .tp__stats { display: none; }
+    .tp__btn--ghost { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ gap: 24, size: 1.6, radius: 160, force: 22, grow: 1.6, tone: 'accent', ripple: true, ambient: true, auto: true, mask: 'ellipse', contenu: true });
+  var KEYS = ['gap', 'size', 'radius', 'force', 'grow', 'tone', 'ripple', 'ambient', 'auto', 'mask'];
+  var el = null;
+  function apply(p) {
+    if (!el) return;
+    KEYS.forEach(function (k) { el.dataset[k] = String(p[k]); });
+    document.documentElement.classList.toggle('no-content', !p.contenu);
+    if (el._dotgrid) el._dotgrid.update(DotGrid.read(el)); else DotGrid.init(document);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    el = document.querySelector('[data-dotgrid]');
+    KEYS.forEach(function (k) { el.dataset[k] = String(props[k]); });
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    apply(props);
+    var g = el._dotgrid, r = el.getBoundingClientRect();
+    if (Socle.thumb && g) { g.hover(r.width * 0.5, r.height * 0.5); }
+    // Capture « en interaction » : ?sim=1 pose un pointeur et lance une onde
+    if (/[?&]sim=1/.test(location.search) && g) { g.hover(r.width * 0.68, r.height * 0.45); setTimeout(function () { g.pulse(r.width * 0.68, r.height * 0.45); }, 300); }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (el && el._dotgrid) el._dotgrid.pulse(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau à bords figés — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'mousse');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 40px 24px; }
+  @media (max-width: 599px) { .stage { padding: 12px; place-items: start stretch; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ densite: 'comfort', zebre: false, croise: true, ombres: true, fin: true, hauteur: 520 });
+  var root = null;
+  function apply(p) {
+    if (!root) return;
+    root.dataset.density = p.densite;
+    root.dataset.zebra = String(!!p.zebre);
+    root.dataset.cross = String(!!p.croise);
+    root.dataset.shadows = String(!!p.ombres);
+    root.dataset.pinEnd = String(!!p.fin);
+    root.style.setProperty('--pc-max-h', p.hauteur + 'px');
+    if (root._sticky) root._sticky.refresh();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-sticky-table]');
+    if (Socle.thumb) props.hauteur = 420;
+    apply(props);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    var sc = root.querySelector('[data-pc-scroll]');
+    if (Socle.thumb) { sc.scrollLeft = 260; sc.scrollTop = 120; }
+    window.__scroll = function (x, y) { sc.scrollTo({ left: x, top: y }); };
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () {
+    if (!root) return;
+    var sc = root.querySelector('[data-pc-scroll]');
+    root.classList.remove('is-scrolled');
+    sc.scrollTo({ left: 0, top: 0, behavior: 'auto' });
+    if (Socle.reducedMotion()) return;
+    setTimeout(function () { sc.scrollTo({ left: 420, top: 180, behavior: 'smooth' }); }, 300);
+    setTimeout(function () { sc.scrollTo({ left: 0, top: 0, behavior: 'smooth' }); }, 1900);
+  });
+</script>
+</body>
+</html>

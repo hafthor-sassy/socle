@@ -1,0 +1,61 @@
+{
+  "id": "encre-qui-monte",
+  "nom": "Encre qui monte",
+  "categorie": "texte-anime",
+  "niveau": "premium",
+  "ordre": 4,
+  "description": "Les lettres apparaissent comme de l’encre versée dans l’eau : un front bruité monte du pied des lettres (ou s’étend du centre), l’encre déborde, se teinte de l’accent là où elle est diluée, laisse des volutes, puis se resserre exactement sur la forme du texte. Shader WebGL maison, texte réel toujours présent.",
+  "tags": ["WebGL", "Shader", "Bruit", "Titre", "Hero", "Survol"],
+  "date": "2026-11-05",
+  "difficulte": 3,
+  "technique": "Texte redessiné mot à mot dans un canvas 2D aux positions du DOM, trois textures (net, flou, très flou), shader de bruit fractal à domaine déformé, seuil qui se resserre",
+  "poids": "≈ 4 Ko gzip (JS + shader), aucune bibliothèque",
+  "palette": "encre",
+  "logo_exemple": { "nom": "Lavis", "secteur": "Maison d’édition (littérature)", "fichier": "logo.svg", "palette": "encre", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1180 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Encre (--text-strong ou --accent), teinte de dilution (--accent-vivid), surfaces" },
+    { "nom": "WebGL 1", "note": "Natif, aucune bibliothèque ; repli CSS (flou + masque montant) si indisponible" },
+    { "nom": "Canvas 2D (filter, letterSpacing)", "note": "Rendu du texte et des flous ; Chrome 99+, Safari 17+, Firefox 113+" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, composant RisingInk avec ref.play()" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "titre", "label": "Titre", "type": "text", "default": "L’encre se souvient de tout.",
+      "code": { "html": "{v}</h2>", "react": "title = '{v}'" } },
+    { "name": "duree", "label": "Durée", "type": "number", "default": 2600, "min": 1000, "max": 6000, "step": 100, "unit": "ms",
+      "code": { "html": "data-duration=\"{v}\"", "react": "duration = {v}" } },
+    { "name": "turbulence", "label": "Turbulence", "type": "number", "default": 0.6, "min": 0, "max": 1, "step": 0.05,
+      "hint": "Force des remous qui tordent l’encre avant qu’elle se pose. 0 : montée calme et régulière.",
+      "code": { "html": "data-turbulence=\"{v}\"", "react": "turbulence = {v}" } },
+    { "name": "etalement", "label": "Étalement", "type": "number", "default": 0.5, "min": 0, "max": 1, "step": 0.05,
+      "hint": "Combien l’encre déborde des lettres pendant sa diffusion.",
+      "code": { "html": "data-bleed=\"{v}\"", "react": "bleed = {v}" } },
+    { "name": "origine", "label": "Origine", "type": "select", "default": "bottom",
+      "options": [{ "value": "bottom", "label": "Monte du bas" }, { "value": "center", "label": "Goutte au centre" }],
+      "code": { "html": "data-origin=\"{v}\"", "react": "origin = '{v}'" } },
+    { "name": "couleur", "label": "Encre", "type": "select", "default": "text",
+      "options": [{ "value": "text", "label": "Texte (teintée d’accent)" }, { "value": "accent", "label": "Accent" }],
+      "code": { "html": "data-color=\"{v}\"", "react": "color = '{v}'" } },
+    { "name": "volutes", "label": "Volutes", "type": "boolean", "default": true,
+      "hint": "Fumée d’encre au-dessus du front, qui se dissipe en se posant.",
+      "code": { "html": "data-wisps=\"{v}\"", "react": "wisps = {v}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/RisingInk.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour un grand titre de page d’accueil, un lancement, une couverture : un seul texte à l’encre par écran, en taille display (40 px et plus). En dessous, l’effet devient une simple tache.",
+    "Le parent du texte doit être positionné (position: relative) : le canvas s’y place au-dessus du texte, avec une marge pour les volutes.",
+    "Déclencheurs : data-trigger=\"view\" (par défaut, à l’entrée dans l’écran), \"hover\" (survol, focus ou toucher du lien parent) ; el._ink.play() pour rejouer. L’événement « inkend » signale la fin.",
+    "Encre « Texte » : noire ou blanche selon le thème, teintée d’accent là où elle est diluée. Encre « Accent » : pour un titre de couverture ou de marque."
+  ],
+  "accessibilite": [
+    "Le texte reste un vrai titre dans le DOM, sélectionnable et lu normalement ; le canvas est aria-hidden et ne capte aucun clic.",
+    "Avec « réduire les animations », le texte s’affiche directement, sans canvas. Sans WebGL, un repli CSS discret (flou et masque montant) prend le relais.",
+    "L’effet est un aller simple de 2 à 3 s : aucune boucle au repos, mise en pause hors écran et onglet caché, contexte WebGL libéré au démontage (React).",
+    "Couleurs relues dans les variables de tokens.css à chaque changement de thème ou de palette ; état final identique au texte HTML (contraste AA du texte principal)."
+  ]
+}

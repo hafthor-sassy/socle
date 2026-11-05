@@ -1,0 +1,291 @@
+<!-- Trame de points réactive — HTML + CSS + JS (canvas 2D, sans dépendance). Nécessite tokens.css. Marque fictive : Semis (agritech). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="tp" aria-labelledby="tp-title">
+  <div class="tp__field" data-dotgrid
+    data-gap="24" data-size="1.6" data-radius="160" data-force="22" data-grow="1.6"
+    data-tone="accent" data-ripple="true" data-ambient="true" data-auto="true" data-mask="ellipse"
+    aria-hidden="true"></div>
+
+  <div class="tp__content">
+    <p class="tp__eyebrow">
+      <svg class="tp__logo" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="6" opacity=".3"/><path d="M50 78V46" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><path d="M50 50C50 34 38 24 24 24c0 16 12 26 26 26Z" fill="currentColor"/><path d="M50 58c0-14 10-24 26-24 0 14-12 24-26 24Z" fill="currentColor" opacity=".55"/></svg>
+      <span>Semis</span><span class="tp__sep" aria-hidden="true"></span><span class="tp__muted">Capteurs de sol</span>
+    </p>
+    <h1 id="tp-title" class="tp__title">Chaque parcelle, mesurée au mètre&nbsp;près.</h1>
+    <p class="tp__lead">Semis pose un réseau de capteurs dans vos champs et vous dit, rang par rang, où arroser, où semer et où attendre.</p>
+    <div class="tp__actions">
+      <a class="tp__btn tp__btn--solid" href="#essai">Cartographier mon exploitation</a>
+      <a class="tp__btn tp__btn--ghost" href="#demo">Voir une parcelle type</a>
+    </div>
+    <dl class="tp__stats">
+      <div><dt>Parcelles suivies</dt><dd>12&nbsp;400</dd></div>
+      <div><dt>Précision</dt><dd>±&nbsp;0,8&nbsp;m</dd></div>
+      <div><dt>Eau économisée</dt><dd>−&nbsp;27&nbsp;%</dd></div>
+    </dl>
+  </div>
+
+  <p class="tp__readout" aria-hidden="true"><span data-tp-cell>Rang A · 01</span><span data-tp-value>Humidité 31 %</span></p>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .tp {
+    position: relative; isolation: isolate; overflow: hidden;
+    min-height: clamp(600px, 86svh, 800px);
+    display: grid; align-items: center;
+    background: var(--bg); color: var(--text); font-family: var(--font-sans);
+  }
+  .tp__field { position: absolute; inset: 0; z-index: -1; touch-action: pan-y; }
+  .tp__field canvas { display: block; width: 100%; height: 100%; }
+  .tp__field[data-mask="ellipse"] canvas {
+    -webkit-mask-image: radial-gradient(120% 90% at 70% 50%, #000 40%, transparent 92%);
+            mask-image: radial-gradient(120% 90% at 70% 50%, #000 40%, transparent 92%);
+  }
+
+  .tp__content { width: 100%; max-width: 1200px; margin: 0 auto; padding: 64px 24px; pointer-events: none; }
+  .tp__content > * { max-width: 36rem; pointer-events: auto; }
+  .tp__eyebrow {
+    display: inline-flex; align-items: center; gap: 8px; height: 36px; margin: 0 0 24px; padding: 0 14px 0 10px;
+    border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface);
+    color: var(--text-strong); font: 600 14px/1 var(--font-sans); letter-spacing: var(--track-snug);
+  }
+  .tp__logo { width: 20px; height: 20px; color: var(--accent); }
+  .tp__sep { width: 1px; height: 14px; background: var(--border); }
+  .tp__muted { color: var(--text-muted); font-weight: 500; }
+  .tp__title {
+    margin: 0; color: var(--text-strong);
+    font-size: clamp(2.375rem, 1.5rem + 3.3vw, 4.25rem); line-height: 1.02; font-weight: 600; letter-spacing: -0.035em; text-wrap: balance;
+  }
+  .tp__lead { margin: 24px 0 0; color: var(--text-muted); font-size: clamp(1rem, .95rem + .25vw, 1.1875rem); line-height: 1.55; max-width: 30rem; text-wrap: pretty; }
+  .tp__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .tp__btn {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 20px;
+    border-radius: var(--radius-ctl); font: 600 15px/1 var(--font-sans); text-decoration: none; white-space: nowrap;
+    transition: background-color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out);
+  }
+  .tp__btn:active { transform: translateY(1px); }
+  .tp__btn--solid { background: var(--accent); color: var(--accent-fg); }
+  .tp__btn--solid:hover { background: var(--accent-hover); }
+  .tp__btn--ghost { background: var(--surface); color: var(--text-strong); border: 1px solid var(--border-control); }
+  .tp__btn--ghost:hover { background: var(--raised); }
+  .tp__btn:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .tp__stats { display: flex; gap: 32px; margin: 48px 0 0; padding: 20px 0 0; border-top: 1px solid var(--border); }
+  .tp__stats div { display: grid; gap: 4px; }
+  .tp__stats dt { color: var(--text-muted); font-size: 13px; line-height: 18px; }
+  .tp__stats dd { margin: 0; color: var(--text-strong); font: 600 22px/28px var(--font-sans); letter-spacing: var(--track-tight); font-variant-numeric: tabular-nums; }
+
+  .tp__readout {
+    position: absolute; right: 24px; bottom: 24px; margin: 0; display: flex; gap: 12px; align-items: center;
+    height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface);
+    color: var(--text-muted); font: 500 12px/1 var(--font-mono); letter-spacing: .02em; font-variant-numeric: tabular-nums;
+    opacity: 0; translate: 0 8px; transition: opacity var(--motion-slow) var(--ease-out), translate var(--motion-slow) var(--ease-out);
+  }
+  .tp__readout [data-tp-value] { color: var(--text-strong); }
+  .tp.is-active .tp__readout { opacity: 1; translate: 0 0; }
+
+  @media (max-width: 719px) {
+    .tp { align-items: end; min-height: 640px; }
+    .tp__field[data-mask="ellipse"] canvas {
+      -webkit-mask-image: linear-gradient(#000 22%, transparent 62%); mask-image: linear-gradient(#000 22%, transparent 62%);
+    }
+    .tp__content { padding: 160px 20px 32px; }
+    .tp__eyebrow { margin-bottom: 20px; }
+    .tp__lead { margin-top: 16px; font-size: 16px; }
+    .tp__actions { flex-direction: column; margin-top: 24px; }
+    .tp__btn { width: 100%; min-height: 48px; }
+    .tp__stats { gap: 0; justify-content: space-between; margin-top: 32px; padding-top: 16px; }
+    .tp__stats dt { font-size: 13px; }
+    .tp__stats dd { font-size: 19px; }
+    .tp__readout { left: 20px; right: auto; top: 20px; bottom: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tp__readout { transition: none; }
+  }
+</style>
+
+<script>
+/* DotGrid : trame de points sur canvas 2D. Chaque point est tenu par un ressort et
+   s'écarte du pointeur ; un clic (ou un tap) envoie une onde. Couleurs relues dans tokens.css. */
+(function () {
+  var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+
+  function read(el) {
+    var d = el.dataset;
+    return {
+      gap: Math.max(10, +d.gap || 24), size: +d.size || 1.6, radius: +d.radius || 160,
+      force: d.force != null ? +d.force : 22, grow: d.grow != null ? +d.grow : 1.6,
+      tone: d.tone || 'accent', ripple: d.ripple !== 'false', ambient: d.ambient !== 'false', auto: d.auto !== 'false',
+    };
+  }
+
+  function parseColor(str) {
+    var m = String(str).match(/[\d.]+/g) || [0, 0, 0];
+    return [+m[0], +m[1], +m[2]];
+  }
+
+  function init(scope) {
+    var el = (scope || document).querySelector('[data-dotgrid]');
+    if (!el || el._dotgrid) return el && el._dotgrid;
+    var section = el.closest('section') || el.parentNode;
+    var cellEl = section.querySelector('[data-tp-cell]');
+    var valEl = section.querySelector('[data-tp-value]');
+    var canvas = document.createElement('canvas');
+    el.appendChild(canvas);
+    var ctx = canvas.getContext('2d');
+    var o = read(el);
+    var W = 0, H = 0, dpr = 1, dots = [], cols = 0, rows = 0;
+    var px = -9999, py = -9999, inside = false, pinf = 0, lastInput = -1e9, ghost = false;
+    var waves = [];
+    var raf = 0, visible = true, last = 0, t0 = performance.now(), settledFor = 0;
+    var colBase = [120, 120, 130], colAccent = [171, 78, 49];
+
+    function colors() {
+      var probe = document.createElement('i');
+      probe.style.cssText = 'position:absolute;width:0;height:0;visibility:hidden';
+      el.appendChild(probe);
+      probe.style.color = 'var(--border-control)'; colBase = parseColor(getComputedStyle(probe).color);
+      probe.style.color = o.tone === 'neutre' ? 'var(--text-strong)' : 'var(--accent-vivid)'; colAccent = parseColor(getComputedStyle(probe).color);
+      probe.remove();
+    }
+
+    function layout() {
+      var r = el.getBoundingClientRect();
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = Math.max(1, r.width); H = Math.max(1, r.height);
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      var g = o.gap;
+      cols = Math.ceil(W / g) + 1; rows = Math.ceil(H / g) + 1;
+      var offX = (W - (cols - 1) * g) / 2, offY = (H - (rows - 1) * g) / 2;
+      dots = new Array(cols * rows);
+      for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) {
+        dots[j * cols + i] = { x: offX + i * g, y: offY + j * g, ox: 0, oy: 0, vx: 0, vy: 0, s: 0, vs: 0, i: i, j: j };
+      }
+      draw(0, true);
+    }
+
+    function draw(time, still) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      var R = o.radius, R2 = R * R, base = o.size, amb = o.ambient && !still;
+      var cb = colBase, ca = colAccent;
+      // Deux passes de couleur : les points au repos d'un bloc (rapide), puis ceux qui s'animent.
+      ctx.fillStyle = 'rgba(' + cb[0] + ',' + cb[1] + ',' + cb[2] + ',.55)';
+      ctx.beginPath();
+      var hot = [];
+      for (var k = 0; k < dots.length; k++) {
+        var d = dots[k];
+        var a = amb ? 0.18 * Math.sin(time * 0.0009 + d.x * 0.012 + d.y * 0.008) * Math.sin(time * 0.0006 - d.y * 0.01) : 0;
+        var rr = base * (1 + d.s + a);
+        if (d.s > 0.04) { hot.push(d); continue; }
+        var x = d.x + d.ox, y = d.y + d.oy;
+        ctx.moveTo(x + rr, y); ctx.arc(x, y, rr, 0, 6.2832);
+      }
+      ctx.fill();
+      for (var h = 0; h < hot.length; h++) {
+        var q = hot[h], m = Math.min(1, q.s / Math.max(0.2, o.grow));
+        var rq = base * (1 + q.s);
+        ctx.fillStyle = 'rgba(' + Math.round(cb[0] + (ca[0] - cb[0]) * m) + ',' + Math.round(cb[1] + (ca[1] - cb[1]) * m) + ',' + Math.round(cb[2] + (ca[2] - cb[2]) * m) + ',' + (0.55 + 0.45 * m).toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(q.x + q.ox, q.y + q.oy, rq, 0, 6.2832); ctx.fill();
+      }
+    }
+
+    function step(now) {
+      raf = 0;
+      if (!visible) return;
+      var dt = Math.min(0.033, last ? (now - last) / 1000 : 0.016); last = now;
+      var R = o.radius, R2 = R * R, F = o.force, G = o.grow;
+      var time = now - t0;
+      // Pointeur fantôme : sans souris (tactile, inactivité), une trace lente parcourt la zone libre.
+      ghost = o.auto && !inside && now - lastInput > 2200;
+      if (ghost) {
+        var mob = W < 720, gt = time * 0.00022;
+        var cx = mob ? W * 0.5 : W * 0.72, cy = mob ? H * 0.2 : H * 0.5, ax = mob ? W * 0.32 : W * 0.16, ay = mob ? H * 0.1 : H * 0.26;
+        var gx = cx + ax * Math.sin(gt * 2.1), gy = cy + ay * Math.sin(gt * 3.3 + 0.8);
+        if (pinf < 0.02) { px = gx; py = gy; } else { px += (gx - px) * Math.min(1, dt * 3); py += (gy - py) * Math.min(1, dt * 3); }
+      }
+      pinf += ((inside ? 1 : ghost ? 0.75 : 0) - pinf) * Math.min(1, dt * (ghost ? 1.5 : 8));
+      var energy = 0;
+      for (var w = waves.length - 1; w >= 0; w--) { waves[w].r += 720 * dt; waves[w].a -= dt * 0.9; if (waves[w].a <= 0) waves.splice(w, 1); }
+      var k = 170, c = 14; // ressort : raideur, amortissement
+      for (var n = 0; n < dots.length; n++) {
+        var d = dots[n], tx = 0, ty = 0, ts = 0;
+        var dx = d.x - px, dy = d.y - py, d2 = dx * dx + dy * dy;
+        if (pinf > 0.001 && d2 < R2) {
+          var dist = Math.sqrt(d2) || 1, f = 1 - dist / R, e = f * f * (3 - 2 * f) * pinf;
+          tx = dx / dist * F * e; ty = dy / dist * F * e; ts = G * e;
+        }
+        for (var v = 0; v < waves.length; v++) {
+          var wv = waves[v], wx = d.x - wv.x, wy = d.y - wv.y, wd = Math.sqrt(wx * wx + wy * wy) || 1;
+          var band = 1 - Math.abs(wd - wv.r) / 70;
+          if (band > 0) { var b = band * band * wv.a; tx += wx / wd * F * 0.8 * b; ty += wy / wd * F * 0.8 * b; ts += G * 0.9 * b; }
+        }
+        d.vx += ((tx - d.ox) * k - d.vx * c) * dt; d.vy += ((ty - d.oy) * k - d.vy * c) * dt;
+        d.vs += ((ts - d.s) * k - d.vs * c) * dt;
+        d.ox += d.vx * dt; d.oy += d.vy * dt; d.s += d.vs * dt;
+        energy += Math.abs(d.vx) + Math.abs(d.vy) + Math.abs(d.vs) * 20;
+      }
+      draw(time, false);
+      settledFor = energy < 0.5 && !waves.length ? settledFor + dt : 0;
+      if (o.ambient || o.auto || settledFor < 0.25) raf = requestAnimationFrame(step); else last = 0;
+    }
+    function wake() { if (!raf && visible && !REDUCED.matches) raf = requestAnimationFrame(step); }
+
+    function readout(x, y) {
+      if (!cellEl) return;
+      var i = Math.max(0, Math.min(cols - 1, Math.round(x / o.gap))), j = Math.max(0, Math.min(rows - 1, Math.round(y / o.gap)));
+      var row = String.fromCharCode(65 + (j % 26));
+      cellEl.textContent = 'Rang ' + row + ' · ' + String(i + 1).padStart(2, '0');
+      var hum = 22 + Math.round(14 * (0.5 + 0.5 * Math.sin(i * 0.45) * Math.cos(j * 0.37)));
+      valEl.textContent = 'Humidité ' + hum + ' %';
+    }
+
+    function local(e) { var r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+    function onMove(e) {
+      var p = local(e);
+      inside = p[0] >= 0 && p[1] >= 0 && p[0] <= W && p[1] <= H;
+      px = p[0]; py = p[1]; lastInput = performance.now();
+      section.classList.toggle('is-active', inside);
+      if (inside) readout(px, py);
+      wake();
+    }
+    function onLeave() { inside = false; lastInput = performance.now(); section.classList.remove('is-active'); wake(); }
+    function onDown(e) {
+      if (!o.ripple || REDUCED.matches) return;
+      if (e.target.closest && e.target.closest('a,button,input,select,textarea')) return;
+      var p = local(e); lastInput = performance.now();
+      waves.push({ x: p[0], y: p[1], r: 0, a: 1 });
+      if (waves.length > 4) waves.shift();
+      wake();
+    }
+    section.addEventListener('pointermove', onMove, { passive: true });
+    section.addEventListener('pointerdown', onDown, { passive: true });
+    section.addEventListener('pointerleave', onLeave);
+    section.addEventListener('pointercancel', onLeave);
+
+    var ro = new ResizeObserver(function () { layout(); wake(); });
+    ro.observe(el);
+    var io = new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible) wake(); else { cancelAnimationFrame(raf); raf = 0; last = 0; } });
+    io.observe(el);
+    var mo = new MutationObserver(function () { colors(); draw(performance.now() - t0, REDUCED.matches); wake(); });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'style', 'data-accent'] });
+    document.addEventListener('visibilitychange', function () { visible = !document.hidden; if (visible) wake(); });
+    if (REDUCED.addEventListener) REDUCED.addEventListener('change', function () { draw(0, true); wake(); });
+
+    colors(); layout(); wake();
+
+    var api = {
+      update: function (next) { var g = o.gap; o = next; colors(); if (next.gap !== g) layout(); draw(performance.now() - t0, REDUCED.matches); wake(); },
+      hover: function (x, y) { if (x == null) { onLeave(); return; } px = x; py = y; inside = true; section.classList.add('is-active'); readout(x, y); wake(); },
+      pulse: function (x, y) { waves.push({ x: x == null ? W * 0.68 : x, y: y == null ? H * 0.5 : y, r: 0, a: 1 }); wake(); },
+      destroy: function () { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); mo.disconnect(); canvas.remove(); el._dotgrid = null; },
+    };
+    el._dotgrid = api;
+    return api;
+  }
+
+  window.DotGrid = { init: init, read: read };
+  if (document.readyState !== 'loading') init(document); else document.addEventListener('DOMContentLoaded', function () { init(document); });
+})();
+</script>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aperçu au survol de liens — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  body { min-height: 100vh; display: grid; align-items: center; }
+  .is-thumb .hp { padding-top: 40px; }
+  .is-thumb .hp__intro { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  var props = Socle.props({ ease: 0.16, tilt: 6, size: 280, format: 'portrait', dim: true, mode: 'cursor', place: 'side' });
+  var KEYS = ['ease', 'tilt', 'size', 'format', 'dim', 'mode', 'place'];
+  var list = null;
+  function apply(p) {
+    if (!list) return;
+    KEYS.forEach(function (k) { list.dataset[k] = String(p[k]); });
+    if (list._hp) list._hp.update(HoverPreview.read(list)); else HoverPreview.init(document);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    list = document.querySelector('[data-hover-preview]');
+    KEYS.forEach(function (k) { list.dataset[k] = String(props[k]); });
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    apply(props);
+    var m = /[?&]peek=(\d)/.exec(location.search);
+    if ((Socle.thumb || m) && list._hp) setTimeout(function () { list._hp.peek(m ? +m[1] : 1); }, 100);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () {
+    if (!list || !list._hp) return;
+    var i = 0;
+    (function next() { list._hp.peek(i); i++; if (i < 5) setTimeout(next, 700); else setTimeout(function () { list._hp.peek(null); }, 900); })();
+  });
+</script>
+</body>
+</html>

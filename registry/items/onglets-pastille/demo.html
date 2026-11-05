@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onglets à pastille glissante — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .page { max-width: 808px; margin: 0 auto; padding: 24px 24px 64px; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 40px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text-strong); font: 600 17px/1 var(--font-sans); letter-spacing: -0.02em; }
+  .crumb { color: var(--text-muted); font-size: 14px; }
+  .crumb b { color: var(--text-strong); font-weight: 500; }
+  .eyebrow { color: var(--text-muted); font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  h1 { margin: 8px 0 8px; font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem); line-height: 1.08; letter-spacing: -0.035em; font-weight: 600; }
+  .meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 32px; color: var(--text-muted); font-size: 15px; }
+  .meta b { color: var(--text-strong); font-weight: 500; }
+  .is-thumb .bar, .is-thumb .eyebrow, .is-thumb .meta, .is-thumb h1 { display: none; }
+  .is-thumb .page { padding-top: 48px; }
+  @media (max-width: 599px) { .page { padding: 16px 16px 48px; } .bar { margin-bottom: 24px; } .crumb { display: none; } .meta { margin-bottom: 24px; font-size: 14px; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="bar">
+    <span class="brand"><svg width="28" height="28" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" style="fill:var(--accent)"/><path d="M24 60c14 6 34 0 34-18a11 11 0 0 0-22 0c0 20 18 28 40 18" fill="none" style="stroke:var(--accent-fg)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>Cursif</span>
+    <span class="crumb">Cours › Design › <b>Typographie pour écrans</b></span>
+  </header>
+  <span class="eyebrow">Cours · niveau intermédiaire</span>
+  <h1>Typographie pour écrans</h1>
+  <p class="meta"><span>Par <b>Hélène Vasseur</b></span><span>3 h 40</span><span>12 leçons</span><span>Mis à jour en octobre</span></p>
+  <div id="mount"></div>
+</div>
+<script>
+  var props = Socle.props({ variant: 'surface', duration: 380, stretch: 0.6, activation: 'auto', icons: true, counts: true, fill: false, size: 'md' });
+  var src = null, tour = [], mount = document.getElementById('mount');
+  function api() { var r = mount.querySelector('[data-tabs]'); return r && r._tabs; }
+  function render(p) {
+    if (!src) return;
+    tour.forEach(clearTimeout); tour = [];
+    var a = api(); if (a) a.destroy();
+    mount.innerHTML = src.markup;
+    var r = mount.querySelector('[data-tabs]');
+    r.dataset.variant = p.variant; r.dataset.duration = p.duration; r.dataset.stretch = p.stretch; r.dataset.activation = p.activation;
+    r.dataset.icons = p.icons; r.dataset.counts = p.counts; r.dataset.fill = p.fill; r.dataset.size = p.size;
+    r.style.setProperty('--st-d', p.duration + 'ms');
+    try { new Function(src.script)(); } catch (e) { console.error(e); }
+  }
+  function replay() {
+    var a = api(); if (!a) return; tour.forEach(clearTimeout); tour = [];
+    [0, 3, 1, 4, 2, 0].forEach(function (i, k) { tour.push(setTimeout(function () { a.select(i); }, 120 + k * 700)); });
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props);
+    if (Socle.thumb && !Socle.reducedMotion()) { var i = 0; setInterval(function () { var a = api(); a && a.select(i = (i + 1) % 4); }, 1600); }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(replay);
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encre qui monte — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; padding: 48px 32px; display: grid; align-content: center; }
+  @media (max-width: 860px) { .stage { padding: 12px; align-content: start; } }
+  .is-thumb .stage { padding: 40px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ titre: 'L’encre se souvient de tout.', duree: 2600, turbulence: 0.6, etalement: 0.5, origine: 'bottom', couleur: 'text', volutes: true });
+  var title = null, cover = null, loop = 0;
+  function set(p) {
+    title.textContent = p.titre || 'Titre';
+    title.dataset.duration = p.duree; title.dataset.turbulence = p.turbulence; title.dataset.bleed = p.etalement;
+    title.dataset.origin = p.origine; title.dataset.color = p.couleur; title.dataset.wisps = String(!!p.volutes);
+  }
+  var t = 0;
+  function render(p) { if (!title) return; set(p); clearTimeout(t); t = setTimeout(function () { title._ink && title._ink.play(); }, 200); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (txt) {
+    var css = txt.match(/<style>([\s\S]*?)<\/style>/), mk = txt.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = txt.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    title = document.getElementById('ink-title'); cover = document.querySelector('.ink__btitle');
+    set(props);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    /* Vignette : l'encre remonte toutes les 4,5 s, en pause hors écran. */
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var vis = true; new IntersectionObserver(function (e) { vis = e[0].isIntersecting; }).observe(title);
+      title.addEventListener('inkend', function () { clearTimeout(loop); loop = setTimeout(function () { if (vis && !document.hidden) title._ink.play(); }, 1800); });
+    }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (title && title._ink) { title._ink.play(); setTimeout(function () { cover._ink && cover._ink.play(); }, 500); } });
+</script>
+</body>
+</html>

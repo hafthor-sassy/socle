@@ -1,0 +1,203 @@
+{
+  "id": "barre-ile-dynamique",
+  "nom": "Barre île dynamique",
+  "categorie": "navigation",
+  "description": "Une île flottante qui change de forme selon le contexte : repos, recherche avec suggestions, ajout au panier avec minuteur, livraison en cours, alerte. Largeur, hauteur et rayon suivent un vrai ressort, les contenus se croisent en fondu flouté.",
+  "tags": [
+    "Ressort",
+    "Morphing",
+    "Recherche",
+    "Clavier",
+    "E-commerce"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 900
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, accent, teintes, voile, ombre de popover"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 4 ko min., ressort maison, aucune dépendance"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement, darkMode: 'class'"
+    }
+  ],
+  "props": [
+    {
+      "name": "start",
+      "label": "État au départ",
+      "type": "select",
+      "default": "idle",
+      "options": [
+        {
+          "value": "idle",
+          "label": "Repos"
+        },
+        {
+          "value": "search",
+          "label": "Recherche"
+        },
+        {
+          "value": "cart",
+          "label": "Panier"
+        },
+        {
+          "value": "delivery",
+          "label": "Livraison"
+        },
+        {
+          "value": "alert",
+          "label": "Alerte"
+        }
+      ],
+      "hint": "Pour la démo. Les puces « Simuler » et les boutons Ajouter changent l’état en direct.",
+      "code": {
+        "html": "data-start=\"{v}\"",
+        "react": "defaultState=\"{v}\""
+      }
+    },
+    {
+      "name": "tone",
+      "label": "Teinte",
+      "type": "select",
+      "default": "encre",
+      "options": [
+        {
+          "value": "encre",
+          "label": "Encre"
+        },
+        {
+          "value": "surface",
+          "label": "Surface"
+        }
+      ],
+      "hint": "Encre : île sombre façon téléphone (surface élevée en thème sombre). Surface : île claire bordée.",
+      "code": {
+        "html": "data-tone=\"{v}\"",
+        "react": "tone=\"{v}\""
+      }
+    },
+    {
+      "name": "position",
+      "label": "Position",
+      "type": "select",
+      "default": "top",
+      "options": [
+        {
+          "value": "top",
+          "label": "Haut"
+        },
+        {
+          "value": "bottom",
+          "label": "Bas"
+        }
+      ],
+      "hint": "Bas : à portée de pouce sur mobile.",
+      "code": {
+        "html": "data-position=\"{v}\"",
+        "react": "position=\"{v}\""
+      }
+    },
+    {
+      "name": "stiffness",
+      "label": "Raideur du ressort",
+      "type": "number",
+      "default": 340,
+      "min": 120,
+      "max": 700,
+      "step": 10,
+      "code": {
+        "html": "data-stiffness=\"{v}\"",
+        "react": "stiffness={{v}}"
+      }
+    },
+    {
+      "name": "damping",
+      "label": "Amortissement",
+      "type": "number",
+      "default": 26,
+      "min": 10,
+      "max": 50,
+      "step": 1,
+      "hint": "Bas : l’île rebondit en changeant de forme. Haut : arrivée sèche.",
+      "code": {
+        "html": "data-damping=\"{v}\"",
+        "react": "damping={{v}}"
+      }
+    },
+    {
+      "name": "autoclose",
+      "label": "Retour au repos",
+      "type": "number",
+      "default": 4000,
+      "min": 0,
+      "max": 8000,
+      "step": 500,
+      "unit": "ms",
+      "hint": "0 : l’île reste ouverte. En pause au survol et au focus.",
+      "code": {
+        "html": "data-autoclose=\"{v}\"",
+        "react": "autoClose={{v}}"
+      }
+    },
+    {
+      "name": "blur",
+      "label": "Flou au fondu",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-blur=\"{v}\"",
+        "react": "blur={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/DynamicIsland.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Une seule île par application, pour des retours brefs et contextuels (ajout, progression, alerte) et une recherche globale. Pas pour des messages longs : préférez une modale ou une page.",
+    "Chaque état est un <template> : ajoutez-en un (lecture audio, minuteur, appel en cours) et appelez island._island.show('nom') ; la forme se mesure seule.",
+    "Raideur 340 / amortissement 26 donne un léger rebond façon téléphone ; 500 / 40 convient aux interfaces de travail.",
+    "Sur mobile, l’île occupe la largeur moins 32 px ; placez-la en bas si vos actions principales y sont déjà."
+  ],
+  "accessibilite": [
+    "Recherche au motif combobox : aria-activedescendant, flèches haut et bas, Entrée choisit ; « / » ou ⌘K l’ouvre, Échap la ferme et rend le focus au bouton d’origine.",
+    "Les changements sont annoncés (aria-live polite) ; l’alerte de paiement passe par role=\"alert\". L’ancienne vue est inerte pendant son fondu.",
+    "Le minuteur de fermeture se met en pause au survol et au focus clavier, et peut être désactivé (0).",
+    "Avec « réduire les animations », la forme change sans ressort ni flou ; textes ≥ 4,5:1 sur l’île en clair et en sombre ; cibles de 44 px."
+  ],
+  "niveau": "premium",
+  "ordre": 2,
+  "palette": "moka",
+  "stage": {
+    "width": "desktop"
+  },
+  "logo_exemple": {
+    "nom": "Grain",
+    "secteur": "Torréfacteur en ligne (e-commerce café)",
+    "fichier": "logo.svg",
+    "palette": "moka",
+    "typo": "Geist SemiBold"
+  }
+}

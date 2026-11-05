@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modale à élément partagé — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'indigo');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .is-thumb .pr { padding-top: 24px; }
+  .is-thumb .pr__intro { margin-bottom: 24px; }
+</style>
+</head>
+<body>
+<main id="mount"></main>
+<script>
+  var props = Socle.props({ ressort: 'doux', fond: 'blur', recul: true, glisser: true, largeur: 720 });
+  var root = null, seen = true, loop = 0;
+  function apply(p) {
+    if (!root) return;
+    root.dataset.spring = p.ressort;
+    root.dataset.scrim = p.fond;
+    root.dataset.recede = String(!!p.recul);
+    root.dataset.drag = String(!!p.glisser);
+    root.style.setProperty('--pr-max', p.largeur + 'px');
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-shared-modal]');
+    apply(props);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(root);
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var i = 0, cards = root.querySelectorAll('.pr__card');
+      loop = setInterval(function () {
+        if (!seen) return;
+        var m = root._sharedModal;
+        if (m.state === 'closed') m.open(cards[i++ % 3]); else if (m.state === 'open') m.close();
+      }, 1800);
+    }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () {
+    if (!root) return;
+    var m = root._sharedModal;
+    if (m.state !== 'closed') { m.close(); return; }
+    m.open(root.querySelector('.pr__card'));
+    setTimeout(function () { if (m.state === 'open') m.close(); }, 1600);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Barre île dynamique — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .page { max-width: 1120px; margin: 0 auto; padding: 120px 24px 64px; }
+  .hero { display: grid; gap: 16px; max-width: 40rem; }
+  .eyebrow { color: var(--text-muted); font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .hero h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem); line-height: 1.04; letter-spacing: -0.04em; font-weight: 600; }
+  .hero p { color: var(--text-muted); font-size: 17px; line-height: 1.6; }
+  .sim { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+  .sim span { color: var(--text-muted); font-size: 14px; margin-right: 4px; }
+  .chip { height: 44px; padding: 0 16px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-strong); font: 500 14px/1 var(--font-sans); cursor: pointer; }
+  @media (hover: hover) { .chip:hover { background: var(--raised); } }
+  .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 48px; }
+  .prod { display: grid; gap: 12px; padding: 12px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+  .prod__img { position: relative; display: grid; place-items: center; aspect-ratio: 4 / 3; border-radius: 12px; background: var(--raised); color: var(--accent); overflow: hidden; }
+  .prod__img svg { width: 36%; height: auto; }
+  .prod__img i { position: absolute; left: 10px; top: 10px; padding: 4px 8px; border-radius: 999px; background: var(--surface); color: var(--text-muted); font: 500 11px/1 var(--font-mono); font-style: normal; letter-spacing: var(--track-caps); text-transform: uppercase; }
+  .prod h2 { font-size: 16px; line-height: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .prod p { color: var(--text-muted); font-size: 14px; line-height: 20px; }
+  .prod__foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .prod__foot b { color: var(--text-strong); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .add { height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-fg); font: 600 14px/1 var(--font-sans); cursor: pointer; }
+  @media (hover: hover) { .add:hover { background: var(--accent-hover); } }
+  @media (max-width: 959px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 599px) {
+    .page { padding: 88px 16px 48px; }
+    .hero p { font-size: 15px; }
+    .grid { grid-template-columns: 1fr; gap: 12px; margin-top: 32px; }
+    .prod { grid-template-columns: 112px minmax(0, 1fr); align-items: center; }
+    .prod__img { aspect-ratio: 1; } .prod__img i { display: none; }
+    .add { padding: 0 14px; }
+  }
+  .is-thumb .page { padding-top: 140px; } .is-thumb .sim, .is-thumb .grid { display: none; }
+  .is-thumb .di { --di-top: 48px; } .is-thumb .di__shape { scale: 1.35; transform-origin: 50% 0; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<main class="page">
+  <section class="hero">
+    <span class="eyebrow">Grain · torréfacteur à Nantes</span>
+    <h1>Torréfié mardi, chez vous jeudi.</h1>
+    <p>Des cafés de spécialité en petites séries. Ajoutez un paquet, cherchez une origine&nbsp;: l’île en haut de l’écran change de forme pour vous répondre.</p>
+    <div class="sim" role="group" aria-label="Simuler un état de l’île"><span>Simuler :</span>
+      <button class="chip" type="button" data-sim="search">Recherche</button>
+      <button class="chip" type="button" data-sim="delivery">Livraison</button>
+      <button class="chip" type="button" data-sim="alert">Paiement refusé</button>
+    </div>
+  </section>
+  <div class="grid" id="grid"></div>
+</main>
+<script>
+  var props = Socle.props({ start: 'idle', tone: 'encre', position: 'top', stiffness: 340, damping: 26, autoclose: 4000, blur: true });
+  var PRODUITS = [['Éthiopie Guji', 'Floral, pêche blanche', '14,90 €', 'Lavé'], ['Colombie Huila', 'Caramel, pomme', '12,50 €', 'Honey'], ['Kenya Nyeri', 'Cassis, pamplemousse', '16,20 €', 'AA'], ['Brésil Cerrado', 'Noisette, cacao', '12,90 €', 'Nature']];
+  var BEAN = '<svg viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="50" cy="50" rx="24" ry="34" transform="rotate(32 50 50)" fill="currentColor"/><path d="M60 24c-9 6-15 14-11 24s0 18-10 24" fill="none" stroke="var(--raised)" stroke-width="5" stroke-linecap="round"/></svg>';
+  document.getElementById('grid').innerHTML = PRODUITS.map(function (p, i) {
+    return '<article class="prod"><div class="prod__img"><i>' + p[3] + '</i>' + BEAN + '</div><div style="display:grid;gap:12px"><div><h2>' + p[0] + '</h2><p>' + p[1] + ' · 250 g</p></div><div class="prod__foot"><b>' + p[2] + '</b><button class="add" type="button" data-add="' + i + '">Ajouter</button></div></div></article>';
+  }).join('');
+  var src = null, tour = [], mount = document.getElementById('mount');
+  function api() { var r = mount.querySelector('[data-island]'); return r && r._island; }
+  function render(p) {
+    if (!src) return;
+    tour.forEach(clearTimeout); tour = [];
+    var a = api(); if (a) a.destroy();
+    mount.innerHTML = src.markup;
+    var r = mount.querySelector('[data-island]');
+    r.dataset.tone = p.tone; r.dataset.position = p.position; r.dataset.stiffness = p.stiffness; r.dataset.damping = p.damping;
+    r.dataset.autoclose = p.autoclose; r.dataset.blur = p.blur; r.dataset.start = p.start;
+    try { new Function(src.script)(); } catch (e) { console.error(e); }
+  }
+  document.addEventListener('click', function (e) {
+    var a = api(); if (!a) return;
+    var b = e.target.closest('[data-add]'); if (b) { var p = PRODUITS[+b.dataset.add]; a.add(p[0] + ' · 250 g'); }
+    var s = e.target.closest('[data-sim]'); if (s) { e.stopPropagation(); a.show(s.dataset.sim); }
+  });
+  function replay() {
+    var a = api(); if (!a) return; tour.forEach(clearTimeout); tour = [];
+    var at = function (t, f) { tour.push(setTimeout(f, t)); };
+    a.idle(); at(500, function () { a.show('search'); }); at(2100, function () { a.add('Kenya Nyeri · 250 g'); }); at(3900, function () { a.show('delivery'); }); at(5700, function () { a.show('alert'); }); at(7300, a.idle);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), js = t.match(/<script>([\s\S]*?)<\/script>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props);
+    if (Socle.thumb && !Socle.reducedMotion()) { var seq = ['cart', 'delivery', 'idle', 'alert', 'idle'], i = 0; setInterval(function () { var a = api(); a && (seq[i] === 'cart' ? a.add('Éthiopie Guji · 250 g') : a.show(seq[i])); i = (i + 1) % seq.length; }, 2000); }
+  });
+  Socle.onChange(render);
+  Socle.onReplay(replay);
+</script>
+</body>
+</html>

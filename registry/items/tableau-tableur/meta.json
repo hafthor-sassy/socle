@@ -1,0 +1,186 @@
+{
+  "id": "tableau-tableur",
+  "nom": "Tableau façon tableur",
+  "categorie": "tableaux",
+  "niveau": "premium",
+  "ordre": 3,
+  "description": "Une vraie feuille de calcul dans la page : 10 000 lignes virtualisées, sélection rectangulaire au glisser, poignée de recopie, édition en place et barre de formule, copier-coller compatible Excel et Google Sheets, annuler / rétablir, somme et moyenne de la sélection, et toute la navigation au clavier d’un tableur.",
+  "tags": [
+    "Tableur",
+    "Virtualisation",
+    "Copier-coller",
+    "Édition",
+    "Clavier",
+    "Sélection"
+  ],
+  "date": "2026-11-05",
+  "difficulte": 3,
+  "technique": "Fenêtre de rendu virtualisée, calques de sélection positionnés, TSV via les événements copy / paste, historique de modifications",
+  "poids": "≈ 10 Ko gzip (HTML + CSS + JS), aucune bibliothèque",
+  "palette": "olive",
+  "logo_exemple": {
+    "nom": "Bivouac",
+    "secteur": "Agence événementielle (séminaires et rencontres en montagne)",
+    "fichier": "logo.svg",
+    "palette": "olive",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1180
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1180
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Neutres, accent (sélection, cellule active), teintes des étiquettes, rouge d’erreur"
+    },
+    {
+      "nom": "Intl.NumberFormat",
+      "note": "Euros et nombres au format français (navigateur)"
+    },
+    {
+      "nom": "Événements copy / cut / paste, Pointer Events, ResizeObserver",
+      "note": "Natifs ; aucune permission presse-papiers requise au clavier"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, aucune bibliothèque de grille"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement (darkMode: 'class')"
+    }
+  ],
+  "props": [
+    {
+      "name": "titre",
+      "label": "Titre",
+      "type": "text",
+      "default": "Inscriptions — Rencontres Altitude 2027",
+      "code": {
+        "html": "id=\"sh-title\">{v}</h2>",
+        "react": "title = '{v}'"
+      }
+    },
+    {
+      "name": "lignes",
+      "label": "Lignes (exemple)",
+      "type": "select",
+      "default": "1200",
+      "options": [
+        {
+          "value": "60",
+          "label": "60"
+        },
+        {
+          "value": "1200",
+          "label": "1 200"
+        },
+        {
+          "value": "10000",
+          "label": "10 000"
+        }
+      ],
+      "hint": "Seules les lignes visibles existent dans le DOM : 10 000 lignes défilent aussi vite que 60.",
+      "code": {
+        "html": "data-rows=\"{v}\"",
+        "react": "rowCount = {v}"
+      }
+    },
+    {
+      "name": "densite",
+      "label": "Densité",
+      "type": "select",
+      "default": "comfortable",
+      "options": [
+        {
+          "value": "comfortable",
+          "label": "Confortable (36 px)"
+        },
+        {
+          "value": "compact",
+          "label": "Compacte (28 px)"
+        }
+      ],
+      "hint": "Sur téléphone, les lignes passent à 44 px (40 px en compacte) pour le doigt.",
+      "code": {
+        "html": "data-density=\"{v}\"",
+        "react": "density = '{v}'"
+      }
+    },
+    {
+      "name": "quadrillage",
+      "label": "Quadrillage vertical",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-grid-lines=\"{v}\"",
+        "react": "gridLines = {v}"
+      }
+    },
+    {
+      "name": "formule",
+      "label": "Barre de formule",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-formula=\"{v}\"",
+        "react": "formulaBar = {v}"
+      }
+    },
+    {
+      "name": "etat",
+      "label": "État",
+      "type": "select",
+      "default": "ready",
+      "options": [
+        {
+          "value": "ready",
+          "label": "Données"
+        },
+        {
+          "value": "loading",
+          "label": "Chargement"
+        },
+        {
+          "value": "empty",
+          "label": "Vide"
+        }
+      ],
+      "code": {
+        "html": "data-state=\"{v}\" aria-labelledby=\"sh-title\"",
+        "react": "status = '{v}'"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/SpreadsheetGrid.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour les écrans où l’on saisit ou corrige beaucoup de données d’un coup : inscriptions, inventaire, budgets, tarifs, plannings. Pour une simple liste à lire, préférez un tableau classique.",
+    "Colonnes : texte, étiquette (liste de valeurs), entier (min / max), euros, ou calculée (fonction compute, en lecture seule, signalée par ƒ). Les valeurs invalides sont refusées avec la raison, l’éditeur reste ouvert.",
+    "Écoutez « change » (HTML) ou onChange (React) : chaque lot de modifications (saisie, collage, recopie, annulation) arrive groupé en { row, col, before, after } pour un seul appel serveur.",
+    "Le collage accepte le TSV des tableurs : une valeur collée sur une plage la remplit entière ; ⌘ X puis ⌘ V déplace la plage.",
+    "Raccourcis : flèches (⌘ pour aller au bord, Maj pour étendre), Tab, Entrée, F2, Suppr, ⌘ A, ⌘ C / X / V, ⌘ Z / ⌘ Maj Z, ⌘ D (recopier vers le bas), Échap."
+  ],
+  "accessibilite": [
+    "role=grid avec aria-rowcount / aria-colcount réels malgré la virtualisation, aria-rowindex / aria-colindex, aria-selected sur chaque cellule et aria-activedescendant sur la cellule active.",
+    "Chaque déplacement annonce la référence, la colonne et la valeur ; sélection, copie, collage, annulation et erreurs sont annoncés (aria-live). Les cellules calculées portent aria-readonly.",
+    "Sur téléphone : toucher pour sélectionner, toucher deux fois pour modifier, barre d’actions de 44 px (Modifier, Copier, Effacer, Annuler, Étendre) ; le doigt fait défiler la grille au lieu de sélectionner.",
+    "Avec « réduire les animations », plus de fourmis animées ni de flash de cellule ; contraste AA des étiquettes et du texte en clair et en sombre."
+  ]
+}

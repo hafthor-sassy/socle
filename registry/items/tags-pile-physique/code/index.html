@@ -1,0 +1,410 @@
+<!-- Tags en pile physique — HTML + CSS + JS intégré, sans dépendance (moteur 2D maison, ~3 ko). Nécessite tokens.css.
+     Contenu d'exemple fictif (Tremplin, recrutement tech). Chaque tag est un vrai <button> : la physique n'est qu'un placement. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="tp" data-tagpile data-gravity="1" data-bounce="0.2" data-friction="0.5" data-drop="pluie" data-push="true" aria-labelledby="tp-title">
+  <header class="tp__head">
+    <div>
+      <h3 class="tp__title" id="tp-title">Compétences</h3>
+      <p class="tp__sub"><span class="tp__k-fine">Cliquez pour mettre en avant, glissez pour lancer, survolez pour pousser.</span><span class="tp__k-touch">Touchez pour mettre en avant, faites glisser pour lancer.</span></p>
+    </div>
+    <p class="tp__count" aria-hidden="true"><span data-tp-count>3</span>&nbsp;en avant</p>
+  </header>
+
+  <div class="tp__zone" data-tp-zone role="group" aria-label="Pile de compétences, flèches pour pousser un tag, Entrée pour le mettre en avant">
+    <button class="tp-tag" type="button" data-kind="lang" aria-pressed="true"><span class="tp-tag__mk" aria-hidden="true"></span>TypeScript</button>
+    <button class="tp-tag" type="button" data-kind="front" aria-pressed="true"><span class="tp-tag__mk" aria-hidden="true"></span>React</button>
+    <button class="tp-tag" type="button" data-kind="lang" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Node.js</button>
+    <button class="tp-tag" type="button" data-kind="data" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>PostgreSQL</button>
+    <button class="tp-tag" type="button" data-kind="design" aria-pressed="true"><span class="tp-tag__mk" aria-hidden="true"></span>Accessibilité</button>
+    <button class="tp-tag" type="button" data-kind="ops" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Docker</button>
+    <button class="tp-tag" type="button" data-kind="front" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>GraphQL</button>
+    <button class="tp-tag" type="button" data-kind="method" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Tests E2E</button>
+    <button class="tp-tag" type="button" data-kind="lang" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Rust</button>
+    <button class="tp-tag" type="button" data-kind="design" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Figma</button>
+    <button class="tp-tag" type="button" data-kind="ops" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>CI/CD</button>
+    <button class="tp-tag" type="button" data-kind="data" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Redis</button>
+    <button class="tp-tag" type="button" data-kind="front" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Next.js</button>
+    <button class="tp-tag" type="button" data-kind="lang" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Python</button>
+    <button class="tp-tag" type="button" data-kind="ops" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Kubernetes</button>
+    <button class="tp-tag" type="button" data-kind="method" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Revue de code</button>
+    <button class="tp-tag" type="button" data-kind="front" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Svelte</button>
+    <button class="tp-tag" type="button" data-kind="design" aria-pressed="false"><span class="tp-tag__mk" aria-hidden="true"></span>Storybook</button>
+  </div>
+
+  <footer class="tp__foot">
+    <form class="tp__form" data-tp-form novalidate>
+      <label class="tp-sr" for="tp-new">Ajouter une compétence</label>
+      <input class="tp__input" id="tp-new" name="tag" type="text" maxlength="24" autocomplete="off" placeholder="Ajouter une compétence" aria-describedby="tp-msg">
+      <button class="tp__btn tp__btn--add" type="submit">Ajouter</button>
+    </form>
+    <button class="tp__btn tp__btn--ghost" type="button" data-tp-shake>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14c2-4 4-4 6 0s4 4 6 0 3-3 4-2M4 8c2-4 4-4 6 0s4 4 6 0 3-3 4-2"/></svg>
+      Secouer
+    </button>
+    <p class="tp__msg" id="tp-msg" data-tp-msg aria-live="polite"></p>
+  </footer>
+  <p class="tp-sr" data-tp-live aria-live="polite"></p>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .tp { --tp-h: 360px; --tp-tag-h: 44px; --tp-tag-fs: 15px; --tp-spring: cubic-bezier(.34, 1.56, .64, 1);
+    display: grid; grid-template-columns: minmax(0, 1fr); width: 100%; max-width: 720px; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-sheet); background: var(--surface); color: var(--text); font-family: var(--font-sans); }
+  .tp[data-size="lg"] { --tp-tag-h: 56px; --tp-tag-fs: 18px; }
+  .tp-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tp :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+
+  .tp__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 20px 16px; }
+  .tp__title { margin: 0; color: var(--text-strong); font: 600 17px/24px var(--font-sans); letter-spacing: var(--track-snug); }
+  .tp__sub { margin: 4px 0 0; color: var(--text-muted); font-size: 14px; line-height: 20px; }
+  .tp__k-touch { display: none; }
+  @media (hover: none) { .tp__k-fine { display: none; } .tp__k-touch { display: inline; } }
+  .tp__count { flex: none; display: inline-flex; align-items: center; height: 28px; margin: 0; padding: 0 12px; border-radius: var(--radius-pill); background: var(--accent-subtle); color: var(--accent); border: 1px solid var(--accent-subtle-border); font: 600 13px/1 var(--font-sans); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tp__count span { display: inline-block; }
+  .tp__count.is-bump span { animation: tp-bump 420ms var(--tp-spring); }
+  @keyframes tp-bump { 0% { transform: translateY(0); } 30% { transform: translateY(-4px) scale(1.15); } 100% { transform: none; } }
+
+  /* Zone physique : fond en creux, trame de points discrète */
+  .tp__zone { position: relative; height: var(--tp-h); margin: 0 12px; overflow: hidden; border-radius: var(--radius-card); background-color: var(--raised);
+    background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 1.5px); background-size: 16px 16px; background-position: 8px 8px;
+    touch-action: pan-y; -webkit-user-select: none; user-select: none; contain: layout paint; }
+
+  .tp-tag { position: absolute; left: 0; top: 0; display: inline-flex; align-items: center; gap: 8px; height: var(--tp-tag-h); padding: 0 18px 0 14px; border: 1px solid var(--tint-neutral-border); border-radius: var(--radius-pill);
+    background: var(--surface); color: var(--text-strong); font: 500 var(--tp-tag-fs)/1 var(--font-sans); letter-spacing: var(--track-snug); white-space: nowrap; cursor: grab; touch-action: none;
+    transform-origin: 50% 50%; will-change: transform; opacity: 0; transition: background-color var(--motion-base) var(--ease-out), color var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out); }
+  .tp-tag.is-live { opacity: 1; }
+  .tp-tag[data-kind="lang"]   { background: var(--tint-blue-bg);   color: var(--tint-blue-fg);   border-color: var(--tint-blue-border); }
+  .tp-tag[data-kind="front"]  { background: var(--tint-violet-bg); color: var(--tint-violet-fg); border-color: var(--tint-violet-border); }
+  .tp-tag[data-kind="data"]   { background: var(--tint-green-bg);  color: var(--tint-green-fg);  border-color: var(--tint-green-border); }
+  .tp-tag[data-kind="ops"]    { background: var(--tint-amber-bg);  color: var(--tint-amber-fg);  border-color: var(--tint-amber-border); }
+  .tp-tag[data-kind="design"] { background: var(--tint-pink-bg);   color: var(--tint-pink-fg);   border-color: var(--tint-pink-border); }
+  .tp-tag[data-kind="method"] { background: var(--surface); color: var(--text-strong); border-color: var(--border-control); }
+  .tp-tag[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  .tp-tag.is-grabbed { cursor: grabbing; z-index: 2; box-shadow: var(--shadow-popover); }
+  .tp-tag.is-flash { box-shadow: 0 0 0 4px var(--accent-subtle-border); }
+
+  /* Repère : point de couleur, qui se change en coche quand le tag est mis en avant (largeur constante) */
+  .tp-tag__mk { position: relative; flex: none; width: 14px; height: 14px; }
+  .tp-tag__mk::before { content: ""; position: absolute; inset: 4px; border-radius: 999px; background: currentColor; opacity: .7; transition: transform 320ms var(--tp-spring), opacity var(--motion-base) var(--ease-out); }
+  .tp-tag__mk::after { content: ""; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: solid currentColor; border-width: 0 2px 2px 0; transform: rotate(45deg) scale(0); transform-origin: 60% 60%; transition: transform 360ms var(--tp-spring); }
+  .tp-tag[aria-pressed="true"] .tp-tag__mk::before { transform: scale(0); opacity: 0; }
+  .tp-tag[aria-pressed="true"] .tp-tag__mk::after { transform: rotate(45deg) scale(1); }
+
+  .tp__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px; }
+  .tp__form { display: flex; flex: 1 1 280px; gap: 8px; min-width: 0; }
+  .tp__input { flex: 1; min-width: 0; height: 44px; padding: 0 14px; border: 1px solid var(--border-control); border-radius: var(--radius-pill); background: var(--surface); color: var(--text-strong); font: 400 var(--t-input)/1 var(--font-sans); }
+  .tp__input::placeholder { color: var(--text-muted); }
+  .tp__input[aria-invalid="true"] { border-color: var(--down); animation: tp-no 360ms var(--ease-out); }
+  @keyframes tp-no { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+  .tp__btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 18px; border: 1px solid transparent; border-radius: var(--radius-pill); font: 600 14px/1 var(--font-sans); cursor: pointer; white-space: nowrap; transition: background-color var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out); }
+  .tp__btn:active { transform: scale(.97); }
+  .tp__btn--add { background: var(--accent); color: var(--accent-fg); }
+  .tp__btn--ghost { background: transparent; color: var(--text-strong); border-color: var(--border); }
+  @media (hover: hover) and (pointer: fine) { .tp__btn--add:hover { background: var(--accent-hover); } .tp__btn--ghost:hover { background: var(--state-hover); } }
+  .tp__msg { flex-basis: 100%; min-height: 0; margin: 0; padding: 0 8px; color: var(--text-muted); font-size: 13px; line-height: 18px; }
+  .tp__msg:empty { display: none; }
+  .tp__msg.is-error { color: var(--down); }
+
+  /* Mobile : zone plus haute (la pile monte plus vite sur une colonne étroite), contrôles empilés */
+  @media (max-width: 599px) {
+    .tp__zone { height: calc(var(--tp-h) + 96px); margin: 0 8px; }
+    .tp__head { padding: 16px 16px 12px; }
+    .tp__foot { padding: 8px; }
+    .tp__btn--ghost { flex: 1; }
+  }
+
+  /* Sans animation (réduire les animations) : les tags se rangent simplement, toujours activables */
+  .tp.is-static .tp__zone { height: auto; min-height: 0; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; padding: 16px; }
+  .tp.is-static .tp-tag { position: relative; opacity: 1; transform: none !important; cursor: pointer; }
+  .tp.is-static [data-tp-shake] { display: none; }
+  @media (prefers-reduced-motion: reduce) { .tp-tag, .tp-tag__mk::before, .tp-tag__mk::after { transition: none; } .tp__count.is-bump span, .tp__input[aria-invalid="true"] { animation: none; } }
+</style>
+
+<script>
+/* Moteur : chaque tag est une capsule (deux points reliés par une tige rigide, rayon = demi-hauteur),
+   intégrée en Verlet à pas fixe avec contraintes de position (collisions capsule-capsule, murs, frottement,
+   rebond). Rotation, empilement et lancer en découlent. Le moteur s'endort quand tout est immobile et se met
+   en pause hors écran. API : section._tagpile = { shake, drop, add(label, kind), nudge(el, dx, dy), destroy }. */
+(function () {
+  var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function closest(a, b, c, d) {
+    var d1x = b.x - a.x, d1y = b.y - a.y, d2x = d.x - c.x, d2y = d.y - c.y, rx = a.x - c.x, ry = a.y - c.y;
+    var A = d1x * d1x + d1y * d1y, E = d2x * d2x + d2y * d2y, F = d2x * rx + d2y * ry, s, t;
+    if (A < 1e-6 && E < 1e-6) return [0, 0];
+    if (A < 1e-6) { s = 0; t = clamp(F / E, 0, 1); }
+    else {
+      var C = d1x * rx + d1y * ry;
+      if (E < 1e-6) { t = 0; s = clamp(-C / A, 0, 1); }
+      else {
+        var B = d1x * d2x + d1y * d2y, den = A * E - B * B;
+        s = den > 1e-6 ? clamp((B * F - C * E) / den, 0, 1) : 0;
+        t = (B * s + F) / E;
+        if (t < 0) { t = 0; s = clamp(-C / A, 0, 1); } else if (t > 1) { t = 1; s = clamp((B - C) / A, 0, 1); }
+      }
+    }
+    return [s, t];
+  }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function pt(x, y) { return { x: x, y: y, px: x, py: y }; }
+
+  function TagPile(root) {
+    var zone = root.querySelector('[data-tp-zone]');
+    var live = root.querySelector('[data-tp-live]'), msg = root.querySelector('[data-tp-msg]'), countEl = root.querySelector('[data-tp-count]');
+    var form = root.querySelector('[data-tp-form]'), shakeBtn = root.querySelector('[data-tp-shake]');
+    var ds = root.dataset;
+    var G = 2600 * (parseFloat(ds.gravity) || 1), BOUNCE = clamp(parseFloat(ds.bounce || 0.2), 0, 0.9), MU = clamp(parseFloat(ds.friction || 0.5), 0, 1);
+    var PUSH = ds.push !== 'false', DROP = ds.drop || 'pluie';
+    var bodies = [], W = 0, H = 0, raf = 0, last = 0, still = 0, visible = false, started = false, timers = [];
+    var grab = null, pointer = null, ro = null, io = null, dead = false;
+    var H_STEP = 1 / 180, ITER = 6;
+
+    function measure() { W = zone.clientWidth; H = zone.clientHeight; }
+    function body(el) {
+      var w = el.offsetWidth, h = el.offsetHeight, r = h / 2, L = Math.max(0, w - h);
+      return { el: el, w: w, h: h, r: r, L: L, a: pt(0, 0), b: pt(L, 0), on: false };
+    }
+    function place(bd, cx, cy, ang) {
+      var hx = Math.cos(ang) * bd.L / 2, hy = Math.sin(ang) * bd.L / 2;
+      bd.a.x = bd.a.px = cx - hx; bd.a.y = bd.a.py = cy - hy; bd.b.x = bd.b.px = cx + hx; bd.b.y = bd.b.py = cy + hy;
+    }
+    function draw() {
+      for (var i = 0; i < bodies.length; i++) {
+        var bd = bodies[i]; if (!bd.on) continue;
+        var cx = (bd.a.x + bd.b.x) / 2, cy = (bd.a.y + bd.b.y) / 2, ang = Math.atan2(bd.b.y - bd.a.y, bd.b.x - bd.a.x);
+        /* La capsule est symétrique : on garde le texte à l'endroit */
+        if (ang > Math.PI / 2) ang -= Math.PI; else if (ang < -Math.PI / 2) ang += Math.PI;
+        bd.el.style.transform = 'translate3d(' + (cx - bd.w / 2).toFixed(2) + 'px,' + (cy - bd.h / 2).toFixed(2) + 'px,0) rotate(' + ang.toFixed(4) + 'rad)';
+      }
+    }
+
+    /* Une contrainte de position appliquée au point p = A + s(B - A) d'une capsule, et q = C + t(D - C) d'une autre. */
+    function solvePair(p, q, last) {
+      if (!p.on || !q.on) return;
+      var minD = p.r + q.r;
+      var ax0 = Math.min(p.a.x, p.b.x) - p.r, ax1 = Math.max(p.a.x, p.b.x) + p.r, bx0 = Math.min(q.a.x, q.b.x) - q.r, bx1 = Math.max(q.a.x, q.b.x) + q.r;
+      if (ax1 < bx0 || bx1 < ax0) return;
+      var ay0 = Math.min(p.a.y, p.b.y) - p.r, ay1 = Math.max(p.a.y, p.b.y) + p.r, by0 = Math.min(q.a.y, q.b.y) - q.r, by1 = Math.max(q.a.y, q.b.y) + q.r;
+      if (ay1 < by0 || by1 < ay0) return;
+      var st = closest(p.a, p.b, q.a, q.b), s = st[0], t = st[1];
+      var px = p.a.x + s * (p.b.x - p.a.x), py = p.a.y + s * (p.b.y - p.a.y), qx = q.a.x + t * (q.b.x - q.a.x), qy = q.a.y + t * (q.b.y - q.a.y);
+      var dx = px - qx, dy = py - qy, dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist >= minD) return;
+      var nx, ny; if (dist < 1e-4) { nx = 0; ny = -1; dist = 0; } else { nx = dx / dist; ny = dy / dist; }
+      var ws = (1 - s) * (1 - s) + s * s + (1 - t) * (1 - t) + t * t, lam = (minD - dist) / ws;
+      if (grab && grab.bd === p) { q.a.x -= nx * lam * (1 - t) * 2; q.a.y -= ny * lam * (1 - t) * 2; q.b.x -= nx * lam * t * 2; q.b.y -= ny * lam * t * 2; return; }
+      if (grab && grab.bd === q) { p.a.x += nx * lam * (1 - s) * 2; p.a.y += ny * lam * (1 - s) * 2; p.b.x += nx * lam * s * 2; p.b.y += ny * lam * s * 2; return; }
+      p.a.x += nx * lam * (1 - s); p.a.y += ny * lam * (1 - s); p.b.x += nx * lam * s; p.b.y += ny * lam * s;
+      q.a.x -= nx * lam * (1 - t); q.a.y -= ny * lam * (1 - t); q.b.x -= nx * lam * t; q.b.y -= ny * lam * t;
+      if (last && MU > 0) {
+        /* Frottement : on annule une part du glissement tangent relatif des deux points de contact */
+        var vpx = (1 - s) * (p.a.x - p.a.px) + s * (p.b.x - p.b.px), vpy = (1 - s) * (p.a.y - p.a.py) + s * (p.b.y - p.b.py);
+        var vqx = (1 - t) * (q.a.x - q.a.px) + t * (q.b.x - q.b.px), vqy = (1 - t) * (q.a.y - q.a.py) + t * (q.b.y - q.b.py);
+        var rx = vpx - vqx, ry = vpy - vqy, rn = rx * nx + ry * ny, tx = (rx - rn * nx) * MU * 0.5 / ws, ty = (ry - rn * ny) * MU * 0.5 / ws;
+        p.a.px += tx * (1 - s); p.a.py += ty * (1 - s); p.b.px += tx * s; p.b.py += ty * s;
+        q.a.px -= tx * (1 - t); q.a.py -= ty * (1 - t); q.b.px -= tx * t; q.b.py -= ty * t;
+      }
+    }
+    function walls(bd, pnt, last) {
+      var r = bd.r, vx = pnt.x - pnt.px, vy = pnt.y - pnt.py;
+      if (pnt.y > H - r) { pnt.y = H - r; if (last) { pnt.py = vy > 1.2 ? pnt.y + vy * BOUNCE : pnt.y; pnt.px = pnt.x - vx * (1 - MU * 0.6); } }
+      if (pnt.x < r) { pnt.x = r; if (last) pnt.px = vx < -1.2 ? pnt.x + vx * BOUNCE : pnt.x; }
+      if (pnt.x > W - r) { pnt.x = W - r; if (last) pnt.px = vx > 1.2 ? pnt.x + vx * BOUNCE : pnt.x; }
+      if (pnt.y < -H * 1.5) pnt.y = -H * 1.5;
+    }
+    function step() {
+      var i, j, bd, k;
+      for (i = 0; i < bodies.length; i++) {
+        bd = bodies[i]; if (!bd.on) continue;
+        [bd.a, bd.b].forEach(function (p) {
+          var vx = (p.x - p.px) * 0.996, vy = (p.y - p.py) * 0.996, v = Math.sqrt(vx * vx + vy * vy);
+          if (v > 40) { vx *= 40 / v; vy *= 40 / v; }
+          p.px = p.x; p.py = p.y; p.x += vx; p.y += vy + G * H_STEP * H_STEP;
+        });
+      }
+      for (k = 0; k < ITER; k++) {
+        var lastIt = k === ITER - 1;
+        for (i = 0; i < bodies.length; i++) {
+          bd = bodies[i]; if (!bd.on) continue;
+          var dx = bd.b.x - bd.a.x, dy = bd.b.y - bd.a.y, d = Math.sqrt(dx * dx + dy * dy) || 1e-4, c = (d - bd.L) / d / 2;
+          bd.a.x += dx * c; bd.a.y += dy * c; bd.b.x -= dx * c; bd.b.y -= dy * c;
+        }
+        if (grab) {
+          var g = grab.bd, s = grab.s, gx = g.a.x + s * (g.b.x - g.a.x), gy = g.a.y + s * (g.b.y - g.a.y);
+          var ex = (grab.x - gx) * 0.5, ey = (grab.y - gy) * 0.5, wsum = (1 - s) * (1 - s) + s * s;
+          g.a.x += ex * (1 - s) / wsum; g.a.y += ey * (1 - s) / wsum; g.b.x += ex * s / wsum; g.b.y += ey * s / wsum;
+        }
+        for (i = 0; i < bodies.length; i++) for (j = i + 1; j < bodies.length; j++) solvePair(bodies[i], bodies[j], lastIt);
+        if (PUSH && pointer && !grab) for (i = 0; i < bodies.length; i++) pushBy(bodies[i], pointer);
+        for (i = 0; i < bodies.length; i++) { bd = bodies[i]; if (!bd.on) continue; walls(bd, bd.a, lastIt); walls(bd, bd.b, lastIt); }
+      }
+    }
+    function pushBy(bd, ptr) {
+      if (!bd.on) return;
+      var R = 22, dx = bd.b.x - bd.a.x, dy = bd.b.y - bd.a.y, L2 = dx * dx + dy * dy;
+      var s = L2 > 1e-6 ? clamp(((ptr.x - bd.a.x) * dx + (ptr.y - bd.a.y) * dy) / L2, 0, 1) : 0;
+      var cx = bd.a.x + s * dx, cy = bd.a.y + s * dy, ox = cx - ptr.x, oy = cy - ptr.y, dist = Math.sqrt(ox * ox + oy * oy), minD = bd.r + R;
+      if (dist >= minD || dist < 1e-4) return;
+      var ws = (1 - s) * (1 - s) + s * s, lam = (minD - dist) / dist / ws * 0.35;
+      bd.a.x += ox * lam * (1 - s); bd.a.y += oy * lam * (1 - s); bd.b.x += ox * lam * s; bd.b.y += oy * lam * s;
+    }
+    function energy() {
+      var e = 0;
+      for (var i = 0; i < bodies.length; i++) { var bd = bodies[i]; if (!bd.on) continue; e = Math.max(e, Math.abs(bd.a.x - bd.a.px) + Math.abs(bd.a.y - bd.a.py), Math.abs(bd.b.x - bd.b.px) + Math.abs(bd.b.y - bd.b.py)); }
+      return e;
+    }
+    function frame(now) {
+      raf = 0; if (dead || !visible) return;
+      var dt = Math.min(0.05, (now - (last || now)) / 1000) || 1 / 60; last = now;
+      var n = Math.max(1, Math.round(dt / H_STEP));
+      for (var i = 0; i < n; i++) step();
+      draw();
+      if (energy() < 0.03 && !grab && !pointer && !timers.length) still++; else still = 0;
+      if (still > 45) { last = 0; return; } /* endormi : se réveille à la prochaine interaction */
+      raf = requestAnimationFrame(frame);
+    }
+    function wake() { still = 0; if (!raf && visible && !dead) { last = 0; raf = requestAnimationFrame(frame); } }
+
+    function setup() {
+      measure();
+      bodies = [].map.call(zone.querySelectorAll('.tp-tag'), body);
+      bodies.forEach(function (bd) { bd.el.addEventListener('keydown', onKey); });
+      count(false);
+    }
+    function spawn(bd, i, n) {
+      var x = bd.w / 2 + 8 + Math.random() * Math.max(1, W - bd.w - 16), y, ang = (Math.random() - 0.5) * 0.6;
+      if (DROP === 'bloc') { y = -bd.h - (i % 6) * (bd.h + 4) - Math.floor(i / 6) * 8; x = clamp(x, bd.w / 2 + 4, W - bd.w / 2 - 4); }
+      else y = -bd.h;
+      place(bd, x, y, ang);
+      bd.on = true; bd.el.classList.add('is-live');
+    }
+    function drop() {
+      timers.forEach(clearTimeout); timers = []; measure();
+      bodies.forEach(function (bd) { bd.on = false; bd.el.classList.remove('is-live'); });
+      bodies.forEach(function (bd, i) {
+        if (DROP === 'bloc') spawn(bd, i, bodies.length);
+        else { var id = setTimeout(function () { spawn(bd, i); timers.splice(timers.indexOf(id), 1); wake(); }, 70 + i * 85); timers.push(id); }
+      });
+      draw(); wake();
+    }
+    function shake() {
+      bodies.forEach(function (bd) {
+        if (!bd.on) return;
+        var up = 9 + Math.random() * 9, side = (Math.random() - 0.5) * 8, spin = (Math.random() - 0.5) * 5;
+        bd.a.py = bd.a.y + up + spin; bd.b.py = bd.b.y + up - spin; bd.a.px = bd.a.x - side; bd.b.px = bd.b.x - side;
+      });
+      wake();
+    }
+    function nudge(el, dx, dy) {
+      var bd = bodies.filter(function (b) { return b.el === el; })[0]; if (!bd || !bd.on) return;
+      bd.a.px -= dx; bd.b.px -= dx; bd.a.py -= dy; bd.b.py -= dy; wake();
+    }
+
+    /* Saisie, sélection, annonces */
+    function say(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); }
+    function count(bump) {
+      var n = zone.querySelectorAll('.tp-tag[aria-pressed="true"]').length;
+      if (countEl) { countEl.textContent = n; if (bump) { var c = countEl.parentNode; c.classList.remove('is-bump'); void c.offsetWidth; c.classList.add('is-bump'); } }
+      return n;
+    }
+    function toggle(el) {
+      var on = el.getAttribute('aria-pressed') !== 'true'; el.setAttribute('aria-pressed', on);
+      var n = count(true);
+      say(el.textContent.trim() + (on ? ' mis en avant. ' : ' retiré. ') + n + ' compétence' + (n > 1 ? 's' : '') + ' en avant.');
+      root.dispatchEvent(new CustomEvent('tagpile:change', { detail: { label: el.textContent.trim(), selected: on, count: n } }));
+    }
+    function onKey(e) {
+      var k = e.key, m = { ArrowLeft: [-7, 0], ArrowRight: [7, 0], ArrowUp: [0, -14], ArrowDown: [0, 6] }[k];
+      if (m && !REDUCE) { e.preventDefault(); nudge(e.currentTarget, m[0], m[1]); }
+    }
+    function add(label, kind) {
+      label = String(label || '').trim().replace(/\s+/g, ' ');
+      var input = form && form.querySelector('input');
+      function error(t) { if (msg) { msg.textContent = t; msg.classList.add('is-error'); } if (input) { input.setAttribute('aria-invalid', 'true'); setTimeout(function () { input.removeAttribute('aria-invalid'); }, 400); } }
+      if (!label) return error('Saisissez une compétence avant d’ajouter.'), false;
+      var dup = [].filter.call(zone.querySelectorAll('.tp-tag'), function (t) { return t.textContent.trim().toLowerCase() === label.toLowerCase(); })[0];
+      if (dup) { error('« ' + dup.textContent.trim() + ' » est déjà dans la pile.'); nudge(dup, 0, -16); dup.classList.add('is-flash'); setTimeout(function () { dup.classList.remove('is-flash'); }, 700); return false; }
+      if (bodies.length >= 40) return error('40 compétences au maximum.'), false;
+      var b = document.createElement('button');
+      b.className = 'tp-tag'; b.type = 'button'; b.dataset.kind = kind || 'method'; b.setAttribute('aria-pressed', 'true');
+      b.innerHTML = '<span class="tp-tag__mk" aria-hidden="true"></span>'; b.appendChild(document.createTextNode(label));
+      zone.appendChild(b);
+      if (msg) { msg.textContent = ''; msg.classList.remove('is-error'); }
+      if (REDUCE || root.classList.contains('is-static')) { count(true); say(label + ' ajouté et mis en avant.'); return true; }
+      var bd = body(b); bodies.push(bd); b.addEventListener('keydown', onKey);
+      place(bd, clamp(W / 2 + (Math.random() - 0.5) * 80, bd.w / 2, W - bd.w / 2), -bd.h, (Math.random() - 0.5) * 0.5);
+      bd.on = true; b.classList.add('is-live'); draw(); wake(); count(true); say(label + ' ajouté et mis en avant.');
+      return true;
+    }
+
+    /* Pointeur : glisser-lancer un tag, pousser la pile au survol */
+    var down = null, lastMv = null, pushT = 0;
+    function local(e) { var r = zone.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+    function onDown(e) {
+      var el = e.target.closest('.tp-tag'); if (!el || e.button > 0) return;
+      var bd = bodies.filter(function (b) { return b.el === el; })[0]; if (!bd || !bd.on) return;
+      var p = local(e), dx = bd.b.x - bd.a.x, dy = bd.b.y - bd.a.y, L2 = dx * dx + dy * dy;
+      var s = L2 > 1e-6 ? clamp(((p.x - bd.a.x) * dx + (p.y - bd.a.y) * dy) / L2, 0, 1) : 0.5;
+      down = { el: el, x: e.clientX, y: e.clientY, t: performance.now(), moved: false, bd: bd, s: s, id: e.pointerId };
+      try { el.setPointerCapture(e.pointerId); } catch (_) {}
+    }
+    function onMove(e) {
+      var p = local(e);
+      if (down && e.pointerId === down.id) {
+        if (!down.moved && Math.abs(e.clientX - down.x) + Math.abs(e.clientY - down.y) > 6) { down.moved = true; grab = { bd: down.bd, s: down.s, x: p.x, y: p.y }; down.el.classList.add('is-grabbed'); }
+        if (grab) { grab.x = clamp(p.x, 0, W); grab.y = clamp(p.y, -H, H); wake(); }
+        return;
+      }
+      /* La souris ne pousse que lancée (> 0,6 px/ms) : approchée lentement, elle peut saisir un tag */
+      if (PUSH && e.pointerType === 'mouse') {
+        var now = performance.now(), sp = lastMv ? Math.hypot(p.x - lastMv.x, p.y - lastMv.y) / Math.max(1, now - lastMv.t) : 0;
+        lastMv = { x: p.x, y: p.y, t: now };
+        clearTimeout(pushT);
+        if (sp > 0.6) { pointer = p; wake(); pushT = setTimeout(function () { pointer = null; }, 90); } else pointer = null;
+      }
+    }
+    function onUp(e) {
+      if (!down || e.pointerId !== down.id) return;
+      var wasDrag = down.moved; down.el.classList.remove('is-grabbed');
+      if (!wasDrag) toggle(down.el);
+      grab = null; down = null; wake();
+    }
+    function onLeave() { pointer = null; lastMv = null; wake(); }
+    /* Clic clavier (Entrée / Espace) : on laisse le bouton natif, le pointeur est déjà géré */
+    function onClick(e) { var el = e.target.closest('.tp-tag'); if (el && e.detail === 0) toggle(el); }
+    function onSubmit(e) { e.preventDefault(); var input = form.querySelector('input'); if (add(input.value)) input.value = ''; input.focus(); }
+
+    if (REDUCE) {
+      root.classList.add('is-static'); setup();
+      zone.addEventListener('click', function (e) { var el = e.target.closest('.tp-tag'); if (el) toggle(el); });
+    } else {
+      setup();
+      zone.addEventListener('pointerdown', onDown); zone.addEventListener('pointermove', onMove); zone.addEventListener('pointerup', onUp); zone.addEventListener('pointercancel', onUp);
+      zone.addEventListener('pointerleave', onLeave); zone.addEventListener('click', onClick);
+      if (shakeBtn) shakeBtn.addEventListener('click', shake);
+      ro = new ResizeObserver(function () {
+        var w0 = W; measure();
+        bodies.forEach(function (bd) { var w = bd.el.offsetWidth, h = bd.el.offsetHeight; if (w !== bd.w || h !== bd.h) { bd.w = w; bd.h = h; bd.r = h / 2; bd.L = Math.max(0, w - h); } });
+        if (w0 && W !== w0) bodies.forEach(function (bd) { if (!bd.on) return; var f = W / w0; [bd.a, bd.b].forEach(function (p) { p.x *= f; p.px *= f; }); });
+        wake();
+      });
+      ro.observe(zone);
+      io = new IntersectionObserver(function (en) {
+        visible = en[0].isIntersecting;
+        if (visible && !started) { started = true; drop(); }
+        if (visible) wake();
+      }, { threshold: 0.15 });
+      io.observe(zone);
+    }
+    if (form) form.addEventListener('submit', onSubmit);
+
+    return {
+      shake: shake, drop: function () { if (!REDUCE) drop(); }, add: add, nudge: nudge,
+      destroy: function () { dead = true; cancelAnimationFrame(raf); timers.forEach(clearTimeout); ro && ro.disconnect(); io && io.disconnect(); }
+    };
+  }
+  document.querySelectorAll('[data-tagpile]').forEach(function (el) { if (el._tagpile) el._tagpile.destroy(); el._tagpile = TagPile(el); });
+})();
+</script>

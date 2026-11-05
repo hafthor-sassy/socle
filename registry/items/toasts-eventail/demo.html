@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pile en éventail — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'orchidee');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; padding: 40px 24px 280px; }
+  @media (min-width: 1100px) { .stage { padding: 56px 432px 56px 40px; } .stage .rl { margin: 0 0 0 auto; } }
+  @media (max-width: 599px) { .stage { padding: 16px 16px 240px; } }
+  .is-thumb .stage { padding: 32px 420px 32px 32px; }
+  .is-thumb .rl__hint { display: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ position: 'bottom-right', visibles: 3, ecart: 12, duree: 6000, ressort: 'doux', glisser: true, deplie: false });
+  var fan = null, sec = null, seen = true;
+  function apply(p) {
+    if (!sec) return;
+    sec.dataset.position = p.position;
+    sec.dataset.visible = p.visibles;
+    sec.dataset.gap = p.ecart;
+    sec.dataset.duration = p.deplie ? 600000 : p.duree;
+    sec.dataset.spring = p.ressort;
+    sec.dataset.swipe = String(!!p.glisser);
+    if (fan) { fan.expand(!!p.deplie); fan.relayout(); }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    sec = document.querySelector('[data-fan]');
+    if (Socle.thumb) props.duree = 600000;
+    apply(props);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    fan = sec._fan; apply(props);
+    var app = document.querySelector('[data-fan-demo]');
+    app._seed();
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(app);
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var on = false;
+      setInterval(function () { if (seen) { on = !on; fan.expand(on); } }, 2200);
+    }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (!fan) return; fan.clear(); setTimeout(function () { document.querySelector('[data-fan-demo]')._seed(); }, 500); });
+</script>
+</body>
+</html>

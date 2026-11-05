@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toast annulable — démo</title>
+<script>if (!new URLSearchParams(location.search).get('accent')) document.documentElement.setAttribute('data-accent', 'azur');</script>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; padding: 40px 24px 120px; }
+  @media (max-width: 599px) { .stage { place-items: start stretch; padding: 16px 16px 120px; } }
+  .is-thumb .stage { padding: 32px 24px 96px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ duree: 6000, indicateur: 'border', position: 'bottom-center', pause: true, raccourci: true, libelle: 'Annuler' });
+  var root = null, seen = true;
+  function apply(p) {
+    if (!root) return;
+    root.dataset.duration = p.duree;
+    root.dataset.indicator = p.indicateur;
+    root.dataset.position = p.position;
+    root.dataset.pause = String(!!p.pause);
+    root.dataset.shortcut = String(!!p.raccourci);
+    root.querySelector('[data-ut-label]').textContent = p.libelle || 'Annuler';
+    if (root._undoToast) root._undoToast.restart();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-undo-toast]');
+    apply(props);
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(root);
+    if (Socle.thumb) {
+      root.dataset.duration = 4000;
+      var ut = root._undoToast;
+      ut.remove(root.querySelectorAll('.cs__row')[0]);
+      if (!Socle.reducedMotion()) setInterval(function () {
+        if (!seen) return;
+        var t = root.querySelector('[data-ut]');
+        if (t.hidden) { ut.reset(); ut.remove(root.querySelectorAll('.cs__row')[0]); } else ut.undo();
+      }, 3200);
+    }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () {
+    if (!root) return;
+    var ut = root._undoToast; ut.reset();
+    setTimeout(function () { ut.remove(root.querySelectorAll('.cs__row')[1]); }, 200);
+  });
+</script>
+</body>
+</html>

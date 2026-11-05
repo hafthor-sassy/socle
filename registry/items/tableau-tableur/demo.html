@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau façon tableur — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; padding: 48px 32px; display: grid; align-content: center; }
+  @media (max-width: 720px) { .stage { padding: 16px 12px 32px; align-content: start; } }
+  .is-thumb .stage { padding: 40px; align-content: start; }
+  .is-thumb .sh__scroll { height: 520px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  var props = Socle.props({ titre: 'Inscriptions — Rencontres Altitude 2027', lignes: '1200', densite: 'comfortable', quadrillage: true, formule: true, etat: 'ready' });
+  var root = null, api = null;
+  function opts(p) { return { rows: p.lignes, density: p.densite, gridLines: String(!!p.quadrillage), formula: String(!!p.formule), state: p.etat }; }
+  function render(p) { if (!api) return; root.querySelector('.sh__title').textContent = p.titre || 'Feuille'; api.update(opts(p)); }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/), mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/), js = t.match(/<script>([\s\S]*?)<\/script>/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-sheet]');
+    var o = opts(props); Object.keys(o).forEach(function (k) { root.dataset[k] = o[k]; });
+    root.querySelector('.sh__title').textContent = props.titre;
+    var s = document.createElement('script'); s.textContent = js ? js[1] : ''; document.body.appendChild(s);
+    api = root._sheet;
+    /* Vignette : une sélection qui s'étend toute seule. */
+    if (Socle.thumb && !Socle.reducedMotion()) {
+      var seq = [[1, 3, 1, 3], [1, 3, 4, 4], [1, 3, 7, 6], [2, 0, 2, 0], [2, 0, 5, 2]], i = 0, vis = true;
+      new IntersectionObserver(function (e) { vis = e[0].isIntersecting; }).observe(root);
+      setInterval(function () { if (!vis || document.hidden) return; var q = seq[i++ % seq.length]; api.select(q[0], q[1], q[2], q[3]); }, 1100);
+    } else if (Socle.thumb) api.select(1, 3, 6, 6);
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { if (api) api.replay(); });
+</script>
+</body>
+</html>

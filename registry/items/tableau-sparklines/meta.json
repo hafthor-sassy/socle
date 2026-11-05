@@ -1,0 +1,270 @@
+{
+  "id": "tableau-sparklines",
+  "nom": "Tableau à sparklines",
+  "categorie": "tableaux",
+  "niveau": "premium",
+  "ordre": 2,
+  "description": "Une mini-courbe par ligne, avec repère et infobulle au survol. On réordonne les lignes au glisser (souris, doigt ou clavier), on trie par colonne, on filtre par segment ou par recherche : les lignes glissent à leur place sur un ressort, les totaux roulent chiffre par chiffre et la courbe cumulée se transforme.",
+  "tags": [
+    "Sparkline",
+    "Glisser-déposer",
+    "Tri",
+    "Filtres",
+    "Ressort",
+    "Clavier",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "difficulte": 2,
+  "technique": "SVG mesuré à la taille réelle, FLIP + Web Animations sur une courbe linear() calculée depuis un ressort, compteur à rouleaux CSS",
+  "poids": "≈ 9 Ko gzip (HTML + CSS + JS), aucune bibliothèque",
+  "palette": "petrole",
+  "logo_exemple": {
+    "nom": "Éolis",
+    "secteur": "Énergie renouvelable (exploitation de parcs éoliens)",
+    "fichier": "logo.svg",
+    "palette": "petrole",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1180
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1180
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Neutres, accent, teintes vert / rouge des variations, piste de jauge, focus"
+    },
+    {
+      "nom": "Intl.NumberFormat / DateTimeFormat",
+      "note": "Chiffres et dates au format français (navigateur)"
+    },
+    {
+      "nom": "Web Animations, Pointer Events, ResizeObserver",
+      "note": "Natifs ; linear() (Chrome 113, Safari 17.2, Firefox 112) avec repli cubic-bezier"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "framer-motion ≥ 11",
+      "note": "Onglet React seulement : Reorder (glisser) et layout (FLIP)"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement (darkMode: 'class')"
+    }
+  ],
+  "props": [
+    {
+      "name": "titre",
+      "label": "Titre",
+      "type": "text",
+      "default": "Parcs en exploitation",
+      "code": {
+        "html": "id=\"spt-title\">{v}</h2>",
+        "react": "title = '{v}'"
+      }
+    },
+    {
+      "name": "periode",
+      "label": "Période",
+      "type": "select",
+      "default": "30",
+      "options": [
+        {
+          "value": "7",
+          "label": "7 jours"
+        },
+        {
+          "value": "30",
+          "label": "30 jours"
+        },
+        {
+          "value": "90",
+          "label": "90 jours"
+        }
+      ],
+      "hint": "Longueur des courbes ; la variation compare à la période précédente de même durée.",
+      "code": {
+        "html": "data-period=\"{v}\"",
+        "react": "period = {v}"
+      }
+    },
+    {
+      "name": "courbe",
+      "label": "Courbe",
+      "type": "select",
+      "default": "area",
+      "options": [
+        {
+          "value": "area",
+          "label": "Aire"
+        },
+        {
+          "value": "line",
+          "label": "Ligne"
+        },
+        {
+          "value": "bars",
+          "label": "Barres"
+        }
+      ],
+      "code": {
+        "html": "data-curve=\"{v}\"",
+        "react": "curve = '{v}'"
+      }
+    },
+    {
+      "name": "couleur",
+      "label": "Couleur des courbes",
+      "type": "select",
+      "default": "accent",
+      "options": [
+        {
+          "value": "accent",
+          "label": "Accent"
+        },
+        {
+          "value": "trend",
+          "label": "Selon la tendance"
+        },
+        {
+          "value": "neutral",
+          "label": "Neutre"
+        }
+      ],
+      "hint": "« Selon la tendance » : vert en hausse, rouge en baisse (la flèche et le signe restent affichés).",
+      "code": {
+        "html": "data-color=\"{v}\"",
+        "react": "color = '{v}'"
+      }
+    },
+    {
+      "name": "densite",
+      "label": "Densité",
+      "type": "select",
+      "default": "comfortable",
+      "options": [
+        {
+          "value": "comfortable",
+          "label": "Confortable (56 px)"
+        },
+        {
+          "value": "compact",
+          "label": "Compacte (48 px)"
+        }
+      ],
+      "code": {
+        "html": "data-density=\"{v}\"",
+        "react": "density = '{v}'"
+      }
+    },
+    {
+      "name": "reordonner",
+      "label": "Réordonner au glisser",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-reorder=\"{v}\"",
+        "react": "reorderable = {v}"
+      }
+    },
+    {
+      "name": "totaux",
+      "label": "Ligne de totaux",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-totals=\"{v}\"",
+        "react": "showTotals = {v}"
+      }
+    },
+    {
+      "name": "raideur",
+      "label": "Raideur du ressort",
+      "type": "number",
+      "default": 260,
+      "min": 80,
+      "max": 600,
+      "step": 10,
+      "code": {
+        "html": "data-stiffness=\"{v}\"",
+        "react": "stiffness = {v}"
+      }
+    },
+    {
+      "name": "amortissement",
+      "label": "Amortissement",
+      "type": "number",
+      "default": 24,
+      "min": 8,
+      "max": 50,
+      "step": 1,
+      "hint": "Bas : les lignes rebondissent en se posant. Haut : arrivée sèche.",
+      "code": {
+        "html": "data-damping=\"{v}\"",
+        "react": "damping = {v}"
+      }
+    },
+    {
+      "name": "etat",
+      "label": "État",
+      "type": "select",
+      "default": "ready",
+      "options": [
+        {
+          "value": "ready",
+          "label": "Données"
+        },
+        {
+          "value": "loading",
+          "label": "Chargement"
+        },
+        {
+          "value": "empty",
+          "label": "Vide"
+        },
+        {
+          "value": "error",
+          "label": "Erreur"
+        }
+      ],
+      "code": {
+        "html": "data-state=\"{v}\" data-stiffness",
+        "react": "status = '{v}'"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/SparklineTable.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour comparer d’un coup d’œil une dizaine à une centaine d’entités qui ont chacune une série : sites, produits, comptes, campagnes, magasins. Au-delà de 200 lignes, paginez ou virtualisez.",
+    "Données : el.sparkTable.setData(rows) en HTML, prop rows en React ; chaque ligne porte une série quotidienne (au moins deux fois la période, pour calculer la variation).",
+    "Écoutez « reorder » (HTML) ou onReorder (React) pour enregistrer l’ordre manuel ; un tri par colonne reste temporaire, et le premier glisser repart de l’ordre affiché.",
+    "Gardez l’accent pour une seule information : les courbes, ou la couleur de tendance, pas les deux. La ligne de totaux reste en neutre.",
+    "États « chargement » (squelette), « vide » et « erreur » prévus ; en erreur, Réessayer émet « retry » (HTML) ou appelle onRetry (React)."
+  ],
+  "accessibilite": [
+    "Structure role=table / row / columnheader / cell, en-têtes de tri en vrais boutons avec aria-sort ; sur téléphone, un sélecteur natif remplace les en-têtes.",
+    "Réordonner au clavier : Tab jusqu’à la poignée, Espace ou Entrée pour saisir, ↑ ↓ pour déplacer, Espace pour poser, Échap pour annuler ; chaque étape est annoncée (aria-live).",
+    "Chaque courbe a un libellé textuel (tendance, valeurs de début et de fin, pic daté) ; la variation n’est jamais portée par la couleur seule (flèche, signe, texte « par rapport aux N jours précédents »).",
+    "Poignées de 44 px au toucher, champ de recherche à 16 px ; avec « réduire les animations », lignes, chiffres et courbes se posent sans mouvement. Aucune boucle au repos."
+  ]
+}

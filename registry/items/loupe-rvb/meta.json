@@ -1,0 +1,197 @@
+{
+  "id": "loupe-rvb",
+  "nom": "Loupe RVB",
+  "categorie": "survol",
+  "niveau": "premium",
+  "palette": "or",
+  "description": "Une loupe carrée (ou ronde) suit le curseur avec un ressort, grossit l’image avec une légère déformation de lentille et décale le rouge et le bleu vers ses bords ; le reste de l’image s’efface sous un voile. Shader WebGL 1, repli canvas 2D, pilotable au clavier et par appui long au tactile.",
+  "tags": [
+    "WebGL",
+    "Shader",
+    "Loupe",
+    "Aberration chromatique",
+    "Produit",
+    "Clavier"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 640
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "technique": "Shader WebGL 1 (SDF de la loupe, 3 échantillons RVB) · ressorts · repli canvas 2D",
+  "difficulte": 3,
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "--bg (voile), --text-strong (bord, coins), et pour l’image d’exemple --accent, --accent-vivid, --accent-subtle, --surface, --raised, --border-strong"
+    },
+    {
+      "nom": "WebGL 1",
+      "note": "Natif, sans bibliothèque ; repli canvas 2D (loupe sans décalage de couleurs)"
+    },
+    {
+      "nom": "Moteur intégré",
+      "note": "≈ 7 ko minifié avec le cadran d’exemple dessiné en canvas (aucun fichier, aucun CDN)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "size",
+      "label": "Taille de la loupe",
+      "type": "number",
+      "default": 200,
+      "min": 120,
+      "max": 320,
+      "step": 8,
+      "unit": "px",
+      "code": {
+        "html": "data-size=\"{v}\"",
+        "react": "size={{v}}"
+      },
+      "hint": "Limitée à 70 % de l’image sur petit écran."
+    },
+    {
+      "name": "zoom",
+      "label": "Grossissement",
+      "type": "number",
+      "default": 2.6,
+      "min": 1.5,
+      "max": 6,
+      "step": 0.1,
+      "code": {
+        "html": "data-zoom=\"{v}\"",
+        "react": "zoom={{v}}"
+      },
+      "hint": "Aussi réglable au clavier avec + et −."
+    },
+    {
+      "name": "shift",
+      "label": "Décalage RVB",
+      "type": "number",
+      "default": 5,
+      "min": 0,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "code": {
+        "html": "data-shift=\"{v}\"",
+        "react": "shift={{v}}"
+      },
+      "hint": "Écart visible entre rouge et bleu au bord de la loupe ; nul au centre. 0 : loupe neutre."
+    },
+    {
+      "name": "barrel",
+      "label": "Déformation de lentille",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-barrel=\"{v}\"",
+        "react": "barrel={{v}}"
+      }
+    },
+    {
+      "name": "dim",
+      "label": "Voile autour",
+      "type": "number",
+      "default": 0.28,
+      "min": 0,
+      "max": 0.6,
+      "step": 0.02,
+      "code": {
+        "html": "data-dim=\"{v}\"",
+        "react": "dim={{v}}"
+      },
+      "hint": "Assombrit (ou éclaircit en clair) le reste de l’image pendant l’inspection."
+    },
+    {
+      "name": "shape",
+      "label": "Forme",
+      "type": "select",
+      "default": "square",
+      "options": [
+        {
+          "value": "square",
+          "label": "Carrée"
+        },
+        {
+          "value": "round",
+          "label": "Ronde"
+        }
+      ],
+      "code": {
+        "html": "data-shape=\"{v}\"",
+        "react": "shape=\"{v}\""
+      }
+    },
+    {
+      "name": "stiffness",
+      "label": "Raideur du suivi",
+      "type": "number",
+      "default": 260,
+      "min": 60,
+      "max": 800,
+      "step": 20,
+      "code": {
+        "html": "data-stiffness=\"{v}\"",
+        "react": "stiffness={{v}}"
+      },
+      "hint": "Amortissement critique : la loupe rattrape le curseur sans rebondir."
+    },
+    {
+      "name": "src",
+      "label": "URL d’image",
+      "type": "text",
+      "default": "",
+      "code": {
+        "html": "data-src=\"{v}\"",
+        "react": "src=\"{v}\""
+      },
+      "hint": "Votre photo, servie avec CORS (de préférence 2 000 px et plus). Vide : le cadran d’exemple."
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/RgbLoupe.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Fiche produit où le détail fait vendre (horlogerie, bijoux, textile, impression d’art, cartes) : une image haute définition, une loupe.",
+    "Donnez une image 2 à 3 fois plus grande que son affichage : la loupe lit la texture source, pas l’écran.",
+    "Décalage RVB de 3 à 6 px pour un effet d’optique discret ; au-delà, réservez-le à une page créative.",
+    "En cas d’échec de chargement (CORS, 404), l’exemple intégré s’affiche et l’événement loupe:error est émis ; renderer indique webgl ou canvas."
+  ],
+  "accessibilite": [
+    "La scène est focusable et décrite (aria-label) : flèches pour déplacer la loupe (Maj : pas de 48 px), + et − pour le grossissement annoncé par une zone role=status, Échap pour la ranger.",
+    "Au tactile : appui long (220 ms) pour faire apparaître la loupe au-dessus du doigt ; un glissé rapide fait défiler la page normalement.",
+    "Aucune information n’est réservée à la loupe : caractéristiques et prix restent dans le texte à côté.",
+    "« Réduire les animations » : la loupe suit sans ressort et sans décalage de couleurs.",
+    "Rendu uniquement à la demande (pas de boucle permanente) et suspendu hors écran."
+  ],
+  "logo_exemple": {
+    "nom": "Cadran",
+    "secteur": "Horlogerie",
+    "fichier": "logo.svg",
+    "palette": "or",
+    "typo": "Geist SemiBold"
+  }
+}

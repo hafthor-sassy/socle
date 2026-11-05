@@ -1,0 +1,271 @@
+<!-- Aperçu au survol de liens — HTML + CSS + JS (sans dépendance). Nécessite tokens.css. Marque fictive : Méridienne (revue de voyage). -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<section class="hp" aria-labelledby="hp-title">
+  <header class="hp__head">
+    <p class="hp__brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="7"/><path d="M50 6v88" stroke="currentColor" stroke-width="7"/><path d="M50 6c-22 14-22 74 0 88" fill="none" stroke="currentColor" stroke-width="7"/><circle cx="72" cy="38" r="9" fill="currentColor"/></svg>
+      <span>Méridienne</span>
+    </p>
+    <h2 id="hp-title" class="hp__title">Récits du numéro&nbsp;14</h2>
+    <p class="hp__intro">Cinq voyages lents, écrits sur place.<span class="hp__hint-hover"> Survolez un titre pour entrevoir le lieu.</span></p>
+  </header>
+
+  <ol class="hp__list" data-hover-preview data-ease="0.16" data-tilt="6" data-size="280" data-format="portrait" data-dim="true" data-mode="cursor" data-place="side">
+    <li><a class="hp__row" href="#merzouga" data-index="0">
+      <span class="hp__num">01</span>
+      <span class="hp__name">Dormir dans les dunes de Merzouga</span>
+      <span class="hp__place">Maroc</span>
+      <span class="hp__time">12&nbsp;min</span>
+      <span class="hp__thumb" aria-hidden="true"></span>
+      <svg class="hp__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a></li>
+    <li><a class="hp__row" href="#venise" data-index="1">
+      <span class="hp__num">02</span>
+      <span class="hp__name">Venise, l’heure où la lagune se tait</span>
+      <span class="hp__place">Italie</span>
+      <span class="hp__time">9&nbsp;min</span>
+      <span class="hp__thumb" aria-hidden="true"></span>
+      <svg class="hp__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a></li>
+    <li><a class="hp__row" href="#lofoten" data-index="2">
+      <span class="hp__num">03</span>
+      <span class="hp__name">Les Lofoten sous la nuit polaire</span>
+      <span class="hp__place">Norvège</span>
+      <span class="hp__time">15&nbsp;min</span>
+      <span class="hp__thumb" aria-hidden="true"></span>
+      <svg class="hp__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a></li>
+    <li><a class="hp__row" href="#kyoto" data-index="3">
+      <span class="hp__num">04</span>
+      <span class="hp__name">Kyoto, de temple en temple à pied</span>
+      <span class="hp__place">Japon</span>
+      <span class="hp__time">11&nbsp;min</span>
+      <span class="hp__thumb" aria-hidden="true"></span>
+      <svg class="hp__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a></li>
+    <li><a class="hp__row" href="#acores" data-index="4">
+      <span class="hp__num">05</span>
+      <span class="hp__name">Les Açores à vélo, d’un cratère à l’autre</span>
+      <span class="hp__place">Portugal</span>
+      <span class="hp__time">13&nbsp;min</span>
+      <span class="hp__thumb" aria-hidden="true"></span>
+      <svg class="hp__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a></li>
+  </ol>
+
+  <!-- Aperçu flottant : une pellicule verticale d'affiches, translatée vers la ligne survolée -->
+  <div class="hp__preview" aria-hidden="true">
+    <div class="hp__frame">
+      <div class="hp__reel">
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice"><rect width="400" height="500" class="f-b"/><path d="M0 60h400M0 92h400M0 124h400M0 156h400" class="s-1"/><circle cx="262" cy="196" r="78" class="f-hi"/><circle cx="262" cy="196" r="98" class="s-2"/><path d="M0 318c70-48 150-60 232-30 64 23 112 22 168-6v218H0Z" class="f-2"/><path d="M0 366c64-34 128-30 196-4 70 27 134 26 204-8v146H0Z" class="f-3"/><path d="M-10 430c110-60 230-58 420-6v76H-10Z" class="f-4"/><path d="M70 470c40-20 80-28 130-26" class="s-hi s-dots"/><path d="M118 352c4-8 14-8 18 0M140 352c3-6 10-6 14 0" class="s-ink"/></svg>
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice"><rect width="400" height="500" class="f-3"/><path d="M0 40h400M0 70h400M0 100h400" class="s-hi s-faint"/><circle cx="292" cy="236" r="44" class="f-hi"/><path d="M0 300V196h400v104" class="f-4"/><path d="M28 300v-70a30 30 0 0 1 60 0v70M112 300v-70a30 30 0 0 1 60 0v70M196 300v-70a30 30 0 0 1 60 0v70M280 300v-70a30 30 0 0 1 60 0v70" class="f-b"/><path d="M0 196h400M0 180h400" class="s-b"/><rect y="300" width="400" height="200" class="f-2"/><path d="M28 316v40M58 316v28M112 316v40M142 316v28M196 316v40M226 316v28M280 316v40M310 316v28" class="s-b s-faint"/><path d="M262 330h60M248 352h88M270 374h44" class="s-hi"/><path d="M60 430c40 10 100 10 150 0l-8 14H70Z" class="f-ink"/><path d="M210 430l14-26" class="s-ink s-thin"/><path d="M0 470h400" class="s-hi s-dots"/></svg>
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice"><rect width="400" height="500" class="f-4"/><path d="M-20 120c90-50 170-10 250-50s140-30 190-10" class="s-hi s-wide s-faint"/><path d="M-20 160c100-40 180 0 250-40s130-30 190-20" class="s-b s-wide s-faint"/><circle cx="54" cy="56" r="2.5" class="f-hi"/><circle cx="148" cy="34" r="2" class="f-hi"/><circle cx="330" cy="48" r="3" class="f-hi"/><circle cx="252" cy="88" r="1.8" class="f-hi"/><circle cx="364" cy="128" r="2" class="f-hi"/><path d="M0 500V352l84-128 52 64 70-150 82 120 46-44 66 82v204Z" class="f-b"/><path d="M84 224l26 36-26 10-12-18ZM206 138l30 44-30 8-16-22Z" class="f-hi"/><path d="M0 500v-84l110-34 96 30 194-40v128Z" class="f-3"/><rect x="250" y="384" width="40" height="26" class="f-ink"/><path d="M244 386l26-18 26 18" class="f-ink"/><rect x="262" y="392" width="8" height="8" class="f-hi"/><path d="M0 456h400" class="s-hi s-faint"/></svg>
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice"><rect width="400" height="500" class="f-b"/><circle cx="200" cy="210" r="132" class="f-1"/><circle cx="200" cy="210" r="96" class="f-2"/><path d="M58 150c40 8 244 8 284 0l-8 22H66Z" class="f-4"/><rect x="84" y="186" width="232" height="16" class="f-4"/><rect x="190" y="172" width="20" height="18" class="f-4"/><rect x="118" y="168" width="22" height="332" class="f-4"/><rect x="260" y="168" width="22" height="332" class="f-4"/><rect y="440" width="400" height="60" class="f-3"/><g class="f-hi"><rect x="40" y="300" width="26" height="36" rx="10"/><rect x="334" y="270" width="26" height="36" rx="10"/><rect x="318" y="356" width="22" height="30" rx="9"/><rect x="58" y="380" width="22" height="30" rx="9"/></g><path d="M53 280v20M347 250v20M329 338v18M69 362v18" class="s-ink s-thin"/><path d="M0 470h400" class="s-hi s-dots"/></svg>
+        <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice"><rect width="400" height="500" class="f-b"/><path d="M0 70h400M0 100h400" class="s-1"/><circle cx="320" cy="84" r="34" class="f-hi"/><path d="M-20 300c60-90 140-120 220-120s170 40 240 110v210H-20Z" class="f-2"/><ellipse cx="190" cy="250" rx="98" ry="30" class="f-3"/><ellipse cx="190" cy="254" rx="70" ry="18" class="f-hi"/><path d="M-20 360c90-40 190-30 440 10v130H-20Z" class="f-3"/><path d="M-10 500c40-70 120-70 170-110s120-60 250-60" class="s-ink s-road"/><path d="M-10 500c40-70 120-70 170-110s120-60 250-60" class="s-hi s-dash"/><circle cx="246" cy="350" r="9" class="s-ink s-thin"/><circle cx="270" cy="346" r="9" class="s-ink s-thin"/><path d="M246 350l10-14h12l2 10M256 336l-4-8" class="s-ink s-thin"/><circle cx="262" cy="320" r="5" class="f-ink"/></svg>
+      </div>
+      <p class="hp__caption"><span data-hp-place>Maroc</span><span data-hp-time>12 min</span></p>
+    </div>
+  </div>
+</section>
+<!-- /SECTION -->
+
+<style>
+  .hp { position: relative; max-width: 1120px; margin: 0 auto; padding: 72px 24px; color: var(--text); font-family: var(--font-sans); }
+  .hp__head { display: grid; grid-template-columns: 1fr auto; gap: 12px 48px; align-items: end; margin-bottom: 40px; }
+  .hp__brand { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 10px; margin: 0 0 16px; color: var(--text-strong); font: 600 16px/1 var(--font-sans); letter-spacing: var(--track-snug); }
+  .hp__brand svg { width: 24px; height: 24px; color: var(--accent); }
+  .hp__title { margin: 0; color: var(--text-strong); font-size: clamp(2rem, 1.4rem + 2.2vw, 3.25rem); line-height: 1.05; font-weight: 600; letter-spacing: -0.035em; }
+  .hp__intro { margin: 0; max-width: 22rem; color: var(--text-muted); font-size: 15px; line-height: 22px; }
+
+  .hp__list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border); }
+  .hp__list li { border-bottom: 1px solid var(--border); }
+  .hp__row {
+    position: relative; display: grid; grid-template-columns: 48px 1fr 120px 72px 24px; align-items: center; gap: 16px;
+    min-height: 88px; padding: 0 8px; color: var(--text-strong); text-decoration: none;
+    transition: opacity var(--motion-slow) var(--ease-out);
+  }
+  .hp__num { color: var(--text-muted); font: 500 13px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
+  .hp__name {
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.875rem); line-height: 1.15; font-weight: 500; letter-spacing: -0.025em;
+    transition: transform 420ms cubic-bezier(.22, 1, .36, 1);
+  }
+  .hp__place, .hp__time { color: var(--text-muted); font-size: 14px; }
+  .hp__time { text-align: right; font-variant-numeric: tabular-nums; }
+  .hp__arrow { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: translate(-6px, 6px); transition: opacity var(--motion-base) var(--ease-out), transform 420ms cubic-bezier(.22, 1, .36, 1); }
+  .hp__thumb { display: none; }
+  .hp__row:hover .hp__name, .hp__row:focus-visible .hp__name { transform: translateX(8px); }
+  .hp__row:hover .hp__arrow, .hp__row:focus-visible .hp__arrow { opacity: 1; transform: none; color: var(--accent); }
+  .hp__list[data-dim="true"].is-hovering .hp__row:not(.is-current) { opacity: .4; }
+  .hp__row:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: -2px; border-radius: var(--radius-ctl); }
+
+  /* Aperçu flottant */
+  .hp__preview {
+    position: absolute; left: 0; top: 0; z-index: 5; width: var(--hp-w, 280px); aspect-ratio: var(--hp-ratio, 4 / 5);
+    pointer-events: none; will-change: transform;
+  }
+  .hp__frame {
+    position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: var(--radius-card);
+    background: var(--raised); box-shadow: var(--shadow-popover);
+    clip-path: inset(50% 50% 50% 50% round 12px); scale: .86; opacity: 0;
+    transition: clip-path 520ms cubic-bezier(.22, 1, .36, 1), scale 520ms cubic-bezier(.22, 1, .36, 1), opacity 200ms var(--ease-out);
+  }
+  .hp.is-previewing .hp__frame { clip-path: inset(0 0 0 0 round 12px); scale: 1; opacity: 1; }
+  .hp__reel { display: flex; flex-direction: column; height: 100%; transition: transform 640ms cubic-bezier(.65, 0, .35, 1); }
+  .hp__reel svg { flex: none; display: block; width: 100%; height: 100%; }
+  .hp__caption {
+    position: absolute; left: 12px; right: 12px; bottom: 12px; margin: 0; display: flex; justify-content: space-between;
+    height: 32px; align-items: center; padding: 0 12px; border-radius: var(--radius-pill); background: var(--surface); color: var(--text-strong);
+    font: 500 12px/1 var(--font-mono); letter-spacing: .02em;
+  }
+  .hp__caption [data-hp-time] { color: var(--text-muted); }
+
+  /* Couleurs des affiches : accent en quatre densités sur --accent-subtle, reflets --surface, encre --text-strong */
+  .hp .f-b { fill: var(--accent-subtle); } .hp .f-hi { fill: var(--surface); } .hp .f-ink { fill: var(--text-strong); }
+  .hp .f-1 { fill: var(--accent); fill-opacity: .14; } .hp .f-2 { fill: var(--accent); fill-opacity: .36; }
+  .hp .f-3 { fill: var(--accent); fill-opacity: .64; } .hp .f-4 { fill: var(--accent); }
+  .hp [class^="s-"], .hp [class*=" s-"] { fill: none; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .hp .s-1 { stroke: var(--accent); stroke-opacity: .16; stroke-width: 2; } .hp .s-2 { stroke: var(--surface); stroke-width: 2; stroke-dasharray: 2 8; }
+  .hp .s-b { stroke: var(--accent-subtle); } .hp .s-hi { stroke: var(--surface); } .hp .s-ink { stroke: var(--text-strong); }
+  .dark .hp .f-hi { fill: var(--text-strong); } .dark .hp .s-hi, .dark .hp .s-2 { stroke: var(--text-strong); }
+  .hp .s-faint { stroke-opacity: .45; stroke-width: 3; } .hp .s-wide { stroke-width: 18; } .hp .s-thin { stroke-width: 3; }
+  .hp .s-dots { stroke-width: 4; stroke-dasharray: 0 14; } .hp .s-dash { stroke-width: 3; stroke-dasharray: 12 14; } .hp .s-road { stroke-width: 16; }
+
+  /* Tactile ou petit écran : pas de survol, une vignette dans chaque ligne */
+  @media (hover: none), (max-width: 719px) {
+    .hp { padding: 48px 20px; }
+    .hp__head { grid-template-columns: 1fr; margin-bottom: 24px; }
+    .hp__row { grid-template-columns: 64px 1fr 20px; grid-template-rows: auto auto; gap: 4px 16px; min-height: 0; padding: 16px 0; }
+    .hp__thumb { display: block; grid-row: 1 / 3; grid-column: 1; width: 64px; height: 80px; overflow: hidden; border-radius: var(--radius-ctl); background: var(--raised); }
+    .hp__thumb svg { display: block; width: 100%; height: 100%; }
+    .hp__num { display: none; }
+    .hp__name { grid-column: 2; font-size: 18px; line-height: 24px; }
+    .hp__place { grid-column: 2; grid-row: 2; font-size: 14px; }
+    .hp__time { grid-column: 2; grid-row: 2; justify-self: end; font-size: 14px; }
+    .hp__arrow { grid-column: 3; grid-row: 1 / 3; opacity: 1; transform: none; color: var(--text-muted); }
+    .hp__row:active { background: var(--state-press); }
+    .hp__row:hover .hp__name { transform: none; }
+    .hp__preview { display: none; }
+    .hp__hint-hover { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hp__name, .hp__arrow, .hp__frame, .hp__reel, .hp__row { transition: none; }
+    .hp__row:hover .hp__name, .hp__row:focus-visible .hp__name { transform: none; }
+  }
+</style>
+
+<script>
+/* HoverPreview : une vignette suit le pointeur avec inertie (lissage + inclinaison selon la vitesse),
+   et sa pellicule glisse vers l'image de la ligne survolée. Au clavier, l'aperçu se cale à droite de la ligne. */
+(function () {
+  var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+  var HOVER = window.matchMedia && matchMedia('(hover: hover) and (min-width: 720px)');
+  var RATIOS = { portrait: '4 / 5', carre: '1 / 1', paysage: '3 / 2' };
+
+  function read(list) {
+    var d = list.dataset;
+    return { ease: Math.min(1, Math.max(0.02, +d.ease || 0.16)), tilt: d.tilt != null ? +d.tilt : 6, size: +d.size || 280, format: d.format || 'portrait', dim: d.dim !== 'false', mode: d.mode || 'cursor', place: d.place || 'side' };
+  }
+
+  function init(scope) {
+    var list = (scope || document).querySelector('[data-hover-preview]');
+    if (!list || list._hp) return list && list._hp;
+    var root = list.closest('section') || list.parentNode;
+    var preview = root.querySelector('.hp__preview'), reel = preview.querySelector('.hp__reel');
+    var placeEl = preview.querySelector('[data-hp-place]'), timeEl = preview.querySelector('[data-hp-time]');
+    var rows = Array.prototype.slice.call(list.querySelectorAll('.hp__row'));
+    var o = read(list);
+    // Vignettes des lignes (mobile) : copies des affiches de la pellicule
+    rows.forEach(function (row, i) { var t = row.querySelector('.hp__thumb'), s = reel.children[i]; if (t && s && !t.firstChild) t.appendChild(s.cloneNode(true)); });
+
+    var x = 0, y = 0, tx = 0, ty = 0, rot = 0, raf = 0, active = -1, shown = false, lastX = 0;
+
+    function apply() {
+      preview.style.setProperty('--hp-w', o.size + 'px');
+      preview.style.setProperty('--hp-ratio', RATIOS[o.format] || RATIOS.portrait);
+      list.dataset.dim = String(o.dim);
+    }
+    function dims() { var r = preview.getBoundingClientRect(); return [r.width || o.size, r.height || o.size * 1.25]; }
+    function frame() {
+      raf = 0;
+      var k = REDUCED.matches ? 1 : o.ease;
+      var vx = (tx - x) * k;
+      x += vx; y += (ty - y) * k;
+      var target = REDUCED.matches ? 0 : Math.max(-o.tilt, Math.min(o.tilt, vx * 0.35));
+      rot += (target - rot) * 0.18;
+      var dm = dims();
+      preview.style.transform = 'translate3d(' + (x - dm[0] / 2).toFixed(2) + 'px,' + (y - dm[1] / 2).toFixed(2) + 'px,0) rotate(' + rot.toFixed(2) + 'deg)';
+      if (Math.abs(tx - x) + Math.abs(ty - y) + Math.abs(rot) > 0.05) raf = requestAnimationFrame(frame);
+    }
+    function wake() { if (!raf) raf = requestAnimationFrame(frame); }
+    /* À côté du curseur (et basculé à gauche près du bord droit) pour ne jamais masquer le titre lu. */
+    function aim(p) {
+      if (o.place !== 'side') return p[0];
+      var w = dims()[0], gap = 32, right = p[0] + gap + w / 2, rootW = root.getBoundingClientRect().width;
+      return right + w / 2 > rootW - 8 ? p[0] - gap - w / 2 : right;
+    }
+    function local(cx, cy) { var r = root.getBoundingClientRect(); return [cx - r.left, cy - r.top]; }
+
+    function select(i) {
+      if (i === active) return;
+      rows.forEach(function (r, j) { r.classList.toggle('is-current', j === i); });
+      if (i < 0) { active = -1; return; }
+      reel.style.transform = 'translateY(' + (-100 * i) + '%)';
+      var row = rows[i];
+      placeEl.textContent = row.querySelector('.hp__place').textContent;
+      timeEl.textContent = row.querySelector('.hp__time').textContent.replace(/\u00a0/g, ' ');
+      active = i;
+    }
+    function show(on) { shown = on; root.classList.toggle('is-previewing', on); list.classList.toggle('is-hovering', on); }
+    function anchorTo(row, snap) {
+      var r = row.getBoundingClientRect(), p = local(r.right, r.top + r.height / 2), dm = dims();
+      tx = Math.max(dm[0] / 2, p[0] - dm[0] / 2 - 160); ty = p[1];
+      if (snap) { x = tx; y = ty; }
+      wake();
+    }
+
+    rows.forEach(function (row, i) {
+      row.addEventListener('pointerenter', function (e) {
+        if (e.pointerType === 'touch' || !HOVER.matches) return;
+        var p = local(e.clientX, e.clientY);
+        if (!shown) { x = o.mode === 'cursor' ? aim(p) : x; y = p[1]; reel.style.transition = 'none'; select(i); reel.offsetHeight; reel.style.transition = ''; }
+        else select(i);
+        show(true);
+        if (o.mode === 'anchor') anchorTo(row, !shown); else { tx = aim(p); ty = p[1]; wake(); }
+      });
+      row.addEventListener('focus', function () {
+        if (!HOVER.matches) return;
+        reel.style.transition = shown ? '' : 'none'; select(i); reel.offsetHeight; reel.style.transition = '';
+        show(true); anchorTo(row, true);
+      });
+      row.addEventListener('blur', function () { setTimeout(function () { if (!list.contains(document.activeElement)) { show(false); select(-1); } }, 0); });
+    });
+    list.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch' || !shown) return;
+      var p = local(e.clientX, e.clientY);
+      if (o.mode === 'anchor') { ty = p[1]; } else { tx = aim(p); ty = p[1]; }
+      lastX = p[0]; wake();
+    }, { passive: true });
+    list.addEventListener('pointerleave', function () { show(false); select(-1); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && shown) { show(false); select(-1); } });
+
+    apply();
+    var api = {
+      update: function (n) { o = n; apply(); },
+      /* Démo et tests : montrer l'aperçu sur la ligne i, au point (px, py) relatif à la section */
+      peek: function (i, px, py) {
+        if (i == null) { show(false); select(-1); return; }
+        var r = rows[i].getBoundingClientRect(), p = local(r.left + r.width * 0.62, r.top + r.height / 2);
+        reel.style.transition = shown ? '' : 'none'; select(i); reel.offsetHeight; reel.style.transition = '';
+        show(true); tx = px != null ? px : aim(p); ty = py != null ? py : p[1]; x = tx - 40; y = ty; wake();
+      },
+    };
+    list._hp = api;
+    return api;
+  }
+
+  window.HoverPreview = { init: init, read: read };
+  if (document.readyState !== 'loading') init(document); else document.addEventListener('DOMContentLoaded', function () { init(document); });
+})();
+</script>

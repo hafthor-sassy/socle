@@ -1,0 +1,215 @@
+{
+  "id": "texte-decodage",
+  "nom": "Décodage",
+  "categorie": "texte-anime",
+  "niveau": "essentiel",
+  "ordre": 3,
+  "description": "Le texte se déchiffre lettre par lettre depuis des signes aléatoires : à l’entrée dans l’écran, au survol d’un lien, ou en boucle sur plusieurs phrases. Chaque lettre garde la largeur de sa forme finale, la ligne ne tremble jamais. Livré avec un champ secret dont les points se décodent en mot de passe.",
+  "tags": [
+    "Décodage",
+    "Survol",
+    "Boucle",
+    "Monospace",
+    "Accessible"
+  ],
+  "date": "2026-11-05",
+  "difficulte": 1,
+  "technique": "Lettres en inline-block à largeur figée, tirage toutes les 48 ms dans une boucle rAF qui s’arrête seule",
+  "poids": "≈ 2 Ko gzip (JS), aucune bibliothèque",
+  "palette": "neon-lime",
+  "logo_exemple": {
+    "nom": "Verrou",
+    "secteur": "Cybersécurité (gestionnaire de mots de passe)",
+    "fichier": "logo.svg",
+    "palette": "neon-lime",
+    "typo": "Geist SemiBold"
+  },
+  "thumb": {
+    "width": 1180
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Texte, accent (lettre de tête), surfaces"
+    },
+    {
+      "nom": "Intl.Segmenter",
+      "note": "Découpe les lettres accentuées et les emoji proprement (repli Array.from)"
+    },
+    {
+      "nom": "IntersectionObserver",
+      "note": "Déclenchement à l’entrée dans l’écran et pause de la boucle hors écran"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, hook useDecode sans dépendance"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "titre",
+      "label": "Titre",
+      "type": "text",
+      "default": "Vos secrets, illisibles pour tous sauf vous.",
+      "code": {
+        "html": "{v}</h2>",
+        "react": "title = '{v}'"
+      }
+    },
+    {
+      "name": "declencheur",
+      "label": "Déclencheur du titre",
+      "type": "select",
+      "default": "view",
+      "options": [
+        {
+          "value": "view",
+          "label": "Entrée dans l’écran"
+        },
+        {
+          "value": "hover",
+          "label": "Survol / focus"
+        },
+        {
+          "value": "loop",
+          "label": "En boucle (3 phrases)"
+        }
+      ],
+      "code": {
+        "html": "id=\"dc-title\" data-decode data-trigger=\"{v}\"",
+        "react": "trigger = '{v}'"
+      }
+    },
+    {
+      "name": "jeu",
+      "label": "Signes",
+      "type": "select",
+      "default": "symbols",
+      "options": [
+        {
+          "value": "symbols",
+          "label": "Symboles  !<>-_\\/[]"
+        },
+        {
+          "value": "alnum",
+          "label": "Lettres et chiffres"
+        },
+        {
+          "value": "binary",
+          "label": "Binaire  01"
+        },
+        {
+          "value": "hex",
+          "label": "Hexadécimal  0-F"
+        }
+      ],
+      "code": {
+        "html": "data-charset=\"{v}\" data-duration",
+        "react": "charset = '{v}'"
+      }
+    },
+    {
+      "name": "ordre",
+      "label": "Ordre de résolution",
+      "type": "select",
+      "default": "ltr",
+      "options": [
+        {
+          "value": "ltr",
+          "label": "De gauche à droite"
+        },
+        {
+          "value": "random",
+          "label": "Au hasard"
+        },
+        {
+          "value": "center",
+          "label": "Du centre vers les bords"
+        }
+      ],
+      "code": {
+        "html": "data-order=\"{v}\" data-delay=\"300\"",
+        "react": "order = '{v}'"
+      }
+    },
+    {
+      "name": "duree",
+      "label": "Durée",
+      "type": "number",
+      "default": 1400,
+      "min": 300,
+      "max": 4000,
+      "step": 100,
+      "unit": "ms",
+      "hint": "Temps entre la première et la dernière lettre posée.",
+      "code": {
+        "html": "data-duration=\"{v}\" data-order",
+        "react": "duration = {v}"
+      }
+    },
+    {
+      "name": "couleur",
+      "label": "Couleur des signes",
+      "type": "select",
+      "default": "muted",
+      "options": [
+        {
+          "value": "muted",
+          "label": "Atténuée"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        }
+      ],
+      "code": {
+        "html": "data-scramble-color=\"{v}\"",
+        "react": "scrambleColor = '{v}'"
+      }
+    },
+    {
+      "name": "meneur",
+      "label": "Lettre de tête en accent",
+      "type": "boolean",
+      "default": true,
+      "hint": "La lettre sur le point de se poser passe brièvement à l’accent.",
+      "code": {
+        "html": "data-lead=\"{v}\">",
+        "react": "lead = {v}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/DecodeText.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour un titre de hero, un libellé de bouton au survol, un statut technique ou une valeur sensible révélée à la demande. Un seul titre décodé par écran ; le reste du texte reste immobile.",
+    "Gardez des durées courtes au survol (400 à 600 ms) et plus longues pour un titre (1 à 1,6 s). « Binaire » et « Hexa » vont aux libellés en Geist Mono.",
+    "N’importe quel élément : ajoutez data-decode et data-trigger, ou DecodeText.attach(el) ; el._decode.play('nouveau texte') enchaîne sur un autre texte avec la même transition.",
+    "Le champ secret affiche un aperçu au survol, s’épingle au clic ou au toucher, se rechiffre à la perte du focus."
+  ],
+  "accessibilite": [
+    "Le texte final est présent en clair pour les lecteurs d’écran (texte masqué visuellement) ; les lettres animées sont aria-hidden, rien n’est lu pendant le décodage.",
+    "Survol et focus clavier déclenchent le même effet ; le secret est un vrai bouton aria-pressed, son contenu affiché est annoncé caractère par caractère.",
+    "Avec « réduire les animations », le texte apparaît directement ; la boucle s’arrête hors écran et quand l’onglet est caché.",
+    "Contraste : signes en texte atténué (≥ 4,5:1), lettre finale en texte principal ; mots insécables pour que le retour à la ligne ne coupe jamais un mot."
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "id": "pile-dialogues",
+  "nom": "Pile de dialogues",
+  "categorie": "modales",
+  "description": "Les étapes d’une confirmation sensible s’empilent en cartes décalées dans un seul <dialog> natif : la carte du dessous recule et se rogne, Échap ou « Retour » reviennent d’un niveau, le focus suit. Exemple : supprimer un espace de travail en choisissant quoi garder.",
+  "tags": [
+    "dialog natif",
+    "Étapes",
+    "Clavier",
+    "Confirmation",
+    "SaaS B2B"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 900
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, voile, teintes d’erreur, accent"
+    },
+    {
+      "nom": "<dialog> natif",
+      "note": "showModal : couche supérieure et focus piégé, sans bibliothèque"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 2,5 ko min."
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "level",
+      "label": "Niveau ouvert",
+      "type": "select",
+      "default": "2",
+      "options": [
+        {
+          "value": "closed",
+          "label": "Fermé"
+        },
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        }
+      ],
+      "hint": "Pour la démo : profondeur de la pile au chargement."
+    },
+    {
+      "name": "offset",
+      "label": "Décalage par niveau",
+      "type": "number",
+      "default": 14,
+      "min": 6,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "code": {
+        "html": "data-offset=\"{v}\"",
+        "react": "offset={{v}}"
+      }
+    },
+    {
+      "name": "scale",
+      "label": "Réduction par niveau",
+      "type": "number",
+      "default": 0.05,
+      "min": 0.02,
+      "max": 0.1,
+      "step": 0.01,
+      "code": {
+        "html": "data-scale=\"{v}\"",
+        "react": "scale={{v}}"
+      }
+    },
+    {
+      "name": "duration",
+      "label": "Durée",
+      "type": "number",
+      "default": 420,
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "unit": "ms",
+      "code": {
+        "html": "--ds-dur: {v}ms",
+        "react": "duration={{v}}"
+      }
+    },
+    {
+      "name": "backdrop",
+      "label": "Clic sur le voile",
+      "type": "select",
+      "default": "back",
+      "options": [
+        {
+          "value": "back",
+          "label": "Retour"
+        },
+        {
+          "value": "close",
+          "label": "Ferme"
+        },
+        {
+          "value": "none",
+          "label": "Rien"
+        }
+      ],
+      "hint": "« Rien » pour les flux où une saisie serait perdue.",
+      "code": {
+        "html": "data-backdrop=\"{v}\"",
+        "react": "backdrop=\"{v}\""
+      }
+    },
+    {
+      "name": "confirm",
+      "label": "Saisie du nom pour confirmer",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-confirm=\"{v}\"",
+        "react": "typedConfirm={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/DialogStack.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour 2 ou 3 décisions qui s’enchaînent et dépendent l’une de l’autre (supprimer, transférer, résilier). Au-delà de 3 niveaux, passez à une page dédiée.",
+    "Chaque étape garde son contexte visible derrière elle : l’utilisateur sait d’où il vient et peut revenir sans tout perdre.",
+    "Réservez la saisie du nom aux actions irréversibles et coûteuses ; proposez toujours une issue moins destructive (déplacer, exporter).",
+    "Sur mobile, la pile se pose en bas de l’écran comme une feuille, boutons pleine largeur."
+  ],
+  "accessibilite": [
+    "<dialog> ouvert par showModal() : le reste de la page est inerte, le focus est piégé ; aria-labelledby suit le titre de la carte du dessus.",
+    "Échap dépile d’un niveau (événement cancel intercepté) et rend le focus au bouton qui avait ouvert l’étape ; les cartes du dessous sont inertes.",
+    "Le chargement de l’export désactive « Continuer » jusqu’à la fin ; l’erreur de saisie est liée au champ (aria-invalid, aria-describedby).",
+    "Avec « réduire les animations », les cartes changent de place sans glissement ; textes ≥ 4,5:1, cibles de 44 px (48 px sur mobile)."
+  ],
+  "niveau": "essentiel",
+  "ordre": 3,
+  "palette": "petrole",
+  "stage": {
+    "width": "desktop"
+  },
+  "logo_exemple": {
+    "nom": "Jalon",
+    "secteur": "Gestion de projet (SaaS B2B)",
+    "fichier": "logo.svg",
+    "palette": "petrole",
+    "typo": "Geist SemiBold"
+  }
+}

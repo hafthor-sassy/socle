@@ -1,0 +1,200 @@
+{
+  "id": "onglets-pastille",
+  "nom": "Onglets à pastille glissante",
+  "categorie": "navigation",
+  "description": "Des onglets dont la pastille glisse d’un onglet à l’autre et s’étire en route : le bord de tête part avec un ressort, celui de queue suit. Survol fantôme, compteurs, défilement horizontal sur mobile et clavier ARIA complet.",
+  "tags": [
+    "Ressort",
+    "Clavier",
+    "ARIA",
+    "Responsive",
+    "Éducation"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 820
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Surfaces, accent, focus"
+    },
+    {
+      "nom": "Script intégré",
+      "note": "≈ 1,6 ko min., aucune dépendance ; l’animation est en transitions CSS"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "variant",
+      "label": "Variante",
+      "type": "select",
+      "default": "surface",
+      "options": [
+        {
+          "value": "surface",
+          "label": "Surface"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        },
+        {
+          "value": "underline",
+          "label": "Trait"
+        }
+      ],
+      "code": {
+        "html": "data-variant=\"{v}\"",
+        "react": "variant=\"{v}\""
+      }
+    },
+    {
+      "name": "duration",
+      "label": "Durée",
+      "type": "number",
+      "default": 380,
+      "min": 160,
+      "max": 800,
+      "step": 20,
+      "unit": "ms",
+      "code": {
+        "html": "data-duration=\"{v}\"",
+        "react": "duration={{v}}"
+      }
+    },
+    {
+      "name": "stretch",
+      "label": "Étirement",
+      "type": "number",
+      "default": 0.6,
+      "min": 0,
+      "max": 1,
+      "step": 0.05,
+      "hint": "0 : la pastille glisse d’un bloc. 1 : la tête part loin devant, la queue rattrape.",
+      "code": {
+        "html": "data-stretch=\"{v}\"",
+        "react": "stretch={{v}}"
+      }
+    },
+    {
+      "name": "activation",
+      "label": "Activation au clavier",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "manual",
+          "label": "Entrée"
+        }
+      ],
+      "hint": "Auto : les flèches changent d’onglet. Entrée : les flèches déplacent le focus, Entrée valide (contenus lourds).",
+      "code": {
+        "html": "data-activation=\"{v}\"",
+        "react": "activation=\"{v}\""
+      }
+    },
+    {
+      "name": "icons",
+      "label": "Icônes",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-icons=\"{v}\"",
+        "react": "icons={{v}}"
+      }
+    },
+    {
+      "name": "counts",
+      "label": "Compteurs",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-counts=\"{v}\"",
+        "react": "counts={{v}}"
+      }
+    },
+    {
+      "name": "fill",
+      "label": "Pleine largeur",
+      "type": "boolean",
+      "default": false,
+      "code": {
+        "html": "data-fill=\"{v}\"",
+        "react": "fill={{v}}"
+      }
+    },
+    {
+      "name": "size",
+      "label": "Hauteur",
+      "type": "select",
+      "default": "md",
+      "options": [
+        {
+          "value": "md",
+          "label": "44 px"
+        },
+        {
+          "value": "sm",
+          "label": "36 px"
+        }
+      ],
+      "hint": "36 px seulement sur bureau dense : sur mobile, gardez 44 px.",
+      "code": {
+        "html": "data-size=\"{v}\"",
+        "react": "size=\"{v}\""
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/SlidingTabs.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour 2 à 6 vues sœurs d’un même objet (un cours, un projet, un profil). Au-delà, ou pour naviguer entre pages, préférez une barre latérale ou un menu.",
+    "La variante Surface convient aux en-têtes de contenu, Accent à un seul sélecteur clé par écran, Trait aux pages denses.",
+    "Gardez l’étirement entre 0,4 et 0,7 : en dessous l’effet disparaît, au-dessus il attire trop l’œil sur des allers-retours rapides.",
+    "Sur mobile la barre défile à l’horizontale, avec un fondu au bord, et l’onglet choisi est ramené dans la vue."
+  ],
+  "accessibilite": [
+    "Motif ARIA tabs : role tablist / tab / tabpanel, aria-selected, aria-controls, roving tabindex ; flèches, Début et Fin.",
+    "Activation automatique par défaut, ou manuelle (Entrée / Espace) pour des panneaux coûteux à afficher.",
+    "La pastille est décorative (aria-hidden) : l’état se lit dans aria-selected, pas dans la couleur seule (graisse et contraste ≥ 4,5:1).",
+    "Avec « réduire les animations », la pastille saute sans glisser et les panneaux apparaissent sans translation ; cibles de 44 px."
+  ],
+  "niveau": "essentiel",
+  "ordre": 2,
+  "palette": "azur",
+  "stage": {
+    "width": "desktop"
+  },
+  "logo_exemple": {
+    "nom": "Cursif",
+    "secteur": "Éducation en ligne",
+    "fichier": "logo.svg",
+    "palette": "azur",
+    "typo": "Geist SemiBold"
+  }
+}

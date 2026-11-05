@@ -1,0 +1,283 @@
+<!-- Toast annulable — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     La bordure du toast se vide comme un compte à rebours ; Annuler (ou Ctrl/⌘ Z) restaure ; minuteur en pause au survol et au focus.
+     Plusieurs suppressions rapprochées sont regroupées dans le même toast. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="cs" data-undo-toast data-duration="6000" data-indicator="border" data-position="bottom-center" data-pause="true" data-shortcut="true">
+  <section class="cs__panel" aria-labelledby="cs-title">
+    <header class="cs__head">
+      <span class="cs__brand">
+        <svg class="cs__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="cs__logo-bg"/><rect x="24" y="24" width="52" height="52" rx="10" class="cs__logo-mk"/><path class="cs__logo-mk" d="M24 50h52M43 37h14M43 63h14"/></svg>
+        <span class="cs__word">casier</span>
+      </span>
+      <nav class="cs__crumbs" aria-label="Fil d’Ariane"><a href="#">Projets clients</a><span aria-hidden="true">/</span><span aria-current="page">Chantier Martin</span></nav>
+    </header>
+    <div class="cs__bar">
+      <h2 class="cs__title" id="cs-title">Chantier Martin</h2>
+      <p class="cs__count" data-cs-count>5 fichiers · 18,4 Mo</p>
+    </div>
+    <ul class="cs__list" role="list" data-cs-list>
+      <li class="cs__row" data-size="2.4" data-name="Devis-Martin-v3.pdf">
+        <span class="cs__file cs__file--pdf" aria-hidden="true">PDF</span>
+        <span class="cs__meta"><span class="cs__name">Devis-Martin-v3.pdf</span><span class="cs__sub">2,4 Mo · modifié il y a 2 h par Élise</span></span>
+        <button class="cs__del" type="button" aria-label="Mettre « Devis-Martin-v3.pdf » à la corbeille"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button>
+      </li>
+      <li class="cs__row" data-size="9.8" data-name="Plans-RDC.dwg">
+        <span class="cs__file cs__file--cad" aria-hidden="true">DWG</span>
+        <span class="cs__meta"><span class="cs__name">Plans-RDC.dwg</span><span class="cs__sub">9,8 Mo · modifié hier par Nathan</span></span>
+        <button class="cs__del" type="button" aria-label="Mettre « Plans-RDC.dwg » à la corbeille"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button>
+      </li>
+      <li class="cs__row" data-size="0.3" data-name="Suivi-budget.xlsx">
+        <span class="cs__file cs__file--xls" aria-hidden="true">XLS</span>
+        <span class="cs__meta"><span class="cs__name">Suivi-budget.xlsx</span><span class="cs__sub">312 Ko · modifié lundi par vous</span></span>
+        <button class="cs__del" type="button" aria-label="Mettre « Suivi-budget.xlsx » à la corbeille"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button>
+      </li>
+      <li class="cs__row" data-size="5.1" data-name="Photos-facade.zip">
+        <span class="cs__file cs__file--zip" aria-hidden="true">ZIP</span>
+        <span class="cs__meta"><span class="cs__name">Photos-facade.zip</span><span class="cs__sub">5,1 Mo · modifié le 28 oct. par Élise</span></span>
+        <button class="cs__del" type="button" aria-label="Mettre « Photos-facade.zip » à la corbeille"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button>
+      </li>
+      <li class="cs__row" data-size="0.8" data-name="Compte-rendu-réunion.docx">
+        <span class="cs__file cs__file--doc" aria-hidden="true">DOC</span>
+        <span class="cs__meta"><span class="cs__name">Compte-rendu-réunion.docx</span><span class="cs__sub">812 Ko · modifié le 24 oct. par Nathan</span></span>
+        <button class="cs__del" type="button" aria-label="Mettre « Compte-rendu-réunion.docx » à la corbeille"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button>
+      </li>
+    </ul>
+    <div class="cs__empty" data-cs-empty hidden>
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="10" width="32" height="28" rx="6"/><path d="M8 24h32M20 17h8M20 31h8"/></svg>
+      <p class="cs__empty-t">Ce dossier est vide</p>
+      <p class="cs__empty-s">Les fichiers supprimés restent 30 jours dans la corbeille.</p>
+      <button class="cs__reset" type="button" data-cs-reset>Restaurer les fichiers d’exemple</button>
+    </div>
+  </section>
+
+  <div class="ut-region" role="region" aria-label="Notifications">
+    <div class="ut" data-ut hidden>
+      <svg class="ut__ring" aria-hidden="true"><rect x=".75" y=".75" rx="11.25" pathLength="100"/></svg>
+      <span class="ut__bar" aria-hidden="true"></span>
+      <svg class="ut__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>
+      <p class="ut__msg" data-ut-msg></p>
+      <button class="ut__undo" type="button" data-ut-undo><span data-ut-label>Annuler</span><kbd class="ut__kbd" data-ut-kbd>Ctrl Z</kbd></button>
+      <button class="ut__x" type="button" aria-label="Fermer la notification" data-ut-close><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg></button>
+    </div>
+    <p class="ut__sr" role="status" aria-live="polite" data-ut-live></p>
+  </div>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .cs { --ut-spring: linear(0, 0.071, 0.233, 0.427, 0.618, 0.781, 0.908, 0.996, 1.049, 1.076, 1.082, 1.075, 1.061, 1.045, 1.03, 1.017, 1.007, 1, 0.996, 0.994, 0.993, 0.994, 0.995, 0.996, 0.998, 0.999, 0.999, 1, 1);
+    width: 100%; max-width: 640px; margin: 0 auto; font-family: var(--font-sans); color: var(--text); }
+  .cs *, .cs *::before, .cs *::after { box-sizing: border-box; }
+
+  .cs__panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sheet); overflow: hidden; }
+  .cs__head { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .cs__brand { display: inline-flex; align-items: center; gap: 8px; color: var(--text-strong); }
+  .cs__logo { width: 28px; height: 28px; }
+  .cs__logo-bg { fill: var(--accent); }
+  .cs__logo-mk { fill: none; stroke: var(--accent-fg); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
+  .cs__word { font-size: 18px; font-weight: 650; letter-spacing: -0.035em; }
+  .cs__crumbs { display: flex; gap: 8px; min-width: 0; margin-left: auto; font-size: 14px; color: var(--text-muted); white-space: nowrap; }
+  .cs__crumbs a { color: inherit; text-decoration: none; } .cs__crumbs a:hover { color: var(--text-strong); text-decoration: underline; }
+  .cs__crumbs [aria-current] { color: var(--text-strong); overflow: hidden; text-overflow: ellipsis; }
+  .cs__bar { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 24px 20px 12px; }
+  .cs__title { margin: 0; color: var(--text-strong); font-size: var(--t-section); line-height: 1.25; font-weight: 600; letter-spacing: -0.02em; }
+  .cs__count { margin: 0; font-size: 14px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+  .cs__list { list-style: none; margin: 0; padding: 0 8px 8px; }
+  .cs__row { display: flex; align-items: center; gap: 12px; padding: 8px 4px 8px 12px; min-height: 64px; border-radius: var(--radius-card); transition: background var(--motion-fast) var(--ease-out); }
+  .cs__row:hover { background: var(--state-hover); }
+  .cs__row.is-back { animation: cs-flash 1400ms var(--ease-out); }
+  @keyframes cs-flash { 0%, 30% { background: var(--accent-subtle); } }
+  .cs__row[data-gone] { display: none; }
+  .cs__file { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: var(--radius-ctl); font: 600 10px / 1 var(--font-mono); letter-spacing: .02em; border: 1px solid; }
+  .cs__file--pdf { background: var(--tint-red-bg); color: var(--tint-red-fg); border-color: var(--tint-red-border); }
+  .cs__file--cad { background: var(--tint-blue-bg); color: var(--tint-blue-fg); border-color: var(--tint-blue-border); }
+  .cs__file--xls { background: var(--tint-green-bg); color: var(--tint-green-fg); border-color: var(--tint-green-border); }
+  .cs__file--zip { background: var(--tint-amber-bg); color: var(--tint-amber-fg); border-color: var(--tint-amber-border); }
+  .cs__file--doc { background: var(--tint-violet-bg); color: var(--tint-violet-fg); border-color: var(--tint-violet-border); }
+  .cs__meta { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .cs__name { color: var(--text-strong); font-size: 15px; line-height: 22px; font-weight: 550; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cs__sub { color: var(--text-muted); font-size: 14px; line-height: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .cs__del { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 0; border-radius: var(--radius-ctl); background: transparent; color: var(--text-muted); cursor: pointer;
+    transition: color var(--motion-fast) var(--ease-out), background var(--motion-fast) var(--ease-out); }
+  .cs__del svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .cs__del:hover { color: var(--down); background: var(--tint-red-bg); }
+  .cs__del:focus-visible, .ut button:focus-visible, .cs__reset:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .cs__empty[hidden], .cs__list[hidden] { display: none; }
+  .cs__empty { display: grid; justify-items: center; gap: 4px; padding: 40px 24px 48px; text-align: center; }
+  .cs__empty svg { width: 48px; height: 48px; margin-bottom: 8px; fill: none; stroke: var(--text-disabled); stroke-width: 1.5; stroke-linecap: round; }
+  .cs__empty-t { margin: 0; color: var(--text-strong); font-weight: 600; }
+  .cs__empty-s { margin: 0 0 16px; color: var(--text-muted); font-size: 14px; }
+  .cs__reset { height: 44px; padding: 0 16px; border: 1px solid var(--border-control); border-radius: 999px; background: transparent; color: var(--text-strong); font: 550 14px var(--font-sans); cursor: pointer; }
+  .cs__reset:hover { background: var(--state-hover); }
+
+  /* Toast */
+  .ut-region { position: fixed; z-index: var(--z-toast); left: 50%; bottom: calc(24px + var(--safe-bottom)); translate: -50% 0; width: max-content; max-width: calc(100vw - 32px); pointer-events: none; }
+  .cs[data-position="bottom-right"] .ut-region { left: auto; right: 24px; translate: none; }
+  .cs[data-position="top-center"] .ut-region { bottom: auto; top: calc(24px + var(--safe-top)); }
+  .ut { position: relative; display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 6px 6px 16px; max-width: 520px; pointer-events: auto;
+    background: var(--surface); color: var(--text-strong); border-radius: var(--radius-card); box-shadow: var(--shadow-toast), inset 0 0 0 1px var(--border); }
+  .ut[hidden] { display: none; }
+  .ut__ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .ut__ring rect { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 100 100; stroke-linecap: round; }
+  .ut__bar { position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; border-radius: 2px; background: var(--accent); transform-origin: left; display: none; }
+  .cs[data-indicator="bar"] .ut__ring { display: none; }
+  .cs[data-indicator="bar"] .ut__bar { display: block; }
+  .ut__ico { flex: none; width: 20px; height: 20px; fill: none; stroke: var(--text-muted); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .ut__msg { margin: 0; flex: 1; min-width: 0; font-size: 15px; line-height: 20px; }
+  .ut__msg b { font-weight: 600; }
+  .ut__msg.is-bump { animation: ut-bump 320ms var(--ut-spring); }
+  @keyframes ut-bump { from { transform: translateY(6px); opacity: .2; } }
+  .ut__undo { display: inline-flex; align-items: center; gap: 8px; flex: none; height: 44px; padding: 0 12px; border: 0; border-radius: var(--radius-ctl); background: transparent;
+    color: var(--accent); font: 600 15px var(--font-sans); cursor: pointer; }
+  .ut__undo:hover { background: var(--accent-subtle); }
+  .ut__kbd { padding: 2px 6px; border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted); font: 500 12px / 16px var(--font-mono); }
+  .cs[data-shortcut="false"] .ut__kbd { display: none; }
+  .ut__x { display: grid; place-items: center; flex: none; width: 44px; height: 44px; margin-left: -8px; border: 0; border-radius: var(--radius-ctl); background: transparent; color: var(--text-muted); cursor: pointer; }
+  .ut__x:hover { color: var(--text-strong); background: var(--state-hover); }
+  .ut__x svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+  .ut__sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 599px) {
+    .cs__head { padding: 12px 16px; }
+    .cs__crumbs > a, .cs__crumbs > span[aria-hidden] { display: none; }
+    .cs__bar { flex-direction: column; gap: 2px; padding: 20px 16px 8px; }
+    .cs__list { padding: 0 4px 4px; }
+    .cs__row { gap: 12px; padding-left: 12px; }
+    .cs__sub { font-size: 13px; }
+    .ut-region, .cs[data-position="bottom-right"] .ut-region { left: 12px; right: 12px; translate: none; width: auto; max-width: none; bottom: calc(12px + var(--safe-bottom)); }
+    .cs[data-position="top-center"] .ut-region { bottom: auto; top: calc(12px + var(--safe-top)); }
+    .ut { max-width: none; }
+  }
+  @media (hover: none) { .ut__kbd { display: none; } }
+</style>
+
+<script>
+(function () {
+  var MAC = /Mac|iP(hone|ad|od)/.test(navigator.platform || navigator.userAgent);
+  function fmt(n) { return n < 1 ? Math.round(n * 1000) + ' Ko' : n.toFixed(1).replace('.', ',') + ' Mo'; }
+
+  function UndoToast(root) {
+    var list = root.querySelector('[data-cs-list]'), empty = root.querySelector('[data-cs-empty]'), count = root.querySelector('[data-cs-count]');
+    var toast = root.querySelector('[data-ut]'), msg = toast.querySelector('[data-ut-msg]'), ring = toast.querySelector('.ut__ring rect'), bar = toast.querySelector('.ut__bar');
+    var live = root.querySelector('[data-ut-live]'), undoBtn = toast.querySelector('[data-ut-undo]');
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    var pending = [], timer = null, hover = false, focus = false, hiding = null;
+    toast.querySelector('[data-ut-kbd]').textContent = MAC ? '⌘ Z' : 'Ctrl Z';
+
+    function rows() { return Array.prototype.slice.call(list.children); }
+    function refresh() {
+      var vis = rows().filter(function (r) { return !r.hasAttribute('data-gone') && !r.classList.contains('is-out'); });
+      var size = vis.reduce(function (s, r) { return s + parseFloat(r.dataset.size); }, 0);
+      count.textContent = vis.length + (vis.length > 1 ? ' fichiers · ' : ' fichier · ') + fmt(size);
+      var none = rows().every(function (r) { return r.hasAttribute('data-gone'); });
+      empty.hidden = !none; list.hidden = none;
+    }
+    function sizeRing() {
+      var w = toast.offsetWidth, h = toast.offsetHeight;
+      ring.setAttribute('width', Math.max(0, w - 1.5)); ring.setAttribute('height', Math.max(0, h - 1.5));
+    }
+    function collapse(row, done) {
+      row.classList.add('is-out');
+      if (reduce.matches || !row.animate) { row.setAttribute('data-gone', ''); return done && done(); }
+      var h = row.offsetHeight;
+      row.animate([{ height: h + 'px', opacity: 1, transform: 'none' }, { height: '0px', minHeight: '0px', paddingTop: 0, paddingBottom: 0, opacity: 0, transform: 'translateX(-12px)' }],
+        { duration: 260, easing: 'cubic-bezier(.4, 0, .2, 1)' }).onfinish = function () { row.setAttribute('data-gone', ''); done && done(); };
+    }
+    function expand(row) {
+      row.removeAttribute('data-gone'); row.classList.remove('is-out');
+      row.classList.remove('is-back'); void row.offsetWidth; row.classList.add('is-back');
+      if (reduce.matches || !row.animate) return;
+      var h = row.offsetHeight;
+      row.animate([{ height: '0px', minHeight: '0px', paddingTop: 0, paddingBottom: 0, opacity: 0 }, { height: h + 'px', opacity: 1 }],
+        { duration: 420, easing: getComputedStyle(root).getPropertyValue('--ut-spring') || 'ease-out' });
+    }
+
+    function message() {
+      if (pending.length === 1) return '<b>« ' + pending[0].dataset.name + ' »</b> placé dans la corbeille';
+      return '<b>' + pending.length + ' fichiers</b> placés dans la corbeille';
+    }
+    function startTimer() {
+      if (timer) timer.cancel();
+      var d = +root.dataset.duration || 6000, ind = root.dataset.indicator === 'bar' ? bar : ring;
+      var kf = ind === bar ? [{ transform: 'scaleX(1)' }, { transform: 'scaleX(0)' }] : [{ strokeDashoffset: 0 }, { strokeDashoffset: 100 }];
+      timer = ind.animate(kf, { duration: d, easing: 'linear', fill: 'forwards' });
+      timer.onfinish = commit;
+      syncPause();
+    }
+    function syncPause() {
+      if (!timer) return;
+      var stop = (root.dataset.pause !== 'false' && (hover || focus)) || document.hidden;
+      if (stop && timer.playState === 'running') timer.pause();
+      if (!stop && timer.playState === 'paused') timer.play();
+    }
+    function show() {
+      if (hiding) { hiding.cancel(); hiding = null; }
+      var fresh = toast.hidden;
+      toast.hidden = false;
+      msg.innerHTML = message();
+      if (!fresh && !reduce.matches) { msg.classList.remove('is-bump'); void msg.offsetWidth; msg.classList.add('is-bump'); }
+      sizeRing(); startTimer();
+      live.textContent = msg.textContent + '. ' + (MAC ? 'Commande' : 'Contrôle') + ' Z pour annuler.';
+      if (fresh && !reduce.matches && toast.animate) {
+        var top = root.dataset.position === 'top-center';
+        toast.animate([{ opacity: 0, transform: 'translateY(' + (top ? -16 : 16) + 'px) scale(.96)' }, { opacity: 1, transform: 'none' }],
+          { duration: 560, easing: getComputedStyle(root).getPropertyValue('--ut-spring') });
+      }
+    }
+    function hide() {
+      if (timer) { timer.onfinish = null; timer.cancel(); timer = null; }
+      hover = focus = false;
+      if (reduce.matches || !toast.animate) { toast.hidden = true; return; }
+      var top = root.dataset.position === 'top-center';
+      hiding = toast.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(' + (top ? -8 : 8) + 'px) scale(.98)' }], { duration: 180, easing: 'cubic-bezier(.4, 0, 1, 1)' });
+      hiding.onfinish = function () { toast.hidden = true; hiding = null; };
+    }
+    function remove(row) {
+      if (row.classList.contains('is-out')) return;
+      var next = row.nextElementSibling, prev = row.previousElementSibling;
+      pending.push(row);
+      collapse(row, refresh); refresh(); show();
+      var target = rows().filter(function (r) { return !r.classList.contains('is-out'); });
+      var f = (next && target.indexOf(next) > -1 ? next : prev && target.indexOf(prev) > -1 ? prev : null);
+      if (document.activeElement && row.contains(document.activeElement)) (f ? f.querySelector('.cs__del') : undoBtn).focus({ preventScroll: true });
+    }
+    function undo() {
+      if (!pending.length) return;
+      var back = pending; pending = [];
+      back.forEach(expand); refresh(); hide();
+      live.textContent = back.length > 1 ? back.length + ' fichiers restaurés.' : '« ' + back[0].dataset.name + ' » restauré.';
+      if (toast.contains(document.activeElement)) back[0].querySelector('.cs__del').focus({ preventScroll: true });
+    }
+    function commit() {
+      pending.forEach(function (r) { r.setAttribute('data-gone', ''); r.dispatchEvent(new CustomEvent('undotoast:commit', { bubbles: true })); });
+      pending = []; refresh();
+      var hadFocus = toast.contains(document.activeElement);
+      hide();
+      if (hadFocus) { var r = rows().filter(function (x) { return !x.hasAttribute('data-gone'); })[0]; (r ? r.querySelector('.cs__del') : root.querySelector('[data-cs-reset]')).focus({ preventScroll: true }); }
+    }
+
+    list.addEventListener('click', function (e) { var b = e.target.closest('.cs__del'); if (b) remove(b.closest('.cs__row')); });
+    undoBtn.addEventListener('click', undo);
+    toast.querySelector('[data-ut-close]').addEventListener('click', commit);
+    root.querySelector('[data-cs-reset]').addEventListener('click', function () { rows().forEach(expand); refresh(); rows()[0].querySelector('.cs__del').focus(); });
+    toast.addEventListener('pointerenter', function () { hover = true; syncPause(); });
+    toast.addEventListener('pointerleave', function () { hover = false; syncPause(); });
+    toast.addEventListener('focusin', function () { focus = true; syncPause(); });
+    toast.addEventListener('focusout', function (e) { if (!toast.contains(e.relatedTarget)) { focus = false; syncPause(); } });
+    document.addEventListener('visibilitychange', syncPause);
+    document.addEventListener('keydown', function (e) {
+      if (root.dataset.shortcut === 'false' || toast.hidden || !pending.length) return;
+      if ((e.metaKey || e.ctrlKey) && !e.shiftKey && (e.key === 'z' || e.key === 'Z')) { e.preventDefault(); undo(); }
+    });
+    if (window.ResizeObserver) new ResizeObserver(sizeRing).observe(toast);
+    refresh();
+    root._undoToast = { remove: remove, undo: undo, commit: commit, restart: function () { if (!toast.hidden) startTimer(); }, reset: function () { pending = []; hide(); rows().forEach(function (r) { r.removeAttribute('data-gone'); r.classList.remove('is-out'); }); refresh(); } };
+    return root._undoToast;
+  }
+  window.UndoToast = UndoToast;
+  document.querySelectorAll('[data-undo-toast]').forEach(function (el) { if (!el._undoToast) UndoToast(el); });
+})();
+</script>

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "total": 44,
+  "total": 63,
   "items": [
     {
       "id": "bouton-magnetique",
@@ -198,6 +198,60 @@
       }
     },
     {
+      "id": "tags-pile-physique",
+      "nom": "Tags en pile physique",
+      "categorie": "badges",
+      "niveau": "premium",
+      "palette": "jade",
+      "description": "Les tags tombent, se cognent et s’empilent avec un vrai moteur physique maison : on les attrape, on les lance, la souris pousse la pile, un clic met une compétence en avant. Chaque tag reste un bouton natif, accessible au clavier.",
+      "tags": [
+        "Physique",
+        "Glisser-lancer",
+        "Sans dépendance",
+        "Accessible",
+        "Recrutement"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 760
+      },
+      "ordre": 1,
+      "logo_exemple": {
+        "nom": "Tremplin",
+        "secteur": "Recrutement tech",
+        "fichier": "registry/items/tags-pile-physique/logo.svg",
+        "palette": "jade",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "barre-ile-dynamique",
+      "nom": "Barre île dynamique",
+      "categorie": "navigation",
+      "niveau": "premium",
+      "palette": "moka",
+      "description": "Une île flottante qui change de forme selon le contexte : repos, recherche avec suggestions, ajout au panier avec minuteur, livraison en cours, alerte. Largeur, hauteur et rayon suivent un vrai ressort, les contenus se croisent en fondu flouté.",
+      "tags": [
+        "Ressort",
+        "Morphing",
+        "Recherche",
+        "Clavier",
+        "E-commerce"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 900
+      },
+      "ordre": 2,
+      "logo_exemple": {
+        "nom": "Grain",
+        "secteur": "Torréfacteur en ligne (e-commerce café)",
+        "fichier": "registry/items/barre-ile-dynamique/logo.svg",
+        "palette": "moka",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "bento-cases-vivantes",
       "nom": "Bento à cases vivantes",
       "categorie": "bento",
@@ -266,6 +320,89 @@
       }
     },
     {
+      "id": "onglets-pastille",
+      "nom": "Onglets à pastille glissante",
+      "categorie": "navigation",
+      "niveau": "essentiel",
+      "palette": "azur",
+      "description": "Des onglets dont la pastille glisse d’un onglet à l’autre et s’étire en route : le bord de tête part avec un ressort, celui de queue suit. Survol fantôme, compteurs, défilement horizontal sur mobile et clavier ARIA complet.",
+      "tags": [
+        "Ressort",
+        "Clavier",
+        "ARIA",
+        "Responsive",
+        "Éducation"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 820
+      },
+      "ordre": 2,
+      "logo_exemple": {
+        "nom": "Cursif",
+        "secteur": "Éducation en ligne",
+        "fichier": "registry/items/onglets-pastille/logo.svg",
+        "palette": "azur",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "tableau-sparklines",
+      "nom": "Tableau à sparklines",
+      "categorie": "tableaux",
+      "niveau": "premium",
+      "palette": "petrole",
+      "description": "Une mini-courbe par ligne, avec repère et infobulle au survol. On réordonne les lignes au glisser (souris, doigt ou clavier), on trie par colonne, on filtre par segment ou par recherche : les lignes glissent à leur place sur un ressort, les totaux roulent chiffre par chiffre et la courbe cumulée se transforme.",
+      "tags": [
+        "Sparkline",
+        "Glisser-déposer",
+        "Tri",
+        "Filtres",
+        "Ressort",
+        "Clavier",
+        "Responsive"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 2,
+      "logo_exemple": {
+        "nom": "Éolis",
+        "secteur": "Énergie renouvelable (exploitation de parcs éoliens)",
+        "fichier": "registry/items/tableau-sparklines/logo.svg",
+        "palette": "petrole",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "texte-decodage",
+      "nom": "Décodage",
+      "categorie": "texte-anime",
+      "niveau": "essentiel",
+      "palette": "neon-lime",
+      "description": "Le texte se déchiffre lettre par lettre depuis des signes aléatoires : à l’entrée dans l’écran, au survol d’un lien, ou en boucle sur plusieurs phrases. Chaque lettre garde la largeur de sa forme finale, la ligne ne tremble jamais. Livré avec un champ secret dont les points se décodent en mot de passe.",
+      "tags": [
+        "Décodage",
+        "Survol",
+        "Boucle",
+        "Monospace",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 3,
+      "logo_exemple": {
+        "nom": "Verrou",
+        "secteur": "Cybersécurité (gestionnaire de mots de passe)",
+        "fichier": "registry/items/texte-decodage/logo.svg",
+        "palette": "neon-lime",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "bouton-maintenir",
       "nom": "Maintenir pour confirmer",
       "categorie": "boutons",
@@ -281,6 +418,33 @@
         "width": 640
       },
       "ordre": 3
+    },
+    {
+      "id": "pile-dialogues",
+      "nom": "Pile de dialogues",
+      "categorie": "modales",
+      "niveau": "essentiel",
+      "palette": "petrole",
+      "description": "Les étapes d’une confirmation sensible s’empilent en cartes décalées dans un seul <dialog> natif : la carte du dessous recule et se rogne, Échap ou « Retour » reviennent d’un niveau, le focus suit. Exemple : supprimer un espace de travail en choisissant quoi garder.",
+      "tags": [
+        "dialog natif",
+        "Étapes",
+        "Clavier",
+        "Confirmation",
+        "SaaS B2B"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 900
+      },
+      "ordre": 3,
+      "logo_exemple": {
+        "nom": "Jalon",
+        "secteur": "Gestion de projet (SaaS B2B)",
+        "fichier": "registry/items/pile-dialogues/logo.svg",
+        "palette": "petrole",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "rayons-concentriques",
@@ -309,6 +473,34 @@
       }
     },
     {
+      "id": "tableau-tableur",
+      "nom": "Tableau façon tableur",
+      "categorie": "tableaux",
+      "niveau": "premium",
+      "palette": "olive",
+      "description": "Une vraie feuille de calcul dans la page : 10 000 lignes virtualisées, sélection rectangulaire au glisser, poignée de recopie, édition en place et barre de formule, copier-coller compatible Excel et Google Sheets, annuler / rétablir, somme et moyenne de la sélection, et toute la navigation au clavier d’un tableur.",
+      "tags": [
+        "Tableur",
+        "Virtualisation",
+        "Copier-coller",
+        "Édition",
+        "Clavier",
+        "Sélection"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 3,
+      "logo_exemple": {
+        "nom": "Bivouac",
+        "secteur": "Agence événementielle (séminaires et rencontres en montagne)",
+        "fichier": "registry/items/tableau-tableur/logo.svg",
+        "palette": "olive",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "bouton-bordure-tracee",
       "nom": "Bouton à bordure tracée",
       "categorie": "boutons",
@@ -324,6 +516,61 @@
         "width": 640
       },
       "ordre": 4
+    },
+    {
+      "id": "encre-qui-monte",
+      "nom": "Encre qui monte",
+      "categorie": "texte-anime",
+      "niveau": "premium",
+      "palette": "encre",
+      "description": "Les lettres apparaissent comme de l’encre versée dans l’eau : un front bruité monte du pied des lettres (ou s’étend du centre), l’encre déborde, se teinte de l’accent là où elle est diluée, laisse des volutes, puis se resserre exactement sur la forme du texte. Shader WebGL maison, texte réel toujours présent.",
+      "tags": [
+        "WebGL",
+        "Shader",
+        "Bruit",
+        "Titre",
+        "Hero",
+        "Survol"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 4,
+      "logo_exemple": {
+        "nom": "Lavis",
+        "secteur": "Maison d’édition (littérature)",
+        "fichier": "registry/items/encre-qui-monte/logo.svg",
+        "palette": "encre",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "feuille-mobile-crans",
+      "nom": "Feuille mobile à crans",
+      "categorie": "modales",
+      "niveau": "premium",
+      "palette": "foret",
+      "description": "Un panneau du bas à trois crans (réduite, moitié, plein écran) qu’on glisse au doigt : il garde l’élan du geste, se pose sur le cran le plus proche avec un ressort et devient élastique aux bornes. En montant, la vue derrière recule et s’assombrit, comme sur iOS.",
+      "tags": [
+        "Gestes",
+        "Ressort",
+        "Inertie",
+        "Mobile",
+        "Mobilité urbaine"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 420
+      },
+      "ordre": 4,
+      "logo_exemple": {
+        "nom": "Rayon",
+        "secteur": "Vélos en libre-service (mobilité urbaine)",
+        "fichier": "registry/items/feuille-mobile-crans/logo.svg",
+        "palette": "foret",
+        "typo": "Geist SemiBold"
+      }
     },
     {
       "id": "regle-cotes",
@@ -694,6 +941,88 @@
       }
     },
     {
+      "id": "modale-element-partage",
+      "nom": "Modale à élément partagé",
+      "categorie": "modales",
+      "niveau": "premium",
+      "palette": "indigo",
+      "description": "La carte devient la modale : sa couverture et son titre voyagent jusqu’à leur place dans le dialogue sur un vrai ressort physique, interruptible à tout moment, puis retournent dans la grille. Sur mobile, la carte en ligne s’ouvre en feuille plein écran que l’on ferme d’un glissement. Démontré sur le catalogue d’une école en ligne.",
+      "tags": [
+        "Élément partagé",
+        "Ressort",
+        "Modale",
+        "Geste",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1024
+      },
+      "ordre": 20,
+      "logo_exemple": {
+        "nom": "Préau",
+        "secteur": "Éducation (cours en ligne)",
+        "fichier": "registry/items/modale-element-partage/logo.svg",
+        "palette": "indigo",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "tableau-bords-figes",
+      "nom": "Tableau à bords figés",
+      "categorie": "tableaux",
+      "niveau": "essentiel",
+      "palette": "mousse",
+      "description": "Un tableau large et long dont les quatre bords restent en place : en-tête, première colonne, colonne de statut et ligne de total. Une ombre apparaît sur chaque bord tant qu’il reste du contenu de ce côté ; tri par en-tête avec lignes qui glissent, surlignage croisé de la colonne survolée. Démontré sur le suivi des récoltes d’une coopérative agricole.",
+      "tags": [
+        "Tableau",
+        "Sticky",
+        "Défilement",
+        "Tri",
+        "Données",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1024
+      },
+      "ordre": 20,
+      "logo_exemple": {
+        "nom": "Parcelle",
+        "secteur": "Agritech (coopérative agricole)",
+        "fichier": "registry/items/tableau-bords-figes/logo.svg",
+        "palette": "mousse",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "toast-annulable",
+      "nom": "Toast annulable",
+      "categorie": "notifications",
+      "niveau": "essentiel",
+      "palette": "azur",
+      "description": "Après une suppression, le toast propose d’annuler : sa bordure se vide comme un compte à rebours, le minuteur se met en pause au survol et au focus, Ctrl/⌘ Z restaure. Les suppressions rapprochées se regroupent dans le même toast, et les lignes reviennent à leur place. Démontré dans un espace de stockage de documents.",
+      "tags": [
+        "Annuler",
+        "Compte à rebours",
+        "Toast",
+        "Raccourci clavier",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 800
+      },
+      "ordre": 20,
+      "logo_exemple": {
+        "nom": "Casier",
+        "secteur": "Stockage de documents en ligne",
+        "fichier": "registry/items/toast-annulable/logo.svg",
+        "palette": "azur",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "bouton-gluant",
       "nom": "Bouton gluant",
       "categorie": "boutons",
@@ -938,6 +1267,141 @@
       }
     },
     {
+      "id": "toasts-eventail",
+      "nom": "Pile en éventail",
+      "categorie": "notifications",
+      "niveau": "premium",
+      "palette": "orchidee",
+      "description": "Les toasts s’empilent en profondeur, s’étalent au survol, au toucher ou au clavier, et se ferment d’un glissement qui garde l’élan du geste. Position, échelle, hauteur et opacité suivent chacune leur ressort ; un toast « en cours » se transforme en succès sans sauter. Démontré dans un logiciel RH.",
+      "tags": [
+        "Toast",
+        "Pile",
+        "Ressort",
+        "Geste",
+        "Promesse",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1180
+      },
+      "ordre": 30,
+      "logo_exemple": {
+        "nom": "Relève",
+        "secteur": "Logiciel RH",
+        "fichier": "registry/items/toasts-eventail/logo.svg",
+        "palette": "orchidee",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "notifications-groupees",
+      "nom": "Centre de notifications groupées",
+      "categorie": "notifications",
+      "niveau": "premium",
+      "palette": "ambre",
+      "description": "Les notifications d’une même source se rangent en pile, avec le nombre en attente ; un clic déplie la pile en liste et les autres groupes s’écartent. Déplier, filtrer les non lues, effacer d’un glissement ou recevoir une nouvelle alerte : chaque changement est animé par FLIP sur un ressort, interruptible. Démontré dans le back-office d’une boutique en ligne.",
+      "tags": [
+        "Notifications",
+        "Pile",
+        "FLIP",
+        "Mise en page animée",
+        "Geste",
+        "Accessible"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 720
+      },
+      "ordre": 40,
+      "logo_exemple": {
+        "nom": "Hublot",
+        "secteur": "Back-office e-commerce",
+        "fichier": "registry/items/notifications-groupees/logo.svg",
+        "palette": "ambre",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "apercu-survol-liens",
+      "nom": "Aperçu au survol de liens",
+      "categorie": "survol",
+      "niveau": "essentiel",
+      "palette": "petrole",
+      "description": "Une liste de liens éditoriale : au survol d’une ligne, une vignette suit le pointeur avec inertie et inclinaison, sa pellicule glisse vers l’image de la ligne et les autres s’estompent. Au clavier, l’aperçu se cale à côté de la ligne ; au tactile, chaque ligne montre sa vignette.",
+      "tags": [
+        "Pointeur",
+        "Inertie",
+        "Liste",
+        "Éditorial",
+        "Clavier"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1024
+      },
+      "logo_exemple": {
+        "nom": "Méridienne",
+        "secteur": "Revue de voyage",
+        "fichier": "registry/items/apercu-survol-liens/logo.svg",
+        "palette": "petrole",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "curseur-contextuel",
+      "nom": "Curseur contextuel",
+      "categorie": "survol",
+      "niveau": "premium",
+      "palette": "moka",
+      "description": "Un curseur à ressorts qui change de rôle selon la cible : pastille « Voir » sur un produit, « Glisser » avec flèches sur un carrousel (glisser-déposer avec inertie), petite flèche sur un lien, barre de texte sur un paragraphe, et sur un bouton il s’accroche en prenant sa forme pendant que le bouton suit l’aimant. S’étire avec la vitesse ; coupé au tactile.",
+      "tags": [
+        "Pointeur",
+        "Ressort",
+        "Aimant",
+        "Carrousel",
+        "E-commerce"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1280
+      },
+      "logo_exemple": {
+        "nom": "Ourlet",
+        "secteur": "Prêt-à-porter en maille",
+        "fichier": "registry/items/curseur-contextuel/logo.svg",
+        "palette": "moka",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
+      "id": "degrade-maille",
+      "nom": "Dégradé maillé vivant",
+      "categorie": "backgrounds",
+      "niveau": "premium",
+      "palette": "lavande",
+      "description": "Quatre teintes tirées de la palette ondulent en nappes de soie dans un shader WebGL, avec un grain de film fin, un tourbillon doux autour du curseur et une zone calme pour le texte. Repli canvas 2D, pause hors écran.",
+      "tags": [
+        "WebGL",
+        "Shader",
+        "Dégradé",
+        "Grain",
+        "Hero",
+        "Pointeur"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 720
+      },
+      "logo_exemple": {
+        "nom": "Aplomb",
+        "secteur": "Banque en ligne pour indépendants",
+        "fichier": "registry/items/degrade-maille/logo.svg",
+        "palette": "lavande",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "flux-integrations",
       "nom": "Flux d’intégrations",
       "categorie": "fonctionnalites",
@@ -988,6 +1452,33 @@
       }
     },
     {
+      "id": "loupe-rvb",
+      "nom": "Loupe RVB",
+      "categorie": "survol",
+      "niveau": "premium",
+      "palette": "or",
+      "description": "Une loupe carrée (ou ronde) suit le curseur avec un ressort, grossit l’image avec une légère déformation de lentille et décale le rouge et le bleu vers ses bords ; le reste de l’image s’efface sous un voile. Shader WebGL 1, repli canvas 2D, pilotable au clavier et par appui long au tactile.",
+      "tags": [
+        "WebGL",
+        "Shader",
+        "Loupe",
+        "Aberration chromatique",
+        "Produit",
+        "Clavier"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 640
+      },
+      "logo_exemple": {
+        "nom": "Cadran",
+        "secteur": "Horlogerie",
+        "fichier": "registry/items/loupe-rvb/logo.svg",
+        "palette": "or",
+        "typo": "Geist SemiBold"
+      }
+    },
+    {
       "id": "pricing-3-offres",
       "nom": "Pricing 3 offres",
       "categorie": "pricing",
@@ -1018,6 +1509,32 @@
       "date": "2026-11-05",
       "thumb": {
         "width": 1024
+      }
+    },
+    {
+      "id": "trame-points-reactive",
+      "nom": "Trame de points réactive",
+      "categorie": "backgrounds",
+      "niveau": "essentiel",
+      "palette": "mousse",
+      "description": "Une grille de points tenus par des ressorts : ils s’écartent et grossissent autour du pointeur, prennent la couleur d’accent, et un clic envoie une onde. Canvas 2D léger, pointeur fantôme au tactile.",
+      "tags": [
+        "Canvas 2D",
+        "Pointeur",
+        "Ressort",
+        "Grille",
+        "Hero"
+      ],
+      "date": "2026-11-05",
+      "thumb": {
+        "width": 1024
+      },
+      "logo_exemple": {
+        "nom": "Semis",
+        "secteur": "Agritech (capteurs de sol)",
+        "fichier": "registry/items/trame-points-reactive/logo.svg",
+        "palette": "mousse",
+        "typo": "Geist SemiBold"
       }
     },
     {

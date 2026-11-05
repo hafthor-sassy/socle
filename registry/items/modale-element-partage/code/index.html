@@ -1,0 +1,455 @@
+<!-- Modale à élément partagé — HTML + CSS + JS autonomes. Nécessite tokens.css (variables du design system).
+     La carte devient la modale : sa couverture et son titre voyagent jusqu'à leur place dans le dialogue,
+     sur un ressort physique (interruptible), puis y retournent. Glisser vers le bas pour fermer. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="pr" data-shared-modal data-spring="doux" data-scrim="blur" data-recede="true" data-drag="true" style="--pr-max: 720px">
+  <header class="pr__top">
+    <a class="pr__brand" href="#" aria-label="Préau, accueil">
+      <svg class="pr__logo" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="28" class="pr__logo-bg"/><path class="pr__logo-mk" d="M22 47 50 27l28 20M33 50v24M67 50v24"/><circle class="pr__logo-dot" cx="50" cy="62" r="7"/></svg>
+      <span class="pr__word">préau</span>
+    </a>
+    <nav class="pr__nav" aria-label="Principale">
+      <a href="#" aria-current="page">Catalogue</a><a href="#">Parcours</a><a href="#">Mon espace</a>
+    </nav>
+    <span class="pr__me" aria-label="Compte de Léna Garnier">LG</span>
+  </header>
+
+  <div class="pr__intro">
+    <p class="pr__kicker">Automne 2026 · 6 cours</p>
+    <h2 class="pr__h">Cours à la une</h2>
+    <p class="pr__lead">Des formats courts, conçus par des praticiens. Ouvrez un cours pour voir son programme.</p>
+  </div>
+
+  <ul class="pr__grid" role="list" data-pr-grid>
+    <li>
+      <button class="pr__card" type="button" aria-haspopup="dialog" aria-expanded="false">
+        <span class="pr__cover" aria-hidden="true"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice"><rect width="480" height="200" class="c-subtle"/><g class="c-line" stroke-width="1"><path d="M0 52h480M0 84h480M0 116h480M0 148h480"/></g><path class="c-dash" d="M0 116h480" stroke-width="1.5" stroke-dasharray="4 6"/><text x="240" y="148" text-anchor="middle" class="c-glyph">Ag</text><circle cx="306" cy="58" r="6" class="c-accent"/><path class="c-ink" d="M158 52v96M322 52v96" stroke-width="1.5"/></svg></span>
+        <span class="pr__head">
+          <span class="pr__tag">Design · 4 h 20</span>
+          <span class="pr__title">Typographie pour l’écran</span>
+          <span class="pr__by"><span class="pr__av" aria-hidden="true">IB</span>avec Inès Barthe</span>
+        </span>
+      </button>
+      <template>
+        <p>Choisir une police, régler l’interlignage, bâtir une échelle qui tient du mobile au grand écran : la méthode d’une directrice artistique qui dessine des interfaces depuis quinze ans.</p>
+        <dl class="pr__stats"><div><dt>Durée</dt><dd>4 h 20</dd></div><div><dt>Leçons</dt><dd>18</dd></div><div><dt>Niveau</dt><dd>Intermédiaire</dd></div></dl>
+        <h4>Programme</h4>
+        <ol class="pr__prog"><li><span>Lire avant de dessiner</span><span>38 min</span></li><li><span>Échelles fluides et rythme vertical</span><span>1 h 12</span></li><li><span>Couleur, contraste et graisse</span><span>54 min</span></li><li><span>Atelier : refaire une page produit</span><span>1 h 36</span></li></ol>
+      </template>
+    </li>
+    <li>
+      <button class="pr__card" type="button" aria-haspopup="dialog" aria-expanded="false">
+        <span class="pr__cover" aria-hidden="true"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice"><rect width="480" height="200" class="c-accent"/><g class="c-on"><rect x="150" y="112" width="16" height="48" rx="3" opacity=".45"/><rect x="176" y="92" width="16" height="68" rx="3" opacity=".45"/><rect x="202" y="104" width="16" height="56" rx="3" opacity=".45"/><rect x="228" y="70" width="16" height="90" rx="3"/><rect x="254" y="82" width="16" height="78" rx="3" opacity=".45"/><rect x="280" y="58" width="16" height="102" rx="3" opacity=".45"/><rect x="306" y="74" width="16" height="86" rx="3" opacity=".45"/></g><path class="c-on-line" d="M130 132C190 120 220 70 260 76s70-36 100-40" stroke-width="3" stroke-linecap="round"/><circle cx="236" cy="70" r="7" class="c-on"/><path class="c-on-line" d="M120 168h240" stroke-width="1.5" opacity=".5"/></svg></span>
+        <span class="pr__head">
+          <span class="pr__tag">Données · 6 h 05</span>
+          <span class="pr__title">Statistiques sans détour</span>
+          <span class="pr__by"><span class="pr__av" aria-hidden="true">KB</span>avec Karim Belaïd</span>
+        </span>
+      </button>
+      <template>
+        <p>Moyenne, médiane, intervalle de confiance : comprendre ce que disent vraiment les chiffres d’un tableau de bord, et repérer ceux qui mentent. Aucun prérequis en mathématiques.</p>
+        <dl class="pr__stats"><div><dt>Durée</dt><dd>6 h 05</dd></div><div><dt>Leçons</dt><dd>24</dd></div><div><dt>Niveau</dt><dd>Débutant</dd></div></dl>
+        <h4>Programme</h4>
+        <ol class="pr__prog"><li><span>Décrire une série en trois nombres</span><span>1 h 05</span></li><li><span>Le hasard, sans formule</span><span>1 h 20</span></li><li><span>Corrélation n’est pas causalité</span><span>1 h 40</span></li><li><span>Lire un test A/B</span><span>2 h 00</span></li></ol>
+      </template>
+    </li>
+    <li>
+      <button class="pr__card" type="button" aria-haspopup="dialog" aria-expanded="false">
+        <span class="pr__cover" aria-hidden="true"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice"><rect width="480" height="200" class="c-raised"/><g class="c-muted"><rect x="204" y="52" width="132" height="10" rx="5"/><rect x="204" y="76" width="112" height="10" rx="5"/><rect x="152" y="124" width="184" height="10" rx="5"/><rect x="152" y="148" width="120" height="10" rx="5"/><rect x="40" y="52" width="80" height="10" rx="5" opacity=".5"/><rect x="40" y="76" width="64" height="10" rx="5" opacity=".5"/><rect x="368" y="124" width="72" height="10" rx="5" opacity=".5"/><rect x="368" y="148" width="56" height="10" rx="5" opacity=".5"/></g><rect x="152" y="100" width="128" height="10" rx="5" class="c-accent"/><rect x="286" y="94" width="3" height="22" rx="1.5" class="c-ink-f"/><text x="172" y="104" text-anchor="middle" class="c-quote">«</text></svg></span>
+        <span class="pr__head">
+          <span class="pr__tag">Écriture · 3 h 40</span>
+          <span class="pr__title">Écrire pour être lu</span>
+          <span class="pr__by"><span class="pr__av" aria-hidden="true">CF</span>avec Claire Fontanel</span>
+        </span>
+      </button>
+      <template>
+        <p>Une phrase, une idée. Des titres qui donnent envie, des courriels auxquels on répond, des pages que l’on finit. Exercices corrigés chaque semaine par l’autrice.</p>
+        <dl class="pr__stats"><div><dt>Durée</dt><dd>3 h 40</dd></div><div><dt>Leçons</dt><dd>14</dd></div><div><dt>Niveau</dt><dd>Tous niveaux</dd></div></dl>
+        <h4>Programme</h4>
+        <ol class="pr__prog"><li><span>Trouver ce que l’on veut dire</span><span>42 min</span></li><li><span>Couper sans perdre le sens</span><span>58 min</span></li><li><span>Titres, chapôs et intertitres</span><span>50 min</span></li><li><span>Relire comme un inconnu</span><span>1 h 10</span></li></ol>
+      </template>
+    </li>
+    <li>
+      <button class="pr__card" type="button" aria-haspopup="dialog" aria-expanded="false">
+        <span class="pr__cover" aria-hidden="true"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice"><rect width="480" height="200" class="c-accent"/><g class="c-on"><circle cx="130" cy="40" r="1.6"/><circle cx="176" cy="74" r="1.2"/><circle cx="208" cy="30" r="1.8"/><circle cx="318" cy="46" r="1.4"/><circle cx="352" cy="84" r="1.8"/><circle cx="96" cy="88" r="1.2"/><circle cx="388" cy="34" r="1.2"/><circle cx="262" cy="22" r="1.2"/></g><circle cx="276" cy="76" r="30" class="c-on"/><circle cx="290" cy="68" r="27" class="c-accent"/><path class="c-on" opacity=".35" d="M0 200V150l70-36 60 26 70-52 84 58 64-30 132 50v34z"/><path class="c-on" opacity=".7" d="M0 200v-26l96-30 88 28 92-40 104 44 100-22v46z"/></svg></span>
+        <span class="pr__head">
+          <span class="pr__tag">Photo · 2 h 55</span>
+          <span class="pr__title">Photographier la nuit</span>
+          <span class="pr__by"><span class="pr__av" aria-hidden="true">JL</span>avec Joachim Lenoir</span>
+        </span>
+      </button>
+      <template>
+        <p>Pose longue, bruit, balance des blancs sous les lampadaires : sortir de bonnes images après le coucher du soleil, avec un boîtier d’entrée de gamme ou un téléphone.</p>
+        <dl class="pr__stats"><div><dt>Durée</dt><dd>2 h 55</dd></div><div><dt>Leçons</dt><dd>11</dd></div><div><dt>Niveau</dt><dd>Débutant</dd></div></dl>
+        <h4>Programme</h4>
+        <ol class="pr__prog"><li><span>Le triangle d’exposition, la nuit</span><span>34 min</span></li><li><span>Trépied ou pas trépied</span><span>28 min</span></li><li><span>Villes, étoiles et filés</span><span>1 h 05</span></li><li><span>Développer sans faire du gris</span><span>48 min</span></li></ol>
+      </template>
+    </li>
+    <li>
+      <button class="pr__card" type="button" aria-haspopup="dialog" aria-expanded="false">
+        <span class="pr__cover" aria-hidden="true"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice"><rect width="480" height="200" class="c-subtle"/><g class="c-accent" data-heat></g></svg></span>
+        <span class="pr__head">
+          <span class="pr__tag">Code · 8 h 30</span>
+          <span class="pr__title">Analyser avec Python</span>
+          <span class="pr__by"><span class="pr__av" aria-hidden="true">SM</span>avec Sofia Marques</span>
+        </span>
+      </button>
+      <template>
+        <p>Nettoyer un export, croiser deux sources, publier un graphique propre : le flux complet d’une analyste, avec pandas et des carnets prêts à l’emploi.</p>
+        <dl class="pr__stats"><div><dt>Durée</dt><dd>8 h 30</dd></div><div><dt>Leçons</dt><dd>32</dd></div><div><dt>Niveau</dt><dd>Avancé</dd></div></dl>
+        <h4>Programme</h4>
+        <ol class="pr__prog"><li><span>Charger et nettoyer</span><span>1 h 50</span></li><li><span>Grouper, pivoter, joindre</span><span>2 h 25</span></li><li><span>Séries temporelles</span><span>2 h 10</span></li><li><span>Projet : rapport mensuel automatique</span><span>2 h 05</span></li></ol>
+      </template>
+    </li>
+    <li>
+      <button class="pr__card" type="button" aria-haspopup="dialog" aria-expanded="false">
+        <span class="pr__cover" aria-hidden="true"><svg viewBox="0 0 480 200" preserveAspectRatio="xMidYMid slice"><rect width="480" height="200" class="c-raised"/><g class="c-wave" stroke-width="2" stroke-linecap="round"><path d="M282 64a52 52 0 0 1 0 72"/><path d="M302 44a80 80 0 0 1 0 112" opacity=".6"/><path d="M322 24a108 108 0 0 1 0 152" opacity=".3"/></g><circle cx="226" cy="100" r="42" class="c-accent"/><circle cx="186" cy="100" r="42" class="c-subtle-b"/><circle cx="226" cy="100" r="42" class="c-blend"/></svg></span>
+        <span class="pr__head">
+          <span class="pr__tag">Communication · 2 h 10</span>
+          <span class="pr__title">Prendre la parole en réunion</span>
+          <span class="pr__by"><span class="pr__av" aria-hidden="true">HF</span>avec Hugo Ferrand</span>
+        </span>
+      </button>
+      <template>
+        <p>Structurer une intervention de deux minutes, tenir face aux objections, conclure par une décision. Mises en situation filmées, retours individuels.</p>
+        <dl class="pr__stats"><div><dt>Durée</dt><dd>2 h 10</dd></div><div><dt>Leçons</dt><dd>9</dd></div><div><dt>Niveau</dt><dd>Tous niveaux</dd></div></dl>
+        <h4>Programme</h4>
+        <ol class="pr__prog"><li><span>Le message en une phrase</span><span>26 min</span></li><li><span>Voix, silence, débit</span><span>32 min</span></li><li><span>Répondre sans se justifier</span><span>38 min</span></li><li><span>Mises en situation</span><span>34 min</span></li></ol>
+      </template>
+    </li>
+  </ul>
+
+  <div class="pr__scrim" data-pr-scrim hidden></div>
+  <div class="pr__dialog" role="dialog" aria-modal="true" aria-labelledby="pr-dlg-title" hidden>
+    <div class="pr__scroll">
+      <div class="pr__dcover" data-pr-drag><span class="pr__grab" aria-hidden="true"></span></div>
+      <div class="pr__dhead"></div>
+      <div class="pr__dbody">
+        <div class="pr__dcontent"></div>
+        <div class="pr__cta">
+          <button class="pr__btn pr__btn--main" type="button">Commencer le cours</button>
+          <button class="pr__btn" type="button">Ajouter à ma liste</button>
+        </div>
+        <p class="pr__note">Accès illimité · Certificat inclus · Annulable à tout moment</p>
+      </div>
+    </div>
+    <span class="pr__ghost pr__ghost--cover" aria-hidden="true"></span>
+    <span class="pr__ghost pr__ghost--head" aria-hidden="true"></span>
+    <button class="pr__close" type="button" aria-label="Fermer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .pr { --pr-p: 0; max-width: 1120px; margin: 0 auto; padding: 32px 24px 56px; color: var(--text); font-family: var(--font-sans); }
+  .pr *, .pr *::before, .pr *::after { box-sizing: border-box; }
+
+  /* Barre */
+  .pr__top { display: flex; align-items: center; gap: 32px; height: 48px; margin-bottom: 48px; }
+  .pr__brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text-strong); text-decoration: none; border-radius: var(--radius-ctl); }
+  .pr__logo { width: 32px; height: 32px; }
+  .pr__logo-bg { fill: var(--accent); }
+  .pr__logo-mk { fill: none; stroke: var(--accent-fg); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+  .pr__logo-dot { fill: var(--accent-fg); }
+  .pr__word { font-size: 20px; font-weight: 650; letter-spacing: -0.035em; }
+  .pr__nav { display: flex; gap: 4px; margin-right: auto; }
+  .pr__nav a { display: inline-flex; align-items: center; height: 36px; padding: 0 12px; border-radius: var(--radius-ctl); color: var(--text-muted); font-size: var(--t-sm); text-decoration: none; }
+  .pr__nav a:hover { color: var(--text-strong); background: var(--state-hover); }
+  .pr__nav a[aria-current] { color: var(--text-strong); font-weight: 550; }
+  .pr__me { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 999px; background: var(--raised); border: 1px solid var(--border); color: var(--text-strong); font-size: 12px; font-weight: 600; }
+
+  .pr__intro { margin-bottom: 32px; max-width: 560px; }
+  .pr__kicker { margin: 0 0 8px; font: 500 var(--t-xs) / var(--t-xs-lh) var(--font-mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: var(--track-caps); }
+  .pr__h { margin: 0 0 8px; color: var(--text-strong); font-size: clamp(28px, 2.4vw + 16px, 40px); line-height: 1.1; font-weight: 650; letter-spacing: -0.03em; }
+  .pr__lead { margin: 0; color: var(--text-muted); font-size: var(--t-base); line-height: 1.5; }
+
+  /* Grille et cartes */
+  .pr__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(296px, 1fr)); gap: 24px; }
+  .pr__grid > li { display: contents; }
+  .pr__grid template { display: none; }
+  .pr__card { position: relative; display: flex; flex-direction: column; width: 100%; padding: 0; text-align: left; font: inherit; color: inherit; cursor: pointer;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sheet); overflow: hidden;
+    transition: border-color var(--motion-base) var(--ease-out); -webkit-tap-highlight-color: transparent; }
+  .pr__card:hover { border-color: var(--border-strong); }
+  .pr__card:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .pr__card.is-src { visibility: hidden; }
+  .pr[data-recede="true"] .pr__card:not(.is-src) { opacity: calc(1 - .5 * var(--pr-p)); scale: calc(1 - .03 * var(--pr-p)); }
+  .pr__cover { display: block; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: var(--raised); }
+  .pr__cover svg, .pr__dcover svg, .pr__ghost--cover svg { display: block; width: 100%; height: 100%; }
+  .pr__card .pr__cover svg { transition: scale 600ms cubic-bezier(.2, .8, .2, 1); }
+  .pr__card:hover .pr__cover svg { scale: 1.04; }
+  .pr__head { display: flex; flex-direction: column; gap: 6px; padding: 16px 20px 20px; }
+  .pr__tag { font: 500 12px / 16px var(--font-mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: var(--track-caps); }
+  .pr__title { color: var(--text-strong); font-size: 18px; line-height: 1.25; font-weight: 600; letter-spacing: -0.015em; }
+  .pr__by { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; color: var(--text-muted); font-size: 14px; line-height: 20px; }
+  .pr__av { display: grid; place-items: center; width: 24px; height: 24px; flex: none; border-radius: 999px; background: var(--accent-subtle); color: var(--text-strong); font-size: 10px; font-weight: 650; letter-spacing: .02em; }
+
+  /* Illustrations des couvertures : variables de tokens uniquement */
+  .c-subtle { fill: var(--accent-subtle); } .c-raised { fill: var(--raised); } .c-accent { fill: var(--accent); }
+  .c-subtle-b { fill: var(--accent-subtle-border); } .c-blend { fill: var(--accent); opacity: .55; }
+  .c-line { stroke: var(--accent-subtle-border); fill: none; } .c-dash { stroke: var(--accent); fill: none; opacity: .6; }
+  .c-ink { stroke: var(--text-muted); fill: none; opacity: .5; } .c-ink-f { fill: var(--text-strong); }
+  .c-glyph { fill: var(--accent); font: 600 132px var(--font-sans); letter-spacing: -0.04em; }
+  .c-on { fill: var(--accent-fg); } .c-on-line { stroke: var(--accent-fg); fill: none; }
+  .c-muted { fill: var(--text-muted); opacity: .28; } .c-quote { fill: var(--accent); font: 600 96px var(--font-sans); }
+  .c-wave { stroke: var(--accent); fill: none; } .c-mono { fill: var(--text-muted); font: 500 12px var(--font-mono); }
+
+  /* Fond */
+  .pr__scrim { position: fixed; inset: 0; z-index: var(--z-scrim); background: var(--scrim); opacity: var(--pr-p); }
+  .pr[data-scrim="blur"] .pr__scrim { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .pr[data-scrim="none"] .pr__scrim { background: transparent; }
+
+  /* Dialogue */
+  .pr__dialog { position: fixed; z-index: var(--z-overlay); left: 0; top: 0; overflow: hidden; background: var(--surface); border-radius: var(--radius-sheet);
+    box-shadow: var(--shadow-popover); outline: none; contain: layout; touch-action: pan-y; }
+  .pr__dialog[hidden] { display: none; }
+  .pr__scroll { height: 100%; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+  .pr__dcover { position: relative; height: 220px; overflow: hidden; touch-action: none; cursor: grab; }
+  .pr__dcover:active { cursor: grabbing; }
+  .pr__grab { position: absolute; z-index: 1; top: 8px; left: 50%; width: 40px; height: 4px; margin-left: -20px; border-radius: 999px; background: var(--accent-fg); opacity: .7; display: none; }
+  .pr__dhead { display: flex; flex-direction: column; gap: 8px; padding: 24px 32px 0; }
+  .pr__dhead .pr__title, .pr__ghost--head .pr__title { font-size: 30px; line-height: 1.12; font-weight: 650; letter-spacing: -0.03em; }
+  .pr__dbody { padding: 16px 32px 32px; }
+  .pr__dcontent > p { margin: 0 0 24px; font-size: var(--t-base); line-height: 1.6; color: var(--text); max-width: 60ch; }
+  .pr__dcontent h4 { margin: 0 0 8px; color: var(--text-strong); font-size: 14px; font-weight: 600; }
+  .pr__stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0 0 24px; border: 1px solid var(--border); border-radius: var(--radius-card); }
+  .pr__stats div { padding: 12px 16px; } .pr__stats div + div { border-left: 1px solid var(--border); }
+  .pr__stats dt { font-size: 12px; line-height: 16px; color: var(--text-muted); }
+  .pr__stats dd { margin: 4px 0 0; color: var(--text-strong); font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .pr__prog { list-style: none; margin: 0 0 24px; padding: 0; counter-reset: pr; }
+  .pr__prog li { counter-increment: pr; display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-top: 1px solid var(--border); font-size: 15px; line-height: 22px; }
+  .pr__prog li span:first-child::before { content: counter(pr, decimal-leading-zero); margin-right: 12px; font: 500 12px var(--font-mono); color: var(--text-muted); }
+  .pr__prog li span:last-child { flex: none; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .pr__cta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pr__btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--border-control);
+    background: transparent; color: var(--text-strong); font: 550 15px var(--font-sans); cursor: pointer; transition: background var(--motion-fast) var(--ease-out); }
+  .pr__btn:hover { background: var(--state-hover); }
+  .pr__btn--main { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+  .pr__btn--main:hover { background: var(--accent-hover); }
+  .pr__btn:focus-visible, .pr__close:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .pr__note { margin: 12px 0 0; font-size: 13px; line-height: 18px; color: var(--text-muted); }
+  .pr__close { position: absolute; z-index: 3; top: 12px; right: 12px; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--surface); color: var(--text-strong); }
+  .pr__close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; }
+  .pr__close:hover { background: var(--raised); }
+
+  /* Calques partagés pendant le vol */
+  .pr__ghost { display: none; position: absolute; z-index: 2; overflow: hidden; pointer-events: none; }
+  .pr__ghost--head { flex-direction: column; gap: 8px; overflow: visible; }
+  .pr__dialog.is-anim .pr__ghost--cover { display: block; }
+  .pr__dialog.is-anim .pr__ghost--head { display: flex; }
+  .pr__dialog.is-anim .pr__dcover, .pr__dialog.is-anim .pr__dhead { visibility: hidden; }
+  .pr__dialog.is-anim .pr__scroll { overflow: hidden; }
+  .pr__dialog.is-fade { animation: pr-fade 160ms var(--ease-out); }
+  @keyframes pr-fade { from { opacity: 0; } }
+
+  /* Mobile : cartes en ligne, dialogue en feuille plein écran */
+  @media (max-width: 639px) {
+    .pr { padding: 16px 16px 40px; }
+    .pr__top { gap: 16px; margin-bottom: 32px; }
+    .pr__nav { display: none; }
+    .pr__brand { margin-right: auto; }
+    .pr__grid { grid-template-columns: 1fr; gap: 12px; }
+    .pr__card { flex-direction: row; align-items: center; padding: 8px; border-radius: var(--radius-sheet); }
+    .pr__cover { width: 104px; flex: none; aspect-ratio: 1; border-radius: var(--radius-card); }
+    .pr__head { padding: 4px 8px 4px 16px; gap: 4px; min-width: 0; }
+    .pr__title { font-size: 17px; }
+    .pr__by { margin-top: 2px; }
+    .pr__dcover { height: 220px; }
+    .pr__grab { display: block; }
+    .pr__dhead { padding: 20px 20px 0; }
+    .pr__dhead .pr__title, .pr__ghost--head .pr__title { font-size: 26px; }
+    .pr__dbody { padding: 16px 20px calc(24px + var(--safe-bottom)); }
+    .pr__stats div { padding: 12px; }
+    .pr__cta .pr__btn { flex: 1 1 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pr__card .pr__cover svg { transition: none; }
+    .pr[data-recede="true"] .pr__card:not(.is-src) { scale: none; }
+  }
+</style>
+
+<script>
+(function () {
+  /* Ressorts (raideur, amortissement) : masse 1, intégration semi-implicite à pas fixe. */
+  var SPRINGS = { doux: [170, 22], sec: [300, 35], joueur: [220, 15] };
+  var MQ_MOBILE = '(max-width: 639px)';
+
+  function SharedModal(root) {
+    var dlg = root.querySelector('.pr__dialog'), scrim = root.querySelector('[data-pr-scrim]');
+    var scroller = dlg.querySelector('.pr__scroll'), fCover = dlg.querySelector('.pr__dcover'), fHead = dlg.querySelector('.pr__dhead');
+    var content = dlg.querySelector('.pr__dcontent'), body = dlg.querySelector('.pr__dbody'), closeBtn = dlg.querySelector('.pr__close');
+    var gCover = dlg.querySelector('.pr__ghost--cover'), gHead = dlg.querySelector('.pr__ghost--head');
+    var bg = [root.querySelector('.pr__top'), root.querySelector('.pr__intro'), root.querySelector('[data-pr-grid]')];
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    var st = 'closed', p = 0, v = 0, target = 0, raf = 0, last = 0, src = null, F = null, T = null;
+    var api = { open: open, close: close, get state() { return st; } };
+
+    /* Illustration générée : carte de chaleur */
+    root.querySelectorAll('[data-heat]').forEach(function (g) {
+      var s = '', seed = 7;
+      for (var r = 0; r < 6; r++) for (var c = 0; c < 14; c++) {
+        seed = (seed * 9301 + 49297) % 233280;
+        var o = .12 + (seed / 233280) * .88 * (1 - Math.abs(c - 6.5) / 9);
+        s += '<rect x="' + (100 + c * 20) + '" y="' + (40 + r * 20) + '" width="16" height="16" rx="3" opacity="' + o.toFixed(2) + '"/>';
+      }
+      g.innerHTML = s;
+    });
+
+    function rel(el, box) { var r = el.getBoundingClientRect(); return { x: r.left - box.left, y: r.top - box.top, w: r.width, h: r.height }; }
+    function px(n) { return n + 'px'; }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function clamp(n) { return n < 0 ? 0 : n > 1 ? 1 : n; }
+    function radius(el) { return parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0; }
+
+    function measureCard() {
+      var card = src, box = card.getBoundingClientRect(), cv = card.querySelector('.pr__cover'), hd = card.querySelector('.pr__head');
+      var hr = rel(hd, box), cs = getComputedStyle(hd);
+      F = { x: box.left, y: box.top, w: box.width, h: box.height, r: radius(card), cover: rel(cv, box), cr: radius(cv),
+        head: { x: hr.x + parseFloat(cs.paddingLeft), y: hr.y + parseFloat(cs.paddingTop), w: hr.w - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) },
+        fs: parseFloat(getComputedStyle(card.querySelector('.pr__title')).fontSize), gap: parseFloat(cs.rowGap) || 6 };
+    }
+    function finalRect() {
+      var vw = document.documentElement.clientWidth, vh = window.innerHeight;
+      if (matchMedia(MQ_MOBILE).matches) return { x: 0, y: 12, w: vw, h: vh - 12, rb: 0 };
+      var w = Math.min(parseFloat(getComputedStyle(root).getPropertyValue('--pr-max')) || 720, vw - 48);
+      dlg.style.width = px(w); dlg.style.height = 'auto'; scroller.style.height = 'auto';
+      var h = Math.min(scroller.scrollHeight, vh - 48);
+      scroller.style.height = '';
+      return { x: Math.round((vw - w) / 2), y: Math.round((vh - h) / 2), w: w, h: h, rb: 16 };
+    }
+    function measureDialog() {
+      var box = dlg.getBoundingClientRect(), hd = rel(fHead, box), cs = getComputedStyle(fHead);
+      T.cover = rel(fCover, box);
+      T.head = { x: hd.x + parseFloat(cs.paddingLeft), y: hd.y + parseFloat(cs.paddingTop), w: hd.w - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) };
+      T.fs = parseFloat(getComputedStyle(fHead.querySelector('.pr__title')).fontSize); T.gap = parseFloat(cs.rowGap) || 8;
+    }
+    function place(r) { dlg.style.left = px(r.x); dlg.style.top = px(r.y); dlg.style.width = px(r.w); dlg.style.height = px(r.h); }
+
+    function frame(t) {
+      var o = clamp((t - .45) / .55);
+      place({ x: lerp(F.x, T.x, t), y: lerp(F.y, T.y, t), w: lerp(F.w, T.w, t), h: lerp(F.h, T.h, t) });
+      var rt = lerp(F.r, 16, t), rb = lerp(F.r, T.rb, clamp(t));
+      dlg.style.borderRadius = px(rt) + ' ' + px(rt) + ' ' + px(rb) + ' ' + px(rb);
+      var c0 = F.cover, c1 = T.cover, s = gCover.style;
+      s.left = px(lerp(c0.x, c1.x, t)); s.top = px(lerp(c0.y, c1.y, t)); s.width = px(lerp(c0.w, c1.w, t)); s.height = px(lerp(c0.h, c1.h, t));
+      s.borderRadius = px(Math.max(0, lerp(F.cr, 0, clamp(t))));
+      var h = gHead.style;
+      h.left = px(lerp(F.head.x, T.head.x, t)); h.top = px(lerp(F.head.y, T.head.y, t)); h.width = px(lerp(F.head.w, T.head.w, t));
+      h.rowGap = px(lerp(F.gap, T.gap, clamp(t)));
+      gHead.querySelector('.pr__title').style.fontSize = px(lerp(F.fs, T.fs, t));
+      body.style.opacity = o; body.style.transform = 'translateY(' + ((1 - o) * 16).toFixed(2) + 'px)';
+      closeBtn.style.opacity = o; closeBtn.style.scale = .6 + .4 * o;
+      root.style.setProperty('--pr-p', clamp(t).toFixed(4));
+    }
+
+    function step(now) {
+      var k = SPRINGS[root.dataset.spring] || SPRINGS.doux, dt = Math.min(.064, (now - last) / 1000 || .016); last = now;
+      for (var i = 0; i < 4; i++) { var a = -k[0] * (p - target) - k[1] * v; v += a * dt / 4; p += v * dt / 4; }
+      if (Math.abs(p - target) < .0008 && Math.abs(v) < .01) { p = target; frame(p); return settle(); }
+      frame(p); raf = requestAnimationFrame(step);
+    }
+    function run() { cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(step); }
+
+    function setInert(on) { bg.forEach(function (el) { if (el) el.inert = on; }); }
+    function fill(card) {
+      var cv = card.querySelector('.pr__cover svg'), hd = card.querySelector('.pr__head'), tpl = card.parentElement.querySelector('template');
+      fCover.querySelectorAll('svg').forEach(function (n) { n.remove(); });
+      fCover.appendChild(cv.cloneNode(true)); gCover.innerHTML = ''; gCover.appendChild(cv.cloneNode(true));
+      fHead.innerHTML = hd.innerHTML; gHead.innerHTML = hd.innerHTML;
+      var t = fHead.querySelector('.pr__title'); t.id = 'pr-dlg-title'; t.setAttribute('role', 'heading'); t.setAttribute('aria-level', '3');
+      content.innerHTML = tpl ? tpl.innerHTML : '';
+    }
+
+    function open(card) {
+      if (st !== 'closed') return;
+      src = card; fill(card); measureCard();
+      dlg.hidden = false; scrim.hidden = false; scroller.scrollTop = 0;
+      dlg.classList.remove('is-anim'); dlg.style.borderRadius = '';
+      T = finalRect(); place(T); measureDialog();
+      card.classList.add('is-src'); card.setAttribute('aria-expanded', 'true');
+      document.documentElement.style.overflow = 'hidden'; setInert(true);
+      st = 'opening'; target = 1;
+      root.dispatchEvent(new CustomEvent('sharedmodal:open', { detail: { card: card } }));
+      if (reduce.matches) { p = 1; v = 0; frame(1); dlg.classList.add('is-fade'); settle(); }
+      else { dlg.classList.add('is-anim'); scroller.style.width = px(T.w); if (p <= 0) { p = 0; v = 0; } frame(p); run(); }
+      closeBtn.focus({ preventScroll: true });
+    }
+    function close() {
+      if (st === 'closed' || st === 'closing') return;
+      st = 'closing'; target = 0;
+      if (reduce.matches) { p = 0; v = 0; return settle(); }
+      if (!dlg.classList.contains('is-anim')) {
+        T = { x: T.x, y: T.y, w: T.w, h: T.h, rb: T.rb };
+        var box = dlg.getBoundingClientRect(); T.x = box.left; T.y = box.top;
+        measureDialog(); scroller.style.width = px(T.w); dlg.classList.add('is-anim');
+      }
+      measureCard(); frame(p); run();
+    }
+    function settle() {
+      cancelAnimationFrame(raf);
+      if (target === 1) {
+        st = 'open'; dlg.classList.remove('is-anim', 'is-fade'); scroller.style.width = ''; frame(1);
+      } else {
+        st = 'closed'; dlg.hidden = true; scrim.hidden = true; dlg.classList.remove('is-anim', 'is-fade');
+        root.style.setProperty('--pr-p', 0); document.documentElement.style.overflow = ''; setInert(false);
+        if (src) { src.classList.remove('is-src'); src.setAttribute('aria-expanded', 'false'); src.focus({ preventScroll: true }); }
+        root.dispatchEvent(new CustomEvent('sharedmodal:close'));
+      }
+    }
+
+    root.querySelectorAll('.pr__card').forEach(function (c) { c.addEventListener('click', function () { open(c); }); });
+    closeBtn.addEventListener('click', close);
+    scrim.addEventListener('click', close);
+    dlg.querySelector('.pr__btn--main').addEventListener('click', close);
+    dlg.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      if (e.key !== 'Tab') return;
+      var f = Array.prototype.filter.call(dlg.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])'), function (n) { return n.offsetParent !== null; });
+      if (!f.length) return;
+      var first = f[0], lastF = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); lastF.focus(); }
+      else if (!e.shiftKey && document.activeElement === lastF) { e.preventDefault(); first.focus(); }
+    });
+    window.addEventListener('resize', function () {
+      if (st !== 'open') return;
+      dlg.style.borderRadius = ''; T = finalRect(); place(T); frame(1);
+    });
+
+    /* Glisser vers le bas pour fermer (souris, stylet, doigt) */
+    var drag = null;
+    fCover.addEventListener('pointerdown', function (e) {
+      if (root.dataset.drag !== 'true' || st !== 'open' || e.button > 0) return;
+      drag = { y0: e.clientY, dy: 0, t: performance.now(), vy: 0 };
+      fCover.setPointerCapture(e.pointerId);
+    });
+    fCover.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var now = performance.now(), dy = e.clientY - drag.y0;
+      drag.vy = (dy - drag.dy) / Math.max(1, now - drag.t); drag.dy = dy; drag.t = now;
+      var shown = dy > 0 ? dy : dy / (1 - dy / 40) * .25; /* élastique vers le haut */
+      dlg.style.transform = 'translateY(' + shown.toFixed(1) + 'px) scale(' + (1 - Math.max(0, dy) / 3000).toFixed(4) + ')';
+      root.style.setProperty('--pr-p', clamp(1 - Math.max(0, dy) / 600).toFixed(4));
+    });
+    function endDrag() {
+      if (!drag) return;
+      var d = drag; drag = null;
+      if (d.dy > 120 || (d.dy > 24 && d.vy > .6)) {
+        dlg.style.transform = ''; T.y += d.dy; place(T); close();
+      } else {
+        var from = dlg.style.transform; dlg.style.transform = ''; root.style.setProperty('--pr-p', 1);
+        if (from && dlg.animate) dlg.animate([{ transform: from }, { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.2, 1.3, .3, 1)' });
+      }
+    }
+    fCover.addEventListener('pointerup', endDrag);
+    fCover.addEventListener('pointercancel', endDrag);
+
+    root._sharedModal = api;
+    return api;
+  }
+  window.SharedModal = SharedModal;
+  document.querySelectorAll('[data-shared-modal]').forEach(function (el) { if (!el._sharedModal) SharedModal(el); });
+})();
+</script>

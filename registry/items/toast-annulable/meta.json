@@ -1,0 +1,55 @@
+{
+  "id": "toast-annulable",
+  "nom": "Toast annulable",
+  "categorie": "notifications",
+  "niveau": "essentiel",
+  "description": "Après une suppression, le toast propose d’annuler : sa bordure se vide comme un compte à rebours, le minuteur se met en pause au survol et au focus, Ctrl/⌘ Z restaure. Les suppressions rapprochées se regroupent dans le même toast, et les lignes reviennent à leur place. Démontré dans un espace de stockage de documents.",
+  "tags": ["Annuler", "Compte à rebours", "Toast", "Raccourci clavier", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 20,
+  "palette": "azur",
+  "logo_exemple": { "nom": "Casier", "secteur": "Stockage de documents en ligne", "fichier": "logo.svg", "palette": "azur", "typo": "Geist SemiBold" },
+  "thumb": { "width": 800 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Accent, surfaces, teintes de fichiers, ombre de toast" },
+    { "nom": "Script UndoToast", "note": "≈ 4 ko non minifié, inclus dans l’onglet HTML, sans dépendance : minuteur Web Animations pausable, regroupement, focus" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "framer-motion ≥ 11", "note": "Onglet React seulement : entrée sur ressort, AnimatePresence des lignes" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "duree", "label": "Délai pour annuler", "type": "number", "default": 6000, "min": 3000, "max": 12000, "step": 500, "unit": "ms",
+      "hint": "Au moins 5 s pour laisser le temps de lire et d’agir (WCAG 2.2.1).",
+      "code": { "html": "data-duration=\"{v}\"", "react": "duration={{v}}" } },
+    { "name": "indicateur", "label": "Compte à rebours", "type": "select", "default": "border",
+      "options": [ { "value": "border", "label": "Bordure" }, { "value": "bar", "label": "Barre" } ],
+      "code": { "html": "data-indicator=\"{v}\"", "react": "indicator = '{v}'," } },
+    { "name": "position", "label": "Position", "type": "select", "default": "bottom-center",
+      "options": [ { "value": "bottom-center", "label": "Bas" }, { "value": "bottom-right", "label": "Bas droite" }, { "value": "top-center", "label": "Haut" } ],
+      "code": { "html": "data-position=\"{v}\"", "react": "position = '{v}'," } },
+    { "name": "pause", "label": "Pause au survol et au focus", "type": "boolean", "default": true,
+      "code": { "html": "data-pause=\"{v}\"", "react": "pauseOnHover = {v}," } },
+    { "name": "raccourci", "label": "Raccourci Ctrl/⌘ Z", "type": "boolean", "default": true,
+      "code": { "html": "data-shortcut=\"{v}\"", "react": "shortcut = {v}," } },
+    { "name": "libelle", "label": "Libellé du bouton", "type": "text", "default": "Annuler",
+      "code": { "html": "<span data-ut-label>{v}</span>", "react": "undoLabel = '{v}'," } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/UndoToast.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour toute action destructrice mais réversible : supprimer, archiver, retirer d’une liste, se désabonner. Mieux qu’une boîte de confirmation : l’action est immédiate et l’erreur se rattrape.",
+    "L’action n’est validée qu’à la fin du délai ou à la fermeture du toast (événement undotoast:commit sur chaque ligne) : envoyez la suppression au serveur à ce moment-là, pas avant.",
+    "Une nouvelle suppression pendant que le toast est visible le met à jour (« 3 fichiers ») et relance le délai ; Annuler restaure tout le lot.",
+    "À éviter pour une action irréversible (paiement, envoi) : demandez une confirmation explicite."
+  ],
+  "accessibilite": [
+    "Message annoncé par une région role=\"status\" polie, avec le raccourci ; le retour (« restauré ») est annoncé aussi.",
+    "Le compte à rebours s’arrête tant que le pointeur ou le focus est sur le toast, et quand l’onglet est masqué : on a toujours le temps d’agir.",
+    "Le focus ne se perd jamais : il passe à la ligne suivante après une suppression, revient sur le fichier restauré après Annuler.",
+    "Boutons Annuler et Fermer de 44 px ; accent et texte AA en clair et en sombre ; le raccourci affiché disparaît sur écran tactile.",
+    "Avec « réduire les animations » : apparition et retour des lignes sans mouvement ; la bordure continue de se vider (information, pas décoration)."
+  ]
+}

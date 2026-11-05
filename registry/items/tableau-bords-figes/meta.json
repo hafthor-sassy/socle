@@ -1,0 +1,53 @@
+{
+  "id": "tableau-bords-figes",
+  "nom": "Tableau à bords figés",
+  "categorie": "tableaux",
+  "niveau": "essentiel",
+  "description": "Un tableau large et long dont les quatre bords restent en place : en-tête, première colonne, colonne de statut et ligne de total. Une ombre apparaît sur chaque bord tant qu’il reste du contenu de ce côté ; tri par en-tête avec lignes qui glissent, surlignage croisé de la colonne survolée. Démontré sur le suivi des récoltes d’une coopérative agricole.",
+  "tags": ["Tableau", "Sticky", "Défilement", "Tri", "Données", "Accessible"],
+  "date": "2026-11-05",
+  "ordre": 20,
+  "palette": "mousse",
+  "logo_exemple": { "nom": "Parcelle", "secteur": "Agritech (coopérative agricole)", "fichier": "logo.svg", "palette": "mousse", "typo": "Geist SemiBold" },
+  "thumb": { "width": 1024 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, bordures, voile (ombres), teintes de statut, hausse / baisse" },
+    { "nom": "Script StickyTable", "note": "≈ 3 ko non minifié, inclus dans l’onglet HTML, facultatif : ombres de bord, tri, surlignage. Le collage fonctionne en CSS seul." },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "densite", "label": "Densité", "type": "select", "default": "comfort",
+      "options": [ { "value": "comfort", "label": "Confort (56 px)" }, { "value": "compact", "label": "Compacte (40 px)" } ],
+      "code": { "html": "data-density=\"{v}\"", "react": "density = '{v}'," } },
+    { "name": "zebre", "label": "Lignes zébrées", "type": "boolean", "default": false,
+      "code": { "html": "data-zebra=\"{v}\"", "react": "zebra = {v}," } },
+    { "name": "croise", "label": "Surlignage croisé", "type": "boolean", "default": true,
+      "code": { "html": "data-cross=\"{v}\"", "react": "crosshair = {v}," } },
+    { "name": "ombres", "label": "Ombres de défilement", "type": "boolean", "default": true,
+      "code": { "html": "data-shadows=\"{v}\"", "react": "shadows = {v}," } },
+    { "name": "fin", "label": "Figer la dernière colonne", "type": "boolean", "default": true,
+      "hint": "Désactivé automatiquement sous 600 px pour laisser la place aux données.",
+      "code": { "html": "data-pin-end=\"{v}\"", "react": "pinEnd = {v}," } },
+    { "name": "hauteur", "label": "Hauteur maximale", "type": "number", "default": 520, "min": 320, "max": 720, "step": 40, "unit": "px",
+      "code": { "html": "--pc-max-h: {v}px", "react": "maxHeight = {v}," } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/StickyTable.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour tout tableau qui déborde dans les deux sens : suivi de production, portefeuille, planning, inventaire, comparatif de fournisseurs. On garde toujours le nom de la ligne, le sens de la colonne et le total sous les yeux.",
+    "Le collage est du CSS pur (position: sticky sur thead, tfoot, première et dernière cellule de chaque ligne, border-collapse: separate) ; le script ne fait qu’ajouter les ombres, le tri et le surlignage.",
+    "Chaque cellule porte sa valeur de tri dans data-v (nombre ou texte) : le tri reste juste quand l’affichage est formaté (« 1 476,3 », « 18 oct. », « — »).",
+    "Sur mobile, la culture passe sous le nom de parcelle, la colonne de statut se libère et la hauteur suit l’écran (64 vh)."
+  ],
+  "accessibilite": [
+    "Vrai <table> avec <caption>, en-têtes de colonne (scope=\"col\") et de ligne (<th scope=\"row\">) : les lecteurs d’écran annoncent la parcelle et la colonne de chaque valeur.",
+    "Zone de défilement nommée (role=\"region\", aria-labelledby) et focusable : les flèches du clavier font défiler dans les deux sens.",
+    "Tri par boutons d’en-tête avec aria-sort, annoncé par une région aria-live ; troisième clic : ordre d’origine.",
+    "Écart signalé par une flèche et un signe, pas par la couleur seule ; chiffres tabulaires ; textes ≥ 13 px dans le tableau, AA en clair et en sombre.",
+    "Avec « réduire les animations » : lignes triées sans glissement, flèche d’indice immobile."
+  ]
+}
