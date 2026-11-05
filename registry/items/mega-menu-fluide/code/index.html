@@ -1,0 +1,507 @@
+<!-- Méga-menu fluide — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css. Marque (Sillage) et contenus fictifs. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<header class="mm" data-mega data-stiffness="320" data-damping="30" data-slide="24" data-open-delay="80" data-close-delay="220" data-hover="true" data-arrow="true" data-pill="true">
+  <div class="mm__in" data-mm-in>
+    <a class="mm__logo" href="#" aria-label="Sillage, accueil">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6" fill="var(--accent)"/><path d="M7 14.5c1.6 1.4 3.2 2 5 2s3.4-.6 5-2M7 9.5c1.6-1.4 3.2-2 5-2s3.4.6 5 2" stroke="var(--accent-fg)" stroke-width="1.75" stroke-linecap="round"/></svg>
+      <span>Sillage</span>
+    </a>
+
+    <nav class="mm__nav" aria-label="Navigation principale">
+      <ul class="mm__list" data-mm-list>
+        <li><button class="mm__top" data-mm-top type="button" aria-expanded="false" aria-controls="mm-p-produit" data-mm-trigger="produit">Produit<svg class="mm__chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></li>
+        <li><button class="mm__top" data-mm-top type="button" aria-expanded="false" aria-controls="mm-p-solutions" data-mm-trigger="solutions">Solutions<svg class="mm__chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></li>
+        <li><button class="mm__top" data-mm-top type="button" aria-expanded="false" aria-controls="mm-p-ressources" data-mm-trigger="ressources">Ressources<svg class="mm__chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></li>
+        <li><a class="mm__top" data-mm-top href="#" data-mm-link>Tarifs</a></li>
+        <li class="mm__pill" data-mm-pill aria-hidden="true"></li>
+      </ul>
+    </nav>
+
+    <div class="mm__actions">
+      <a class="mm__signin" data-mm-signin href="#">Se connecter</a>
+      <a class="mm__cta" href="#"><span data-mm-cta>Essai gratuit</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <button class="mm__burger" type="button" aria-expanded="false" aria-controls="mm-drawer" data-mm-burger><span class="mm-sr">Ouvrir le menu</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+
+    <!-- Panneau flottant : suit l'entrée survolée, change de taille avec ressort -->
+    <div class="mm__pos" data-mm-pos>
+      <span class="mm__arrow" data-mm-arrow aria-hidden="true"></span>
+      <div class="mm__viewport" data-mm-viewport>
+
+        <div class="mm__panel mm__panel--produit" id="mm-p-produit" data-mm-panel="produit" hidden>
+          <div class="mm-grid">
+            <a class="mm-item" href="#"><span class="mm-ic"><svg viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><span class="mm-item__t"><b>Agents vocaux</b><span>Décrochent, qualifient, prennent rendez-vous.</span></span></a>
+            <a class="mm-item" href="#"><span class="mm-ic"><svg viewBox="0 0 24 24"><path d="M4 6h10M4 12h16M4 18h7"/><path d="M17 4l3 2-3 2"/></svg></span><span class="mm-item__t"><b>Standard intelligent</b><span>Routage par intention, horaires, débordement.</span></span></a>
+            <a class="mm-item" href="#"><span class="mm-ic"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg></span><span class="mm-item__t"><b>Transcriptions</b><span>Chaque appel résumé, classé, retrouvable.</span></span></a>
+            <a class="mm-item" href="#"><span class="mm-ic"><svg viewBox="0 0 24 24"><path d="M4 20h16M7 16v-5M12 16V7M17 16v-8"/></svg></span><span class="mm-item__t"><b>Analytique</b><span>Volumes, conversion et pics d’activité.</span></span></a>
+            <a class="mm-item" href="#"><span class="mm-ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg></span><span class="mm-item__t"><b>Intégrations</b><span>Agenda, CRM, Slack : plus de 40 connecteurs.</span></span></a>
+            <a class="mm-item" href="#"><span class="mm-ic"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 5l-3 14"/></svg></span><span class="mm-item__t"><b>API et webhooks</b><span>Branchez Sillage à votre propre produit.</span></span></a>
+          </div>
+          <a class="mm-feature" href="#">
+            <span class="mm-feature__tag">Nouveau</span>
+            <span class="mm-feature__wave" aria-hidden="true"><i style="height:38%"></i><i style="height:62%"></i><i style="height:48%"></i><i style="height:80%"></i><i style="height:56%"></i><i style="height:92%"></i><i style="height:70%"></i><i style="height:100%"></i><i style="height:64%"></i><i style="height:84%"></i><i style="height:52%"></i><i style="height:74%"></i><i style="height:96%"></i><i style="height:60%"></i><i style="height:44%"></i><i style="height:68%"></i><i style="height:36%"></i><i style="height:50%"></i></span>
+            <b>Clara 2, la voix qui ne fait pas robot</b>
+            <span>Intonation naturelle et réponse en 280&nbsp;ms.</span>
+            <span class="mm-feature__go">Écouter un appel<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+        </div>
+
+        <div class="mm__panel mm__panel--solutions" id="mm-p-solutions" data-mm-panel="solutions" hidden>
+          <div class="mm-cols">
+            <div class="mm-col">
+              <p class="mm-col__h" id="mm-h-metier">Par métier</p>
+              <ul aria-labelledby="mm-h-metier">
+                <li><a class="mm-row" href="#"><b>Cabinets médicaux</b><span>Rendez-vous et rappels</span></a></li>
+                <li><a class="mm-row" href="#"><b>Agences immobilières</b><span>Visites et qualification</span></a></li>
+                <li><a class="mm-row" href="#"><b>Artisans et dépannage</b><span>Urgences 24 h/24</span></a></li>
+                <li><a class="mm-row" href="#"><b>Restaurants</b><span>Réservations et commandes</span></a></li>
+              </ul>
+            </div>
+            <div class="mm-col">
+              <p class="mm-col__h" id="mm-h-equipe">Par équipe</p>
+              <ul aria-labelledby="mm-h-equipe">
+                <li><a class="mm-row" href="#"><b>Accueil et secrétariat</b><span>Zéro appel manqué</span></a></li>
+                <li><a class="mm-row" href="#"><b>Ventes</b><span>Leads qualifiés à chaud</span></a></li>
+                <li><a class="mm-row" href="#"><b>Support client</b><span>Réponses de niveau 1</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <a class="mm-case" href="#"><span class="mm-case__k">Étude de cas</span><span>Cabinet Lumière : 0 appel manqué en 3 mois</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+
+        <div class="mm__panel mm__panel--ressources" id="mm-p-ressources" data-mm-panel="ressources" hidden>
+          <ul class="mm-list">
+            <li><a class="mm-row mm-row--ic" href="#"><span class="mm-ic mm-ic--sm"><svg viewBox="0 0 24 24"><path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 1-4-4z"/><path d="M9 9h6M9 13h4"/></svg></span><b>Documentation</b><span>Guides d’installation et référence de l’API</span></a></li>
+            <li><a class="mm-row mm-row--ic" href="#"><span class="mm-ic mm-ic--sm"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span><b>Blog</b><span>Retours de terrain et nouveautés</span></a></li>
+            <li><a class="mm-row mm-row--ic" href="#"><span class="mm-ic mm-ic--sm"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M3 19a6 6 0 0 1 12 0M15 19a4 4 0 0 1 6-3.5"/></svg></span><b>Communauté</b><span>Entraide entre utilisateurs</span></a></li>
+            <li><a class="mm-row mm-row--ic" href="#"><span class="mm-ic mm-ic--sm"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg></span><b>Statut du service</b><span class="mm-ok"><i></i>Tous les systèmes fonctionnent</span></a></li>
+          </ul>
+          <a class="mm-post" href="#"><span class="mm-post__k">Dernier article · 4 min</span><b>Faut-il annoncer qu’un agent vocal décroche&nbsp;?</b></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile : tiroir à niveaux -->
+  <div class="mm-drawer" id="mm-drawer" data-mm-drawer hidden>
+    <div class="mm-drawer__scrim" data-mm-close></div>
+    <div class="mm-drawer__sheet" role="dialog" aria-modal="true" aria-label="Menu" data-mm-sheet>
+      <div class="mm-drawer__top">
+        <a class="mm__logo" href="#" aria-label="Sillage, accueil"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="6" fill="var(--accent)"/><path d="M7 14.5c1.6 1.4 3.2 2 5 2s3.4-.6 5-2M7 9.5c1.6-1.4 3.2-2 5-2s3.4.6 5 2" stroke="var(--accent-fg)" stroke-width="1.75" stroke-linecap="round"/></svg><span>Sillage</span></a>
+        <button class="mm-icon-btn" type="button" data-mm-close><span class="mm-sr">Fermer le menu</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div class="mm-levels" data-mm-levels>
+        <section class="mm-level" data-mm-level="root" aria-label="Menu principal">
+          <ul class="mm-mlist">
+            <li><button class="mm-mrow" data-mm-row type="button" data-mm-go="produit">Produit<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></li>
+            <li><button class="mm-mrow" data-mm-row type="button" data-mm-go="solutions">Solutions<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></li>
+            <li><button class="mm-mrow" data-mm-row type="button" data-mm-go="ressources">Ressources<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></li>
+            <li><a class="mm-mrow" data-mm-row href="#">Tarifs</a></li>
+          </ul>
+        </section>
+        <section class="mm-level" data-mm-level="produit" data-parent="root" aria-labelledby="mm-l-produit">
+          <button class="mm-back" data-mm-row type="button" data-mm-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Menu</button>
+          <h2 class="mm-level__h" data-mm-h id="mm-l-produit" tabindex="-1">Produit</h2>
+          <ul class="mm-mlist">
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Agents vocaux</b><span>Décrochent, qualifient, prennent rendez-vous.</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Standard intelligent</b><span>Routage par intention, horaires, débordement.</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Transcriptions</b><span>Chaque appel résumé, classé, retrouvable.</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Analytique</b><span>Volumes, conversion et pics d’activité.</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Intégrations</b><span>Plus de 40 connecteurs.</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>API et webhooks</b><span>Branchez Sillage à votre produit.</span></a></li>
+          </ul>
+        </section>
+        <section class="mm-level" data-mm-level="solutions" data-parent="root" aria-labelledby="mm-l-solutions">
+          <button class="mm-back" data-mm-row type="button" data-mm-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Menu</button>
+          <h2 class="mm-level__h" data-mm-h id="mm-l-solutions" tabindex="-1">Solutions</h2>
+          <ul class="mm-mlist">
+            <li><button class="mm-mrow" data-mm-row type="button" data-mm-go="metier">Par métier<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></li>
+            <li><button class="mm-mrow" data-mm-row type="button" data-mm-go="equipe">Par équipe<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Étude de cas</b><span>Cabinet Lumière : 0 appel manqué en 3 mois</span></a></li>
+          </ul>
+        </section>
+        <section class="mm-level" data-mm-level="metier" data-parent="solutions" aria-labelledby="mm-l-metier">
+          <button class="mm-back" data-mm-row type="button" data-mm-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Solutions</button>
+          <h2 class="mm-level__h" data-mm-h id="mm-l-metier" tabindex="-1">Par métier</h2>
+          <ul class="mm-mlist">
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Cabinets médicaux</b><span>Rendez-vous et rappels</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Agences immobilières</b><span>Visites et qualification</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Artisans et dépannage</b><span>Urgences 24 h/24</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Restaurants</b><span>Réservations et commandes</span></a></li>
+          </ul>
+        </section>
+        <section class="mm-level" data-mm-level="equipe" data-parent="solutions" aria-labelledby="mm-l-equipe">
+          <button class="mm-back" data-mm-row type="button" data-mm-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Solutions</button>
+          <h2 class="mm-level__h" data-mm-h id="mm-l-equipe" tabindex="-1">Par équipe</h2>
+          <ul class="mm-mlist">
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Accueil et secrétariat</b><span>Zéro appel manqué</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Ventes</b><span>Leads qualifiés à chaud</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Support client</b><span>Réponses de niveau 1</span></a></li>
+          </ul>
+        </section>
+        <section class="mm-level" data-mm-level="ressources" data-parent="root" aria-labelledby="mm-l-ressources">
+          <button class="mm-back" data-mm-row type="button" data-mm-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>Menu</button>
+          <h2 class="mm-level__h" data-mm-h id="mm-l-ressources" tabindex="-1">Ressources</h2>
+          <ul class="mm-mlist">
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Documentation</b><span>Guides d’installation et référence de l’API</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Blog</b><span>Retours de terrain et nouveautés</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Communauté</b><span>Entraide entre utilisateurs</span></a></li>
+            <li><a class="mm-mrow mm-mrow--sub" data-mm-row href="#"><b>Statut du service</b><span class="mm-ok"><i></i>Tous les systèmes fonctionnent</span></a></li>
+          </ul>
+        </section>
+      </div>
+      <div class="mm-drawer__foot">
+        <a class="mm-btn mm-btn--ghost" href="#">Se connecter</a>
+        <a class="mm-btn mm-btn--solid" href="#"><span data-mm-cta>Essai gratuit</span></a>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- /SECTION -->
+
+<style>
+  .mm { --mm-spring: cubic-bezier(.32, 1.25, .5, 1); position: relative; z-index: var(--z-header); background: var(--surface); border-bottom: 1px solid var(--border); font-family: var(--font-sans); color: var(--text); }
+  .mm a { color: inherit; text-decoration: none; }
+  .mm ul { margin: 0; padding: 0; list-style: none; }
+  .mm-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .mm :focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  .mm__in { position: relative; display: flex; align-items: center; gap: 24px; max-width: 1200px; height: 64px; margin: 0 auto; padding: 0 16px; }
+  .mm__logo { display: inline-flex; align-items: center; gap: 10px; height: 44px; border-radius: var(--radius-ctl); color: var(--text-strong) !important; font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+  .mm__nav { display: none; }
+  .mm__list { position: relative; display: flex; align-items: center; gap: 4px; isolation: isolate; }
+  .mm__top { position: relative; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--text); font: 500 14px/1 var(--font-sans); cursor: pointer; white-space: nowrap; transition: color var(--motion-fast) var(--ease-out); }
+  .mm__top:hover, .mm__top[aria-expanded="true"] { color: var(--text-strong); }
+  .mm__chev { color: var(--text-muted); transition: transform var(--motion-slow) var(--mm-spring); }
+  .mm__top[aria-expanded="true"] .mm__chev { transform: rotate(180deg); }
+  .mm__pill { position: absolute; left: 0; top: 50%; z-index: -1; width: 0; height: 36px; margin-top: -18px; border-radius: var(--radius-pill); background: var(--state-press); opacity: 0; pointer-events: none; transition: opacity var(--motion-base) var(--ease-out); will-change: transform, width; }
+  .mm__pill.is-on { opacity: 1; }
+  .mm[data-pill="false"] .mm__pill { display: none; }
+  .mm__actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .mm__signin { display: none; align-items: center; height: 36px; padding: 0 12px; border-radius: var(--radius-pill); font-size: 14px; font-weight: 500; color: var(--text) !important; }
+  @media (hover: hover) and (pointer: fine) { .mm__signin:hover { background: var(--state-hover); color: var(--text-strong) !important; } }
+  .mm__cta { display: none; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: var(--radius-pill); background: var(--accent); color: var(--accent-fg) !important; font-size: 14px; font-weight: 600; transition: background-color var(--motion-fast) var(--ease-out); }
+  .mm__cta svg { transition: transform var(--motion-slow) var(--mm-spring); }
+  @media (hover: hover) and (pointer: fine) { .mm__cta:hover { background: var(--accent-hover); } .mm__cta:hover svg { transform: translateX(2px); } }
+  .mm__burger, .mm-icon-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; margin-right: -8px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--text-strong); cursor: pointer; }
+  .mm__burger:active, .mm-icon-btn:active { background: var(--state-press); }
+
+  /* Panneau flottant */
+  .mm__pos { position: absolute; left: 0; top: 100%; display: none; padding-top: 10px; pointer-events: none; }
+  .mm__arrow { position: absolute; top: 4px; left: 0; z-index: 2; width: 12px; height: 12px; margin-left: -6px; border-radius: 3px 0 0 0; background: var(--surface); border: 1px solid var(--border); border-right: 0; border-bottom: 0; transform: rotate(45deg); opacity: 0; }
+  .mm[data-arrow="false"] .mm__arrow { display: none; }
+  .mm__viewport { position: relative; overflow: hidden; border-radius: var(--radius-sheet); background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-popover); opacity: 0; transform-origin: 50% 0; will-change: transform, width, height; }
+  .mm.is-open .mm__pos { pointer-events: auto; }
+  .mm__panel { position: absolute; left: 0; top: 0; padding: 16px; }
+  .mm__panel[hidden] { display: none; }
+  .mm__panel--produit { display: grid; grid-template-columns: minmax(0, 1fr) 232px; gap: 16px; width: 760px; }
+  .mm__panel--solutions { display: grid; gap: 12px; width: 560px; }
+  .mm__panel--ressources { display: grid; gap: 12px; width: 440px; }
+
+  .mm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .mm-item { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: start; padding: 12px; border-radius: var(--radius-card); transition: background-color var(--motion-fast) var(--ease-out); }
+  .mm-ic { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--raised); border: 1px solid var(--border); color: var(--text-strong); transition: background-color var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out); }
+  .mm-ic svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .mm-ic--sm { width: 36px; height: 36px; border-radius: 8px; } .mm-ic--sm svg { width: 18px; height: 18px; }
+  .mm-item__t { display: grid; gap: 2px; padding-top: 1px; }
+  .mm-item__t b, .mm-row b { color: var(--text-strong); font-size: 14px; line-height: 20px; font-weight: 600; }
+  .mm-item__t span, .mm-row span { color: var(--text-muted); font-size: 13px; line-height: 18px; text-wrap: pretty; }
+  .mm-item:hover, .mm-row:hover, .mm-item:focus-visible, .mm-row:focus-visible { background: var(--state-hover); }
+  .mm-item:hover .mm-ic, .mm-item:focus-visible .mm-ic { background: var(--surface); border-color: var(--border-control); }
+
+  .mm-feature { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; min-height: 100%; padding: 16px; border-radius: var(--radius-card); background: var(--raised); border: 1px solid var(--border); overflow: hidden; }
+  .mm-feature__tag { position: absolute; top: 12px; left: 12px; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: var(--radius-pill); background: var(--accent-subtle); color: var(--accent); border: 1px solid var(--accent-subtle-border); font-size: 12px; font-weight: 600; }
+  .mm-feature__wave { display: flex; align-items: center; gap: 3px; height: 48px; margin: 40px 0 8px; }
+  .mm-feature__wave i { flex: 1; border-radius: 999px; background: var(--accent); transform-origin: 50% 50%; }
+  .mm.is-open .mm-feature__wave i { animation: mm-wave 1.4s ease-in-out infinite alternate; }
+  .mm-feature__wave i:nth-child(3n) { animation-delay: -.3s; } .mm-feature__wave i:nth-child(3n+1) { animation-delay: -.7s; } .mm-feature__wave i:nth-child(4n) { animation-delay: -1.1s; } .mm-feature__wave i:nth-child(5n) { animation-delay: -.5s; }
+  @keyframes mm-wave { 0% { transform: scaleY(.45); } 100% { transform: scaleY(1); } }
+  .mm-feature b { color: var(--text-strong); font-size: 15px; line-height: 20px; font-weight: 600; text-wrap: balance; }
+  .mm-feature > span:not([class]) { color: var(--text-muted); font-size: 13px; line-height: 18px; }
+  .mm-feature__go { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; color: var(--text-strong); font-size: 13px; font-weight: 600; }
+  .mm-feature__go svg { transition: transform var(--motion-slow) var(--mm-spring); }
+  .mm-feature:hover .mm-feature__go svg, .mm-feature:focus-visible .mm-feature__go svg { transform: translateX(3px); }
+
+  .mm-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mm-col__h { margin: 0; padding: 8px 12px 4px; font: 500 11px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .mm-row { display: grid; gap: 2px; padding: 10px 12px; border-radius: var(--radius-ctl); transition: background-color var(--motion-fast) var(--ease-out); }
+  .mm-row--ic { grid-template-columns: 36px minmax(0, 1fr); column-gap: 12px; align-items: center; }
+  .mm-row--ic .mm-ic { grid-row: 1 / 3; }
+  .mm-case { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--radius-card); background: var(--raised); border: 1px solid var(--border); font-size: 13px; color: var(--text-strong) !important; font-weight: 500; }
+  .mm-case span:nth-child(2) { flex: 1; }
+  .mm-case__k { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: var(--radius-pill); background: var(--tint-green-bg); color: var(--tint-green-fg); border: 1px solid var(--tint-green-border); font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .mm-case svg { transition: transform var(--motion-slow) var(--mm-spring); }
+  .mm-case:hover svg, .mm-case:focus-visible svg { transform: translateX(3px); }
+  .mm-list { display: grid; gap: 2px; }
+  .mm-ok { display: inline-flex; align-items: center; gap: 6px; }
+  .mm-ok i { width: 6px; height: 6px; border-radius: 50%; background: var(--up); }
+  .mm-post { display: grid; gap: 4px; padding: 12px; border-radius: var(--radius-card); background: var(--raised); border: 1px solid var(--border); }
+  .mm-post__k { font: 500 11px/16px var(--font-mono); color: var(--text-muted); }
+  .mm-post b { color: var(--text-strong); font-size: 14px; line-height: 20px; font-weight: 600; }
+
+  /* Tiroir mobile à niveaux */
+  .mm-drawer { position: fixed; inset: 0; z-index: var(--z-overlay); }
+  .mm-drawer[hidden] { display: none; }
+  .mm-drawer__scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; transition: opacity var(--mm-dur, 400ms) var(--ease-out); }
+  .mm-drawer__sheet { position: absolute; top: 0; right: 0; bottom: 0; display: flex; flex-direction: column; width: min(420px, 100%); background: var(--surface); border-left: 1px solid var(--border); box-shadow: var(--shadow-popover); transform: translateX(100%); transition: transform var(--mm-dur, 400ms) var(--mm-spring); padding-bottom: var(--safe-bottom); }
+  .mm-drawer.is-open .mm-drawer__scrim { opacity: 1; }
+  .mm-drawer.is-open .mm-drawer__sheet { transform: none; }
+  .mm-drawer__top { display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 16px; padding-top: var(--safe-top); border-bottom: 1px solid var(--border); flex: none; }
+  .mm-levels { position: relative; flex: 1; overflow: hidden; }
+  .mm-level { position: absolute; inset: 0; overflow-y: auto; padding: 12px 8px 24px; background: var(--surface); transform: translateX(100%); visibility: hidden; transition: transform var(--mm-dur, 400ms) var(--mm-spring), opacity var(--mm-dur, 400ms) var(--ease-out), visibility 0s linear var(--mm-dur, 400ms); }
+  .mm-level[data-pos="current"] { transform: none; visibility: visible; transition-delay: 0s; }
+  .mm-level[data-pos="past"] { transform: translateX(-28%); opacity: 0; }
+  .mm-level[data-pos="future"] { transform: translateX(100%); }
+  .mm-mlist { display: grid; gap: 2px; }
+  .mm-mrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 56px; padding: 8px 12px; border: 0; border-radius: var(--radius-card); background: transparent; color: var(--text-strong) !important; font: 600 17px/1.3 var(--font-sans); letter-spacing: -0.01em; text-align: left; cursor: pointer; }
+  .mm-mrow svg { flex: none; width: 18px; height: 18px; fill: none; stroke: var(--text-muted); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .mm-mrow:active { background: var(--state-press); }
+  .mm-mrow--sub { display: grid; gap: 2px; justify-content: stretch; }
+  .mm-mrow--sub b { font-size: 16px; font-weight: 600; }
+  .mm-mrow--sub span { color: var(--text-muted); font-size: 14px; font-weight: 400; line-height: 20px; }
+  .mm-back { display: inline-flex; align-items: center; gap: 4px; height: 44px; padding: 0 12px 0 6px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--text-muted); font: 500 15px/1 var(--font-sans); cursor: pointer; }
+  .mm-back svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .mm-back:active { background: var(--state-press); }
+  .mm-level__h { margin: 4px 12px 8px; color: var(--text-strong); font-size: 24px; line-height: 1.2; font-weight: 600; letter-spacing: -0.02em; outline: none; }
+  .mm .mm-level__h:focus, .mm .mm-level__h:focus-visible { outline: none; }
+  .mm-drawer__foot { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 16px 16px; border-top: 1px solid var(--border); flex: none; }
+  .mm-btn { display: inline-flex; align-items: center; justify-content: center; height: 48px; border-radius: var(--radius-pill); font-size: 16px; font-weight: 600; }
+  .mm-btn--ghost { border: 1px solid var(--border-control); color: var(--text-strong) !important; }
+  .mm-btn--solid { background: var(--accent); color: var(--accent-fg) !important; }
+
+  @media (min-width: 960px) {
+    .mm__in { padding: 0 24px; gap: 32px; }
+    .mm__nav, .mm__pos { display: block; }
+    .mm__signin, .mm__cta { display: inline-flex; }
+    .mm__burger { display: none; }
+    .mm-drawer { display: none !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mm *, .mm *::before, .mm *::after { transition-duration: 0s !important; animation: none !important; }
+  }
+</style>
+
+<script>
+  /* Méga-menu fluide : panneau qui suit l'entrée (ressorts sur x, largeur, hauteur, flèche, pastille),
+     contenu qui glisse dans le sens du mouvement, clavier complet, tiroir mobile à niveaux. */
+  (function () {
+    var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var LINEAR_OK = window.CSS && CSS.supports && CSS.supports('transition-timing-function', 'linear(0, 1)');
+
+    /* Ressort critique ou sous-amorti, intégré à pas fixe : garde la vitesse quand la cible change en route. */
+    function Spring(v) { this.x = v; this.v = 0; this.t = v; }
+    Spring.prototype.set = function (t, instant) { this.t = t; if (instant) { this.x = t; this.v = 0; } };
+    Spring.prototype.step = function (dt, k, c) {
+      var h = 1 / 240;
+      for (var s = 0; s < dt; s += h) { var a = -k * (this.x - this.t) - c * this.v; this.v += a * h; this.x += this.v * h; }
+      if (Math.abs(this.x - this.t) < 0.05 && Math.abs(this.v) < 0.05) { this.x = this.t; this.v = 0; return false; }
+      return true;
+    };
+    function springCss(k, c) {
+      if (!LINEAR_OK) return { css: 'cubic-bezier(.32, 1.25, .5, 1)', dur: 420 };
+      var sp = new Spring(0), pts = [0], t = 0; sp.set(1);
+      while (t < 2.5) { var moving = sp.step(1 / 120, k, c); t += 1 / 120; pts.push(sp.x); if (!moving) break; }
+      var out = [], n = pts.length - 1;
+      for (var j = 0; j <= 40; j++) out.push(pts[Math.round(j / 40 * n)].toFixed(3));
+      return { css: 'linear(' + out.join(', ') + ')', dur: Math.round(t * 1000) };
+    }
+
+    function mount(root) {
+      if (root._mega) root._mega.destroy();
+      var d = root.dataset;
+      var o = {
+        k: parseFloat(d.stiffness) || 320, c: parseFloat(d.damping) || 30, slide: d.slide != null ? parseFloat(d.slide) : 24,
+        openDelay: d.openDelay != null ? parseFloat(d.openDelay) : 80, closeDelay: d.closeDelay != null ? parseFloat(d.closeDelay) : 220,
+        hover: d.hover !== 'false',
+      };
+      var inner = root.querySelector('[data-mm-in]'), list = root.querySelector('[data-mm-list]'), pill = root.querySelector('[data-mm-pill]');
+      var pos = root.querySelector('[data-mm-pos]'), vp = root.querySelector('[data-mm-viewport]'), arrow = root.querySelector('[data-mm-arrow]');
+      var triggers = Array.prototype.slice.call(root.querySelectorAll('[data-mm-trigger]'));
+      var tops = Array.prototype.slice.call(list.querySelectorAll('[data-mm-top]'));
+      var panels = {}; root.querySelectorAll('[data-mm-panel]').forEach(function (p) { panels[p.dataset.mmPanel] = p; });
+      var sc = springCss(o.k, o.c);
+      root.style.setProperty('--mm-spring', sc.css); root.style.setProperty('--mm-dur', Math.min(700, sc.dur) + 'ms');
+
+      var S = { x: new Spring(0), w: new Spring(0), h: new Spring(0), ax: new Spring(0), px: new Spring(0), pw: new Spring(0) };
+      var cur = null, raf = 0, last = 0, openT = 0, closeT = 0, shown = false, dead = false, vpAnim = null;
+      var listeners = [];
+      function on(el, ev, fn, opt) { el.addEventListener(ev, fn, opt); listeners.push([el, ev, fn, opt]); }
+
+      function rel(el) { var a = el.getBoundingClientRect(), b = inner.getBoundingClientRect(); return { l: a.left - b.left, w: a.width, c: a.left - b.left + a.width / 2 }; }
+      function measure(p) { var was = p.hidden; p.hidden = false; var r = { w: p.offsetWidth, h: p.offsetHeight }; p.hidden = was; return r; }
+      function frame(now) {
+        raf = 0; if (dead) return;
+        var dt = Math.min(0.05, (now - last) / 1000); last = now; var moving = false;
+        for (var key in S) moving = S[key].step(dt, o.k, o.c) || moving;
+        paint();
+        if (moving) raf = requestAnimationFrame(frame);
+      }
+      function kick() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+      function paint() {
+        vp.style.width = Math.max(0, S.w.x).toFixed(2) + 'px'; vp.style.height = Math.max(0, S.h.x).toFixed(2) + 'px';
+        pos.style.transform = 'translateX(' + S.x.x.toFixed(2) + 'px)';
+        arrow.style.transform = 'translateX(' + (S.ax.x - S.x.x).toFixed(2) + 'px) rotate(45deg)';
+        pill.style.transform = 'translateX(' + S.px.x.toFixed(2) + 'px)'; pill.style.width = Math.max(0, S.pw.x).toFixed(2) + 'px';
+      }
+      function pillTo(el, instant) {
+        if (!el) { pill.classList.remove('is-on'); return; }
+        var r = rel(el), lr = rel(list), first = !pill.classList.contains('is-on');
+        S.px.set(r.l - lr.l, instant || first || REDUCE); S.pw.set(r.w, instant || first || REDUCE); pill.classList.add('is-on'); kick();
+      }
+      function target(name, instant) {
+        var t = root.querySelector('[data-mm-trigger="' + name + '"]'), m = measure(panels[name]), r = rel(t), W = inner.clientWidth;
+        var x = Math.max(8, Math.min(W - m.w - 8, r.c - m.w / 2));
+        var snap = instant || REDUCE;
+        S.x.set(x, snap); S.w.set(m.w, snap); S.h.set(m.h, snap); S.ax.set(r.c, snap); kick();
+      }
+      function slide(fromName, toName) {
+        var a = panels[fromName], b = panels[toName];
+        var dir = triggers.findIndex(function (t) { return t.dataset.mmTrigger === toName; }) > triggers.findIndex(function (t) { return t.dataset.mmTrigger === fromName; }) ? 1 : -1;
+        b.hidden = false;
+        if (REDUCE || !b.animate) { a.hidden = true; return; }
+        var D = o.slide;
+        a.getAnimations().forEach(function (x) { x.cancel(); }); b.getAnimations().forEach(function (x) { x.cancel(); });
+        var out = a.animate([{ transform: 'translateX(0)', opacity: 1 }, { transform: 'translateX(' + (-dir * D) + 'px)', opacity: 0 }], { duration: 180, easing: 'cubic-bezier(.4, 0, 1, 1)', fill: 'forwards' });
+        out.onfinish = function () { if (cur !== fromName) { a.hidden = true; } out.cancel(); };
+        b.animate([{ transform: 'translateX(' + (dir * D) + 'px)', opacity: 0 }, { transform: 'translateX(0)', opacity: 1 }], { duration: 300, delay: 40, easing: 'cubic-bezier(.2, 0, 0, 1)', fill: 'backwards' });
+      }
+      function showVp(on) {
+        if (on === shown) return; shown = on;
+        if (vpAnim) vpAnim.cancel();
+        var kf = [{ opacity: 0, transform: 'translateY(-6px) scale(.97)' }, { opacity: 1, transform: 'none' }];
+        if (REDUCE || !vp.animate) { vp.style.opacity = on ? 1 : 0; arrow.style.opacity = on ? 1 : 0; return; }
+        vp.style.opacity = 1;
+        vpAnim = vp.animate(on ? kf : kf.slice().reverse(), { duration: on ? 220 : 160, easing: on ? 'cubic-bezier(.2, 0, 0, 1)' : 'cubic-bezier(.4, 0, 1, 1)', fill: 'forwards' });
+        arrow.animate([{ opacity: on ? 0 : 1 }, { opacity: on ? 1 : 0 }], { duration: on ? 220 : 140, fill: 'forwards' });
+        if (!on) vpAnim.onfinish = function () { if (!shown) { vp.style.opacity = 0; Object.keys(panels).forEach(function (n) { panels[n].hidden = true; }); } };
+      }
+      function open(name, opts) {
+        opts = opts || {};
+        clearTimeout(openT); clearTimeout(closeT);
+        if (cur === name) return;
+        var prev = cur; cur = name;
+        triggers.forEach(function (t) { t.setAttribute('aria-expanded', String(t.dataset.mmTrigger === name)); });
+        root.classList.add('is-open');
+        if (prev && shown) { target(name); slide(prev, name); }
+        else { Object.keys(panels).forEach(function (n) { panels[n].hidden = n !== name; panels[n].getAnimations && panels[n].getAnimations().forEach(function (x) { x.cancel(); }); }); target(name, true); showVp(true); }
+        pillTo(root.querySelector('[data-mm-trigger="' + name + '"]'));
+        root.dispatchEvent(new CustomEvent('megamenu:open', { detail: { panel: name } }));
+      }
+      function close(focusBack) {
+        clearTimeout(openT); clearTimeout(closeT);
+        if (!cur) return;
+        var t = root.querySelector('[data-mm-trigger="' + cur + '"]');
+        triggers.forEach(function (x) { x.setAttribute('aria-expanded', 'false'); });
+        cur = null; root.classList.remove('is-open'); showVp(false);
+        if (!list.matches(':hover')) pillTo(null);
+        if (focusBack && t) t.focus();
+      }
+      function links(name) { return Array.prototype.slice.call(panels[name].querySelectorAll('a[href]')); }
+
+      /* Survol */
+      triggers.forEach(function (t) {
+        on(t, 'pointerenter', function (e) {
+          if (e.pointerType !== 'mouse' || !o.hover) return;
+          clearTimeout(openT); clearTimeout(closeT);
+          var n = t.dataset.mmTrigger;
+          openT = setTimeout(function () { open(n); }, cur ? 40 : o.openDelay);
+        });
+        on(t, 'pointerleave', function () { clearTimeout(openT); });
+        on(t, 'click', function () { if (cur === t.dataset.mmTrigger) close(); else open(t.dataset.mmTrigger); });
+      });
+      tops.forEach(function (el) { on(el, 'pointerenter', function (e) { if (e.pointerType === 'mouse') { pillTo(el); if (cur && !el.dataset.mmTrigger && o.hover) { clearTimeout(closeT); closeT = setTimeout(function () { close(); }, 120); } } }); });
+      on(list, 'pointerleave', function () { if (!cur) pillTo(null); else pillTo(root.querySelector('[data-mm-trigger="' + cur + '"]')); });
+      on(root, 'pointerleave', function (e) { if (e.pointerType !== 'mouse' || !o.hover) return; clearTimeout(openT); closeT = setTimeout(function () { close(); }, o.closeDelay); });
+      on(root, 'pointerenter', function () { clearTimeout(closeT); });
+      on(pos, 'pointerenter', function () { clearTimeout(closeT); });
+      on(document, 'pointerdown', function (e) { if (cur && !root.contains(e.target)) close(); });
+
+      /* Clavier */
+      on(list, 'keydown', function (e) {
+        var i = tops.indexOf(e.target); if (i < 0) return;
+        var n = e.target.dataset.mmTrigger, go = null;
+        if (e.key === 'ArrowRight') go = tops[(i + 1) % tops.length];
+        else if (e.key === 'ArrowLeft') go = tops[(i - 1 + tops.length) % tops.length];
+        else if (e.key === 'Home') go = tops[0];
+        else if (e.key === 'End') go = tops[tops.length - 1];
+        if (go) { e.preventDefault(); go.focus(); pillTo(go); if (cur) { if (go.dataset.mmTrigger) open(go.dataset.mmTrigger); else close(); } return; }
+        if (n && e.key === 'ArrowDown') { e.preventDefault(); open(n); var L = links(n); if (L[0]) setTimeout(function () { L[0].focus(); }, 0); return; }
+        if (n && e.key === 'Tab' && !e.shiftKey && cur === n) { var L2 = links(n); if (L2[0]) { e.preventDefault(); L2[0].focus(); } }
+      });
+      on(pos, 'keydown', function (e) {
+        if (!cur) return; var L = links(cur), i = L.indexOf(document.activeElement); if (i < 0) return;
+        var t = root.querySelector('[data-mm-trigger="' + cur + '"]');
+        if (e.key === 'ArrowDown') { e.preventDefault(); L[(i + 1) % L.length].focus(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); if (i === 0) t.focus(); else L[i - 1].focus(); }
+        else if (e.key === 'Home') { e.preventDefault(); L[0].focus(); }
+        else if (e.key === 'End') { e.preventDefault(); L[L.length - 1].focus(); }
+        else if (e.key === 'Tab' && e.shiftKey && i === 0) { e.preventDefault(); t.focus(); }
+        else if (e.key === 'Tab' && !e.shiftKey && i === L.length - 1) { e.preventDefault(); var nx = tops[tops.indexOf(t) + 1]; close(); (nx || root.querySelector('[data-mm-signin]')).focus(); }
+      });
+      on(root, 'keydown', function (e) { if (e.key === 'Escape' && cur) { e.preventDefault(); close(true); } });
+      on(root, 'focusout', function (e) { if (cur && e.relatedTarget && !root.contains(e.relatedTarget)) close(); });
+      on(window, 'resize', function () { if (cur) target(cur, true); pillTo(cur ? root.querySelector('[data-mm-trigger="' + cur + '"]') : null, true); if (window.innerWidth >= 960 && drawer && !drawer.hidden) closeDrawer(false); });
+
+      /* ——— Tiroir mobile à niveaux ——— */
+      var burger = root.querySelector('[data-mm-burger]'), drawer = root.querySelector('[data-mm-drawer]'), sheet = root.querySelector('[data-mm-sheet]');
+      var levels = {}; root.querySelectorAll('[data-mm-level]').forEach(function (l) { levels[l.dataset.mmLevel] = l; });
+      var stack = ['root'], hideT = 0;
+      function setLevels(dir) {
+        Object.keys(levels).forEach(function (k) {
+          var l = levels[k], idx = stack.indexOf(k);
+          l.dataset.pos = idx === stack.length - 1 ? 'current' : idx >= 0 ? 'past' : 'future';
+          l.inert = l.dataset.pos !== 'current';
+        });
+      }
+      function goLevel(name) { stack.push(name); setLevels(1); var h = levels[name].querySelector('[data-mm-h]'); setTimeout(function () { h && h.focus({ preventScroll: true }); }, 30); }
+      function back() { if (stack.length < 2) return; var from = stack.pop(); setLevels(-1); var btn = levels[stack[stack.length - 1]].querySelector('[data-mm-go="' + from + '"]'); setTimeout(function () { btn && btn.focus({ preventScroll: true }); }, 30); }
+      function openDrawer() {
+        clearTimeout(hideT); stack = ['root']; setLevels(0);
+        drawer.hidden = false; burger.setAttribute('aria-expanded', 'true');
+        void drawer.offsetWidth; drawer.classList.add('is-open');
+        document.documentElement.style.overflow = 'hidden';
+        setTimeout(function () { var f = levels.root.querySelector('[data-mm-row]'); f && f.focus({ preventScroll: true }); }, 60);
+      }
+      function closeDrawer(focusBack) {
+        if (drawer.hidden) return;
+        drawer.classList.remove('is-open'); burger.setAttribute('aria-expanded', 'false');
+        document.documentElement.style.overflow = '';
+        hideT = setTimeout(function () { drawer.hidden = true; }, REDUCE ? 0 : 420);
+        if (focusBack !== false) burger.focus();
+      }
+      if (burger && drawer) {
+        on(burger, 'click', openDrawer);
+        drawer.querySelectorAll('[data-mm-close]').forEach(function (b) { on(b, 'click', function () { closeDrawer(); }); });
+        drawer.querySelectorAll('[data-mm-go]').forEach(function (b) { on(b, 'click', function () { goLevel(b.dataset.mmGo); }); });
+        drawer.querySelectorAll('[data-mm-back]').forEach(function (b) { on(b, 'click', back); });
+        on(drawer, 'keydown', function (e) {
+          if (e.key === 'Escape') { e.preventDefault(); closeDrawer(); return; }
+          if (e.key === 'ArrowLeft' && stack.length > 1 && !/INPUT|TEXTAREA/.test(e.target.tagName)) { e.preventDefault(); back(); return; }
+          var rows = Array.prototype.slice.call(levels[stack[stack.length - 1]].querySelectorAll('[data-mm-row]'));
+          var i = rows.indexOf(document.activeElement);
+          if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && rows.length) { e.preventDefault(); rows[(i + (e.key === 'ArrowDown' ? 1 : -1) + rows.length) % rows.length].focus(); return; }
+          if (e.key === 'ArrowRight' && document.activeElement && document.activeElement.dataset.mmGo) { e.preventDefault(); goLevel(document.activeElement.dataset.mmGo); return; }
+          if (e.key === 'Tab') { // piège du focus dans la feuille
+            var f = Array.prototype.slice.call(sheet.querySelectorAll('a[href], button')).filter(function (x) { return !x.closest('[inert]') && x.offsetParent !== null; });
+            if (!f.length) return; var a = f[0], z = f[f.length - 1];
+            if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+          }
+        });
+        setLevels(0);
+      }
+
+      root._mega = {
+        open: open, close: close, openDrawer: openDrawer, closeDrawer: closeDrawer, goLevel: goLevel, back: back,
+        get current() { return cur; },
+        destroy: function () {
+          dead = true; cancelAnimationFrame(raf); clearTimeout(openT); clearTimeout(closeT); clearTimeout(hideT);
+          listeners.forEach(function (l) { l[0].removeEventListener(l[1], l[2], l[3]); }); document.documentElement.style.overflow = '';
+          root._mega = null;
+        },
+      };
+      return root._mega;
+    }
+    document.querySelectorAll('[data-mega]').forEach(mount);
+  })();
+</script>

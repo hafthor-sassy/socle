@@ -1,0 +1,185 @@
+{
+  "id": "flux-integrations",
+  "nom": "Flux d’intégrations",
+  "categorie": "fonctionnalites",
+  "niveau": "premium",
+  "description": "Les apps connectées sont reliées au produit central par des courbes où circulent des faisceaux lumineux : les paquets entrent, le produit les compte, puis repartent vers les destinations. Survoler ou toucher une app intensifie son faisceau, affiche la donnée qui transite et sa fiche (volume, latence, état).",
+  "tags": [
+    "SVG",
+    "Animé",
+    "Intégrations",
+    "SaaS",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 1024
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "technique": "Courbes de Bézier SVG · dégradés suivant le faisceau · rAF",
+  "difficulte": 2,
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Accent, teintes des apps, bordures"
+    },
+    {
+      "nom": "Moteur intégré",
+      "note": "≈ 6 ko minifié, SVG natif, aucun CDN"
+    },
+    {
+      "nom": "Web Animations API",
+      "note": "Pulsations du hub (ignorées si absente)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "label": "Titre",
+      "type": "text",
+      "default": "Branchez vos outils. Maillon fait circuler le reste.",
+      "code": {
+        "html": "<h2 id=\"fx-title\" class=\"fx__title\">{v}</h2>",
+        "react": "title = '{v}'"
+      }
+    },
+    {
+      "name": "speed",
+      "label": "Vitesse",
+      "type": "number",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "code": {
+        "html": "data-speed=\"{v}\"",
+        "react": "speed={{v}}"
+      },
+      "hint": "0 fige les faisceaux à mi-course."
+    },
+    {
+      "name": "packets",
+      "label": "Paquets par lien",
+      "type": "number",
+      "default": 2,
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "code": {
+        "html": "data-packets=\"{v}\"",
+        "react": "packets={{v}}"
+      }
+    },
+    {
+      "name": "direction",
+      "label": "Sens",
+      "type": "select",
+      "default": "both",
+      "options": [
+        {
+          "value": "both",
+          "label": "Les deux"
+        },
+        {
+          "value": "in",
+          "label": "Entrant"
+        },
+        {
+          "value": "out",
+          "label": "Sortant"
+        }
+      ],
+      "hint": "Les deux : les sources alimentent le produit, qui alimente les destinations.",
+      "code": {
+        "html": "data-direction=\"{v}\"",
+        "react": "direction=\"{v}\""
+      }
+    },
+    {
+      "name": "beam",
+      "label": "Longueur du faisceau",
+      "type": "number",
+      "default": 96,
+      "min": 32,
+      "max": 200,
+      "step": 8,
+      "code": {
+        "html": "data-beam=\"{v}\"",
+        "react": "beam={{v}}"
+      },
+      "unit": "px"
+    },
+    {
+      "name": "curve",
+      "label": "Courbure",
+      "type": "number",
+      "default": 0.5,
+      "min": 0,
+      "max": 1,
+      "step": 0.05,
+      "code": {
+        "html": "data-curve=\"{v}\"",
+        "react": "curve={{v}}"
+      }
+    },
+    {
+      "name": "glow",
+      "label": "Halo des paquets",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-glow=\"{v}\"",
+        "react": "glow={{v}}"
+      }
+    },
+    {
+      "name": "statuts",
+      "label": "Afficher les pauses",
+      "type": "boolean",
+      "default": true,
+      "hint": "Une app en pause garde son lien en pointillés, sans flux.",
+      "code": {
+        "html": "data-statuts=\"{v}\"",
+        "react": "statuts={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/IntegrationFlow.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Sur une page produit ou d’accueil SaaS, pour montrer en une image ce que le produit connecte : 6 à 8 apps, réparties entre sources et destinations.",
+    "Chaque tuile porte ses données en data-* (nom, rôle, volume, latence, état, donnée en transit) : la fiche et l’étiquette s’en nourrissent, rien à coder.",
+    "Les courbes se recalculent à chaque redimensionnement : bureau en trois colonnes, mobile en pile verticale sous 900 px.",
+    "Utilisez des icônes génériques ou les logos fournis par vos partenaires avec leur accord ; ne reproduisez pas une marque sans autorisation.",
+    "Gardez une vitesse entre 0,6 et 1,4 : au-delà le flux devient nerveux et détourne du titre."
+  ],
+  "accessibilite": [
+    "Le SVG est aria-hidden ; chaque app est un bouton natif décrit par la fiche (aria-describedby), annoncée en direct (role=\"status\").",
+    "Clavier : Tab parcourt les apps et sélectionne leur flux au focus, Échap désélectionne. Au tactile, toucher fixe la sélection (aria-pressed).",
+    "L’état « en pause » est dit par le texte et la puce, pas seulement par la couleur ; contrastes AA en clair et en sombre.",
+    "« Réduire les animations » : faisceaux figés à mi-course, sans pulsation ; animation suspendue hors écran et onglet masqué."
+  ]
+}

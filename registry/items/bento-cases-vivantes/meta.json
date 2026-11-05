@@ -1,0 +1,65 @@
+{
+  "id": "bento-cases-vivantes",
+  "nom": "Bento à cases vivantes",
+  "categorie": "bento",
+  "ordre": 2,
+  "niveau": "premium",
+  "description": "Six cases qui jouent chacune leur micro-démo en entrant à l’écran : une courbe qui se trace puis se lit au survol, un appel entrant décroché et transcrit, des curseurs d’équipe en direct, des alertes qui s’empilent, un compteur à rouleaux et une latence en cascade. Horloge par case, tout se fige hors écran.",
+  "tags": ["Animé à la vue", "Ressort", "SaaS", "Responsive"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop", "desktopMin": 1280 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, teintes, couleurs de graphique, accent" },
+    { "nom": "IntersectionObserver · ResizeObserver", "note": "Déclenchement à la vue et mesure du graphique (natifs)" },
+    { "nom": "Intl.NumberFormat", "note": "Chiffres au format français" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement, aucune autre dépendance" }
+  ],
+  "props": [
+    { "name": "title", "label": "Titre", "type": "text", "default": "Votre standard ne dort jamais.",
+      "code": { "html": "<h2 id=\"lb-title\">{v}</h2>", "react": "title=\"{v}\"" } },
+    { "name": "header", "label": "Afficher l’en-tête", "type": "boolean", "default": true,
+      "code": { "react": "header={{v}}" } },
+    { "name": "speed", "label": "Vitesse", "type": "number", "default": 1, "min": 0.5, "max": 2, "step": 0.25, "unit": "×",
+      "hint": "Multiplie toutes les durées des micro-démos.",
+      "code": { "html": "data-speed=\"{v}\"", "react": "speed={{v}}" } },
+    { "name": "stagger", "label": "Décalage entre cases", "type": "number", "default": 120, "min": 0, "max": 400, "step": 40, "unit": "ms",
+      "hint": "Cases entrées à l’écran ensemble : chacune démarre après la précédente.",
+      "code": { "html": "data-stagger=\"{v}\"", "react": "stagger={{v}}" } },
+    { "name": "ambient", "label": "Vie continue", "type": "boolean", "default": true,
+      "hint": "Après l’intro : nouvelles alertes, compteur qui avance, curseurs qui bougent, appel suivant. En pause hors écran.",
+      "code": { "html": "data-ambient=\"{v}\"", "react": "ambient={{v}}" } },
+    { "name": "repeat", "label": "Rejouer à chaque entrée", "type": "boolean", "default": false,
+      "hint": "Sinon, chaque case joue son intro une seule fois.",
+      "code": { "html": "data-repeat=\"{v}\"", "react": "repeat={{v}}" } },
+    { "name": "halo", "label": "Halo au survol", "type": "boolean", "default": true,
+      "code": { "html": "data-halo=\"{v}\"", "react": "halo={{v}}" } },
+    { "name": "stiffness", "label": "Raideur du ressort", "type": "number", "default": 180, "min": 80, "max": 400, "step": 10,
+      "code": { "html": "data-stiffness=\"{v}\"", "react": "stiffness={{v}}" } },
+    { "name": "damping", "label": "Amortissement", "type": "number", "default": 18, "min": 8, "max": 40, "step": 1,
+      "hint": "Bas : les éléments rebondissent. Haut : arrivée sèche.",
+      "code": { "html": "data-damping=\"{v}\"", "react": "damping={{v}}" } },
+    { "name": "gap", "label": "Espacement", "type": "number", "default": 16, "min": 8, "max": 32, "step": 8, "unit": "px",
+      "code": { "html": "--lb-gap: {v}px", "react": "gap={{v}}" } },
+    { "name": "radius", "label": "Rayon des cases", "type": "select", "default": "16",
+      "options": [{ "value": "12", "label": "12 px" }, { "value": "16", "label": "16 px" }],
+      "code": { "html": "--lb-radius: {v}px", "react": "radius={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/LiveBento.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Section « fonctionnalités » d’une page produit SaaS : chaque case prouve un atout en le montrant, au lieu de l’illustrer.",
+    "Remplacez les textes et les données d’exemple (VALS, NOTES, BARS) ; chaque micro-démo est un objet indépendant (init, reset, play, final) que l’on peut retirer ou dupliquer.",
+    "Gardez « Vie continue » sur une page d’accueil, coupez-la sur une page longue où la section reste visible longtemps.",
+    "Différence avec Bento 5 cases : même grille asymétrique de principe, mais six cases à démonstration animée et une case haute sur deux rangées."
+  ],
+  "accessibilite": [
+    "Les visuels animés sont aria-hidden : chaque case garde un titre h3 et une phrase qui disent l’atout en clair.",
+    "Avec « réduire les animations », chaque case s’affiche directement dans son état final, sans boucle ni transition.",
+    "Horloge propre à chaque case : rien ne tourne hors écran ni onglet masqué (IntersectionObserver + visibilitychange).",
+    "Contrastes AA mesurés en clair et en sombre ; noms des curseurs et alertes en paires teinte fond / texte du DS, jamais la couleur seule."
+  ]
+}

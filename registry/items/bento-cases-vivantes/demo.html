@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bento à cases vivantes — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  html.bg-grid .lb-zone { background: transparent; }
+  .is-thumb .lb-zone { padding-top: 72px; padding-bottom: 40px; }
+  .is-thumb .lb-head { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  /* Props → attributs data-* de la grille, puis le script du composant est relancé (il détruit l'instance précédente). */
+  var props = Socle.props({ title: 'Votre standard ne dort jamais.', header: true, speed: 1, stagger: 120, ambient: true, repeat: false, halo: true, stiffness: 180, damping: 18, gap: 16, radius: '16' });
+  var src = null;
+  var mount = document.getElementById('mount');
+  function render(p) {
+    if (!src) return;
+    var old = mount.querySelector('[data-live-bento]');
+    if (old && old._liveBento) old._liveBento.destroy();
+    var y = window.scrollY;
+    mount.innerHTML = src.markup;
+    var g = mount.querySelector('[data-live-bento]');
+    g.dataset.speed = p.speed; g.dataset.stagger = p.stagger; g.dataset.ambient = p.ambient; g.dataset.repeat = p.repeat;
+    g.dataset.halo = p.halo; g.dataset.stiffness = p.stiffness; g.dataset.damping = p.damping;
+    g.style.setProperty('--lb-gap', p.gap + 'px'); g.style.setProperty('--lb-radius', p.radius + 'px');
+    if (Socle.thumb) g.setAttribute('data-thumb', '');
+    var h = mount.querySelector('#lb-title'); if (h && p.title) h.textContent = p.title;
+    var head = mount.querySelector('.lb-head'); if (head && !p.header) head.remove();
+    try { new Function(src.script)(); } catch (e) { console.error(e); }
+    window.scrollTo(0, y);
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props);
+  });
+  Socle.onChange(render);
+  Socle.onReplay(function () { var g = mount.querySelector('[data-live-bento]'); if (g && g._liveBento) g._liveBento.replay(); });
+</script>
+</body>
+</html>

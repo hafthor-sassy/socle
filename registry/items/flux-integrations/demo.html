@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flux d’intégrations — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  html.bg-grid .fx { background: transparent; }
+  .fx { min-height: 100vh; }
+  .is-thumb .fx { padding: 48px 24px; display: grid; align-content: center; }
+  .is-thumb .fx__info { display: none; }
+  .is-thumb .fx__stage { margin-top: 48px; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  /* Props → attributs data-* de la section, puis mise à jour du moteur (la sélection est conservée). */
+  var props = Socle.props({ title: 'Branchez vos outils. Maillon fait circuler le reste.', speed: 1, packets: 2, direction: 'both', beam: 96, curve: 0.5, glow: true, statuts: true });
+  var KEYS = ['speed', 'packets', 'direction', 'beam', 'curve', 'glow', 'statuts'];
+  var root = null;
+  function apply(p) {
+    if (!root) return;
+    KEYS.forEach(function (k) { root.dataset[k] = String(p[k]); });
+    root.querySelector('#fx-title').textContent = p.title || 'Branchez vos outils.';
+    if (root._flow) { root._flow.update(Flow.read(root)); }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    root = document.querySelector('[data-flow]');
+    KEYS.forEach(function (k) { root.dataset[k] = String(props[k]); });
+    root.querySelector('#fx-title').textContent = props.title;
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    // Info du panneau par défaut, rendue par le script du composant
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (root && root._flow) root._flow.replay(); });
+</script>
+</body>
+</html>

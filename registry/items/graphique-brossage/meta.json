@@ -1,0 +1,70 @@
+{
+  "id": "graphique-brossage",
+  "nom": "Graphique à brossage",
+  "categorie": "tableau-de-bord",
+  "ordre": 1,
+  "niveau": "premium",
+  "description": "Un grand graphe d’appels et sa frise de six mois : on glisse une fenêtre sur la frise, le graphe zoome sur un ressort, l’échelle s’ajuste, les KPI de la période roulent et se comparent à la période précédente. Curseur et infobulle synchronisés entre les deux graphes, raccourcis 7 j / 30 j / 90 j et pilotage complet au clavier.",
+  "tags": ["Graphique", "Brossage", "KPI", "Clavier", "SVG", "Responsive"],
+  "date": "2026-11-05",
+  "difficulte": 3,
+  "technique": "SVG recalculé par image, ressort critique à solution exacte, courbe monotone, état partagé",
+  "poids": "≈ 15 Ko gzip (HTML + CSS + JS), aucune bibliothèque",
+  "thumb": { "width": 1180 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Neutres, couleurs de graphe, teintes des badges, focus" },
+    { "nom": "Intl.NumberFormat / DateTimeFormat", "note": "Chiffres et dates au format français (navigateur)" },
+    { "nom": "ResizeObserver, Pointer Events", "note": "Natifs : Chrome, Edge, Firefox, Safari 15+" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement, aucune bibliothèque de graphe" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement (darkMode: 'class')" }
+  ],
+  "props": [
+    { "name": "titre", "label": "Titre", "type": "text", "default": "Appels traités par vos agents",
+      "code": { "html": "id=\"bc-title\">{v}</h2>", "react": "title = '{v}'" } },
+    { "name": "periode", "label": "Période par défaut", "type": "select", "default": "30",
+      "options": [{ "value": "7", "label": "7 jours" }, { "value": "30", "label": "30 jours" }, { "value": "90", "label": "90 jours" }, { "value": "all", "label": "Tout" }],
+      "hint": "Raccourci actif au chargement ; double-clic sur la frise ou Échap y reviennent.",
+      "code": { "html": "data-range=\"{v}\"", "react": "defaultRange = '{v}'" } },
+    { "name": "jours", "label": "Historique (exemple)", "type": "number", "default": 180, "min": 90, "max": 365, "step": 15, "unit": " j",
+      "hint": "Longueur des données d’exemple. Avec vos données, passez-les à setData() ou à la prop data.",
+      "code": { "html": "data-days=\"{v}\"", "react": "days = {v}" } },
+    { "name": "couleur", "label": "Couleur de la série", "type": "select", "default": "chart-1",
+      "options": [{ "value": "chart-1", "label": "Bleu (chart-1)" }, { "value": "accent", "label": "Accent" }, { "value": "chart-3", "label": "Vert (chart-3)" }, { "value": "chart-4", "label": "Violet (chart-4)" }, { "value": "chart-5", "label": "Rose (chart-5)" }],
+      "code": { "html": "data-color=\"{v}\"", "react": "color = '{v}'" } },
+    { "name": "style", "label": "Tracé", "type": "select", "default": "area",
+      "options": [{ "value": "area", "label": "Aire" }, { "value": "line", "label": "Ligne" }],
+      "code": { "html": "data-style=\"{v}\"", "react": "variant = '{v}'" } },
+    { "name": "lissage", "label": "Courbe lissée", "type": "boolean", "default": true,
+      "hint": "Interpolation monotone : jamais de creux ni de pic inventé entre deux jours.",
+      "code": { "html": "data-smooth=\"{v}\"", "react": "smooth = {v}" } },
+    { "name": "transferts", "label": "Série « transférés »", "type": "boolean", "default": true,
+      "code": { "html": "data-compare=\"{v}\"", "react": "showTransfers = {v}" } },
+    { "name": "annotations", "label": "Annotations", "type": "boolean", "default": true,
+      "hint": "Repères datés (campagne, nouvelle version) sur le graphe et la frise.",
+      "code": { "html": "data-annotations=\"{v}\"", "react": "annotations = {v}" } },
+    { "name": "duree", "label": "Durée du zoom", "type": "number", "default": 700, "min": 0, "max": 1500, "step": 50, "unit": "ms",
+      "hint": "Temps d’arrivée du ressort. Pendant un glisser, le graphe suit en 120 ms.",
+      "code": { "html": "data-duration=\"{v}\"", "react": "duration = {v}" } },
+    { "name": "etat", "label": "État", "type": "select", "default": "ready",
+      "options": [{ "value": "ready", "label": "Données" }, { "value": "loading", "label": "Chargement" }, { "value": "empty", "label": "Vide" }, { "value": "error", "label": "Erreur" }],
+      "code": { "html": "data-brush-chart data-state=\"{v}\"", "react": "status = '{v}'" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/BrushChart.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour tout tableau de bord où l’on explore une série dans le temps : appels, ventes, trafic, tickets. Au-delà de 730 jours, agrégez par semaine.",
+    "Données : lignes { date: 'AAAA-MM-JJ', calls, transfers, duration } passées à el.brushChart.setData(rows, notes) en HTML, ou aux props data et notes en React.",
+    "Écoutez « brushchange » (HTML) ou onBrushChange (React) pour filtrer le reste de la page sur la période choisie ; l’événement porte from, to, days et les totaux.",
+    "Les KPI se comparent à la période précédente de même longueur ; un transfert ou une durée en baisse s’affiche en vert, car c’est une bonne nouvelle.",
+    "États « chargement », « vide » et « erreur » prévus ; en erreur, le bouton Réessayer émet « retry » (HTML) ou appelle onRetry (React)."
+  ],
+  "accessibilite": [
+    "Graphe principal focalisable : ← → lisent jour par jour (Maj : semaine par semaine), Origine / Fin, Échap ; chaque valeur est annoncée par une région aria-live.",
+    "Fenêtre de la frise en role=slider : ← → la déplacent, ↑ ↓ (ou + −) zooment, Page ↑ / ↓ sautent d’une période, Entrée ou Échap reviennent à la vue par défaut ; les deux poignées sont des sliders séparés avec une date lisible en aria-valuetext.",
+    "Raccourcis en boutons aria-pressed, cibles de 44 px au toucher ; la variation n’est jamais portée par la couleur seule (flèche, signe et texte « par rapport aux N jours précédents » lu par les lecteurs d’écran).",
+    "Avec « réduire les animations », le zoom est instantané et les chiffres ne roulent plus ; aucune boucle tourne au repos (l’animation s’arrête dès que le ressort est posé)."
+  ]
+}

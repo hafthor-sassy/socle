@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero produit au défilement — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  html.bg-grid .hpd { background: transparent; }
+  .after { display: grid; justify-items: center; gap: 24px; padding: 72px 16px 96px; border-top: 1px solid var(--border); text-align: center; }
+  .after p { margin: 0; font: 500 12px/16px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .after ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 40px; margin: 0; padding: 0; list-style: none; color: var(--text-strong); font-size: 20px; font-weight: 600; letter-spacing: -0.02em; opacity: .72; }
+  .is-thumb .after, .is-thumb .hpd__hint { display: none; }
+  .is-thumb .hpd { height: 100vh; }
+  .is-thumb .hpd__lead, .is-thumb .hpd__trust, .is-thumb .hpd__pill { display: none; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<section class="after" aria-label="Clients">
+  <p>Ils pilotent leurs revenus avec Cadran</p>
+  <ul><li>Maison Lune</li><li>Opale</li><li>Studio Ardent</li><li>Nordwave</li><li>Atelier 9</li></ul>
+</section>
+<script>
+  /* Props → attributs data-* de la section ; le script du composant est relancé à chaque réglage. */
+  var props = Socle.props({ title: 'Vos revenus SaaS, lisibles d’un coup d’œil.', intensity: 1, tilt: 28, layers: 3, perspective: 1400, length: 180, smoothing: 0.86, labels: true, glow: true, mode: 'scroll' });
+  var src = null, mount = document.getElementById('mount'), inst = null, tour = 0;
+  function render(p) {
+    if (!src) return;
+    if (inst) inst.destroy();
+    mount.innerHTML = src.markup;
+    var root = mount.querySelector('[data-hero-scroll]');
+    ['intensity', 'tilt', 'layers', 'perspective', 'length', 'smoothing', 'mode'].forEach(function (k) { root.dataset[k] = p[k]; });
+    root.dataset.labels = String(p.labels); root.dataset.glow = String(p.glow);
+    var h = root.querySelector('h1'); if (h && p.title) h.textContent = p.title;
+    try { new Function(src.script)(); } catch (e) { console.error(e); }
+    inst = root._hpd;
+    if (Socle.thumb && inst) inst.drive(thumbP, true);
+  }
+  /* Rejouer : revient en haut puis parcourt toute la section en 3,2 s. */
+  function replay() {
+    cancelAnimationFrame(tour);
+    var root = mount.querySelector('[data-hero-scroll]'); if (!root) return;
+    window.scrollTo(0, 0);
+    if (Socle.reducedMotion() || root.hasAttribute('data-static')) return;
+    var end = root.offsetHeight - window.innerHeight, t0 = 0;
+    (function step(t) {
+      if (!t0) t0 = t;
+      var k = Math.min(1, (t - t0) / 3200), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      window.scrollTo(0, end * e);
+      if (k < 1) tour = requestAnimationFrame(step);
+    })(performance.now());
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props);
+    if (Socle.thumb) thumbLoop();
+  });
+  Socle.onChange(render);
+  Socle.onReplay(replay);
+  window.addEventListener('wheel', function () { cancelAnimationFrame(tour); }, { passive: true });
+  window.addEventListener('touchstart', function () { cancelAnimationFrame(tour); }, { passive: true });
+
+  /* Vignette : la progression fait l’aller-retour sans défilement, en pause hors écran. */
+  var thumbP = 0.55;
+  function thumbLoop() {
+    if (Socle.reducedMotion()) return;
+    var visible = true, t0 = performance.now(), raf = 0;
+    function step(t) {
+      if (!visible || document.hidden) { raf = 0; return; }
+      var k = ((t - t0) / 7000) % 1;
+      thumbP = 0.5 - 0.5 * Math.cos(k * Math.PI * 2);     // 0 → 1 → 0
+      if (inst) inst.drive(thumbP, true);
+      raf = requestAnimationFrame(step);
+    }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible && !raf) raf = requestAnimationFrame(step); }).observe(document.body);
+    raf = requestAnimationFrame(step);
+  }
+</script>
+</body>
+</html>

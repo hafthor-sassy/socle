@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image tramée — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  body { overflow: hidden; }
+  .dh { min-height: 100vh; height: 100vh; }
+  html.bg-grid .dh { background: transparent; }
+  html.bg-grid .dh__btn--ghost { background: var(--surface); }
+  .no-content .dh__content { display: none; }
+  .is-thumb .dh__content { display: none; }
+  /* Scène mobile de l'app (520 px de haut) : version compacte pour laisser voir l'image */
+  @media (max-width: 719px) and (max-height: 640px) {
+    .dh__content { padding-top: 24px; }
+    .dh__lead { display: none; }
+    .dh__title { font-size: 2.25rem; }
+    .dh__actions { margin-top: 20px; }
+    .dh__btn--ghost { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script>
+  /* Props → attributs data-* de la trame, puis mise à jour du moteur sans le recréer. */
+  var props = Socle.props({
+    mode: 'bayer', cell: 3, reveal: 'nette', radius: 150, speed: 0.6, contrast: 1.15, brightness: 0,
+    fade: 0.42, fadeSide: 'auto', ink: 'accent', sample: 'paysage', focus: 'auto', src: '', auto: true, contenu: true,
+  });
+  var ATTR = { mode: 'mode', cell: 'cell', reveal: 'reveal', radius: 'radius', speed: 'speed', contrast: 'contrast',
+    brightness: 'brightness', fade: 'fade', fadeSide: 'fadeSide', ink: 'ink', sample: 'sample', focus: 'focus', src: 'src', auto: 'auto' };
+  var MODES = { bayer: 'Bayer 8×8', halftone: 'Halftone 45°' };
+  var el = null;
+
+  function apply(p) {
+    if (!el) return;
+    var q = Object.assign({}, p);
+    if (Socle.thumb) { q.fade = 0; q.auto = true; }
+    Object.keys(ATTR).forEach(function (k) { el.dataset[ATTR[k]] = String(q[k]); });
+    document.documentElement.classList.toggle('no-content', !p.contenu);
+    var scope = el.parentNode;
+    scope.querySelector('[data-dh-mode]').textContent = MODES[q.mode] || q.mode;
+    scope.querySelector('[data-dh-cell]').textContent = q.cell + ' px';
+    if (el._dither) el._dither.update(Dither.read(el));
+    else Dither.init(scope);
+  }
+
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    document.getElementById('mount').innerHTML = mk ? mk[1] : '';
+    el = document.querySelector('[data-dither]');
+    if (new URLSearchParams(location.search).get('fallback') === 'canvas') el.dataset.fallback = 'canvas';
+    // Le moteur s'initialise seul ; on applique d'abord les props de l'URL.
+    Object.keys(ATTR).forEach(function (k) { el.dataset[ATTR[k]] = String(Socle.thumb && k === 'fade' ? 0 : props[k]); });
+    document.documentElement.classList.toggle('no-content', !props.contenu);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    apply(props);
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (el && el._dither) el._dither.replay(); });
+</script>
+</body>
+</html>

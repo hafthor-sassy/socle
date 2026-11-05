@@ -719,3 +719,16 @@ main:focus, #contenu:focus { outline: none; }
 .icon-cell { transition: border-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out), transform var(--motion-slow) var(--spring); }
 .icon-cell:active { transform: scale(.95); }
 @media (prefers-reduced-motion: reduce) { .icon-cell { transition: none; } .icon-cell:active { transform: none; } }
+
+/* Niveaux Essentiel / Premium : badge discret, filtre des catégories */
+.badge--premium { gap: 5px; background: var(--surface); color: var(--text-strong); border-color: var(--border); }
+.badge--premium .ic { color: var(--accent); flex: none; }
+.dark .badge--premium { background: var(--raised); }
+.shot__lvl { position: absolute; top: 8px; left: 8px; z-index: 1; display: flex; pointer-events: none; }
+.shot__lvl .badge { box-shadow: var(--shadow-overlay); }
+.seg--level button .ic { color: var(--accent); }
+.seg__n { font-size: .75rem; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.seg--level button[aria-checked="true"] .seg__n { color: var(--text); }
+.grid__none { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 24px 0; }
+.toolbar__right:has(.seg--level) { flex-wrap: wrap; }
+@media (max-width: 767px) { .toolbar__right:has(.seg--level) { width: 100%; } .toolbar__right .seg--level { flex: 1 1 100%; } .seg--level button { flex: 1; justify-content: center; } .toolbar__right:has(.seg--level) .count { margin-right: auto; } }

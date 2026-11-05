@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carte holographique — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; place-items: center; align-content: center; gap: 32px; padding: 48px 24px; }
+  .hint { font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); text-align: center; }
+  .is-thumb .stage { padding: 0; gap: 0; }
+  .is-thumb .hint { display: none; }
+  .is-thumb .holo { scale: 1.42; }
+</style>
+</head>
+<body>
+<main class="stage">
+  <div id="mount" style="display:contents"></div>
+  <p class="hint" id="hint">Survolez la carte · inclinez votre téléphone</p>
+</main>
+<script>
+  /* Props → variables CSS et attributs data-* de la carte ; le script du composant vient du fichier de code. */
+  var props = Socle.props({ nom: 'Camille Arnaud', motif: 'lignes', intensite: 14, reflet: 0.6, irisation: 0.7, paillettes: 0.5, rayon: '16', raideur: 170, amortissement: 14, fond: 'nuit', gyroscope: true, auto: false });
+  var root = null;
+  function render(p) {
+    if (!root) return;
+    root.dataset.motif = p.motif;
+    root.dataset.fond = p.fond;
+    root.dataset.gyro = String(!Socle.thumb && !!p.gyroscope);
+    root.dataset.auto = String(Socle.thumb ? true : !!p.auto);
+    root.style.setProperty('--holo-tilt', p.intensite + 'deg');
+    root.style.setProperty('--holo-glare', p.reflet);
+    root.style.setProperty('--holo-foil', p.irisation);
+    root.style.setProperty('--holo-sparkle', p.paillettes);
+    root.style.setProperty('--holo-radius', p.rayon + 'px');
+    root.style.setProperty('--holo-stiffness', p.raideur);
+    root.style.setProperty('--holo-damping', p.amortissement);
+    root.querySelector('.holo__name').textContent = p.nom || 'Camille Arnaud';
+    if (root._holo) root._holo.refresh();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-holo]');
+    render(props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (Socle.thumb && root._holo) root._holo.refresh();
+  });
+  if (window.matchMedia && matchMedia('(pointer: coarse)').matches) document.getElementById('hint').textContent = 'Glissez le doigt · inclinez votre téléphone';
+  Socle.onChange(render);
+  /* Rejouer : une chiquenaude, puis le ressort ramène la carte à plat. */
+  Socle.onReplay(function () { if (root && root._holo) root._holo.flick(9, -6); });
+</script>
+</body>
+</html>

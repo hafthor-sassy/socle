@@ -9,6 +9,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const itemsDir = path.join(root, 'registry', 'items');
 const { CATEGORIES } = await import(pathToFileURL(path.join(root, 'registry', 'categories.js')).href);
 const catIds = new Set(CATEGORIES.map((c) => c.id));
+const NIVEAUX = new Set(['essentiel', 'premium']);
 
 const errors = [];
 const items = [];
@@ -26,6 +27,7 @@ for (const dir of dirs) {
   if (meta.id !== dir) errors.push(`${dir} : « id » doit valoir « ${dir} » (trouvé « ${meta.id} »)`);
   if (!catIds.has(meta.categorie)) errors.push(`${dir} : catégorie inconnue « ${meta.categorie} »`);
   for (const k of ['nom', 'description', 'date']) if (!meta[k]) errors.push(`${dir} : champ « ${k} » manquant`);
+  if (meta.niveau != null && !NIVEAUX.has(meta.niveau)) errors.push(`${dir} : « niveau » vaut « essentiel » ou « premium » (trouvé « ${meta.niveau} »)`);
   try { await access(path.join(base, 'demo.html')); } catch { errors.push(`${dir} : demo.html manquant`); }
   for (const c of meta.code || []) {
     try { await access(path.join(base, c.file)); } catch { errors.push(`${dir} : fichier de code introuvable ${c.file}`); }
@@ -34,6 +36,7 @@ for (const dir of dirs) {
     id: meta.id,
     nom: meta.nom,
     categorie: meta.categorie,
+    niveau: meta.niveau || 'essentiel',
     description: meta.description,
     tags: meta.tags || [],
     date: meta.date,

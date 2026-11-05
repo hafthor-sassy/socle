@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graphique à brossage — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 48px 24px; }
+  @media (max-width: 719px) { .stage { padding: 16px 12px; } }
+  .is-thumb .stage { padding: 32px; }
+  .is-thumb .bc__help { display: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  /* Props → attributs data-* de la section ; le composant relit ses réglages sans perdre la période. */
+  var props = Socle.props({ titre: 'Appels traités par vos agents', periode: '30', jours: 180, couleur: 'chart-1', style: 'area', lissage: true, transferts: true, annotations: true, duree: 700, etat: 'ready' });
+  var MAP = { periode: 'range', jours: 'days', couleur: 'color', style: 'style', lissage: 'smooth', transferts: 'compare', annotations: 'annotations', duree: 'duration', etat: 'state' };
+  var mount = document.getElementById('mount');
+  var src = null, root = null, loadT = 0;
+
+  function apply(p) {
+    Object.keys(MAP).forEach(function (k) { root.dataset[MAP[k]] = String(p[k]); });
+    root.querySelector('.bc__title').textContent = p.titre || 'Appels traités';
+  }
+  function render(p, fresh) {
+    if (!src) return;
+    if (!root || fresh) {
+      mount.innerHTML = src.markup;
+      root = mount.querySelector('[data-brush-chart]');
+      apply(p);
+      try { new Function(src.script)(); } catch (e) { console.error(e); }
+      root.addEventListener('retry', function () {
+        root.dataset.state = 'loading'; root.brushChart.refresh();
+        clearTimeout(loadT); loadT = setTimeout(function () { root.dataset.state = 'ready'; root.brushChart.refresh(); }, 1400);
+      });
+      return;
+    }
+    apply(p);
+    root.brushChart && root.brushChart.refresh();
+  }
+  /* Rejouer : la fenêtre repart du jeu complet puis revient sur la période par défaut. */
+  function replay(p) {
+    if (!root || !root.brushChart) return;
+    root.brushChart.setRange('all');
+    setTimeout(function () { root.brushChart.setRange(p.periode); }, 650);
+  }
+
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props, true);
+    if (Socle.thumb) thumb();
+  });
+  Socle.onChange(function (p) { render(p); });
+  Socle.onReplay(replay);
+
+  /* Vignette : la période change toute seule, en pause hors écran. */
+  function thumb() {
+    if (Socle.reducedMotion()) return;
+    var seq = ['90', '7', '30', 'all'], i = 0, visible = true, timer = 0;
+    function tick() { if (visible && root && root.brushChart) root.brushChart.setRange(seq[i++ % seq.length]); timer = setTimeout(tick, 2200); }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(mount);
+    timer = setTimeout(tick, 1200);
+  }
+</script>
+</body>
+</html>

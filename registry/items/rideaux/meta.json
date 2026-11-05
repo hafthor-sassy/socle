@@ -1,0 +1,62 @@
+{
+  "id": "rideaux",
+  "nom": "Rideaux",
+  "categorie": "transitions",
+  "ordre": 1,
+  "niveau": "premium",
+  "description": "Un seul composant de transition de page ou de section, en cinq rideaux : volet double, store à lames, iris qui part du clic, pixels qui se dissolvent dans le sens du mouvement et diagonale. Le rideau se ferme, la page change à l’abri sous le nom de la destination, puis il poursuit sa course pour dévoiler la suivante. Démo sur un site d’architecte de trois pages.",
+  "tags": ["Transition de page", "Web Animations", "Clip-path", "Navigation", "Accessible", "Responsive"],
+  "date": "2026-11-05",
+  "difficulte": 2,
+  "technique": "Web Animations API, clip-path (polygone, cercle, chemin evenodd), échange de page sous le rideau, file d’attente des navigations",
+  "poids": "≈ 4 Ko gzip pour le moteur (script seul), aucune bibliothèque",
+  "thumb": { "width": 1180 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Accent, neutres, focus ; couleurs du rideau en variables (--curtain-c, --curtain-c2, --curtain-fg)" },
+    { "nom": "Web Animations API, clip-path path()", "note": "Natifs : Chrome 88+, Edge, Firefox 97+, Safari 15.4+" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement (darkMode: 'class')" }
+  ],
+  "props": [
+    { "name": "mode", "label": "Rideau", "type": "select", "default": "store",
+      "options": [{ "value": "store", "label": "Store (lames)" }, { "value": "volet", "label": "Volet double" }, { "value": "iris", "label": "Iris" }, { "value": "pixels", "label": "Pixels" }, { "value": "diagonale", "label": "Diagonale" }],
+      "hint": "Changer de rideau lance une transition vers la page suivante.",
+      "code": { "html": "data-mode=\"{v}\"", "react": "mode = '{v}'" } },
+    { "name": "direction", "label": "Direction", "type": "select", "default": "right",
+      "options": [{ "value": "right", "label": "Vers la droite" }, { "value": "left", "label": "Vers la gauche" }, { "value": "down", "label": "Vers le bas" }, { "value": "up", "label": "Vers le haut" }],
+      "hint": "Sens du balayage ; pour les pixels, sens de la dissolution. Sans effet sur l’iris.",
+      "code": { "html": "data-direction=\"{v}\"", "react": "direction = '{v}'" } },
+    { "name": "duree", "label": "Durée totale", "type": "number", "default": 1200, "min": 400, "max": 2400, "step": 50, "unit": "ms",
+      "hint": "44 % fermeture, 12 % pause sur l’étiquette, 44 % ouverture.",
+      "code": { "html": "data-duration=\"{v}\"", "react": "duration = {v}" } },
+    { "name": "lames", "label": "Lames", "type": "number", "default": 7, "min": 2, "max": 16, "step": 1,
+      "hint": "Nombre de lames du store ; règle aussi la taille des pixels (2 × lames colonnes).",
+      "code": { "html": "data-slats=\"{v}\"", "react": "slats = {v}" } },
+    { "name": "couleur", "label": "Couleur", "type": "select", "default": "accent",
+      "options": [{ "value": "accent", "label": "Accent" }, { "value": "encre", "label": "Encre" }, { "value": "relief", "label": "Relief (neutre)" }, { "value": "duo", "label": "Duo accent + encre" }],
+      "code": { "html": "data-color=\"{v}\"", "react": "color = '{v}'" } },
+    { "name": "etiquette", "label": "Nom de la page sur le rideau", "type": "boolean", "default": true,
+      "code": { "html": "data-label=\"{v}\"" } },
+    { "name": "origine", "label": "Origine de l’iris", "type": "select", "default": "click",
+      "options": [{ "value": "click", "label": "Lien cliqué" }, { "value": "center", "label": "Centre" }],
+      "code": { "html": "data-origin=\"{v}\"", "react": "origin = '{v}'" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/Curtains.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Pour changer de page ou de grande section avec du caractère : site vitrine, portfolio, tunnel d’onboarding. Un seul style de rideau par site, et jamais sur une action répétée (onglets, filtres).",
+    "HTML : un conteneur [data-curtain], des pages [data-curtain-page] et des liens [data-curtain-to=\"id\"] ; ou el.curtain.go('id'). Les événements « curtain:cover » (page échangée sous le rideau) et « curtain:change » (fin) permettent de charger du contenu ou de mettre à jour l’URL.",
+    "React : <CurtainTransition activeKey={page}>{contenu}</CurtainTransition> ; l’ancien contenu reste affiché jusqu’à la fermeture, puis la nouvelle clé est rendue à l’abri. AtelierNordDemo montre un site complet.",
+    "Des clics rapides ne cassent rien : la dernière destination demandée est mise en file et jouée à la fin de la transition en cours.",
+    "Gardez 900 à 1 400 ms : en dessous l’étiquette n’a pas le temps d’être lue, au-dessus la navigation paraît lente."
+  ],
+  "accessibilite": [
+    "Liens natifs avec aria-current=\"page\" ; une région aria-live annonce « Page Projets » à chaque changement.",
+    "Au clavier, le focus passe sur le titre de la nouvelle page (sans défilement) ; au pointeur, il reste où il était.",
+    "Le rideau est aria-hidden et ne capte le pointeur que pendant la transition ; l’étiquette respecte le contraste AA sur chaque couleur (pastille sur fond de surface pour les pixels et le duo).",
+    "Avec « réduire les animations », aucun rideau : la page change par un fondu de 160 ms. Rien ne tourne au repos, aucune boucle à mettre en pause."
+  ]
+}

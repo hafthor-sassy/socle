@@ -3,7 +3,7 @@ import { getCategory } from '../../registry/categories.js';
 import { loadIndex, loadMeta, loadCode, currentTheme } from '../lib/store.js';
 import { icon } from '../lib/icons.js';
 import { esc, fr, formatDate, bindCopy } from '../lib/dom.js';
-import { demoURL, post, SANDBOX } from '../lib/frames.js';
+import { demoURL, post, SANDBOX, isPremium, premiumBadge } from '../lib/frames.js';
 import { highlight } from '../lib/highlight.js';
 import { crumbs } from './category.js';
 
@@ -69,7 +69,7 @@ export async function renderItem(view, id, onCat) {
       <div class="dhead__tx">
         <h1 class="t-page">${esc(meta.nom)}</h1>
         <p>${fr(meta.description)}</p>
-        <div class="phead__meta">${(meta.tags || []).map((t) => `<span class="badge">${esc(t)}</span>`).join('')}<span class="t-xs muted">Ajouté le ${formatDate(meta.date)}</span></div>
+        <div class="phead__meta">${isPremium(meta) ? premiumBadge() : ''}${(meta.tags || []).map((t) => `<span class="badge">${esc(t)}</span>`).join('')}<span class="t-xs muted">Ajouté le ${formatDate(meta.date)}</span></div>
       </div>
       <a class="btn btn--secondary" href="${esc(demoURL(meta.id, { theme: currentTheme() }))}" target="_blank" rel="noopener">${icon('external', { size: 16 })}Ouvrir la démo</a>
     </header>
@@ -96,7 +96,7 @@ export async function renderItem(view, id, onCat) {
         </div>
         <div class="stage__view" data-view>
           <div class="stage__frame" data-frame>
-            <iframe data-demo data-theme-lock="1" title="Aperçu live de ${esc(meta.nom)}" sandbox="${SANDBOX}" src="${esc(demoURL(meta.id, { theme: state.bg === 'grid' ? currentTheme() : state.bg, bg: state.bg === 'grid' ? 'grid' : '', props: values }))}"></iframe>
+            <iframe data-demo data-theme-lock="1" allow="accelerometer; gyroscope" title="Aperçu live de ${esc(meta.nom)}" sandbox="${SANDBOX}" src="${esc(demoURL(meta.id, { theme: state.bg === 'grid' ? currentTheme() : state.bg, bg: state.bg === 'grid' ? 'grid' : '', props: values }))}"></iframe>
           </div>
         </div>
         <div class="stage__foot"><span class="mono num" data-size></span><span class="lbl-wide">Aperçu isolé, au thème choisi</span></div>

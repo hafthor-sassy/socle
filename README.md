@@ -4,6 +4,7 @@ La bibliothèque de design de Moha : composants, animations, sections de page, t
 
 - Site 100 % statique : HTML, CSS et JavaScript en modules ES, **aucune étape de build**.
 - Routeur par hash (`#/…`) et chemins relatifs : fonctionne servi sous un sous-chemin (`/socle/`).
+- Deux niveaux : **Essentiel** (par défaut) et **Premium** (champ `niveau` de `meta.json`), signalés par un badge discret et filtrables dans chaque catégorie. Le code des designs Premium reste visible pour l’instant.
 - Design system Studio : Geist et Geist Mono, neutres à 90 %, accent Terracotta, grille de 8 px, clair et sombre AA.
 
 ## Pages
@@ -11,10 +12,12 @@ La bibliothèque de design de Moha : composants, animations, sections de page, t
 | Route | Contenu |
 | --- | --- |
 | `#/` | Accueil : derniers ajouts, index des six sections, marques |
-| `#/c/<categorie>` | Catégorie : filtres par tags, tri, grille d’aperçus live, état « Bientôt » |
-| `#/i/<id>` | Détail : scène d’aperçu (fond, largeur, rejouer, plein écran), props, code, notes |
+| `#/c/<categorie>` | Catégorie : filtre Tous / Essentiel / Premium, filtres par tags, tri, grille d’aperçus live, état « Bientôt » |
+| `#/c/<categorie>?niveau=premium` | Même page, filtrée sur un niveau (`essentiel` ou `premium`) : lien partageable |
+| `#/i/<id>` | Détail : badge « Premium » le cas échéant, scène d’aperçu (fond, largeur, rejouer, plein écran), props, code, notes |
 | `#/c/couleurs`, `#/c/typographie`, `#/c/espacements`, `#/c/icones` | Fondations, lues depuis `css/tokens.css` et `data/palettes.json` |
-| `#/marques`, `#/marques/<id>` | Galerie des logos (`data/logos-data.js`), palettes, clair / sombre, copie du SVG |
+| `#/marques`, `#/marques/<marque>` | Galerie des logos (`data/logos-data.js`), palettes, clair / sombre, copie du SVG |
+| `#/marques/<marque>/<id>` | Fiche technique d’un logo : déclinaisons, palette, tailles, précédent / suivant |
 
 Recherche : **⌘K** (ou Ctrl K, ou `/`) sur les designs, catégories et marques.
 
@@ -36,7 +39,7 @@ socle/
 ├── demo-kit/                  Base commune des démos (thème, props, rejouer)
 ├── registry/
 │   ├── categories.js          Arbre sections → catégories
-│   ├── index.json             Liste des designs (générée)
+│   ├── index.json             Liste des designs (générée, avec `niveau` et `ordre`)
 │   └── items/<id>/            meta.json, demo.html, code/
 └── scripts/
     ├── new-item.mjs           Squelette d’un nouveau design

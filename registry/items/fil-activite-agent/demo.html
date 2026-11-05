@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fil d’activité d’agent IA — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; padding: 24px 16px; }
+  .stage .af { --af-h: max(440px, calc(100vh - 48px)); }
+  @media (min-width: 768px) { .stage { padding: 24px; } }
+  .is-thumb .stage { padding: 28px 40px; }
+  .is-thumb .stage .af { --af-h: calc(100vh - 56px); max-width: 820px; }
+  .is-thumb .af__foot { pointer-events: none; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  /* Valeurs par défaut = « default » des props dans meta.json. Le composant lit ses data-* et réagit en direct. */
+  var props = Socle.props({ agent: 'Iris', scenario: 'rdv', speed: 1, density: 'confortable', args: 'replies', approval: true, time: 'relatif', thinking: true, autoscroll: true });
+  var root = null;
+  function apply(p) {
+    if (!root) return;
+    var d = root.dataset;
+    var want = { scenario: p.scenario, speed: String(p.speed), density: p.density, args: p.args, approval: String(p.approval), time: p.time, thinking: String(p.thinking), autoscroll: String(p.autoscroll) };
+    if (Socle.thumb) { want.speed = '2'; want.autoapprove = '900'; want.loop = 'true'; }
+    Object.keys(want).forEach(function (k) { if (d[k] !== want[k]) d[k] = want[k]; });
+    var h = root.querySelector('.af__name');
+    if (h) h.textContent = p.agent || 'Iris';
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    var mount = document.getElementById('mount');
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-agent-feed]');
+    apply(props);           // attributs posés avant l’initialisation : pas de double démarrage
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+  });
+  Socle.onChange(apply);
+  Socle.onReplay(function () { if (root && root.agentFeed) root.agentFeed.replay(); });
+</script>
+</body>
+</html>

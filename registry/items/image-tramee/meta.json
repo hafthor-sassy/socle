@@ -1,0 +1,339 @@
+{
+  "id": "image-tramee",
+  "nom": "Image tramée",
+  "categorie": "backgrounds",
+  "niveau": "premium",
+  "description": "Une image rendue en trame 1 bit (Bayer ordonnée ou halftone) à la couleur d’accent, qui ondule lentement et se révèle autour du pointeur avec une lisière pixelisée. Shader WebGL, repli canvas 2D, zone calme pour poser un titre.",
+  "tags": [
+    "WebGL",
+    "Shader",
+    "Trame",
+    "Pointeur",
+    "Halftone"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 560
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1280
+  },
+  "technique": "Shader de dithering WebGL 1 · repli canvas 2D",
+  "difficulte": 3,
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "--accent ou --text-strong pour l’encre, --bg pour le sens de la trame"
+    },
+    {
+      "nom": "WebGL 1",
+      "note": "Natif, sans bibliothèque ; repli canvas 2D automatique"
+    },
+    {
+      "nom": "Moteur intégré",
+      "note": "≈ 9 ko minifié, dans le fichier (aucun CDN)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "mode",
+      "label": "Trame",
+      "type": "select",
+      "default": "bayer",
+      "options": [
+        {
+          "value": "bayer",
+          "label": "Bayer 8×8"
+        },
+        {
+          "value": "halftone",
+          "label": "Halftone"
+        }
+      ],
+      "code": {
+        "html": "data-mode=\"{v}\"",
+        "react": "mode=\"{v}\""
+      }
+    },
+    {
+      "name": "cell",
+      "label": "Taille du pixel",
+      "type": "number",
+      "default": 3,
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "code": {
+        "html": "data-cell=\"{v}\"",
+        "react": "cell={{v}}"
+      },
+      "unit": "px",
+      "hint": "En halftone, le pas des points vaut deux fois cette taille."
+    },
+    {
+      "name": "reveal",
+      "label": "Sous le pointeur",
+      "type": "select",
+      "default": "nette",
+      "options": [
+        {
+          "value": "nette",
+          "label": "Nette"
+        },
+        {
+          "value": "couleur",
+          "label": "Couleur"
+        },
+        {
+          "value": "disperser",
+          "label": "Dispersée"
+        }
+      ],
+      "code": {
+        "html": "data-reveal=\"{v}\"",
+        "react": "reveal=\"{v}\""
+      },
+      "hint": "Nette : l’image lissée à l’encre. Couleur : la photo d’origine. Dispersée : la trame se défait et grossit."
+    },
+    {
+      "name": "radius",
+      "label": "Rayon de la loupe",
+      "type": "number",
+      "default": 150,
+      "min": 60,
+      "max": 320,
+      "step": 10,
+      "code": {
+        "html": "data-radius=\"{v}\"",
+        "react": "radius={{v}}"
+      },
+      "unit": "px"
+    },
+    {
+      "name": "speed",
+      "label": "Onde lente",
+      "type": "number",
+      "default": 0.6,
+      "min": 0,
+      "max": 2,
+      "step": 0.1,
+      "code": {
+        "html": "data-speed=\"{v}\"",
+        "react": "speed={{v}}"
+      },
+      "hint": "0 pour une trame immobile : le rendu s’arrête dès que le pointeur se pose."
+    },
+    {
+      "name": "contrast",
+      "label": "Contraste",
+      "type": "number",
+      "default": 1.15,
+      "min": 0.5,
+      "max": 2,
+      "step": 0.05,
+      "code": {
+        "html": "data-contrast=\"{v}\"",
+        "react": "contrast={{v}}"
+      }
+    },
+    {
+      "name": "brightness",
+      "label": "Luminosité",
+      "type": "number",
+      "default": 0,
+      "min": -0.4,
+      "max": 0.4,
+      "step": 0.02,
+      "code": {
+        "html": "data-brightness=\"{v}\"",
+        "react": "brightness={{v}}"
+      }
+    },
+    {
+      "name": "fade",
+      "label": "Zone calme",
+      "type": "number",
+      "default": 0.42,
+      "min": 0,
+      "max": 0.7,
+      "step": 0.02,
+      "code": {
+        "html": "data-fade=\"{v}\"",
+        "react": "fade={{v}}"
+      },
+      "hint": "Part sans trame pour poser le texte (AA garanti dessus)."
+    },
+    {
+      "name": "fadeSide",
+      "label": "Côté calme",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "left",
+          "label": "Gauche"
+        },
+        {
+          "value": "top",
+          "label": "Haut"
+        },
+        {
+          "value": "none",
+          "label": "Aucun"
+        }
+      ],
+      "code": {
+        "html": "data-fade-side=\"{v}\"",
+        "react": "fadeSide=\"{v}\""
+      },
+      "hint": "Auto : à gauche, en haut sous 720 px."
+    },
+    {
+      "name": "ink",
+      "label": "Encre",
+      "type": "select",
+      "default": "accent",
+      "options": [
+        {
+          "value": "accent",
+          "label": "Accent"
+        },
+        {
+          "value": "neutre",
+          "label": "Neutre"
+        }
+      ],
+      "code": {
+        "html": "data-ink=\"{v}\"",
+        "react": "ink=\"{v}\""
+      }
+    },
+    {
+      "name": "sample",
+      "label": "Image d’exemple",
+      "type": "select",
+      "default": "paysage",
+      "options": [
+        {
+          "value": "paysage",
+          "label": "Paysage"
+        },
+        {
+          "value": "objets",
+          "label": "Objets"
+        }
+      ],
+      "code": {
+        "html": "data-sample=\"{v}\"",
+        "react": "sample=\"{v}\""
+      },
+      "hint": "Dessinée en canvas au chargement : aucun fichier."
+    },
+    {
+      "name": "focus",
+      "label": "Cadrage",
+      "type": "select",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto"
+        },
+        {
+          "value": "centre",
+          "label": "Centre"
+        },
+        {
+          "value": "gauche",
+          "label": "Gauche"
+        },
+        {
+          "value": "droite",
+          "label": "Droite"
+        },
+        {
+          "value": "haut",
+          "label": "Haut"
+        },
+        {
+          "value": "bas",
+          "label": "Bas"
+        }
+      ],
+      "hint": "Partie de l’image gardée quand le format la recadre. Auto : le sujet de l’exemple.",
+      "code": {
+        "html": "data-focus=\"{v}\"",
+        "react": "focus=\"{v}\""
+      }
+    },
+    {
+      "name": "src",
+      "label": "URL d’image",
+      "type": "text",
+      "default": "",
+      "hint": "Votre image, servie avec CORS. Vide : l’exemple intégré.",
+      "code": {
+        "html": "data-src=\"{v}\"",
+        "react": "src=\"{v}\""
+      }
+    },
+    {
+      "name": "auto",
+      "label": "Loupe automatique",
+      "type": "boolean",
+      "default": true,
+      "hint": "Sans pointeur (tactile, inactivité), la loupe se promène lentement.",
+      "code": {
+        "html": "data-auto=\"{v}\"",
+        "react": "auto={{v}}"
+      }
+    },
+    {
+      "name": "contenu",
+      "label": "Afficher le hero",
+      "type": "boolean",
+      "default": true
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/DitherImage.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Derrière un hero ou une section manifeste : une seule image tramée par page, elle porte l’identité visuelle.",
+    "Gardez la zone calme du côté du texte (0,35 à 0,5) : la trame s’y dissout en dégradé de densité, le titre reste lisible.",
+    "Votre image : data-src (ou src) vers une URL servie avec Access-Control-Allow-Origin. En cas d’échec, l’exemple intégré s’affiche et l’événement dither:error est émis.",
+    "Pixel de 2 à 4 px pour un rendu photo, 6 px et plus pour un effet affiche ; l’halftone aime les images contrastées (contraste 1,3).",
+    "La trame suit l’accent et le thème : sur fond sombre l’encre dessine la lumière, sur fond clair elle dessine les ombres."
+  ],
+  "accessibilite": [
+    "Le canvas est aria-hidden ; le conteneur porte role=\"img\" et une description (alt en React). Décoratif : retirez role et aria-label.",
+    "Aucune information ne dépend du pointeur : la loupe est un bonus, le contenu reste entièrement utilisable au clavier.",
+    "Le texte repose sur la zone calme, sans trame : contraste du thème (≥ 4,5:1 en clair et en sombre).",
+    "« Réduire les animations » : image fixe, sans onde, sans loupe ni intro. Rendu en pause hors écran et onglet masqué ; arrêt complet quand rien ne bouge.",
+    "Au tactile, toucher et glisser déplace la loupe sans bloquer le défilement vertical."
+  ]
+}

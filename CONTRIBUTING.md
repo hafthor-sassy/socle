@@ -38,6 +38,8 @@ if (Socle.thumb) { /* vignette : version compacte */ }
 | Champ | Rôle |
 | --- | --- |
 | `nom`, `description`, `tags`, `date` | Affichage, recherche, filtres, tri « récent » |
+| `niveau` | `"essentiel"` (par défaut si absent) ou `"premium"` : badge « Premium » sur la vignette et la fiche, filtre Tous / Essentiel / Premium de la catégorie |
+| `ordre` | Facultatif : départage les designs ajoutés le même jour (plus petit d’abord, 50 si absent) |
 | `thumb.width` | Largeur de rendu de la vignette (elle est réduite à la carte) |
 | `stage.desktopMin` | Largeur minimale du mode Bureau (1280 pour une section de page) |
 | `dependances` | `[{ "nom": "tokens.css", "note": "…" }]` |
@@ -46,12 +48,14 @@ if (Socle.thumb) { /* vignette : version compacte */ }
 | `code` | Onglets : `{ "id", "label", "file", "lang" }` (`html`, `css`, `js`, `jsx`) |
 | `usage`, `accessibilite` | Notes affichées sous le code |
 
+**Premium.** Un design `"niveau": "premium"` vise le niveau d’un abonnement payant : repli statique avec « réduire les animations », pause hors écran (IntersectionObserver) pour tout ce qui tourne en boucle, AA mesuré en clair et en sombre, clavier complet, poids et dépendances annoncés. Pour l’instant l’onglet de code reste visible ; seul le badge le distingue.
+
 Règles du design system à respecter : couleurs uniquement par variables de `tokens.css`, grille de 8 px, rayons 8 / 12 / 16 / 999, accent rare, contraste AA en clair et en sombre, cibles de 44 px et champs de 16 px sur mobile, aucune ombre ni bordure colorée sur une carte, pas de dégradé ni d’emoji, animations coupées avec `prefers-reduced-motion`.
 
 ## 3. Publier
 
 ```bash
-node scripts/build-index.mjs   # vérifie les fiches et régénère registry/index.json
+node scripts/build-index.mjs   # vérifie les fiches (dont « niveau ») et régénère registry/index.json
 node scripts/serve.mjs         # contrôle sur http://localhost:4000/socle/
 git add registry && git commit -m "Ajout : <nom>" && git push
 ```

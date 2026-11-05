@@ -1,0 +1,68 @@
+{
+  "id": "carte-holographique",
+  "nom": "Carte holographique",
+  "categorie": "cartes",
+  "niveau": "premium",
+  "ordre": 1,
+  "description": "Une carte membre qui s’incline sous le pointeur ou avec le téléphone : reflet irisé, paillettes qui s’allument selon l’angle et sceau hologramme, puis un vrai ressort la remet à plat. Pour une carte membre, une offre ou une invitation.",
+  "tags": ["3D", "Gyroscope", "Ressort", "Canvas", "Accessible"],
+  "date": "2026-11-05",
+  "thumb": { "width": 720 },
+  "stage": { "width": "desktop" },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, couleurs de graphique pour l’irisation, rayons, focus" },
+    { "nom": "Script intégré", "note": "≈ 4 ko, sans dépendance : ressort, canvas des paillettes, gyroscope (HTML seulement)" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement" }
+  ],
+  "props": [
+    { "name": "nom", "label": "Nom du membre", "type": "text", "default": "Camille Arnaud",
+      "code": { "html": "<h3 class=\"holo__name\">{v}</h3>", "react": "name=\"{v}\"" } },
+    { "name": "motif", "label": "Motif de l’irisation", "type": "select", "default": "lignes",
+      "options": [{ "value": "lignes", "label": "Lignes" }, { "value": "losanges", "label": "Losanges" }, { "value": "monogramme", "label": "Monogramme" }, { "value": "uni", "label": "Uni" }],
+      "code": { "html": "data-motif=\"{v}\"", "react": "motif=\"{v}\"" } },
+    { "name": "intensite", "label": "Inclinaison max", "type": "number", "default": 14, "min": 0, "max": 28, "step": 1, "unit": "°",
+      "hint": "Angle atteint au bord de la carte. 10 à 16° reste élégant.",
+      "code": { "html": "--holo-tilt: {v}deg", "react": "tilt={{v}}" } },
+    { "name": "reflet", "label": "Reflet", "type": "number", "default": 0.6, "min": 0, "max": 1, "step": 0.05,
+      "code": { "html": "--holo-glare: {v};", "react": "glare={{v}}" } },
+    { "name": "irisation", "label": "Irisation", "type": "number", "default": 0.7, "min": 0, "max": 1, "step": 0.05,
+      "hint": "Force du film arc-en-ciel ; il monte avec l’angle.",
+      "code": { "html": "--holo-foil: {v};", "react": "foil={{v}}" } },
+    { "name": "paillettes", "label": "Paillettes", "type": "number", "default": 0.5, "min": 0, "max": 1, "step": 0.05,
+      "hint": "Densité. Chaque paillette a sa facette et brille à son angle.",
+      "code": { "html": "--holo-sparkle: {v};", "react": "sparkle={{v}}" } },
+    { "name": "rayon", "label": "Rayon", "type": "select", "default": "16",
+      "options": [{ "value": "8", "label": "8 px" }, { "value": "12", "label": "12 px" }, { "value": "16", "label": "16 px" }],
+      "code": { "html": "--holo-radius: {v}px;", "react": "radius={{v}}" } },
+    { "name": "raideur", "label": "Raideur du ressort", "type": "number", "default": 170, "min": 60, "max": 500, "step": 10,
+      "code": { "html": "--holo-stiffness: {v};", "react": "stiffness={{v}}" } },
+    { "name": "amortissement", "label": "Amortissement", "type": "number", "default": 14, "min": 6, "max": 40, "step": 1,
+      "hint": "Bas : la carte oscille avant de se poser. Haut : retour sec.",
+      "code": { "html": "--holo-damping: {v}\"", "react": "damping={{v}}" } },
+    { "name": "fond", "label": "Fond de carte", "type": "select", "default": "nuit",
+      "options": [{ "value": "nuit", "label": "Nuit" }, { "value": "theme", "label": "Suit le thème" }],
+      "code": { "html": "data-fond=\"{v}\"", "react": "surface=\"{v}\"" } },
+    { "name": "gyroscope", "label": "Gyroscope sur mobile", "type": "boolean", "default": true,
+      "hint": "Sur iOS, un bouton demande l’autorisation.",
+      "code": { "html": "data-gyro=\"{v}\"", "react": "gyroscope={{v}}" } },
+    { "name": "auto", "label": "Balancement au repos", "type": "boolean", "default": false,
+      "code": { "html": "data-auto=\"{v}\"", "react": "autoSway={{v}}" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/CarteHolographique.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "Un seul objet holographique par écran : carte membre après inscription, offre à débloquer, invitation ou billet.",
+    "Gardez une inclinaison de 10 à 16° et une irisation modérée : l’effet doit se découvrir en bougeant, pas crier au repos.",
+    "Le ressort se règle en raideur et amortissement : 170 / 14 donne une légère oscillation, 300 / 34 un retour net.",
+    "Le motif « Monogramme » reprend le logo en filigrane : remplacez le SVG du masque par celui de votre marque."
+  ],
+  "accessibilite": [
+    "La carte est focalisable : au focus clavier elle s’incline pour révéler le reflet, les flèches l’orientent, Échap la remet à plat.",
+    "Le texte reste au-dessus de l’irisation : nom et numéros gardent un contraste ≥ 4,5:1 sur le fond de carte, même incliné.",
+    "Avec « réduire les animations », aucune inclinaison ni balancement : un angle figé montre le reflet et les paillettes en image fixe.",
+    "Gyroscope : rien n’est demandé sans geste ; sur iOS, un bouton de 44 px demande l’autorisation et annonce un refus. Animation suspendue hors écran."
+  ]
+}

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Méga-menu fluide — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  /* Page fictive sous la barre, pour voir le panneau passer au-dessus du contenu */
+  .page { max-width: 1200px; margin: 0 auto; padding: 96px 24px 64px; }
+  .page__k { font: 500 12px/18px var(--font-mono); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--text-muted); }
+  .page h1 { margin: 12px 0 16px; max-width: 14ch; font-size: clamp(2.25rem, 1.5rem + 3vw, 3.75rem); line-height: 1.04; letter-spacing: -0.04em; font-weight: 600; }
+  .page p { max-width: 38rem; color: var(--text-muted); font-size: 1.125rem; line-height: 1.6; }
+  .page__hint { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 32px; font-size: 13px; color: var(--text-muted); }
+  .page__hint kbd { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--border); background: var(--raised); font: 500 12px/1 var(--font-mono); color: var(--text-strong); }
+  .page__cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 56px; }
+  .page__cards div { height: 160px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+  html.bg-grid .mm { background: var(--surface); }
+  .is-thumb .page { padding-top: 360px; }
+  .is-thumb .page__hint, .is-thumb .page__cards { display: none; }
+  @media (max-width: 959px) { .page { padding-top: 56px; } .page__hint .k-desk { display: none; } }
+  @media (min-width: 960px) { .page__hint .k-mob { display: none; } }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<main class="page" aria-label="Contenu d’exemple">
+  <span class="page__k">Agents vocaux pour TPE</span>
+  <h1>Le standard qui ne dort jamais.</h1>
+  <p>Vos appels décrochés à la première sonnerie, nuit et jour. Survolez le menu&nbsp;: le panneau glisse vers l’entrée visée et change de taille avec un ressort.</p>
+  <div class="page__hint"><span class="k-desk">Clavier :</span><span class="k-desk"><kbd>Tab</kbd> <kbd>←</kbd> <kbd>→</kbd> <kbd>↓</kbd> <kbd>Échap</kbd></span><span class="k-mob">Touchez le menu pour ouvrir le tiroir à niveaux.</span></div>
+  <div class="page__cards" aria-hidden="true"><div></div><div></div><div></div></div>
+</main>
+<script>
+  /* Props → attributs data-* du header, puis le script du composant est relancé (il détruit l'instance précédente). */
+  var props = Socle.props({ start: 'produit', hover: true, arrow: true, pill: true, stiffness: 320, damping: 30, slide: 24, openDelay: 80, closeDelay: 220, cta: 'Essai gratuit' });
+  var src = null, tour = [];
+  var mount = document.getElementById('mount');
+  function api() { var h = mount.querySelector('[data-mega]'); return h && h._mega; }
+  function render(p) {
+    if (!src) return;
+    tour.forEach(clearTimeout); tour = [];
+    var a = api(); if (a) a.destroy();
+    mount.innerHTML = src.markup;
+    var h = mount.querySelector('[data-mega]');
+    h.dataset.stiffness = p.stiffness; h.dataset.damping = p.damping; h.dataset.slide = p.slide;
+    h.dataset.openDelay = p.openDelay; h.dataset.closeDelay = p.closeDelay;
+    h.dataset.hover = p.hover; h.dataset.arrow = p.arrow; h.dataset.pill = p.pill;
+    mount.querySelectorAll('[data-mm-cta]').forEach(function (el) { el.textContent = p.cta || 'Essai gratuit'; });
+    try { new Function(src.script)(); } catch (e) { console.error(e); }
+    if (p.start && p.start !== 'none' && window.innerWidth >= 960) requestAnimationFrame(function () { var m = api(); m && m.open(p.start); });
+  }
+  /* Rejouer : petite visite guidée du panneau (bureau) ou du tiroir (mobile). */
+  function replay() {
+    var m = api(); if (!m) return; tour.forEach(clearTimeout); tour = [];
+    var at = function (t, fn) { tour.push(setTimeout(fn, t)); };
+    if (window.innerWidth >= 960) {
+      m.close(); at(250, function () { m.open('produit'); }); at(1250, function () { m.open('solutions'); }); at(2250, function () { m.open('ressources'); }); at(3250, function () { m.open('produit'); });
+    } else {
+      m.closeDrawer(false); at(300, m.openDrawer); at(1200, function () { m.goLevel('solutions'); }); at(2100, function () { m.goLevel('metier'); }); at(3200, m.back); at(4000, m.back);
+    }
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    src = { markup: mk ? mk[1] : '', script: js ? js[1] : '' };
+    render(props);
+  });
+  Socle.onChange(render);
+  Socle.onReplay(replay);
+</script>
+</body>
+</html>

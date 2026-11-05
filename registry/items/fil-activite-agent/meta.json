@@ -1,0 +1,225 @@
+{
+  "id": "fil-activite-agent",
+  "nom": "Fil d’activité d’agent IA",
+  "categorie": "tableau-de-bord",
+  "niveau": "premium",
+  "ordre": 1,
+  "description": "Le fil en direct d’un agent téléphonique IA qui prend un rendez-vous pendant l’appel : plan qui se coche, réflexion qui s’écrit, appels d’outil avec arguments et durée, résultats, validation Approuver / Refuser qui change la suite, réponse finale. Défilement qui suit le direct et s’arrête quand on remonte.",
+  "tags": [
+    "Agent IA",
+    "Temps réel",
+    "Validation humaine",
+    "Appel d’outil"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 900
+  },
+  "stage": {
+    "width": "desktop"
+  },
+  "technique": "Horloge virtuelle rAF (vitesse, pause hors écran), file d’étapes avec branches selon la décision, ressort CSS linear()",
+  "difficulte": 2,
+  "poids": "≈ 14 ko de JS non minifié, sans dépendance",
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Neutres, accent, teintes d’état, focus"
+    },
+    {
+      "nom": "IntersectionObserver",
+      "note": "Pause hors écran (repli : toujours actif)"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    },
+    {
+      "nom": "framer-motion ≥ 11",
+      "note": "Onglet React seulement : entrées en ressort, repli si animations réduites"
+    }
+  ],
+  "props": [
+    {
+      "name": "agent",
+      "label": "Nom de l’agent",
+      "type": "text",
+      "default": "Iris",
+      "code": {
+        "html": "id=\"af-title\">{v}</h2>",
+        "react": "agent=\"{v}\""
+      }
+    },
+    {
+      "name": "scenario",
+      "label": "Scénario",
+      "type": "select",
+      "default": "rdv",
+      "options": [
+        {
+          "value": "rdv",
+          "label": "Rendez-vous"
+        },
+        {
+          "value": "report",
+          "label": "Report"
+        },
+        {
+          "value": "urgence",
+          "label": "Urgence"
+        }
+      ],
+      "code": {
+        "html": "data-scenario=\"{v}\"",
+        "react": "scenario=\"{v}\""
+      },
+      "hint": "Rendez-vous : prise simple. Report : erreur 503 puis nouvel essai. Urgence : aucun créneau, transfert d’appel."
+    },
+    {
+      "name": "speed",
+      "label": "Vitesse",
+      "type": "number",
+      "default": 1,
+      "min": 0.25,
+      "max": 4,
+      "step": 0.25,
+      "unit": "×",
+      "hint": "Aussi réglable dans le pied du composant.",
+      "code": {
+        "html": "data-speed=\"{v}\"",
+        "react": "speed={{v}}"
+      }
+    },
+    {
+      "name": "density",
+      "label": "Densité",
+      "type": "select",
+      "default": "confortable",
+      "options": [
+        {
+          "value": "confortable",
+          "label": "Confortable"
+        },
+        {
+          "value": "compacte",
+          "label": "Compacte"
+        }
+      ],
+      "code": {
+        "html": "data-density=\"{v}\"",
+        "react": "density=\"{v}\""
+      }
+    },
+    {
+      "name": "args",
+      "label": "Arguments des outils",
+      "type": "select",
+      "default": "replies",
+      "options": [
+        {
+          "value": "replies",
+          "label": "Repliés"
+        },
+        {
+          "value": "ouverts",
+          "label": "Ouverts"
+        },
+        {
+          "value": "masques",
+          "label": "Masqués"
+        }
+      ],
+      "code": {
+        "html": "data-args=\"{v}\"",
+        "react": "args=\"{v}\""
+      }
+    },
+    {
+      "name": "approval",
+      "label": "Validation humaine requise",
+      "type": "boolean",
+      "default": true,
+      "hint": "Désactivée : l’agent applique la règle du cabinet et continue seul.",
+      "code": {
+        "html": "data-approval=\"{v}\"",
+        "react": "approval={{v}}"
+      }
+    },
+    {
+      "name": "time",
+      "label": "Horodatage",
+      "type": "select",
+      "default": "relatif",
+      "options": [
+        {
+          "value": "relatif",
+          "label": "Relatif"
+        },
+        {
+          "value": "absolu",
+          "label": "Heure"
+        },
+        {
+          "value": "masque",
+          "label": "Masqué"
+        }
+      ],
+      "code": {
+        "html": "data-time=\"{v}\"",
+        "react": "time=\"{v}\""
+      },
+      "hint": "Relatif : « +2,4 s » depuis le début de l’action. Heure : « 14:02:41 »."
+    },
+    {
+      "name": "thinking",
+      "label": "Afficher la réflexion",
+      "type": "boolean",
+      "default": true,
+      "code": {
+        "html": "data-thinking=\"{v}\"",
+        "react": "thinking={{v}}"
+      }
+    },
+    {
+      "name": "autoscroll",
+      "label": "Suivre le direct",
+      "type": "boolean",
+      "default": true,
+      "hint": "Le suivi s’arrête de lui-même dès que l’on remonte dans le fil.",
+      "code": {
+        "html": "data-autoscroll=\"{v}\"",
+        "react": "autoscroll={{v}}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/AgentActivityFeed.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Console de supervision d’un agent vocal ou conversationnel : l’opérateur voit ce que l’agent fait, pourquoi, et valide les actions qui engagent l’entreprise.",
+    "Branchez vos vraies étapes : chaque scénario est une liste { t: 'plan' | 'think' | 'tool' | 'result' | 'ask' | 'final', dur, … } ; une étape « ask » porte ses deux suites ok et ko.",
+    "Écoutez « agent:approval » (detail.decision = approve | refuse) et « agent:done » en HTML, ou onDecision / onDone en React. API : el.agentFeed.replay(), approve(), refuse().",
+    "Pour une démo en boucle (vignette, page d’accueil) : data-autoapprove=\"900\" et data-loop=\"true\"."
+  ],
+  "accessibilite": [
+    "Fil en role=\"log\" atteignable au clavier ; une seule région polie annonce les étapes clés (outil réussi ou en échec, validation requise, réponse) sans lire le texte qui s’écrit lettre à lettre.",
+    "Approuver et Refuser sont des boutons natifs de 44 px (36 px visibles sur bureau, zone étendue) ; les repliables ont aria-expanded et aria-controls ; la vitesse est un groupe de boutons aria-pressed.",
+    "L’état ne repose jamais sur la couleur seule : icône, badge texte (« En cours », « Échec », « En attente ») et libellé masqué pour les lecteurs d’écran.",
+    "Avec « réduire les animations », le fil s’affiche d’un coup jusqu’à la validation puis jusqu’à la fin, sans écriture progressive, rotation ni ressort. Horloge en pause hors écran et onglet masqué."
+  ]
+}

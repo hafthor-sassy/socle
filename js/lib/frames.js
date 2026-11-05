@@ -1,6 +1,7 @@
 /* Aperçus live : URL de démo, vignettes à l'échelle, diffusion du thème. */
 import { itemPath, currentTheme } from './store.js';
 import { esc } from './dom.js';
+import { icon } from './icons.js';
 
 /*
   sandbox : scripts seulement. La démo tourne dans une origine opaque : elle ne
@@ -23,11 +24,16 @@ export function post(iframe, msg) {
   try { iframe.contentWindow && iframe.contentWindow.postMessage({ socle: 1, ...msg }, '*'); } catch (e) { /* ignoré */ }
 }
 
+/* Niveau d'un design : « essentiel » par défaut, « premium » s'il est déclaré dans meta.json. */
+export const isPremium = (item) => (item && item.niveau) === 'premium';
+export const premiumBadge = () => `<span class="badge badge--premium">${icon('sparkle', { size: 12 })}Premium</span>`;
+
 /* Vignette : l'iframe est rendue à sa largeur réelle puis réduite. */
 export function thumbHTML(item) {
   const w = (item.thumb && item.thumb.width) || 1024;
   const h = Math.round(w * 0.75);
   return `<div class="shot__frame" data-thumb-w="${w}" data-thumb-h="${h}">
+    ${isPremium(item) ? `<span class="shot__lvl" aria-hidden="true">${premiumBadge()}</span>` : ''}
     <iframe data-demo data-src="${esc(demoURL(item.id, { thumb: true }))}" title="Aperçu de ${esc(item.nom)}" tabindex="-1" aria-hidden="true" sandbox="${SANDBOX}" width="${w}" height="${h}"></iframe>
   </div>`;
 }

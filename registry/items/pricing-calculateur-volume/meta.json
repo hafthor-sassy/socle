@@ -1,0 +1,257 @@
+{
+  "id": "pricing-calculateur-volume",
+  "nom": "Calculateur de prix au curseur",
+  "categorie": "pricing",
+  "ordre": 4,
+  "niveau": "premium",
+  "description": "Le visiteur règle ses sièges, ses minutes et ses appels API au curseur : le total de chaque offre se recalcule avec des chiffres qui roulent, la moins chère s’allume, les paliers d’offre sont dessinés sur la piste et l’économie annuelle est chiffrée.",
+  "tags": [
+    "Curseur",
+    "Chiffres qui roulent",
+    "SaaS",
+    "Usage",
+    "Responsive"
+  ],
+  "date": "2026-11-05",
+  "thumb": {
+    "width": 1180
+  },
+  "stage": {
+    "width": "desktop",
+    "desktopMin": 1120
+  },
+  "dependances": [
+    {
+      "nom": "tokens.css",
+      "note": "Neutres, accent, teintes vert, ambre et neutre, ombres de contrôle"
+    },
+    {
+      "nom": "Intl.NumberFormat",
+      "note": "Montants, volumes et notation compacte (250 k, 1 M) au format français"
+    },
+    {
+      "nom": "CSS linear()",
+      "note": "Ressort des chiffres ; repli automatique sur une courbe de Bézier"
+    },
+    {
+      "nom": "react ≥ 18",
+      "note": "Onglet React seulement, aucune autre bibliothèque"
+    },
+    {
+      "nom": "tailwindcss ≥ 3.4",
+      "note": "Onglet React seulement"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "label": "Titre",
+      "type": "text",
+      "default": "Un prix qui suit votre volume, pas l’inverse.",
+      "code": {
+        "html": "<h2 id=\"pcv-title\">{v}</h2>",
+        "react": "title = '{v}'"
+      }
+    },
+    {
+      "name": "currency",
+      "label": "Devise",
+      "type": "select",
+      "default": "EUR",
+      "options": [
+        {
+          "value": "EUR",
+          "label": "€"
+        },
+        {
+          "value": "USD",
+          "label": "$"
+        },
+        {
+          "value": "GBP",
+          "label": "£"
+        }
+      ],
+      "code": {
+        "html": "data-currency=\"{v}\"",
+        "react": "currency = '{v}'"
+      }
+    },
+    {
+      "name": "period",
+      "label": "Période au départ",
+      "type": "select",
+      "default": "month",
+      "options": [
+        {
+          "value": "month",
+          "label": "Mensuel"
+        },
+        {
+          "value": "year",
+          "label": "Annuel"
+        }
+      ],
+      "code": {
+        "html": "data-period=\"{v}\"",
+        "react": "defaultPeriod = '{v}'"
+      }
+    },
+    {
+      "name": "discount",
+      "label": "Remise annuelle",
+      "type": "number",
+      "default": 20,
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "unit": "%",
+      "code": {
+        "html": "data-discount=\"{v}\"",
+        "react": "discount = {v}"
+      }
+    },
+    {
+      "name": "sliders",
+      "label": "Volumes réglables",
+      "type": "select",
+      "default": "seats,minutes,api",
+      "options": [
+        {
+          "value": "seats,minutes,api",
+          "label": "Les trois"
+        },
+        {
+          "value": "seats,minutes",
+          "label": "Sièges, min"
+        },
+        {
+          "value": "minutes,api",
+          "label": "Min, API"
+        },
+        {
+          "value": "seats",
+          "label": "Sièges"
+        }
+      ],
+      "hint": "Sièges, minutes et appels API, ou un seul curseur : les bandes et les totaux s’adaptent.",
+      "code": {
+        "html": "data-sliders=\"{v}\"",
+        "react": "sliders = '{v}'"
+      }
+    },
+    {
+      "name": "preset",
+      "label": "Exemple au départ",
+      "type": "select",
+      "default": "0",
+      "options": [
+        {
+          "value": "0",
+          "label": "Startup"
+        },
+        {
+          "value": "1",
+          "label": "PME"
+        },
+        {
+          "value": "2",
+          "label": "Centre"
+        }
+      ],
+      "code": {
+        "html": "data-preset=\"{v}\"",
+        "react": "defaultPreset = {v}"
+      },
+      "hint": "Centre = centre d’appels (60 sièges, 30 000 min)."
+    },
+    {
+      "name": "bands",
+      "label": "Paliers sur la piste",
+      "type": "boolean",
+      "default": true,
+      "hint": "Colore la piste par offre conseillée à chaque cran, les autres volumes figés.",
+      "code": {
+        "html": "data-bands=\"{v}\"",
+        "react": "bands = {v}"
+      }
+    },
+    {
+      "name": "roll",
+      "label": "Chiffres",
+      "type": "select",
+      "default": "spring",
+      "options": [
+        {
+          "value": "spring",
+          "label": "Ressort"
+        },
+        {
+          "value": "smooth",
+          "label": "Doux"
+        },
+        {
+          "value": "none",
+          "label": "Sans"
+        }
+      ],
+      "code": {
+        "html": "data-roll=\"{v}\"",
+        "react": "roll = '{v}'"
+      }
+    },
+    {
+      "name": "stiffness",
+      "label": "Raideur du ressort",
+      "type": "number",
+      "default": 170,
+      "min": 60,
+      "max": 400,
+      "step": 10,
+      "code": {
+        "html": "data-stiffness=\"{v}\"",
+        "react": "stiffness = {v}"
+      }
+    },
+    {
+      "name": "damping",
+      "label": "Amortissement",
+      "type": "number",
+      "default": 19,
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "hint": "Bas : les chiffres dépassent puis reviennent. Haut : arrêt net.",
+      "code": {
+        "html": "data-damping=\"{v}\"",
+        "react": "damping = {v}"
+      }
+    }
+  ],
+  "code": [
+    {
+      "id": "html",
+      "label": "HTML + CSS + JS",
+      "file": "code/index.html",
+      "lang": "html"
+    },
+    {
+      "id": "react",
+      "label": "React + Tailwind",
+      "file": "code/VolumePricing.jsx",
+      "lang": "jsx"
+    }
+  ],
+  "usage": [
+    "Pour une offre facturée au volume (sièges, minutes, appels, crédits) avec plusieurs formules : le visiteur ne compare plus des grilles, il voit son prix.",
+    "Les offres, crans, quotas inclus, limites et seuils « sur devis » se règlent dans le JSON data-pcv-config (HTML) ou les props plans et sliders (React) ; le calcul est générique.",
+    "Les bandes de la piste montrent où l’offre conseillée change : gardez 2 à 4 offres et 12 à 25 crans par curseur, en échelle à peu près logarithmique.",
+    "Écoutez pricingselect, pricingcontact et pricingchange (HTML) ou onSelect, onContact et onChange (React) pour ouvrir le paiement ou le formulaire commercial."
+  ],
+  "accessibilite": [
+    "Curseurs natifs (flèches, Page précédente/suivante, Origine, Fin) avec aria-valuetext : « 12 sièges, offre conseillée : Pro ».",
+    "Offres en groupe de boutons radio, flèches du clavier, offre indisponible annoncée et ignorée ; total annoncé par une région aria-live après 700 ms de calme.",
+    "Chiffres qui roulent masqués aux lecteurs d’écran, qui lisent le texte réel ; cibles de 44 px et plus, focus visible sur la poignée.",
+    "Avec « réduire les animations », chiffres, bandes et bulle changent sans mouvement ; contraste AA des libellés en clair et en sombre."
+  ]
+}

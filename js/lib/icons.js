@@ -41,6 +41,7 @@ const P = {
   chevronUp: '<path d="M6 15l6-6 6 6"/>',
   pause: '<path d="M9 5v14M15 5v14"/>',
   play: '<path d="M7 5l12 7-12 7z"/>',
+  sparkle: '<path d="M12 3.5l1.9 5.2a2 2 0 0 0 1.2 1.2l5.2 1.9-5.2 1.9a2 2 0 0 0-1.2 1.2L12 20.5l-1.9-5.2a2 2 0 0 0-1.2-1.2L3.7 12l5.2-1.9a2 2 0 0 0 1.2-1.2z"/>',
 };
 
 export function icon(name, { size = 20, cls = '', label = '' } = {}) {

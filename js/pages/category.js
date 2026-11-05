@@ -3,7 +3,7 @@ import { CATEGORIES } from '../../registry/categories.js';
 import { loadIndex } from '../lib/store.js';
 import { icon, rawIcon } from '../lib/icons.js';
 import { esc, fr, formatDate, plural, bindCopy } from '../lib/dom.js';
-import { thumbHTML, mountThumbs } from '../lib/frames.js';
+import { thumbHTML, mountThumbs, isPremium } from '../lib/frames.js';
 import { openDrawer, closeDrawer } from '../lib/shell.js';
 
 export function cardHTML(it) {
@@ -11,7 +11,7 @@ export function cardHTML(it) {
   const tag = (it.tags || [])[0];
   return `<a class="shot" href="#/i/${esc(it.id)}">
     ${thumbHTML(it)}
-    <div class="shot__meta"><div class="tx"><b>${esc(it.nom)}</b><span>${esc(cat ? cat.nom : '')}</span></div>${tag ? `<span class="badge">${esc(tag)}</span>` : ''}</div>
+    <div class="shot__meta"><div class="tx"><b>${esc(it.nom)}${isPremium(it) ? '<span class="sr-only">, Premium</span>' : ''}</b><span>${esc(cat ? cat.nom : '')}</span></div>${tag ? `<span class="badge">${esc(tag)}</span>` : ''}</div>
   </a>`;
 }
 
@@ -27,7 +27,10 @@ export async function renderCategory(view, cat) {
   const { items: all } = await loadIndex();
   const items = all.filter((i) => i.categorie === cat.id);
   const tags = [...new Set(items.flatMap((i) => i.tags || []))].sort((a, b) => a.localeCompare(b, 'fr'));
-  const state = { tags: new Set(), sort: 'recent' };
+  const NIVEAUX = [{ id: 'tous', nom: 'Tous' }, { id: 'essentiel', nom: 'Essentiel' }, { id: 'premium', nom: 'Premium' }];
+  const levelOf = (i) => (isPremium(i) ? 'premium' : 'essentiel');
+  const q = new URLSearchParams(location.hash.split('?')[1] || '');
+  const state = { tags: new Set(), sort: 'recent', niveau: NIVEAUX.some((n) => n.id === q.get('niveau')) ? q.get('niveau') : 'tous' };
 
   const head = `
     ${crumbs([{ label: 'Bibliothèque', href: '#/' }, { label: cat.sectionNom, href: '#/' }, { label: cat.nom }])}
@@ -60,6 +63,9 @@ export async function renderCategory(view, cat) {
         </div>
       </div>
       <div class="toolbar__right">
+        <div class="seg seg--level" role="radiogroup" aria-label="Niveau">
+          ${NIVEAUX.map((n) => `<button type="button" role="radio" aria-checked="${n.id === state.niveau}" data-level="${n.id}">${n.id === 'premium' ? icon('sparkle', { size: 14 }) : ''}${n.nom}<span class="seg__n num">${n.id === 'tous' ? items.length : items.filter((i) => levelOf(i) === n.id).length}</span></button>`).join('')}
+        </div>
         <span class="count" data-count></span>
         <div class="seg" role="radiogroup" aria-label="Trier">
           <button type="button" role="radio" aria-checked="true" data-sort="recent">Récent</button>
@@ -73,9 +79,12 @@ export async function renderCategory(view, cat) {
   const countEl = view.querySelector('[data-count]');
 
   function apply() {
-    let list = items.filter((i) => !state.tags.size || (i.tags || []).some((t) => state.tags.has(t)));
+    let list = items.filter((i) => (state.niveau === 'tous' || levelOf(i) === state.niveau) && (!state.tags.size || (i.tags || []).some((t) => state.tags.has(t))));
     list = list.slice().sort(state.sort === 'nom' ? (a, b) => a.nom.localeCompare(b.nom, 'fr') : (a, b) => (b.date || '').localeCompare(a.date || '') || (a.ordre ?? 50) - (b.ordre ?? 50));
-    grid.innerHTML = list.length ? list.map(cardHTML).join('') : `<p class="muted">Aucun design avec ces tags.</p>`;
+    const nivNom = state.niveau === 'premium' ? 'Premium' : 'Essentiel';
+    const why = state.niveau !== 'tous' && !state.tags.size ? `Aucun design ${nivNom} dans « ${cat.nom} » pour l’instant.` : state.niveau !== 'tous' ? `Aucun design ${nivNom} avec ces tags.` : 'Aucun design avec ces tags.';
+    grid.innerHTML = list.length ? list.map(cardHTML).join('') : `<div class="grid__none"><p class="muted">${fr(why)}</p><button class="btn btn--secondary btn--sm" type="button" data-showall>Tout afficher</button></div>`;
+    view.querySelectorAll('[data-level]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.level === state.niveau)));
     countEl.textContent = plural(list.length, 'design', 'designs');
     view.querySelectorAll('.chip[data-tag]').forEach((c) => c.setAttribute('aria-pressed', String(state.tags.has(c.dataset.tag))));
     const fl = view.querySelector('[data-flabel]');
@@ -88,6 +97,17 @@ export async function renderCategory(view, cat) {
     if (!b) return;
     const t = b.dataset.tag;
     state.tags.has(t) ? state.tags.delete(t) : state.tags.add(t);
+    apply();
+  });
+  view.querySelectorAll('[data-level]').forEach((b) => b.addEventListener('click', () => {
+    state.niveau = b.dataset.level;
+    history.replaceState(null, '', `#/c/${cat.id}${state.niveau === 'tous' ? '' : `?niveau=${state.niveau}`}`);
+    apply();
+  }));
+  grid.addEventListener('click', (e) => {
+    if (!e.target.closest('[data-showall]')) return;
+    state.niveau = 'tous'; state.tags.clear();
+    history.replaceState(null, '', `#/c/${cat.id}`);
     apply();
   });
   view.querySelectorAll('[data-sort]').forEach((b) => b.addEventListener('click', () => {

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rideaux — démo</title>
+<link rel="stylesheet" href="../../../css/tokens.css">
+<link rel="stylesheet" href="../../../demo-kit/demo.css">
+<script src="../../../demo-kit/demo.js"></script>
+<style id="component-css"></style>
+<style>
+  .stage { min-height: 100vh; display: grid; align-content: center; padding: 40px 24px; }
+  @media (max-width: 719px) { .stage { padding: 12px; } }
+  .is-thumb .stage { padding: 24px; }
+</style>
+</head>
+<body>
+<main class="stage" id="mount"></main>
+<script>
+  /* Props → attributs data-* : le moteur relit ses réglages à chaque transition. */
+  var props = Socle.props({ mode: 'store', direction: 'right', duree: 1200, lames: 7, couleur: 'accent', etiquette: true, origine: 'click' });
+  var MAP = { mode: 'mode', direction: 'direction', duree: 'duration', lames: 'slats', couleur: 'color', etiquette: 'label', origine: 'origin' };
+  var mount = document.getElementById('mount'), root = null, last = {};
+  function apply(p) { Object.keys(MAP).forEach(function (k) { root.dataset[MAP[k]] = String(p[k]); }); }
+  /* Un changement de mode, de direction ou de couleur se montre tout de suite : on joue une transition. */
+  function onChange(p) {
+    if (!root) return;
+    var show = ['mode', 'direction', 'couleur', 'lames'].some(function (k) { return last[k] !== p[k]; });
+    apply(p); last = Object.assign({}, p);
+    if (show && root.curtain) root.curtain.next();
+  }
+  fetch('code/index.html').then(function (r) { return r.text(); }).then(function (t) {
+    var css = t.match(/<style>([\s\S]*?)<\/style>/);
+    var js = t.match(/<script>([\s\S]*?)<\/script>/);
+    var mk = t.match(/<!-- SECTION -->([\s\S]*?)<!-- \/SECTION -->/);
+    document.getElementById('component-css').textContent = css ? css[1] : '';
+    mount.innerHTML = mk ? mk[1] : '';
+    root = mount.querySelector('[data-curtain]');
+    apply(props); last = Object.assign({}, props);
+    try { new Function(js ? js[1] : '')(); } catch (e) { console.error(e); }
+    if (Socle.thumb) thumb();
+  });
+  Socle.onChange(onChange);
+  Socle.onReplay(function () { root && root.curtain && root.curtain.next(); });
+
+  /* Vignette : les pages défilent seules, en pause hors écran. */
+  function thumb() {
+    if (Socle.reducedMotion()) return;
+    var visible = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(mount);
+    (function tick() { setTimeout(function () { if (visible && root.curtain) root.curtain.next(); tick(); }, 2800); })();
+  }
+</script>
+</body>
+</html>

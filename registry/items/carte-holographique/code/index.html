@@ -1,0 +1,437 @@
+<!-- Carte holographique — HTML + CSS + JS intégré, sans dépendance. Nécessite tokens.css. Marque et membre fictifs. -->
+<link rel="stylesheet" href="tokens.css">
+
+<!-- SECTION -->
+<div class="holo" data-holo data-motif="lignes" data-fond="nuit" data-gyro="true" data-auto="false"
+  style="--holo-tilt: 14deg; --holo-glare: 0.6; --holo-foil: 0.7; --holo-sparkle: 0.5; --holo-radius: 16px; --holo-stiffness: 170; --holo-damping: 14">
+  <div class="holo__stage">
+    <span class="holo__shadow" aria-hidden="true"></span>
+    <article class="holo__card dark" data-accent="terracotta" tabindex="0" aria-label="Carte membre Socle Pro" aria-describedby="holo-hint">
+      <span class="holo__base" aria-hidden="true"></span>
+      <canvas class="holo__sparkle" aria-hidden="true"></canvas>
+      <span class="holo__foil" aria-hidden="true"></span>
+      <div class="holo__face">
+        <div class="holo__top">
+          <span class="holo__brand">
+            <svg viewBox="14 14 72 72" aria-hidden="true"><path class="holo__m1" d="M14 14H40V60H86V86H22A8 8 0 0 1 14 78Z"/><rect class="holo__m2" x="50" y="14" width="36" height="36" rx="8"/></svg>
+            Socle
+          </span>
+          <span class="holo__seal" aria-hidden="true">
+            <svg viewBox="14 14 72 72"><path d="M14 14H40V60H86V86H22A8 8 0 0 1 14 78Z"/><rect x="50" y="14" width="36" height="36" rx="8"/></svg>
+          </span>
+        </div>
+        <div class="holo__id">
+          <p class="holo__eyebrow">Carte membre <span class="holo__tier">Pro</span></p>
+          <h3 class="holo__name">Camille Arnaud</h3>
+        </div>
+        <dl class="holo__fields">
+          <div><dt>N° membre</dt><dd>0428 7731</dd></div>
+          <div><dt>Depuis</dt><dd>03/2024</dd></div>
+          <div><dt>Valide jusqu’à</dt><dd>12/2027</dd></div>
+        </dl>
+      </div>
+      <span class="holo__glare" aria-hidden="true"></span>
+    </article>
+  </div>
+  <p class="holo__sr" id="holo-hint">Carte interactive : les flèches du clavier l’inclinent, Échap la remet à plat.</p>
+  <button class="holo__gyro" type="button" data-holo-gyro hidden>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 17.5h2M3.5 9.5a9 9 0 0 0 0 5M20.5 9.5a9 9 0 0 1 0 5"/></svg>
+    <span data-holo-gyro-label>Activer l’inclinaison</span>
+  </button>
+</div>
+<!-- /SECTION -->
+
+<style>
+  .holo {
+    /* Réglages : inclinaison max, reflet, irisation, paillettes, rayon, ressort */
+    --holo-tilt: 14deg;
+    --holo-glare: 0.6;
+    --holo-foil: 0.7;
+    --holo-sparkle: 0.5;
+    --holo-radius: 16px;
+    --holo-stiffness: 170;
+    --holo-damping: 14;
+    /* Écrits par le script à chaque image : inclinaison normalisée (-1 → 1), écart au centre, angle */
+    --x: 0;
+    --y: 0;
+    --hyp: 0;
+    --fa: 0deg;
+    --holo-mask: repeating-linear-gradient(-58deg, #000 0 1px, rgba(0, 0, 0, .5) 1px 4px);
+    display: grid;
+    justify-items: center;
+    gap: 24px;
+    width: min(400px, 100%);
+  }
+  .holo[data-motif=uni] { --holo-mask: linear-gradient(#000, #000); }
+  .holo[data-motif=losanges] {
+    --holo-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Cpath d='M8 .5 15.5 8 8 15.5 .5 8Z' fill='none' stroke='%23000' stroke-width='1'/%3E%3Ccircle cx='8' cy='8' r='1.2'/%3E%3C/svg%3E") 0 0 / 16px 16px;
+  }
+  .holo[data-motif=monogramme] {
+    --holo-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg transform='translate(5 5) scale(.19) translate(-14 -14)' opacity='.6'%3E%3Cpath d='M14 14H40V60H86V86H22A8 8 0 0 1 14 78Z'/%3E%3Crect x='50' y='14' width='36' height='36' rx='8'/%3E%3C/g%3E%3Cg transform='translate(29 29) scale(.19) translate(-14 -14)' opacity='.3'%3E%3Cpath d='M14 14H40V60H86V86H22A8 8 0 0 1 14 78Z'/%3E%3Crect x='50' y='14' width='36' height='36' rx='8'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 48px 48px;
+  }
+
+  /* Scène : perspective fixe, mesurée par le script (elle ne bouge pas) */
+  .holo__stage { position: relative; width: 100%; perspective: 1000px; }
+  .holo__shadow {
+    position: absolute;
+    inset: 14% 10% -4%;
+    border-radius: var(--holo-radius);
+    background: color-mix(in srgb, var(--text-strong) 16%, transparent);
+    filter: blur(24px);
+    transform: translate3d(calc(var(--x) * -16px), calc(var(--y) * -10px + 8px), 0);
+    opacity: calc(.7 + var(--hyp) * .3);
+    pointer-events: none;
+  }
+  .dark .holo__shadow { background: color-mix(in srgb, var(--chart-4) 24%, transparent); }
+
+  /* La carte */
+  .holo__card {
+    --holo-light: var(--surface);
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.586;
+    container-type: inline-size;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: var(--holo-radius);
+    background: var(--surface);
+    color: var(--text);
+    transform: rotateX(calc(var(--y) * var(--holo-tilt) * -1)) rotateY(calc(var(--x) * var(--holo-tilt)));
+    scale: 1;
+    transition: scale 420ms cubic-bezier(.34, 1.56, .64, 1);
+    will-change: transform;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
+  .holo__card.dark, .dark .holo__card { --holo-light: var(--text-strong); }
+  .holo.is-active .holo__card { scale: 1.035; }
+  .holo__card:focus-visible { box-shadow: 0 0 0 var(--focus-width) var(--bg), 0 0 0 calc(var(--focus-width) * 2) var(--focus-ring); }
+  .holo__card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px var(--border), inset 0 1px 0 color-mix(in srgb, var(--holo-light) 14%, transparent);
+    pointer-events: none;
+  }
+  .holo__base, .holo__sparkle, .holo__foil, .holo__glare { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .holo__base { background: radial-gradient(120% 100% at 0% 0%, var(--raised), var(--surface) 62%); }
+  .holo__sparkle { z-index: 1; mix-blend-mode: screen; }
+  .holo__card:not(.dark) .holo__sparkle { mix-blend-mode: multiply; opacity: .55; }
+  .dark .holo__card .holo__sparkle { mix-blend-mode: screen; opacity: 1; }
+
+  /* Irisation : un dégradé répété, déplacé par l'angle, découpé par le motif */
+  .holo__foil {
+    z-index: 1;
+    background-image: repeating-linear-gradient(110deg, var(--chart-1) 0%, var(--chart-4) 6%, var(--chart-5) 12%, var(--chart-6) 18%, var(--chart-3) 24%, var(--chart-1) 30%);
+    background-size: 400% 400%;
+    background-position: calc(50% + var(--x) * 60%) calc(50% + var(--y) * 60%);
+    mix-blend-mode: screen;
+    filter: saturate(1.35);
+    opacity: calc(var(--holo-foil) * (.1 + var(--hyp) * .85));
+    /* Le motif, croisé avec une tache qui suit la lumière : l'irisation vit là où la carte renvoie le jour */
+    -webkit-mask: var(--holo-mask), radial-gradient(farthest-corner circle at calc(50% + var(--x) * 50%) calc(50% + var(--y) * 50%), #000 0%, rgba(0, 0, 0, .55) 35%, rgba(0, 0, 0, .12) 75%);
+    -webkit-mask-composite: source-in;
+    mask: var(--holo-mask), radial-gradient(farthest-corner circle at calc(50% + var(--x) * 50%) calc(50% + var(--y) * 50%), #000 0%, rgba(0, 0, 0, .55) 35%, rgba(0, 0, 0, .12) 75%);
+    mask-composite: intersect;
+  }
+  .holo__card:not(.dark) .holo__foil { mix-blend-mode: multiply; opacity: calc(var(--holo-foil) * (.06 + var(--hyp) * .42)); }
+  .dark .holo__card .holo__foil { mix-blend-mode: screen; opacity: calc(var(--holo-foil) * (.1 + var(--hyp) * .85)); }
+
+  /* Reflet : une tache de lumière sous le point d'inclinaison */
+  .holo__glare {
+    z-index: 3;
+    background: radial-gradient(farthest-corner circle at calc(50% + var(--x) * 55%) calc(50% + var(--y) * 55%),
+      color-mix(in srgb, var(--holo-light) 42%, transparent) 0%,
+      color-mix(in srgb, var(--holo-light) 10%, transparent) 30%,
+      transparent 60%);
+    mix-blend-mode: screen;
+    opacity: calc(var(--holo-glare) * (.25 + var(--hyp) * .75));
+  }
+  .holo__card:not(.dark) .holo__glare { mix-blend-mode: soft-light; }
+  .dark .holo__card .holo__glare { mix-blend-mode: screen; }
+
+  /* Contenu */
+  .holo__face {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 24px;
+    /* Encre protégée : un halo de la couleur du fond garde le texte lisible sur l'irisation */
+    text-shadow: 0 0 1px var(--surface), 0 0 10px color-mix(in srgb, var(--surface) 70%, transparent);
+  }
+  .holo__top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .holo__brand { display: inline-flex; align-items: center; gap: 8px; font: 600 16px/24px var(--font-sans); letter-spacing: -0.01em; color: var(--text-strong); }
+  .holo__brand svg { width: 24px; height: 24px; }
+  .holo__m1 { fill: var(--accent-vivid); }
+  .holo__m2 { fill: var(--accent); }
+  .holo__seal {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-pill);
+    background: conic-gradient(from var(--fa), var(--chart-1), var(--chart-4), var(--chart-5), var(--chart-6), var(--chart-3), var(--chart-1));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--holo-light) 30%, transparent);
+  }
+  .holo__seal::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at calc(50% + var(--x) * 40%) calc(50% + var(--y) * 40%), color-mix(in srgb, var(--holo-light) 60%, transparent), transparent 60%);
+    mix-blend-mode: overlay;
+  }
+  .holo__seal svg { position: relative; z-index: 1; width: 18px; height: 18px; fill: var(--surface); opacity: .82; }
+  .holo__id { align-self: end; display: grid; gap: 4px; padding-bottom: 16px; }
+  .holo__eyebrow { display: flex; align-items: baseline; gap: 8px; font: 500 12px/16px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+  .holo__tier {
+    text-shadow: none;
+    font-weight: 600;
+    letter-spacing: .14em;
+    background: linear-gradient(90deg, var(--chart-1), var(--chart-4), var(--chart-5), var(--chart-6), var(--chart-3));
+    background-size: 300% 100%;
+    background-position: calc(50% + var(--x) * 50%) 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .holo__name { margin: 0; font: 600 26px/32px var(--font-sans); letter-spacing: -0.02em; color: var(--text-strong); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .holo__fields { display: flex; justify-content: space-between; gap: 16px; margin: 0; padding-top: 12px; border-top: 1px solid var(--border); }
+  .holo__fields div { min-width: 0; }
+  .holo__fields dt { font: 500 12px/16px var(--font-sans); color: var(--text); white-space: nowrap; }
+  .holo__fields dd { margin: 2px 0 0; font: 500 14px/20px var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-strong); white-space: nowrap; }
+  @container (max-width: 359px) {
+    .holo__face { padding: 16px 20px; }
+    .holo__name { font-size: 22px; line-height: 28px; }
+    .holo__id { padding-bottom: 12px; }
+    .holo__fields { gap: 8px; }
+    .holo__fields dd { font-size: 13px; }
+  }
+
+  /* Bouton d'autorisation du gyroscope (iOS) */
+  .holo__gyro {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--text-strong);
+    font: 500 14px/20px var(--font-sans);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background-color var(--motion-fast) var(--ease-out), scale var(--motion-base) cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .holo__gyro[hidden] { display: none; }
+  .holo__gyro:active { scale: .97; }
+  .holo__gyro:disabled { color: var(--text-muted); cursor: default; }
+  .holo__gyro:focus-visible { outline: var(--focus-width) solid var(--focus-ring); outline-offset: var(--focus-offset); }
+  @media (hover: hover) and (pointer: fine) { .holo__gyro:hover:not(:disabled) { background: var(--raised); } }
+  .holo__sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .holo__card { transform: none; transition: none; }
+    .holo.is-active .holo__card { scale: 1; }
+    .holo__shadow { transform: translateY(8px); }
+  }
+</style>
+
+<script>
+/* Carte holographique — inclinaison au pointeur, au clavier et au gyroscope, retour au repos par ressort.
+   Paillettes sur canvas : chacune a sa facette et s'allume quand l'angle de la carte lui correspond.
+   Usage : <div data-holo> … </div> + ce script. Réglages par variables CSS et attributs data-*. */
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
+  var coarse = window.matchMedia && matchMedia('(pointer: coarse)');
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function rng(seed) { return function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
+
+  function attach(root) {
+    if (root._holo) return root._holo;
+    var stage = root.querySelector('.holo__stage');
+    var card = root.querySelector('.holo__card');
+    var cvs = root.querySelector('.holo__sparkle');
+    var ctx = cvs && cvs.getContext('2d');
+    var btn = root.querySelector('[data-holo-gyro]');
+    var x = 0, y = 0, vx = 0, vy = 0, tx = 0, ty = 0;
+    var raf = 0, last = 0, clock = 0, inView = true, hover = false, focusTilt = false, gyro = false;
+    var b0 = null, g0 = null, sparks = [], colors = [], W = 0, H = 0, dpr = 1;
+
+    function num(name, fb) { var v = parseFloat(getComputedStyle(root).getPropertyValue(name)); return isNaN(v) ? fb : v; }
+    function still() { return reduce && reduce.matches; }
+    function auto() { return root.dataset.auto === 'true'; }
+
+    function readColors() {
+      var cs = getComputedStyle(card);
+      colors = ['--chart-1', '--chart-4', '--chart-5', '--chart-6', '--chart-3', '--chart-2'].map(function (n) { return cs.getPropertyValue(n).trim() || 'gray'; });
+      colors.light = cs.getPropertyValue('--holo-light').trim() || cs.getPropertyValue('--text-strong').trim();
+    }
+    function seed() {
+      var n = Math.round(clamp(num('--holo-sparkle', 0.5), 0, 1) * 420), r = rng(42);
+      sparks = [];
+      for (var i = 0; i < n; i++) {
+        var big = r() < 0.1;
+        sparks.push({ x: r(), y: r(), s: big ? 1.2 + r() * 1 : 0.5 + r() * 0.8, nx: r() * 2 - 1, ny: r() * 2 - 1, c: i % 6, star: big });
+      }
+    }
+    function size() {
+      if (!cvs) return;
+      W = card.offsetWidth; H = card.offsetHeight; dpr = Math.min(2, window.devicePixelRatio || 1);
+      cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
+      draw();
+    }
+    function draw() {
+      if (!ctx || !W) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < sparks.length; i++) {
+        var s = sparks[i], dx = s.nx - x, dy = s.ny - y;
+        var b = Math.exp(-(dx * dx + dy * dy) / 0.09); // la facette renvoie la lumière quand l'angle lui correspond
+        var px = s.x * W, py = s.y * H;
+        ctx.globalAlpha = 0.12 + 0.88 * b;
+        ctx.fillStyle = colors[s.c];
+        ctx.beginPath(); ctx.arc(px, py, s.s, 0, 6.2832); ctx.fill();
+        if (b > 0.5) {
+          var k = (b - 0.5) / 0.5;
+          ctx.globalAlpha = k;
+          ctx.fillStyle = colors.light;
+          ctx.beginPath(); ctx.arc(px, py, s.s * 0.6, 0, 6.2832); ctx.fill();
+          if (s.star) {
+            var l = s.s * 5 * k;
+            ctx.strokeStyle = colors.light; ctx.lineWidth = 0.6; ctx.globalAlpha = k * 0.8;
+            ctx.beginPath(); ctx.moveTo(px - l, py); ctx.lineTo(px + l, py); ctx.moveTo(px, py - l); ctx.lineTo(px, py + l); ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+    function paint() {
+      root.style.setProperty('--x', x.toFixed(4));
+      root.style.setProperty('--y', y.toFixed(4));
+      root.style.setProperty('--hyp', clamp(Math.hypot(x, y), 0, 1).toFixed(3));
+      root.style.setProperty('--fa', (Math.atan2(y, x) * 57.2958 + x * 90).toFixed(1) + 'deg');
+      draw();
+    }
+    function frame(t) {
+      var dt = last ? Math.min(0.032, (t - last) / 1000) : 0.016;
+      last = t;
+      if (auto() && !hover && !gyro && !focusTilt) { // balancement au repos (Lissajous lent)
+        clock += dt;
+        tx = Math.sin(clock * 0.7) * 0.6;
+        ty = Math.sin(clock * 0.43 + 1) * 0.4;
+      }
+      var k = num('--holo-stiffness', 170), c = num('--holo-damping', 14);
+      // Ressort amorti : a = -k·(x - cible) - c·v
+      vx += (-k * (x - tx) - c * vx) * dt;
+      vy += (-k * (y - ty) - c * vy) * dt;
+      x += vx * dt; y += vy * dt;
+      var rest = !auto() && Math.abs(x - tx) + Math.abs(y - ty) + Math.abs(vx) + Math.abs(vy) < 0.002;
+      if (rest) { x = tx; y = ty; vx = vy = 0; }
+      paint();
+      if (rest || !inView) { raf = 0; last = 0; return; }
+      raf = requestAnimationFrame(frame);
+    }
+    function wake() { if (!raf && inView && !still()) raf = requestAnimationFrame(frame); }
+    function target(nx, ny) { tx = clamp(nx, -1, 1); ty = clamp(ny, -1, 1); wake(); }
+    function fromEvent(e) {
+      var r = stage.getBoundingClientRect();
+      target(((e.clientX - r.left) / r.width) * 2 - 1, ((e.clientY - r.top) / r.height) * 2 - 1);
+    }
+
+    /* Pointeur (souris, stylet, doigt posé sur la carte) */
+    function onMove(e) { if (still() || (gyro && e.pointerType === 'touch')) return; hover = true; root.classList.add('is-active'); fromEvent(e); }
+    function onLeave() { hover = false; root.classList.remove('is-active'); if (!gyro) target(0, 0); }
+    card.addEventListener('pointermove', onMove, { passive: true });
+    card.addEventListener('pointerdown', onMove, { passive: true });
+    card.addEventListener('pointerleave', onLeave);
+    card.addEventListener('pointercancel', onLeave);
+
+    /* Clavier : flèches pour incliner, Échap pour remettre à plat */
+    card.addEventListener('keydown', function (e) {
+      var step = 0.34, m = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+      if (m) { e.preventDefault(); focusTilt = true; target(tx + m[0], ty + m[1]); }
+      if (e.key === 'Escape') { focusTilt = false; target(0, 0); }
+    });
+    card.addEventListener('focus', function () { if (!hover && card.matches(':focus-visible')) { focusTilt = true; target(-0.45, -0.3); } });
+    card.addEventListener('blur', function () { if (focusTilt) { focusTilt = false; target(0, 0); } });
+
+    /* Gyroscope : la position où l'on tient le téléphone devient le « à plat », puis se recentre lentement */
+    function onOrient(e) {
+      if (e.beta == null || e.gamma == null || !inView || still()) return;
+      if (b0 == null) { b0 = e.beta; g0 = e.gamma; }
+      b0 += (e.beta - b0) * 0.004; g0 += (e.gamma - g0) * 0.004;
+      gyro = true;
+      if (!hover) target((e.gamma - g0) / 22, (e.beta - b0) / 22);
+    }
+    function startGyro() { window.addEventListener('deviceorientation', onOrient); }
+    function setBtn(state, label) {
+      if (!btn) return;
+      btn.dataset.state = state;
+      btn.disabled = state !== 'idle';
+      var l = btn.querySelector('[data-holo-gyro-label]');
+      if (l) l.textContent = label;
+    }
+    function setupGyro() {
+      var pp = document.permissionsPolicy || document.featurePolicy; // iframe sans allow="accelerometer; gyroscope" : on s'abstient
+      var allowed = !(pp && pp.allowsFeature) || (pp.allowsFeature('accelerometer') && pp.allowsFeature('gyroscope'));
+      if (root.dataset.gyro === 'false' || !allowed || !('DeviceOrientationEvent' in window) || !(coarse && coarse.matches)) {
+        if (btn) btn.hidden = true;
+        window.removeEventListener('deviceorientation', onOrient); gyro = false;
+        return;
+      }
+      if (typeof DeviceOrientationEvent.requestPermission === 'function' && btn && btn.dataset.state !== 'granted') {
+        btn.hidden = false;   // iOS : l'autorisation doit venir d'un geste
+        if (!btn.dataset.state) setBtn('idle', 'Activer l’inclinaison');
+      } else startGyro();
+    }
+    if (btn) btn.addEventListener('click', function () {
+      DeviceOrientationEvent.requestPermission().then(function (s) {
+        if (s === 'granted') { btn.dataset.state = 'granted'; btn.hidden = true; startGyro(); }
+        else setBtn('denied', 'Inclinaison refusée : Réglages › Safari');
+      }).catch(function () { setBtn('error', 'Gyroscope indisponible'); });
+    });
+
+    /* Pause hors écran, couleurs suivies au changement de thème, taille du canvas */
+    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (en) { inView = en[0].isIntersecting; if (inView) wake(); }) : null;
+    if (io) io.observe(root);
+    var mo = new MutationObserver(function () { readColors(); draw(); });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-accent'] });
+    var ro = 'ResizeObserver' in window ? new ResizeObserver(size) : null;
+    if (ro) ro.observe(card);
+
+    function refresh() {
+      card.classList.toggle('dark', root.dataset.fond !== 'theme');
+      readColors(); seed(); size(); setupGyro();
+      if (still()) { x = 0.42; y = -0.3; tx = x; ty = y; paint(); } // repli statique : angle figé, reflet visible
+      else { if (!auto() && !hover && !focusTilt && !gyro) target(0, 0); paint(); wake(); }
+    }
+    refresh();
+
+    root._holo = {
+      refresh: refresh,
+      flick: function (ix, iy) { if (still()) return; vx += ix; vy += iy; wake(); },
+      tilt: function (nx, ny) { target(nx, ny); },
+      destroy: function () {
+        cancelAnimationFrame(raf); if (io) io.disconnect(); if (ro) ro.disconnect(); mo.disconnect();
+        window.removeEventListener('deviceorientation', onOrient);
+        delete root._holo;
+      },
+    };
+    return root._holo;
+  }
+
+  function init(scope) { (scope || document).querySelectorAll('[data-holo]').forEach(attach); }
+  window.HoloCard = { init: init, attach: attach };
+  if (document.readyState !== 'loading') init();
+  else document.addEventListener('DOMContentLoaded', function () { init(); });
+})();
+</script>

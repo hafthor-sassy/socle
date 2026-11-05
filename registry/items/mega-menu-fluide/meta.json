@@ -1,0 +1,63 @@
+{
+  "id": "mega-menu-fluide",
+  "nom": "Méga-menu fluide",
+  "categorie": "navigation",
+  "ordre": 1,
+  "niveau": "premium",
+  "description": "Une barre de navigation dont le panneau suit l’entrée survolée : il glisse, change de largeur et de hauteur avec un vrai ressort, le contenu part dans le sens du mouvement et une flèche pointe l’entrée active. Clavier complet, et sur mobile un tiroir à niveaux qui s’empilent.",
+  "tags": ["Ressort", "Clavier", "Responsive", "Tiroir mobile", "SaaS"],
+  "date": "2026-11-05",
+  "thumb": { "width": 1200 },
+  "stage": { "width": "desktop", "desktopMin": 1100 },
+  "dependances": [
+    { "nom": "tokens.css", "note": "Surfaces, ombre de popover, accent, voile" },
+    { "nom": "Web Animations API", "note": "Glissement du contenu (natif ; repli sans glissement)" },
+    { "nom": "react ≥ 18", "note": "Onglet React seulement" },
+    { "nom": "tailwindcss ≥ 3.4", "note": "Onglet React seulement, aucune autre dépendance" }
+  ],
+  "props": [
+    { "name": "start", "label": "Ouvert au départ", "type": "select", "default": "produit",
+      "options": [{ "value": "none", "label": "Aucun" }, { "value": "produit", "label": "Produit" }, { "value": "solutions", "label": "Solutions" }, { "value": "ressources", "label": "Ressources" }],
+      "hint": "Pour la démo : panneau ouvert au chargement (bureau).",
+      "code": { "react": "defaultOpen=\"{v}\"" } },
+    { "name": "hover", "label": "Ouvrir au survol", "type": "boolean", "default": true,
+      "hint": "Sinon, au clic seulement. Le clic et le clavier marchent toujours.",
+      "code": { "html": "data-hover=\"{v}\"", "react": "openOnHover={{v}}" } },
+    { "name": "arrow", "label": "Flèche indicatrice", "type": "boolean", "default": true,
+      "code": { "html": "data-arrow=\"{v}\"", "react": "arrow={{v}}" } },
+    { "name": "pill", "label": "Pastille de survol", "type": "boolean", "default": true,
+      "hint": "Fond qui glisse d’une entrée à l’autre.",
+      "code": { "html": "data-pill=\"{v}\"", "react": "pill={{v}}" } },
+    { "name": "stiffness", "label": "Raideur du ressort", "type": "number", "default": 320, "min": 120, "max": 700, "step": 10,
+      "code": { "html": "data-stiffness=\"{v}\"", "react": "stiffness={{v}}" } },
+    { "name": "damping", "label": "Amortissement", "type": "number", "default": 30, "min": 10, "max": 60, "step": 1,
+      "hint": "Bas : le panneau dépasse et revient. 2 × √raideur : arrivée sans rebond.",
+      "code": { "html": "data-damping=\"{v}\"", "react": "damping={{v}}" } },
+    { "name": "slide", "label": "Glissement du contenu", "type": "number", "default": 24, "min": 0, "max": 64, "step": 8, "unit": "px",
+      "code": { "html": "data-slide=\"{v}\"", "react": "slide={{v}}" } },
+    { "name": "openDelay", "label": "Délai d’ouverture", "type": "number", "default": 80, "min": 0, "max": 300, "step": 20, "unit": "ms",
+      "hint": "Évite d’ouvrir en traversant la barre.",
+      "code": { "html": "data-open-delay=\"{v}\"", "react": "openDelay={{v}}" } },
+    { "name": "closeDelay", "label": "Délai de fermeture", "type": "number", "default": 220, "min": 0, "max": 600, "step": 20, "unit": "ms",
+      "hint": "Laisse le temps de rejoindre le panneau en diagonale.",
+      "code": { "html": "data-close-delay=\"{v}\"", "react": "closeDelay={{v}}" } },
+    { "name": "cta", "label": "Bouton d’action", "type": "text", "default": "Essai gratuit",
+      "code": { "html": "<span data-mm-cta>{v}</span>", "react": "cta=\"{v}\"" } }
+  ],
+  "code": [
+    { "id": "html", "label": "HTML + CSS + JS", "file": "code/index.html", "lang": "html" },
+    { "id": "react", "label": "React + Tailwind", "file": "code/MegaMenu.jsx", "lang": "jsx" }
+  ],
+  "usage": [
+    "En-tête d’un site produit avec trois à cinq rubriques riches ; au-delà, préférez une page d’index.",
+    "Chaque panneau a sa propre largeur (classes .mm__panel--…) : le ressort fait la transition entre les tailles, inutile de les égaliser.",
+    "Raideur 320 / amortissement 30 donne un léger dépassement ; 2 × √raideur (≈ 36) une arrivée nette sans rebond.",
+    "Écoutez l’événement « megamenu:open » (detail.panel) pour la mesure d’audience ; l’API root._mega expose open(), close(), openDrawer()."
+  ],
+  "accessibilite": [
+    "Motif « disclosure » : boutons natifs avec aria-expanded et aria-controls, panneaux masqués par hidden quand ils sont fermés.",
+    "Clavier : ← → Origine Fin entre les rubriques (le panneau ouvert suit), ↓ entre dans le panneau, ↑ ↓ Origine Fin dans les liens, Tab sort du dernier lien vers la rubrique suivante, Échap ferme et rend le focus.",
+    "Tiroir mobile : dialogue modal avec piège du focus, Échap, niveaux inactifs en inert, titre de niveau focalisé à chaque entrée, ← pour revenir.",
+    "Ouverture au survol réservée à la souris, avec délais d’intention ; au toucher, tout passe par le clic. Avec « réduire les animations », le panneau se place sans ressort ni glissement."
+  ]
+}
